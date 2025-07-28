@@ -1,0 +1,69 @@
+// Helper function to make requests (paste this once at the top of your console)
+async function makeRequest(method, url, body = null, isJson = false) {
+    const headers = {};
+    // For authenticated requests, browser automatically sends cookies
+    if (isJson) {
+        headers["Content-Type"] = "application/json";
+    }
+
+    const options = {
+        method: method,
+        headers: headers
+    };
+    if (body) {
+        options.body = body instanceof FormData ? body : JSON.stringify(body);
+    }
+
+    try {
+        const response = await fetch(url, options);
+        const result = await response.json();
+        console.log(`  ${method} ${url} -> Status: ${response.status}, Result:`, result);
+        return { result, status: response.status };
+    } catch (e) {
+        console.error(`  ${method} ${url} -> Error:`, e);
+        return { result: null, status: null };
+    }
+}
+
+console.log("--- Starting All Data Deletion Script ---");
+
+// IMPORTANT: Replace with your actual logged-in user ID
+const TEST_USER_ID = "b0461daa-d0a2-4c72-8823-48dc6a080530";
+
+// Delete comments first to avoid foreign key constraint issues
+console.log(`Deleting all Comments for user ${TEST_USER_ID}...`);
+let { result: commentsResult, status: commentsStatus } = await makeRequest("DELETE", `/api/users/${TEST_USER_ID}/comments`);
+if (commentsStatus === 200) {
+    console.log("All Comments for user deleted successfully.");
+} else {
+    console.log("Failed to delete all Comments for user.");
+}
+
+// Delete Notices
+console.log(`Deleting all Notices for user ${TEST_USER_ID}...`);
+let { result: noticesResult, status: noticesStatus } = await makeRequest("DELETE", `/api/users/${TEST_USER_ID}/notices`);
+if (noticesStatus === 200) {
+    console.log("All Notices for user deleted successfully.");
+} else {
+    console.log("Failed to delete all Notices for user.");
+}
+
+// Delete Events
+console.log(`Deleting all Events for user ${TEST_USER_ID}...`);
+let { result: eventsResult, status: eventsStatus } = await makeRequest("DELETE", `/api/users/${TEST_USER_ID}/events`);
+if (eventsStatus === 200) {
+    console.log("All Events for user deleted successfully.");
+} else {
+    console.log("Failed to delete all Events for user.");
+}
+
+// Delete Lost & Found Posts
+console.log(`Deleting all Lost & Found Posts for user ${TEST_USER_ID}...`);
+let { result: postsResult, status: postsStatus } = await makeRequest("DELETE", `/api/users/${TEST_USER_ID}/lost-and-found`);
+if (postsStatus === 200) {
+    console.log("All Lost & Found Posts for user deleted successfully.");
+} else {
+    console.log("Failed to delete all Lost & Found Posts for user.");
+}
+
+console.log("--- All Data Deletion Script Complete ---");
