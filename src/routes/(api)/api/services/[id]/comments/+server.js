@@ -13,7 +13,7 @@ export async function GET({ params, locals: { supabase, getSession } }) {
 
     try {
         const { data: comments, error } = await supabase
-            .from('service_comments')
+            .from('comments')
             .select('*')
             .eq('service_id', id)
             .order('created_at', { ascending: false });
@@ -47,7 +47,7 @@ export async function POST({ request, params, locals: { supabase, getSession } }
     }
 
     try {
-        const { error } = await supabase.from('service_comments').insert({
+        const { error } = await supabase.from('comments').insert({
             content,
             service_id: id,
             user_id: user.id

@@ -1,4 +1,3 @@
-
 <script>
 	import { enhance } from '$app/forms';
 	import Comments from '$lib/Comments.svelte';
@@ -39,28 +38,7 @@
 			</p>
 		</article>
 
-		<Comments {comments} />
-
-		<div class="comment-form-section">
-			<h2>Add a Comment</h2>
-			{#if formMessage}
-				<p class="form-message">{formMessage}</p>
-			{/if}
-			<form
-				method="POST"
-				action="?/addComment"
-				use:enhance={submitCommentForm}
-				class="comment-form">
-				<textarea
-					name="content"
-					required
-					placeholder="Write your comment here..."
-					disabled={isSubmitting}></textarea>
-				<button type="submit" disabled={isSubmitting}>
-					{isSubmitting ? 'Submitting...' : 'Submit Comment'}
-				</button>
-			</form>
-		</div>
+		<Comments parentId={service.id} type="service_id" userData={data} />
 	{:else}
 		<p>Service not found.</p>
 	{/if}
@@ -95,40 +73,5 @@
 		font-size: 0.9em;
 		color: #888;
 		margin-top: 1em;
-	}
-
-	.comment-form-section {
-		margin-top: 2em;
-	}
-
-	.comment-form textarea {
-		width: 100%;
-		min-height: 100px;
-		padding: 1em;
-		border: 1px solid #ccc;
-		border-radius: 4px;
-		margin-bottom: 1em;
-	}
-
-	.comment-form button {
-		background-color: #007bff;
-		color: white;
-		padding: 0.8em 1.5em;
-		border: none;
-		border-radius: 5px;
-		cursor: pointer;
-	}
-
-	.comment-form button:hover {
-		background-color: #0056b3;
-	}
-
-	.form-message {
-		background-color: #d4edda;
-		color: #155724;
-		border: 1px solid #c3e6cb;
-		padding: 1em;
-		border-radius: 5px;
-		margin-bottom: 1.5em;
 	}
 </style>

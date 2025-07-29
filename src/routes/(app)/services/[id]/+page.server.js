@@ -3,7 +3,7 @@
 import { redirect, fail } from '@sveltejs/kit';
 
 export async function load({ params, locals: { getSession }, fetch }) {
-  const { is_logged_in } = await getSession();
+  const { user, is_logged_in } = await getSession();
 
   if (!is_logged_in) {
     throw redirect(303, '/login');
@@ -26,6 +26,8 @@ export async function load({ params, locals: { getSession }, fetch }) {
   return {
     service: serviceResult.service,
     comments: commentsResult.comments || [],
+    user,
+    is_logged_in
   };
 }
 

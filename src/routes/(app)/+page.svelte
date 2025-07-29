@@ -5,8 +5,6 @@
 	import Services from '$lib/components/Services.svelte';
 
 	let { data } = $props();
-
-	console.log(data.servicesPosts);
 </script>
 
 <header class="hero">
@@ -41,8 +39,8 @@
 		text-align: center;
 		padding-block: var(--size-3);
 
-		h1 {
-		}
+		/* h1 {
+		} */
 
 		p {
 			max-width: 30ch;

@@ -92,10 +92,7 @@
 	<div class="notices-list">
 		{#if data.notices && data.notices.length > 0}
 			{#each data.notices as notice}
-				<a
-					href="/notices/{notice.id}"
-					class="notice-card-link"
-					onclick={() => console.log('Navigating to /notices/' + notice.id)}>
+				<a href="/notices/{notice.id}" class="notice-card-link">
 					<div class="notice-card">
 						<h3>{notice.title}</h3>
 						{#if notice.image_url}
