@@ -1,4 +1,5 @@
 <script>
+	import Icon from '$lib/Icon.svelte';
 	let { services } = $props();
 </script>
 
@@ -9,7 +10,16 @@
 	<div class="services-wrap">
 		{#each services as service}
 			<a href={`/services/${service.id}`}>
+				{#if service.image_url}
+					<img class="image" src={service.image_url} alt={service.title} />
+				{:else}
+					<div class="placeholder-image">
+						<span>{service.category == 'wanted' ? '🔍' : '✋'}</span>
+					</div>
+				{/if}
 				<strong class="message">{service.title}</strong>
+				<!-- <span class="category {service.category}">{service.category}</span> -->
+				<Icon size="21" kind={service.category} />
 			</a>
 		{/each}
 	</div>
@@ -52,12 +62,35 @@
 		}
 	}
 
+	.placeholder-image {
+		width: auto;
+		height: 60px;
+		background: var(--gradient-23);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 2em;
+		aspect-ratio: 1;
+		border-radius: var(--border-size-5);
+	}
+
+	.image {
+		max-width: 60px;
+		aspect-ratio: 1;
+		border-radius: var(--border-size-5);
+	}
+
 	.message {
 		flex: 1;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
+
+	/* .category {
+		text-transform: uppercase;
+		font-size: x-small;
+	} */
 
 	.view-all {
 		display: inline-block;

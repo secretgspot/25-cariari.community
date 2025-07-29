@@ -5,6 +5,8 @@
 	import Services from '$lib/components/Services.svelte';
 
 	let { data } = $props();
+
+	console.log(data.servicesPosts);
 </script>
 
 <header class="hero">
@@ -31,7 +33,7 @@
 
 <!-- Services Section -->
 {#if data.servicesPosts && data.servicesPosts.length > 0}
-	<Services posts={data.servicesPosts} />
+	<Services services={data.servicesPosts} />
 {/if}
 
 <style>

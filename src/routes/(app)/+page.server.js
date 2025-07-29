@@ -21,12 +21,13 @@ export async function load({ locals: { getSession }, fetch }) {
 	const [
 		noticesResult,
 		eventsResult,
-		lostAndFoundResult
+		lostAndFoundResult,
+		servicesResult
 	] = await Promise.all([
 		noticesResponse.json().catch(() => ({ notices: [] })),
 		eventsResponse.json().catch(() => ({ events: [] })),
 		lostAndFoundResponse.json().catch(() => ({ posts: [] })),
-		servicesResponse.json().catch(() => ({ posts: [] }))
+		servicesResponse.json().catch(() => ({ services: [] }))
 	]);
 
 	return {
@@ -35,6 +36,6 @@ export async function load({ locals: { getSession }, fetch }) {
 		noticesPosts: noticesResult.notices || [],
 		eventsPosts: eventsResult.events || [],
 		lostAndFoundPosts: lostAndFoundResult.posts || [],
-		servicesPosts: servicesResponse.posts || []
+		servicesPosts: servicesResult.services || []
 	};
 };
