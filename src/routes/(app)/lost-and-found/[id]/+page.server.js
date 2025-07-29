@@ -2,71 +2,70 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 
 export async function load({ params, locals: { getSession }, fetch }) {
-  const { user, is_logged_in } = await getSession();
-  const { id } = params;
-  const response = await fetch(`/api/lost-and-found/${id}`);
+	const { user, is_logged_in } = await getSession();
+	const { id } = params;
+	const response = await fetch(`/api/lost-and-found/${id}`);
 
-  if (!response.ok) {
-    const result = await response.json();
-    throw error(response.status, result.message || 'Could not fetch lost and found post');
-  }
+	if (!response.ok) {
+		const result = await response.json();
+		throw error(response.status, result.message || 'Could not fetch lost and found post');
+	}
 
-  const post = await response.json();
+	const post = await response.json();
 
-  return { 
-    post, 
-    user, 
-    is_logged_in,
-    isOwner: user && post.user_id === user.id
-  };
+	return {
+		post,
+		user,
+		is_logged_in,
+		isOwner: user && post.user_id === user.id
+	};
 }
 
 export const actions = {
-  updatePost: async ({ request, params, fetch }) => {
-    const { id } = params;
-    const formData = await request.formData();
-    
-    const updateData = {
-      item_name: formData.get('item_name'),
-      description: formData.get('description'),
-      type: formData.get('type'),
-      date_lost_found: formData.get('date_lost_found'),
-      location_lost_found: formData.get('location_lost_found'),
-      contact_info: formData.get('contact_info'),
-      image_url: formData.get('image_url') || null,
-      status: formData.get('status')
-    };
+	updatePost: async ({ request, params, fetch }) => {
+		const { id } = params;
+		const formData = await request.formData();
 
-    const response = await fetch(`/api/lost-and-found/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(updateData)
-    });
+		const updateData = {
+			item_name: formData.get('item_name'),
+			description: formData.get('description'),
+			type: formData.get('type'),
+			date_lost_found: formData.get('date_lost_found'),
+			location_lost_found: formData.get('location_lost_found'),
+			contact_info: formData.get('contact_info'),
+			image_url: formData.get('image_url') || null
+		};
 
-    const result = await response.json();
+		const response = await fetch(`/api/lost-and-found/${id}`, {
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(updateData)
+		});
 
-    if (!response.ok) {
-      return fail(response.status, result);
-    }
+		const result = await response.json();
 
-    return { success: true, message: result.message };
-  },
+		if (!response.ok) {
+			return fail(response.status, result);
+		}
 
-  deletePost: async ({ params, fetch }) => {
-    const { id } = params;
-    const response = await fetch(`/api/lost-and-found/${id}`, {
-      method: 'DELETE'
-    });
+		return { success: true, message: result.message };
+	},
 
-    const result = await response.json();
+	deletePost: async ({ params, fetch }) => {
+		const { id } = params;
+		const response = await fetch(`/api/lost-and-found/${id}`, {
+			method: 'DELETE'
+		});
 
-    if (!response.ok) {
-      return fail(response.status, result);
-    }
+		const result = await response.json();
 
-    // Redirect to lost-and-found list after successful deletion
-    throw redirect(303, '/lost-and-found');
-  }
+		if (!response.ok) {
+			return fail(response.status, result);
+		}
+
+		// Redirect to lost-and-found list after successful deletion
+		throw redirect(303, '/lost-and-found');
+	}
 };

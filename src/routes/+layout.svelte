@@ -2,6 +2,8 @@
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import Nav from '$lib/Nav.svelte';
+	import 'open-props/style';
+
 	let { children, data } = $props();
 
 	onMount(() => {
@@ -30,3 +32,12 @@
 <main>
 	{@render children?.()}
 </main>
+
+<style>
+	main {
+		display: grid;
+		margin-block: var(--size-8);
+		gap: var(--size-8);
+		margin-inline: var(--size-3);
+	}
+</style>

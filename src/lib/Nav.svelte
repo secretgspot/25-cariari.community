@@ -1,174 +1,132 @@
 <script>
-  import Logo from './Logo.svelte';
-  import { page } from '$app/stores';
-  
-  let { data } = $props();
-  let isMobileMenuOpen = $state(false);
-  
-  // Close mobile menu when clicking outside
-  function handleClickOutside(event) {
-    if (!event.target.closest('.nav-container') && isMobileMenuOpen) {
-      isMobileMenuOpen = false;
-    }
-  }
-  
-  // Navigation items configuration
-  const navItems = [
-    { href: '/events', label: 'Events', icon: '📅' },
-    { href: '/lost-and-found', label: 'Lost & Found', icon: '🔍' },
-    { href: '/notices', label: 'Notices', icon: '📢' }
-  ];
-  
-  // Check if current page matches nav item
-  function isActiveRoute(href) {
-    return $page.url.pathname.startsWith(href);
-  }
+	import Logo from './Logo.svelte';
+	import Icon from './Icon.svelte';
+
+	let { data } = $props();
 </script>
 
-<svelte:window on:click={handleClickOutside} />
+<header class="site-header">
+	<!-- Brand/Logo Section -->
+	<a href="/">
+		<Logo size="30px" title="Cariari Community" />
+	</a>
 
-<header class="nav-header">
-  <nav class="nav-container" role="navigation" aria-label="Main navigation">
-    <!-- Brand/Logo Section -->
-    <div class="nav-brand">
-      <a href="/" class="brand-link" aria-label="Cariari Community Home">
-        <Logo size="2em" />
-        <span class="brand-text">Cariari Community</span>
-      </a>
-    </div>
+	<!-- Navigation Menu -->
+	<nav class="site-nav" aria-label="Main navigation">
+		{#if data?.is_logged_in}
+			<!-- Main Navigation Links -->
+			<a href="/notices" class="nav-link">
+				<span class="nav-icon"><Icon kind="notices" size="27" /></span>
+				<span class="nav-text">Notices</span>
+			</a>
+			<a href="/events" class="nav-link">
+				<span class="nav-icon"><Icon kind="events" size="27" /></span>
+				<span class="nav-text">Events</span>
+			</a>
+			<a href="/lost-and-found" class="nav-link">
+				<span class="nav-icon"><Icon kind="lost-and-found" size="27" /></span>
+				<span class="nav-text">Lost & Found</span>
+			</a>
+			<a href="/services" class="nav-link">
+				<span class="nav-icon"><Icon kind="services" size="27" /></span>
+				<span class="nav-text">Services</span>
+			</a>
 
-    <!-- Mobile Menu Toggle -->
-    <button 
-      class="mobile-menu-toggle" 
-      aria-label="Toggle navigation menu"
-      aria-expanded={isMobileMenuOpen}
-      onclick={() => isMobileMenuOpen = !isMobileMenuOpen}
-    >
-      <span class="hamburger-line" class:active={isMobileMenuOpen}></span>
-      <span class="hamburger-line" class:active={isMobileMenuOpen}></span>
-      <span class="hamburger-line" class:active={isMobileMenuOpen}></span>
-    </button>
+			<!-- User Section -->
+			<a href="/profile" class="profile-link">
+				{#if data.profile?.avatar_url}
+					<img
+						src={data.profile.avatar_url}
+						alt="{data.profile?.username || 'User'} avatar"
+						class="avatar-image" />
+				{/if}
 
-    <!-- Navigation Menu -->
-    <div class="nav-menu" class:open={isMobileMenuOpen}>
-      {#if data?.is_logged_in}
-        <!-- Main Navigation Links -->
-        <ul class="nav-links" role="list">
-          {#each navItems as item}
-            <li role="listitem">
-              <a 
-                href={item.href} 
-                class="nav-link" 
-                class:active={isActiveRoute(item.href)}
-                onclick={() => isMobileMenuOpen = false}
-              >
-                <span class="nav-icon" aria-hidden="true">{item.icon}</span>
-                <span class="nav-text">{item.label}</span>
-              </a>
-            </li>
-          {/each}
-        </ul>
-
-        <!-- User Section -->
-        <div class="user-section">
-          <a href="/profile" class="profile-link" onclick={() => isMobileMenuOpen = false}>
-            <div class="profile-avatar">
-              {#if data.profile?.avatar_url}
-                <img 
-                  src={data.profile.avatar_url} 
-                  alt="{data.profile?.username || 'User'} avatar" 
-                  class="avatar-image"
-                />
-              {:else}
-                <div class="avatar-placeholder" aria-hidden="true">
-                  {(data.profile?.username?.[0] || data.user?.email?.[0] || 'U').toUpperCase()}
-                </div>
-              {/if}
-            </div>
-            <div class="profile-info">
-              <span class="profile-name">
-                {#if data.profile?.username}
-                  {data.profile.username}
-                {:else if data.user?.email}
-                  {data.user.email.split('@')[0]}
-                {:else}
-                  Profile
-                {/if}
-              </span>
-              <span class="profile-label">My Account</span>
-            </div>
-          </a>
-          
-          <form action="/logout" method="post" class="logout-form">
-            <button type="submit" class="logout-btn" aria-label="Sign out">
-              <span class="logout-icon" aria-hidden="true">↗</span>
-              <span class="logout-text">Sign Out</span>
-            </button>
-          </form>
-        </div>
-      {:else}
-        <!-- Guest Navigation -->
-        <div class="guest-section">
-          <a href="/login" class="signin-btn" onclick={() => isMobileMenuOpen = false}>
-            <span class="signin-icon" aria-hidden="true">👤</span>
-            <span>Sign In</span>
-          </a>
-        </div>
-      {/if}
-    </div>
-  </nav>
+				<span class="profile-name">
+					{#if data.profile?.username}
+						{data.profile.username}
+					{:else if data.user?.email}
+						{data.user.email.split('@')[0]}
+					{:else}
+						Profile
+					{/if}
+				</span>
+			</a>
+			<form action="/logout" method="post" class="logout-form">
+				<button type="submit" class="logout-btn" aria-label="Sign out">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+						<path
+							fill="none"
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="32"
+							d="M304 336v40a40 40 0 0 1-40 40H104a40 40 0 0 1-40-40V136a40 40 0 0 1 40-40h152c22.09 0 48 17.91 48 40v40M368 336l80-80-80-80M176 256h256">
+						</path>
+					</svg>
+				</button>
+			</form>
+		{:else}
+			<!-- Guest Navigation -->
+			<div class="guest-section">
+				<a href="/login" class="signin-btn">
+					<span class="signin-icon" aria-hidden="true">👤</span>
+					<span>Sign In</span>
+				</a>
+			</div>
+		{/if}
+	</nav>
 </header>
 
 <style>
-  nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1em;
-    background-color: #f0f0f0;
-  }
+	header.site-header {
+		display: flex;
+		justify-content: space-between;
+		position: sticky;
+		top: 0;
+		padding: var(--size-3);
+		background-color: rgb(255 255 255 / 90%);
+		backdrop-filter: blur(10px);
+	}
 
-  nav a {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: #333;
-  }
-
-  nav a span {
-    margin-left: 0.5em;
-    font-weight: bold;
-  }
-
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-  }
-
-  li {
-    margin-left: 1em;
-  }
-
-  button {
-    background: none;
-    border: none;
-    color: #333;
-    cursor: pointer;
-    font-size: 1em;
-  }
-  .profile-link {
-    display: flex;
-    align-items: center;
-    gap: 0.5em; /* Space between avatar/text */
-  }
-
-  .nav-avatar {
-    width: 2em; /* Adjust size as needed */
-    height: 2em;
-    border-radius: 50%;
-    object-fit: cover;
-  }
+	nav.site-nav {
+		display: flex;
+		flex-direction: row;
+		gap: var(--size-3);
+		align-items: center;
+		.nav-text {
+			display: none;
+			@media (min-width: 481px) {
+				display: block;
+			}
+		}
+		a {
+			display: flex;
+			align-items: center;
+			text-decoration: none;
+			gap: var(--size-2);
+		}
+		.profile-link {
+			display: flex;
+			gap: var(--size-2);
+			.avatar-image {
+				border-radius: var(--radius-round);
+				max-height: 27px;
+			}
+			.profile-name {
+				display: none;
+				@media (min-width: 481px) {
+					display: block;
+				}
+			}
+		}
+		button.logout-btn {
+			padding: 0;
+			background: transparent;
+			border: none;
+			svg {
+				height: 21px;
+				vertical-align: middle;
+			}
+		}
+	}
 </style>
-

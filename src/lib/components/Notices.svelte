@@ -1,54 +1,132 @@
 <script>
-  let { notices } = $props();
+	import { timeFrom } from '$lib/utils/time.js';
+	let { notices } = $props();
 </script>
 
-<div class="notices-container">
-  <h2>Latest Notices</h2>
-  <ul>
-    {#each notices as notice}
-      <li>
-        <a href={`/notices/${notice.id}`} target="_blank">
-          <strong>{notice.title}</strong>
-          <span>Posted on: {new Date(notice.created_at).toLocaleDateString()}</span>
-        </a>
-      </li>
-    {/each}
-  </ul>
-  <a href="/notices" class="view-all">View all Notices</a>
-</div>
+<fieldset class="notices-container">
+	<legend
+		><span>Latest Notices</span> •
+		<a href="/notices" class="view-all">View all</a></legend>
+	<div class="notices-wrap">
+		{#each notices as notice}
+			<a href={`/notices/${notice.id}`}>
+				<span class="urgency {notice.urgency}"></span>
+				<strong class="message">{notice.title}</strong>
+				<!-- <span class="time-posted">{timeFrom(notice.created_at)}</span> -->
+				{#if notice.start_date}
+					<span class="time-starts">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 320 320">
+							<path
+								fill="#000"
+								d="M103.06 144A14.96 14.96 0 0 0 88 158.9a15.04 15.04 0 0 0 14.94 15.1l.13-30Zm175.79 26.74a15 15 0 0 0 .09-21.2L183.9 53.45a15 15 0 0 0-21.22-.14 15 15 0 0 0-.09 21.21l84.48 85.4-85.21 84.3a15 15 0 0 0-.1 21.22 15 15 0 0 0 21.22.13l95.87-94.84ZM103 159l-.06 15 165.28 1.07.07-15 .06-15L103.06 144l-.06 15Z" />
+							<path
+								stroke="#000"
+								stroke-linecap="round"
+								stroke-width="30"
+								d="M54 65v192" />
+						</svg>
+						{timeFrom(notice.start_date)}
+					</span>
+				{/if}
+				{#if notice.end_date}
+					<span class="time-expires">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 320 320">
+							<path
+								fill="#000"
+								d="M50.06 144A14.96 14.96 0 0 0 35 158.9 15.04 15.04 0 0 0 49.94 174l.12-30Zm175.79 26.74a15 15 0 0 0 .09-21.2L130.9 53.45a15 15 0 0 0-21.22-.14 15 15 0 0 0-.09 21.21l84.48 85.4-85.21 84.3a15 15 0 0 0-.1 21.22 15 15 0 0 0 21.22.13l95.87-94.84ZM50 159l-.06 15 165.28 1.07.07-15 .06-15L50.06 144 50 159Z" />
+							<path
+								stroke="#000"
+								stroke-linecap="round"
+								stroke-width="30"
+								d="M265 64v192" />
+						</svg>
+						{timeFrom(notice.end_date)}
+					</span>
+				{/if}
+			</a>
+		{/each}
+	</div>
+</fieldset>
 
 <style>
-  .notices-container {
-    margin: 2em 0;
-    padding: 1.5em;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+	.notices-container {
+		border-radius: var(--border-size-3);
+		border: none;
+		padding-inline: 0;
+	}
 
-  h2 {
-    color: #333;
-    margin-bottom: 1em;
-  }
+	legend {
+		span {
+			font-weight: 600;
+		}
+	}
 
-  ul {
-    list-style: none;
-    padding: 0;
-  }
+	.notices-wrap {
+		display: flex;
+		flex-direction: column;
+		gap: var(--size-1);
+		margin-block: var(--size-3);
 
-  li {
-    margin-bottom: 0.5em;
-  }
+		a {
+			text-decoration: none;
+			display: flex;
+			flex: 1;
+			justify-content: space-between;
+			align-items: center;
+			padding: var(--size-3);
+			gap: var(--size-3);
+			border: var(--border-size-1) solid var(--gray-1);
+			border-radius: var(--border-size-3);
+			color: var(--blue-6);
+			&:hover {
+				color: var(--blue-9);
+				box-shadow: var(--shadow-2);
+			}
+		}
+	}
 
-  a {
-    text-decoration: none;
-    color: #007bff;
-  }
+	.urgency {
+		aspect-ratio: 1;
+		width: 12px;
+		border-radius: var(--radius-round);
+		&.default {
+			background: var(--stone-3);
+		}
+		&.low {
+			background: var(--green-6);
+		}
+		&.medium {
+			background: var(--orange-6);
+		}
+		&.high {
+			background: var(--red-6);
+		}
+	}
 
-  a.view-all {
-    display: inline-block;
-    margin-top: 1em;
-    color: #0056b3;
-    font-weight: bold;
-  }
+	.message {
+		flex: 1;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.view-all {
+		display: inline-block;
+		text-decoration: none;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	.time-starts,
+	.time-expires {
+		display: flex;
+		align-items: center;
+		gap: var(--size-1);
+		font-size: smaller;
+		svg {
+			width: 9px;
+			height: 9px;
+		}
+	}
 </style>
