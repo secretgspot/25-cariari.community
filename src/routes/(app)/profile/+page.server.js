@@ -14,13 +14,15 @@ export async function load({ locals: { getSession }, fetch }) {
     lostAndFoundResponse,
     eventsResponse,
     noticesResponse,
-    commentsResponse
+    commentsResponse,
+    servicesResponse
   ] = await Promise.all([
     fetch(`/api/users/${user.id}`),
     fetch(`/api/users/${user.id}/lost-and-found`),
     fetch(`/api/users/${user.id}/events`),
     fetch(`/api/users/${user.id}/notices`),
-    fetch(`/api/users/${user.id}/comments`)
+    fetch(`/api/users/${user.id}/comments`),
+    fetch(`/api/users/${user.id}/services`)
   ]);
 
   // Process all responses in parallel
@@ -29,13 +31,15 @@ export async function load({ locals: { getSession }, fetch }) {
     lostAndFoundResult,
     eventsResult,
     noticesResult,
-    commentsResult
+    commentsResult,
+    servicesResult
   ] = await Promise.all([
     profileResponse.json().catch(() => ({ profile: null })),
     lostAndFoundResponse.json().catch(() => []),
     eventsResponse.json().catch(() => []),
     noticesResponse.json().catch(() => []),
-    commentsResponse.json().catch(() => [])
+    commentsResponse.json().catch(() => []),
+    servicesResponse.json().catch(() => [])
   ]);
 
   // Log errors if any API calls failed
@@ -54,6 +58,9 @@ export async function load({ locals: { getSession }, fetch }) {
   if (!commentsResponse.ok) {
     console.error('Error fetching comments from API:', commentsResult);
   }
+  if (!servicesResponse.ok) {
+    console.error('Error fetching services from API:', servicesResult);
+  }
 
   return {
     user,
@@ -63,6 +70,7 @@ export async function load({ locals: { getSession }, fetch }) {
     events: eventsResult || [],
     notices: noticesResult || [],
     comments: commentsResult || [],
+    services: servicesResult || [],
   };
 }
 

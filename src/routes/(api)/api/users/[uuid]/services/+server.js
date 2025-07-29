@@ -18,22 +18,22 @@ export async function GET({ params, locals: { supabase, getSession } }) {
 	const { uuid } = params;
 
 	try {
-		const { data: notices, error: noticesError } = await supabase
-			.from('news')
+		const { data: services, error: servicesError } = await supabase
+			.from('services')
 			.select('*')
 			.eq('user_id', uuid)
 			.order('created_at', { ascending: false })
-			.limit(50); // Limit to 50 most recent notices for better performance
+			.limit(50); // Limit to 50 most recent services for better performance
 
-		if (noticesError) {
-			console.error('Error fetching user notices:', noticesError);
-			return json({ message: 'Failed to fetch user notices: ' + noticesError.message }, { status: 500 });
+		if (servicesError) {
+			console.error('Error fetching user services:', servicesError);
+			return json({ message: 'Failed to fetch user services: ' + servicesError.message }, { status: 500 });
 		}
 
-		return json(notices, { status: 200 });
+		return json(services, { status: 200 });
 	} catch (err) {
-		console.error('Unexpected error fetching user notices:', err);
-		return json({ message: 'An unexpected error occurred while fetching user notices.' }, { status: 500 });
+		console.error('Unexpected error fetching user services:', err);
+		return json({ message: 'An unexpected error occurred while fetching user services.' }, { status: 500 });
 	}
 }
 
@@ -55,18 +55,18 @@ export async function DELETE({ params, locals: { supabase, getSession } }) {
 
 	try {
 		const { error: deleteError } = await supabase
-			.from('news')
+			.from('services')
 			.delete()
 			.eq('user_id', uuid);
 
 		if (deleteError) {
-			console.error('Error deleting all user notices:', deleteError?.message, deleteError?.details);
-			return json({ message: 'Failed to delete all notices.' }, { status: 500 });
+			console.error('Error deleting all user services:', deleteError?.message, deleteError?.details);
+			return json({ message: 'Failed to delete all services.' }, { status: 500 });
 		}
 
-		return json({ message: 'All notices deleted successfully!' }, { status: 200 });
+		return json({ message: 'All services deleted successfully!' }, { status: 200 });
 	} catch (err) {
-		console.error('Unexpected error deleting all user notices:', err);
-		return json({ message: 'An unexpected error occurred while deleting all notices.' }, { status: 500 });
+		console.error('Unexpected error deleting all user services:', err);
+		return json({ message: 'An unexpected error occurred while deleting all services.' }, { status: 500 });
 	}
 }

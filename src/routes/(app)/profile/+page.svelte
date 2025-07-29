@@ -131,6 +131,18 @@
     </UserContentList>
 
     <UserContentList
+      title="My Services"
+      items={data.services}
+      itemKey="title"
+      linkPrefix="/services"
+      type="service"
+    >
+      <svelte:fragment slot="additionalInfo" let:item>
+        - {item.description} ({item.category})
+      </svelte:fragment>
+    </UserContentList>
+
+    <UserContentList
       title="My Comments"
       items={data.comments}
       itemKey="content"
