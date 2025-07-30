@@ -1,23 +1,24 @@
 /** @type {import('./$types').PageServerLoad} */
 import { redirect, fail } from '@sveltejs/kit';
 
-export async function load({ locals: { getSession }, fetch }) {
+export async function load({ locals: { getSession }, fetch, parent }) {
 	const { user, is_logged_in, is_admin } = await getSession();
 
 	if (!is_logged_in || !user) {
 		throw redirect(303, '/login');
 	}
 
+	// Get the userProfile from the parent layout
+	const { userProfile } = await parent();
+
 	// Make all API calls in parallel for better performance
 	const [
-		profileResponse,
 		lostAndFoundResponse,
 		eventsResponse,
 		noticesResponse,
 		commentsResponse,
 		servicesResponse
 	] = await Promise.all([
-		fetch(`/api/users/${user.id}`),
 		fetch(`/api/users/${user.id}/lost-and-found`),
 		fetch(`/api/users/${user.id}/events`),
 		fetch(`/api/users/${user.id}/notices`),
@@ -27,14 +28,12 @@ export async function load({ locals: { getSession }, fetch }) {
 
 	// Process all responses in parallel
 	const [
-		profileResult,
 		lostAndFoundResult,
 		eventsResult,
 		noticesResult,
 		commentsResult,
 		servicesResult
 	] = await Promise.all([
-		profileResponse.json().catch(() => ({ profile: null })),
 		lostAndFoundResponse.json().catch(() => []),
 		eventsResponse.json().catch(() => []),
 		noticesResponse.json().catch(() => []),
@@ -43,9 +42,6 @@ export async function load({ locals: { getSession }, fetch }) {
 	]);
 
 	// Log errors if any API calls failed
-	if (!profileResponse.ok) {
-		console.error('Error fetching profile from API:', profileResult);
-	}
 	if (!lostAndFoundResponse.ok) {
 		console.error('Error fetching lost and found posts from API:', lostAndFoundResult);
 	}
@@ -66,7 +62,7 @@ export async function load({ locals: { getSession }, fetch }) {
 		user,
 		is_logged_in,
 		is_admin,
-		profile: profileResult.profile || null,
+		profile: userProfile, // Use the userProfile from parent layout
 		lostAndFoundPosts: lostAndFoundResult || [],
 		events: eventsResult || [],
 		notices: noticesResult || [],
