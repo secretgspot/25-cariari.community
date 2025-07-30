@@ -27,7 +27,7 @@ export const load = async ({ fetch, data, depends }) => {
 			const { data: profiles, error } = await supabase
 				.from('profiles')
 				.select('*')
-				.eq('id', data.user.id)
+				.eq('user_id', data.user.id)
 				.maybeSingle(); // Use maybeSingle() to handle no results gracefully
 
 			if (error) {
