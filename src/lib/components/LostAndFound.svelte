@@ -1,5 +1,5 @@
 <script>
-	let { posts } = $props();
+	let { data } = $props();
 </script>
 
 <fieldset class="lost-found-container">
@@ -8,29 +8,29 @@
 		<a href="/lost-and-found" class="view-all">View all</a></legend>
 
 	<div class="items-grid">
-		{#each posts as post}
+		{#each data as post}
 			<div class="item-card">
 				<a href={`/lost-and-found/${post.id}`} class="item-link">
 					{#if post.image_url}
-						<img src={post.image_url} alt={post.item_name} />
+						<img src={post.image_url} alt={post.title} />
 					{:else}
 						<div class="placeholder-image">
-							<span>{post.type === 'lost' ? '🔍' : '✋'}</span>
+							<span>{post.category === 'Lost' ? '🔍' : '✋'}</span>
 						</div>
 					{/if}
 					<div class="item-info">
-						<h3>{post.item_name}</h3>
+						<h3>{post.title}</h3>
 						<p
 							class="item-type"
-							class:lost={post.type === 'lost'}
-							class:found={post.type === 'found'}>
-							{post.type.toUpperCase()}
+							class:lost={post.category === 'Lost'}
+							class:found={post.category === 'Found'}>
+							{post.category}
 						</p>
 						<p class="item-date">
-							{new Date(post.date_lost_found).toLocaleDateString()}
+							{new Date(post.date).toLocaleDateString()}
 						</p>
 						<p class="item-location">
-							{post.location_lost_found || 'Location not specified'}
+							{post.location || 'Location not specified'}
 						</p>
 					</div>
 				</a>

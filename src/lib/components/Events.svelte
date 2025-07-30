@@ -1,7 +1,7 @@
 <script>
 	import { dragable } from '$lib/utils/dragable.js';
 
-	let { events } = $props();
+	let { data } = $props();
 </script>
 
 <fieldset class="events-container">
@@ -10,7 +10,7 @@
 		<a href="/events" class="view-all">View all</a></legend>
 	<div class="slider-container" use:dragable>
 		<div class="slides">
-			{#each events as event}
+			{#each data as event}
 				<div class="slide">
 					<a href={`/events/${event.slug}`} class="event-link">
 						{#if event.image_url}

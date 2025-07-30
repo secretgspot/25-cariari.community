@@ -29,14 +29,14 @@ export async function GET({ url, locals: { supabase, getSession } }) {
 			query.limit(parseInt(limit));
 		}
 
-		const { data: posts, count, error: postsError } = await query;
+		const { data: lostandfound, count, error: postsError } = await query;
 
 		if (postsError) {
 			console.error('Error fetching lost and found posts:', postsError);
 			return json({ message: 'Failed to fetch lost and found posts: ' + postsError.message }, { status: 500 });
 		}
 
-		return json({ posts, total: count }, { status: 200 });
+		return json({ lostandfound, total: count }, { status: 200 });
 	} catch (err) {
 		console.error('Unexpected error fetching lost and found posts:', err);
 		return json({ message: 'An unexpected error occurred while fetching lost and found posts.' }, { status: 500 });
@@ -59,37 +59,40 @@ export async function POST({ request, locals: { supabase, getSession } }) {
 	}
 
 	const formData = await request.formData();
-	const item_name = formData.get('item_name');
+	const title = formData.get('title');
 	const description = formData.get('description');
-	const type = formData.get('type');
-	const date_lost_found = formData.get('date_lost_found');
-	const location_lost_found = formData.get('location_lost_found');
-	const contact_info = formData.get('contact_info');
+	const category = formData.get('category');
+	const date = formData.get('date');
+	const location = formData.get('location');
+	const contact = formData.get('contact');
 	const image_url = formData.get('image_url');
 
-	if (!item_name || !description || !type || !date_lost_found || !contact_info) {
+	if (!title || !description || !category || !date || !contact) {
 		return json({ message: 'All required fields must be filled.' }, { status: 400 });
 	}
 
 	try {
-		const { error } = await supabase.from('lost_and_found').insert({
-			item_name,
+		const { data: newItem, error } = await supabase.from('lost_and_found').insert({
+			title,
 			description,
-			type,
-			date_lost_found,
-			location_lost_found,
-			contact_info,
+			category,
+			date,
+			location,
+			contact,
 			image_url,
 			user_id: user.id,
 			is_published: true,
-		});
+		}).select().single();
 
 		if (error) {
 			console.error('Error creating lost and found post:', error);
 			return json({ message: 'Failed to create post: ' + error.message }, { status: 500 });
 		}
 
-		return json({ message: 'Post created successfully!' }, { status: 201 });
+		return json({
+			message: 'Post created successfully!',
+			lostandfound: newItem
+		}, { status: 201 });
 	} catch (err) {
 		console.error('Unexpected error creating lost and found post:', err);
 		return json({ message: 'An unexpected error occurred while creating the post.' }, { status: 500 });

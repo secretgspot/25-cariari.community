@@ -58,7 +58,7 @@ export const actions = {
 			return {
 				success: true,
 				message: result.message || 'Service created successfully!',
-				service: result.service || result.notice // Handle both possible response formats
+				service: result.service || {}
 			};
 		} catch (error) {
 			console.error('Error creating service:', error);

@@ -5,6 +5,8 @@
 	import Services from '$lib/components/Services.svelte';
 
 	let { data } = $props();
+
+	console.log('(app)/+page.svelte data: ', data);
 </script>
 
 <header class="hero">
@@ -16,22 +18,22 @@
 
 <!-- Notices Section -->
 {#if data.noticesPosts && data.noticesPosts.length > 0}
-	<Notices notices={data.noticesPosts} />
+	<Notices data={data.noticesPosts} />
 {/if}
 
 <!-- Events Section -->
 {#if data.eventsPosts && data.eventsPosts.length > 0}
-	<Events events={data.eventsPosts} />
+	<Events data={data.eventsPosts} />
 {/if}
 
 <!-- Lost and Found Section -->
 {#if data.lostAndFoundPosts && data.lostAndFoundPosts.length > 0}
-	<LostAndFound posts={data.lostAndFoundPosts} />
+	<LostAndFound data={data.lostAndFoundPosts} />
 {/if}
 
 <!-- Services Section -->
 {#if data.servicesPosts && data.servicesPosts.length > 0}
-	<Services services={data.servicesPosts} />
+	<Services data={data.servicesPosts} />
 {/if}
 
 <style>

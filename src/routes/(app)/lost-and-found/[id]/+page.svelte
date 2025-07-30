@@ -7,16 +7,14 @@
 	let formMessage = $state('');
 	let isSubmitting = $state(false);
 
-	// Initialize form data with current post data
+	// Initialize form data with current post data - updated field names
 	let editFormData = $state({
-		item_name: data.post?.item_name || '',
+		title: data.post?.title || '',
 		description: data.post?.description || '',
-		type: data.post?.type || '',
-		date_lost_found: data.post?.date_lost_found
-			? new Date(data.post.date_lost_found).toISOString().split('T')[0]
-			: '',
-		location_lost_found: data.post?.location_lost_found || '',
-		contact_info: data.post?.contact_info || '',
+		category: data.post?.category || 'Lost',
+		date: data.post?.date ? new Date(data.post.date).toISOString().split('T')[0] : '',
+		location: data.post?.location || '',
+		contact: data.post?.contact || '',
 		image_url: data.post?.image_url || '',
 	});
 
@@ -59,22 +57,19 @@
 
 <div class="post-detail-container">
 	{#if data.post}
-		<h1>{data.post.item_name} ({data.post.type})</h1>
+		<h1>{data.post.title} ({data.post.category})</h1>
 		{#if data.post.image_url}
-			<img
-				src={data.post.image_url}
-				alt={data.post.item_name}
-				class="post-detail-image" />
+			<img src={data.post.image_url} alt={data.post.title} class="post-detail-image" />
 		{/if}
 		<p>{data.post.description}</p>
 		<p class="post-detail-meta">
 			<strong>Date Lost/Found:</strong>
-			{new Date(data.post.date_lost_found).toLocaleDateString()}
+			{new Date(data.post.date).toLocaleDateString()}
 		</p>
-		{#if data.post.location_lost_found}
-			<p><strong>Location:</strong> {data.post.location_lost_found}</p>
+		{#if data.post.location}
+			<p><strong>Location:</strong> {data.post.location}</p>
 		{/if}
-		<p><strong>Contact:</strong> {data.post.contact_info}</p>
+		<p><strong>Contact:</strong> {data.post.contact}</p>
 		<p class="post-detail-date">
 			Posted: {new Date(data.post.created_at).toLocaleDateString()}
 		</p>
@@ -96,12 +91,12 @@
 					onsubmit={handleUpdateSubmit}>
 					<h3>Edit Lost & Found Post</h3>
 
-					<label for="item_name">Item Name:</label>
+					<label for="title">Title:</label>
 					<input
 						type="text"
-						id="item_name"
-						name="item_name"
-						bind:value={editFormData.item_name}
+						id="title"
+						name="title"
+						bind:value={editFormData.title}
 						required
 						disabled={isSubmitting} />
 
@@ -113,40 +108,40 @@
 						required
 						disabled={isSubmitting}></textarea>
 
-					<label for="type">Type:</label>
+					<label for="category">Category:</label>
 					<select
-						id="type"
-						name="type"
-						bind:value={editFormData.type}
+						id="category"
+						name="category"
+						bind:value={editFormData.category}
 						required
 						disabled={isSubmitting}>
-						<option value="lost">Lost</option>
-						<option value="found">Found</option>
+						<option value="Lost">Lost</option>
+						<option value="Found">Found</option>
 					</select>
 
-					<label for="date_lost_found">Date Lost/Found:</label>
+					<label for="date">Date Lost/Found:</label>
 					<input
 						type="date"
-						id="date_lost_found"
-						name="date_lost_found"
-						bind:value={editFormData.date_lost_found}
+						id="date"
+						name="date"
+						bind:value={editFormData.date}
 						required
 						disabled={isSubmitting} />
 
-					<label for="location_lost_found">Location:</label>
+					<label for="location">Location:</label>
 					<input
 						type="text"
-						id="location_lost_found"
-						name="location_lost_found"
-						bind:value={editFormData.location_lost_found}
+						id="location"
+						name="location"
+						bind:value={editFormData.location}
 						disabled={isSubmitting} />
 
-					<label for="contact_info">Contact Info:</label>
+					<label for="contact">Contact Info:</label>
 					<input
 						type="text"
-						id="contact_info"
-						name="contact_info"
-						bind:value={editFormData.contact_info}
+						id="contact"
+						name="contact"
+						bind:value={editFormData.contact}
 						required
 						disabled={isSubmitting} />
 

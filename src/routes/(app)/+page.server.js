@@ -35,7 +35,7 @@ export async function load({ locals: { getSession }, fetch }) {
 		is_logged_in,
 		noticesPosts: noticesResult.notices || [],
 		eventsPosts: eventsResult.events || [],
-		lostAndFoundPosts: lostAndFoundResult.posts || [],
+		lostAndFoundPosts: lostAndFoundResult.lostandfound || [],
 		servicesPosts: servicesResult.services || []
 	};
 };

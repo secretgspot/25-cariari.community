@@ -1,6 +1,6 @@
 <script>
 	import Icon from '$lib/Icon.svelte';
-	let { services } = $props();
+	let { data } = $props();
 </script>
 
 <fieldset class="services-container">
@@ -8,7 +8,7 @@
 		><span>Newest Services</span> •
 		<a href="/services" class="view-all">View all</a></legend>
 	<div class="services-wrap">
-		{#each services as service}
+		{#each data as service}
 			<a href={`/services/${service.id}`}>
 				{#if service.image_url}
 					<img class="image" src={service.image_url} alt={service.title} />

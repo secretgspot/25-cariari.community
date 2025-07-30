@@ -1,6 +1,6 @@
 <script>
 	import { timeFrom } from '$lib/utils/time.js';
-	let { notices } = $props();
+	let { data } = $props();
 </script>
 
 <fieldset class="notices-container">
@@ -8,7 +8,7 @@
 		><span>Latest Notices</span> •
 		<a href="/notices" class="view-all">View all</a></legend>
 	<div class="notices-wrap">
-		{#each notices as notice}
+		{#each data as notice}
 			<a href={`/notices/${notice.id}`}>
 				<span class="urgency {notice.urgency.toLowerCase()}"></span>
 				<strong class="message">{notice.title}</strong>

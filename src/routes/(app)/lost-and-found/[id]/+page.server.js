@@ -11,7 +11,8 @@ export async function load({ params, locals: { getSession }, fetch }) {
 		throw error(response.status, result.message || 'Could not fetch lost and found post');
 	}
 
-	const post = await response.json();
+	const result = await response.json();
+	const post = result.lostandfound; // Extract the actual post data
 
 	return {
 		post,
@@ -27,12 +28,12 @@ export const actions = {
 		const formData = await request.formData();
 
 		const updateData = {
-			item_name: formData.get('item_name'),
+			title: formData.get('title'),
 			description: formData.get('description'),
-			type: formData.get('type'),
-			date_lost_found: formData.get('date_lost_found'),
-			location_lost_found: formData.get('location_lost_found'),
-			contact_info: formData.get('contact_info'),
+			category: formData.get('category'),
+			date: formData.get('date'),
+			location: formData.get('location'),
+			contact: formData.get('contact'),
 			image_url: formData.get('image_url') || null
 		};
 

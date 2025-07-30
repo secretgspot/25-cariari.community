@@ -1,38 +1,34 @@
 <script>
-	import { enhance } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
+	import AddLostFoundForm from './AddLostFoundForm.svelte';
+	import { formatText, stripMarkdown, truncateText } from '$lib/utils/markdown.js';
 
 	let { data } = $props();
 
+	console.log('/lost-and-found data: ', data);
+
 	let showForm = $state(false);
 	let formMessage = $state('');
-	let isSubmitting = $state(false);
 
 	function toggleForm() {
 		showForm = !showForm;
 		formMessage = ''; // Clear message when toggling
 	}
 
-	const submitForm = () => {
-		return async ({ result, update }) => {
-			if (result.type === 'success') {
-				formMessage = result.data.message;
-				showForm = false; // Hide form on success
-				// Optionally, clear form fields here if needed
-			} else if (result.type === 'error') {
-				formMessage = result.data.message;
-			} else if (result.type === 'failure') {
-				formMessage = result.data.message;
-			}
-			update();
-		};
-	};
+	async function handleLostAndFoundAdded(lostandfound) {
+		formMessage = 'Lost/Found added successfully!';
+		showForm = false; // Hide form after successful submission
+
+		// Refresh the data from the server
+		await invalidateAll();
+	}
 </script>
 
 <div class="lost-and-found-container">
 	<h1>Lost & Found</h1>
 
 	<button onclick={toggleForm} class="toggle-form-button">
-		{showForm ? 'Hide Form' : 'Add New Post'}
+		{showForm ? 'Hide Form' : 'Add New Lost/Found'}
 	</button>
 
 	{#if formMessage}
@@ -40,53 +36,26 @@
 	{/if}
 
 	{#if showForm}
-		<form method="POST" action="?/createPost" use:enhance={submitForm} class="post-form">
-			<label for="item_name">Item Name:</label>
-			<input type="text" id="item_name" name="item_name" required />
-
-			<label for="description">Description:</label>
-			<textarea id="description" name="description" required></textarea>
-
-			<label for="type">Type:</label>
-			<select id="type" name="type" required>
-				<option value="">Select Type</option>
-				<option value="lost">Lost</option>
-				<option value="found">Found</option>
-			</select>
-
-			<label for="date_lost_found">Date Lost/Found:</label>
-			<input type="date" id="date_lost_found" name="date_lost_found" required />
-
-			<label for="location_lost_found">Location Lost/Found (Optional):</label>
-			<input type="text" id="location_lost_found" name="location_lost_found" />
-
-			<label for="contact_info">Contact Info:</label>
-			<input type="text" id="contact_info" name="contact_info" required />
-
-			<label for="image_url">Image URL (Optional):</label>
-			<input type="url" id="image_url" name="image_url" />
-
-			<button type="submit">Submit Post</button>
-		</form>
+		<AddLostFoundForm onLostAndFoundAdded={handleLostAndFoundAdded} />
 	{/if}
 
-	<div class="posts-list">
-		{#if data.posts && data.posts.length > 0}
-			{#each data.posts as post}
+	<div class="lost-and-found-list">
+		{#if data.lostandfound && data.lostandfound.length > 0}
+			{#each data.lostandfound as post}
 				<a href="/lost-and-found/{post.id}" class="post-card-link">
 					<div class="post-card">
-						<h3>{post.item_name} ({post.type})</h3>
+						<h3>{post.title} ({post.category})</h3>
 						<p>{post.description}</p>
 						<p>
 							<strong>Date:</strong>
-							{new Date(post.date_lost_found).toLocaleDateString()}
+							{new Date(post.date).toLocaleDateString()}
 						</p>
-						{#if post.location_lost_found}
-							<p><strong>Location:</strong> {post.location_lost_found}</p>
+						{#if post.location}
+							<p><strong>Location:</strong> {post.location}</p>
 						{/if}
-						<p><strong>Contact:</strong> {post.contact_info}</p>
+						<p><strong>Contact:</strong> {post.contact}</p>
 						{#if post.image_url}
-							<img src={post.image_url} alt={post.item_name} class="post-image" />
+							<img src={post.image_url} alt={post.title} class="post-image" />
 						{/if}
 						<p class="post-date">
 							Posted: {new Date(post.created_at).toLocaleDateString()}
@@ -138,44 +107,7 @@
 		margin-bottom: 1.5em;
 	}
 
-	.post-form label {
-		display: block;
-		margin-bottom: 0.5em;
-		font-weight: bold;
-	}
-
-	.post-form input[type='text'],
-	.post-form input[type='date'],
-	.post-form input[type='url'],
-	.post-form textarea,
-	.post-form select {
-		width: 100%;
-		padding: 0.8em;
-		margin-bottom: 1em;
-		border: 1px solid #ccc;
-		border-radius: 4px;
-		box-sizing: border-box; /* Ensure padding doesn't increase width */
-	}
-
-	.post-form textarea {
-		min-height: 100px;
-		resize: vertical;
-	}
-
-	.post-form button[type='submit'] {
-		background-color: #28a745;
-		color: white;
-		padding: 0.8em 1.5em;
-		border: none;
-		border-radius: 5px;
-		cursor: pointer;
-	}
-
-	.post-form button[type='submit']:hover {
-		background-color: #218838;
-	}
-
-	.posts-list {
+	.lost-and-found-list {
 		margin-top: 2em;
 		display: grid;
 		gap: 1.5em;
