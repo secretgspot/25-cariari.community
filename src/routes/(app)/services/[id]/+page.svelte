@@ -66,95 +66,96 @@
 			<p class="service-date">
 				Posted on: {new Date(data.service.created_at).toLocaleDateString()}
 			</p>
+		</article>
 
-			<!-- Edit/Delete section for service owner -->
-			{#if data.isOwner}
-				<details class="service-actions">
-					<summary>Manage Service</summary>
+		<!-- Edit/Delete section for service owner -->
+		{#if data.isOwner}
+			<details class="service-actions">
+				<summary>Manage Service</summary>
 
-					{#if formMessage}
-						<p class="form-message">{formMessage}</p>
-					{/if}
+				{#if formMessage}
+					<p class="form-message">{formMessage}</p>
+				{/if}
 
-					<form
-						method="POST"
-						action="?/updateService"
-						use:enhance={submitUpdateForm}
-						class="edit-form"
-						onsubmit={handleUpdateSubmit}>
-						<h3>Edit Service</h3>
+				<form
+					method="POST"
+					action="?/updateService"
+					use:enhance={submitUpdateForm}
+					class="edit-form"
+					onsubmit={handleUpdateSubmit}>
+					<h3>Edit Service</h3>
 
-						<label for="title">Title:</label>
-						<input
-							type="text"
-							id="title"
-							name="title"
-							bind:value={editFormData.title}
-							required
-							disabled={isSubmitting} />
+					<label for="title">Title:</label>
+					<input
+						type="text"
+						id="title"
+						name="title"
+						bind:value={editFormData.title}
+						required
+						disabled={isSubmitting} />
 
-						<label for="description">Description (Markdown supported):</label>
-						<textarea
-							id="description"
-							name="description"
-							bind:value={editFormData.description}
-							required
-							disabled={isSubmitting}
-							placeholder="Use **bold**, *italic*, and [links](url) for formatting"></textarea>
+					<label for="description">Description (Markdown supported):</label>
+					<textarea
+						id="description"
+						name="description"
+						bind:value={editFormData.description}
+						required
+						disabled={isSubmitting}
+						placeholder="Use **bold**, *italic*, and [links](url) for formatting"></textarea>
 
-						<label for="category">Category:</label>
-						<select
-							id="category"
-							name="category"
-							bind:value={editFormData.category}
-							required
-							disabled={isSubmitting}>
-							<option value="offering">Offering</option>
-							<option value="wanted">Wanted</option>
-						</select>
+					<label for="category">Category:</label>
+					<select
+						id="category"
+						name="category"
+						bind:value={editFormData.category}
+						required
+						disabled={isSubmitting}>
+						<option value="offering">Offering</option>
+						<option value="wanted">Wanted</option>
+					</select>
 
-						<label for="image_url">Image URL (Optional):</label>
-						<input
-							type="url"
-							id="image_url"
-							name="image_url"
-							bind:value={editFormData.image_url}
-							disabled={isSubmitting} />
+					<label for="image_url">Image URL (Optional):</label>
+					<input
+						type="url"
+						id="image_url"
+						name="image_url"
+						bind:value={editFormData.image_url}
+						disabled={isSubmitting} />
 
-						<label for="start_date">Start Date:</label>
-						<input
-							type="date"
-							id="start_date"
-							name="start_date"
-							bind:value={editFormData.start_date}
-							disabled={isSubmitting} />
+					<label for="start_date">Start Date:</label>
+					<input
+						type="date"
+						id="start_date"
+						name="start_date"
+						bind:value={editFormData.start_date}
+						disabled={isSubmitting} />
 
-						<label for="end_date">End Date (Optional):</label>
-						<input
-							type="date"
-							id="end_date"
-							name="end_date"
-							bind:value={editFormData.end_date}
-							disabled={isSubmitting} />
+					<label for="end_date">End Date (Optional):</label>
+					<input
+						type="date"
+						id="end_date"
+						name="end_date"
+						bind:value={editFormData.end_date}
+						disabled={isSubmitting} />
 
-						<div class="form-actions">
-							<button type="submit" disabled={isSubmitting} class="update-btn">
-								{isSubmitting ? 'Updating...' : 'Update Service'}
-							</button>
-						</div>
-					</form>
-
-					<form
-						method="POST"
-						action="?/deleteService"
-						use:enhance={submitDeleteForm}
-						class="delete-form">
-						<button type="submit" class="delete-btn" onclick={handleDelete}>
-							Delete Service
+					<div class="form-actions">
+						<button type="submit" disabled={isSubmitting} class="update-btn">
+							{isSubmitting ? 'Updating...' : 'Update Service'}
 						</button>
-					</form>
-				</details>
-			{/if}
+					</div>
+				</form>
+
+				<form
+					method="POST"
+					action="?/deleteService"
+					use:enhance={submitDeleteForm}
+					class="delete-form">
+					<button type="submit" class="delete-btn" onclick={handleDelete}>
+						Delete Service
+					</button>
+				</form>
+			</details>
+		{/if}
 
 		<Comments parentId={data.service.id} type="service_id" userData={data} />
 	{:else}
