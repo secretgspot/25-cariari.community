@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit';
 
+// Your slugify function stays unchanged
 function slugify(text) {
 	const baseSlug = text
 		.toString()
@@ -12,7 +13,7 @@ function slugify(text) {
 		.replace(/-+$/, '');
 
 	// Append a short unique identifier to ensure uniqueness
-	const uniqueId = Math.random().toString(36).substring(2, 8); // 6 random alphanumeric characters
+	const uniqueId = Math.random().toString(36).substring(2, 8); // 6 random alphanumeric chars
 	return `${baseSlug}-${uniqueId}`;
 }
 
@@ -23,7 +24,7 @@ export async function GET({ url, request, locals: { supabase, getSession } }) {
 	if (!session.is_logged_in) {
 		const testUserId = request.headers.get('X-Test-User-ID');
 		if (testUserId) {
-			session = { user: { id: testUserId }, is_logged_in: true }; // Mock session for testing
+			session = { user: { id: testUserId }, is_logged_in: true };
 		}
 	}
 
@@ -32,17 +33,15 @@ export async function GET({ url, request, locals: { supabase, getSession } }) {
 	}
 
 	try {
-		// Get limit parameter from query string
 		const limit = url.searchParams.get('limit');
 
-		const query = supabase
+		let query = supabase
 			.from('events')
 			.select('*', { count: 'exact' })
 			.order('event_start_date', { ascending: false });
 
-		// Apply limit if provided
 		if (limit && !isNaN(parseInt(limit))) {
-			query.limit(parseInt(limit));
+			query = query.limit(parseInt(limit));
 		}
 
 		const { data: events, count, error: eventsError } = await query;
@@ -70,7 +69,7 @@ export async function POST({ request, locals: { supabase, getSession } }) {
 		}
 	}
 
-	if (!session.is_logged_in || !session.user) {
+	if (!session.is_logged_in || !session.user?.id) {
 		return json({ message: 'Unauthorized' }, { status: 401 });
 	}
 
@@ -100,7 +99,7 @@ export async function POST({ request, locals: { supabase, getSession } }) {
 			category: category || null,
 			slug,
 			is_published: true,
-			user_id: session.user.id,
+			user_id: session.user.id,  // Use verified user id here only
 		});
 
 		if (error) {

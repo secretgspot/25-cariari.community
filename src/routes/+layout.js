@@ -1,27 +1,19 @@
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
-import { createBrowserClient } from '@supabase/ssr';
-import { invalidate } from '$app/navigation';
+import { createClient } from '@supabase/supabase-js';  // <-- changed import
 
 /** @type {import('./$types').LayoutLoad} */
 export const load = async ({ fetch, data, depends }) => {
 	depends('supabase:auth');
 
-	const supabase = createBrowserClient(
+	const supabase = createClient(
 		PUBLIC_SUPABASE_URL,
 		PUBLIC_SUPABASE_ANON_KEY,
 		{
 			global: {
 				fetch,
 			},
-			cookies: {
-				get: (name) => data.cookies?.[name],
-				set: (name, value, options) => {
-					document.cookie = `${name}=${value}; Path=/; ${options?.maxAge ? `Max-Age=${options.maxAge};` : ''} ${options?.expires ? `Expires=${options.expires.toUTCString()};` : ''} ${options?.httpOnly ? 'HttpOnly;' : ''} ${options?.secure ? 'Secure;' : ''} ${options?.sameSite ? `SameSite=${options.sameSite};` : ''}`;
-				},
-				remove: (name, options) => {
-					document.cookie = `${name}=; Path=/; Max-Age=0; ${options?.httpOnly ? 'HttpOnly;' : ''} ${options?.secure ? 'Secure;' : ''} ${options?.sameSite ? `SameSite=${options.sameSite};` : ''}`;
-				},
-			},
+			// Remove the cookies handlers here:
+			// `createBrowserClient` had extra cookie handling that `createClient` doesn’t use in browser
 		}
 	);
 

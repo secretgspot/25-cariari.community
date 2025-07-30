@@ -3,29 +3,58 @@ import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/publi
 
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ event, resolve }) {
+	// Create Supabase client with latest cookie handling
 	event.locals.supabase = createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 		cookies: {
-			get: (name) => event.cookies.get(name),
-			set: (name, value, options) => {
-				event.cookies.set(name, value, { ...options, path: '/' });
-			},
-			remove: (name, options) => {
-				event.cookies.delete(name, { ...options, path: '/' });
+			getAll: () => event.cookies.getAll(),
+			setAll: (cookiesToSet) => {
+				cookiesToSet.forEach(({ name, value, options }) => {
+					event.cookies.set(name, value, { ...options, path: '/' });
+				});
 			},
 		},
 	});
 
-	/**
-	 * A convenience helper so that you can call supabase.auth.getUser() directly in your layouts and pages
-	 * Also checks if the user is logged in and if they are an admin
-	 */
-			event.locals.getSession = async () => {
-		const { data: { session } } = await event.locals.supabase.auth.getSession();
-		const { data: { user } } = await event.locals.supabase.auth.getUser(); // Use getUser() for authenticity
-		const is_logged_in = !!user;
-		const is_admin = user?.app_metadata?.claims_admin || false;
+	// Securely get authenticated session and verified user
+	event.locals.getSession = async () => {
+		// First, get the verified user by contacting Supabase Auth server
+		const { data: { user }, error: userError } = await event.locals.supabase.auth.getUser();
 
-		return { session, user, is_logged_in, is_admin, cookies: event.cookies.getAll() };
+		if (userError || !user) {
+			// No valid user found, treat as logged out
+			return {
+				session: null,
+				user: null,
+				is_logged_in: false,
+				is_admin: false,
+				cookies: event.cookies.getAll(),
+			};
+		}
+
+		// Optionally get the session metadata (do NOT trust session.user)
+		const { data: { session } } = await event.locals.supabase.auth.getSession();
+
+		// Confirm session exists
+		if (!session) {
+			return {
+				session: null,
+				user: null,
+				is_logged_in: false,
+				is_admin: false,
+				cookies: event.cookies.getAll(),
+			};
+		}
+
+		// Check admin claim or other custom claims
+		const is_admin = user.app_metadata?.claims_admin || false;
+
+		return {
+			session,      // safe to return for expiry or tokens, but do NOT use session.user
+			user,         // trusted verified user object for auth & authorization
+			is_logged_in: true,
+			is_admin,
+			cookies: event.cookies.getAll(),
+		};
 	};
 
 	return resolve(event, {

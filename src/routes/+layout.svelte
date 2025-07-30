@@ -6,38 +6,36 @@
 
 	let { children, data } = $props();
 
-	let authSubscription = null;
-
+	// Set up auth state listener with proper cleanup
 	$effect(() => {
-		if (data.supabase && !authSubscription) {
-			const {
-				data: { subscription },
-			} = data.supabase.auth.onAuthStateChange((event, session) => {
-				if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
-					invalidate('supabase:auth');
-				}
-			});
-			authSubscription = subscription;
+		// Guard clause - exit early if supabase isn't available
+		if (!data.supabase) return;
 
-			// Cleanup function for $effect
-			return () => {
-				if (authSubscription) {
-					authSubscription.unsubscribe();
-					authSubscription = null;
-				}
-			};
-		}
+		const {
+			data: { subscription },
+		} = data.supabase.auth.onAuthStateChange((event, session) => {
+			// Only invalidate on auth state changes that matter for the app
+			if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+				invalidate('supabase:auth');
+			}
+		});
+
+		// Return cleanup function
+		return () => {
+			subscription?.unsubscribe();
+		};
 	});
 </script>
 
 <Nav {data} />
 
 <main>
-	<!-- TODO: check why !navigating.complete and not navigating.complete -->
-	{#if !navigating.complete}
-		{@render children?.()}
+	{#if navigating.complete}
+		<div class="loading-indicator" aria-live="polite">
+			<p>Loading...</p>
+		</div>
 	{:else}
-		<p>Loading...</p>
+		{@render children?.()}
 	{/if}
 </main>
 
@@ -47,5 +45,12 @@
 		margin-block: var(--size-8);
 		gap: var(--size-8);
 		margin-inline: var(--size-3);
+	}
+
+	.loading-indicator {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 200px;
 	}
 </style>
