@@ -1,8 +1,11 @@
 <script>
+	import { page } from '$app/state';
 	import Logo from './Logo.svelte';
 	import Icon from './Icon.svelte';
 
 	let { data } = $props();
+	console.log('Nav data: ', data);
+	console.log('Nav page data: ', page.data);
 </script>
 
 <header class="site-header">
@@ -34,6 +37,7 @@
 
 			<!-- User Section -->
 			<a href="/profile" class="profile-link">
+				{#if data.is_admin}<span title="admin">🔥</span>{/if}
 				{#if data.profile?.avatar_url}
 					<img
 						src={data.profile.avatar_url}

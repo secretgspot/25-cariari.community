@@ -1,4 +1,5 @@
 <script>
+	import { navigating, page } from '$app/state';
 	import { invalidate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import Nav from '$lib/Nav.svelte';
@@ -6,22 +7,42 @@
 
 	let { children, data } = $props();
 
-	onMount(() => {
-		// console.log('layout.svelte: onMount fired.');
+	// console.log('🍖 page:', data);
+
+	let { is_logged_in, is_admin, supabase } = $state(data);
+	let loading = $state(true); // Add a local loading state
+
+	onMount(async () => {
+		const {
+			data: { user },
+			error,
+		} = await data.supabase.auth.getUser();
+		if (!error && user) {
+			is_logged_in = true;
+			is_admin = user?.app_metadata?.claims_admin || false;
+		}
+		loading = false;
+
 		const {
 			data: { subscription },
-		} = data.supabase.auth.onAuthStateChange((event, session) => {
-			// console.log('layout.svelte: Auth state changed:', event, session);
-			// Only invalidate; the load function will provide the updated data.
-			if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
-				// Invalidate on both sign in and sign out
-				// console.log('layout.svelte: Invalidating supabase:auth due to state change.');
-				invalidate('supabase:auth');
+		} = data.supabase.auth.onAuthStateChange(async (event) => {
+			if (event === 'SIGNED_IN') {
+				const {
+					data: { user },
+					error,
+				} = await data.supabase.auth.getUser();
+				if (!error && user) {
+					is_logged_in = true;
+					is_admin = user?.app_metadata?.claims_admin || false;
+				}
+			} else if (event === 'SIGNED_OUT') {
+				is_logged_in = false;
+				is_admin = false;
 			}
+			invalidate('supabase:auth');
 		});
 
 		return () => {
-			// console.log('layout.svelte: Unsubscribing from auth state changes.');
 			subscription.unsubscribe();
 		};
 	});
@@ -30,7 +51,11 @@
 <Nav {data} />
 
 <main>
-	{@render children?.()}
+	{#if navigating.complete || loading}
+		<p>Loading...</p>
+	{:else}
+		{@render children?.()}
+	{/if}
 </main>
 
 <style>
