@@ -29,7 +29,7 @@
             </div>
           </a>
           {#if deleteHandler}
-            <button onclick={() => deleteHandler(item.id)} class="delete-button">Delete</button>
+            <button onclick={() => deleteHandler(item.id, type)} class="delete-button">Delete</button>
           {/if}
         </li>
       {/each}

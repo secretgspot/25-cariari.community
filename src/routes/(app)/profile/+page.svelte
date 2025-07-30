@@ -45,6 +45,26 @@
     };
   };
 
+  const deleteItem = async (id, type) => {
+    console.log(`Attempting to delete ${type}: ${id}`);
+    if (!confirm(`Are you sure you want to delete this ${type}?`)) return;
+
+    try {
+      const response = await fetch(`/api/${type}s/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(errData.message || `Failed to delete ${type}`);
+      }
+      await invalidateAll();
+    } catch (e) {
+      console.error(`Error deleting ${type}:`, e);
+      formMessage = `Error deleting ${type}: ${e.message}`;
+    }
+  };
+
   const deleteComment = async (commentId) => {
     console.log(`Attempting to delete comment: ${commentId}`);
     if (!confirm('Are you sure you want to delete this comment?')) return;
@@ -100,6 +120,7 @@
       itemKey="item_name"
       linkPrefix="/lost-and-found"
       type="lost-and-found"
+      deleteHandler={deleteItem}
     >
       <svelte:fragment slot="additionalInfo" let:item>
         - {item.description} ({item.type})
@@ -112,6 +133,7 @@
       itemKey="title"
       linkPrefix="/events"
       type="event"
+      deleteHandler={deleteItem}
     >
       <svelte:fragment slot="additionalInfo" let:item>
         - {item.description} (Date: {new Date(item.event_start_date).toLocaleDateString()} {new Date(item.event_start_date).toLocaleTimeString()}{#if item.event_end_date} - {new Date(item.event_end_date).toLocaleDateString()} {new Date(item.event_end_date).toLocaleTimeString()}{/if})
@@ -124,6 +146,7 @@
       itemKey="title"
       linkPrefix="/notices"
       type="notice"
+      deleteHandler={deleteItem}
     >
       <svelte:fragment slot="additionalInfo" let:item>
         - {item.content} (Posted: {new Date(item.created_at).toLocaleDateString()})
@@ -136,6 +159,7 @@
       itemKey="title"
       linkPrefix="/services"
       type="service"
+      deleteHandler={deleteItem}
     >
       <svelte:fragment slot="additionalInfo" let:item>
         - {item.description} ({item.category})
