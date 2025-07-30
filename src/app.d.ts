@@ -4,22 +4,16 @@
 // for information about these interfaces
 // and what to do when importing types
 declare namespace App {
-	interface Supabase {
-		Database: any; // TODO: Replace with actual database types
-		SchemaName: 'public';
+	interface Locals {
+		supabase: import('@supabase/supabase-js').SupabaseClient;
+		getSession(): Promise<{ session: import('@supabase/supabase-js').Session | null; user: import('@supabase/supabase-js').User | null; is_logged_in: boolean; is_admin: boolean }>;
 	}
 
-	// interface Locals {
-	// 	currentAdmin: {
-	// 		id: string;
-	// 		email: string;
-	// 	}
-	// }
-
 	interface PageData {
+		session: import('@supabase/supabase-js').Session | null;
 		user: import('@supabase/supabase-js').User | null;
+		is_logged_in: boolean;
 		is_admin: boolean;
-		cookies?: any[];
 	}
 	// interface Error {}
 	// interface Platform {}

@@ -1,60 +1,43 @@
 <script>
-	import { navigating, page } from '$app/state';
+	import { navigating } from '$app/state';
 	import { invalidate } from '$app/navigation';
-	import { onMount } from 'svelte';
 	import Nav from '$lib/Nav.svelte';
 	import 'open-props/style';
 
 	let { children, data } = $props();
 
-	// console.log('🍖 page:', data);
+	let authSubscription = null;
 
-	let { is_logged_in, is_admin, supabase } = $state(data);
-	let loading = $state(true); // Add a local loading state
-
-	onMount(async () => {
-		const {
-			data: { user },
-			error,
-		} = await data.supabase.auth.getUser();
-		if (!error && user) {
-			is_logged_in = true;
-			is_admin = user?.app_metadata?.claims_admin || false;
-		}
-		loading = false;
-
-		const {
-			data: { subscription },
-		} = data.supabase.auth.onAuthStateChange(async (event) => {
-			if (event === 'SIGNED_IN') {
-				const {
-					data: { user },
-					error,
-				} = await data.supabase.auth.getUser();
-				if (!error && user) {
-					is_logged_in = true;
-					is_admin = user?.app_metadata?.claims_admin || false;
+	$effect(() => {
+		if (data.supabase && !authSubscription) {
+			const {
+				data: { subscription },
+			} = data.supabase.auth.onAuthStateChange((event, session) => {
+				if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+					invalidate('supabase:auth');
 				}
-			} else if (event === 'SIGNED_OUT') {
-				is_logged_in = false;
-				is_admin = false;
-			}
-			invalidate('supabase:auth');
-		});
+			});
+			authSubscription = subscription;
 
-		return () => {
-			subscription.unsubscribe();
-		};
+			// Cleanup function for $effect
+			return () => {
+				if (authSubscription) {
+					authSubscription.unsubscribe();
+					authSubscription = null;
+				}
+			};
+		}
 	});
 </script>
 
 <Nav {data} />
 
 <main>
-	{#if navigating.complete || loading}
-		<p>Loading...</p>
-	{:else}
+	<!-- TODO: check why !navigating.complete and not navigating.complete -->
+	{#if !navigating.complete}
 		{@render children?.()}
+	{:else}
+		<p>Loading...</p>
 	{/if}
 </main>
 
