@@ -141,3 +141,78 @@ CREATE POLICY "Users can manage their own notices" ON notices
 
 -- Create an index on the user_id for better performance
 CREATE INDEX idx_notices_user_id ON notices(user_id);
+
+
+
+--------------------------------------------
+
+-- Create comments table
+CREATE TABLE comments (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    content TEXT NOT NULL,
+
+    -- Foreign keys to different parent entities (only one should be set)
+    notice_id UUID REFERENCES notices(id) ON DELETE CASCADE,
+    event_id UUID REFERENCES events(id) ON DELETE CASCADE,
+    lost_and_found_id UUID REFERENCES lost_and_found(id) ON DELETE CASCADE,
+    service_id UUID REFERENCES services(id) ON DELETE CASCADE,
+
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+
+    -- Constraint to ensure exactly one parent is set
+    CONSTRAINT comments_single_parent_check CHECK (
+        (notice_id IS NOT NULL)::int +
+        (event_id IS NOT NULL)::int +
+        (lost_and_found_id IS NOT NULL)::int +
+        (service_id IS NOT NULL)::int = 1
+    )
+);
+
+-- Create indexes for better query performance
+CREATE INDEX idx_comments_notice_id ON comments(notice_id) WHERE notice_id IS NOT NULL;
+CREATE INDEX idx_comments_event_id ON comments(event_id) WHERE event_id IS NOT NULL;
+CREATE INDEX idx_comments_lost_and_found_id ON comments(lost_and_found_id) WHERE lost_and_found_id IS NOT NULL;
+CREATE INDEX idx_comments_service_id ON comments(service_id) WHERE service_id IS NOT NULL;
+CREATE INDEX idx_comments_user_id ON comments(user_id);
+CREATE INDEX idx_comments_created_at ON comments(created_at);
+
+-- Create trigger to automatically update updated_at timestamp
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = NOW();
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER update_comments_updated_at
+    BEFORE UPDATE ON comments
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+
+-- Enable Row Level Security
+ALTER TABLE comments ENABLE ROW LEVEL SECURITY;
+
+-- RLS Policies
+-- Allow users to read all comments
+CREATE POLICY "Comments are viewable by everyone"
+    ON comments FOR SELECT
+    USING (true);
+
+-- Allow authenticated users to insert their own comments
+CREATE POLICY "Users can insert their own comments"
+    ON comments FOR INSERT
+    WITH CHECK (auth.uid() = user_id);
+
+-- Allow users to update their own comments
+CREATE POLICY "Users can update their own comments"
+    ON comments FOR UPDATE
+    USING (auth.uid() = user_id)
+    WITH CHECK (auth.uid() = user_id);
+
+-- Allow users to delete their own comments
+CREATE POLICY "Users can delete their own comments"
+    ON comments FOR DELETE
+    USING (auth.uid() = user_id);

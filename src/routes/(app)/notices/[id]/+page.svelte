@@ -12,8 +12,7 @@
 	let editFormData = $state({
 		title: data.notice?.title || '',
 		description: data.notice?.description || '',
-		image_url: data.notice?.image_url || '',
-		category: data.notice?.category || '',
+		urgency: data.notice?.urgency || 'Default',
 		start_date: data.notice?.start_date
 			? new Date(data.notice.start_date).toISOString().slice(0, 10)
 			: '',
@@ -22,20 +21,7 @@
 			: '',
 	});
 
-	const submitUpdateForm = () => {
-		return async ({ result, update }) => {
-			isSubmitting = false;
-
-			if (result.type === 'success') {
-				formMessage = result.data.message;
-			} else if (result.type === 'error') {
-				formMessage = result.data.message || 'An error occurred';
-			} else if (result.type === 'failure') {
-				formMessage = result.data?.message || 'Update failed';
-			}
-			await update();
-		};
-	};
+	const urgencyOptions = ['Default', 'Low', 'Medium', 'High'];
 
 	const submitDeleteForm = () => {
 		return async ({ result }) => {
@@ -47,9 +33,37 @@
 		};
 	};
 
-	function handleUpdateSubmit() {
+	async function handleUpdateSubmit(event) {
+		event.preventDefault(); // Manually prevent default form submission
 		isSubmitting = true;
 		formMessage = '';
+
+		
+
+		try {
+			const response = await fetch(`/api/notices/${data.notice.id}`, {
+				method: 'PATCH',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(editFormData),
+			});
+
+			const result = await response.json();
+
+			if (!response.ok) {
+				throw new Error(result.message || 'Failed to update notice.');
+			}
+
+			formMessage = result.message;
+			// Update the data object to reflect changes immediately
+			data.notice = { ...data.notice, ...editFormData };
+		} catch (e) {
+			formMessage = e.message;
+			console.error('Error updating notice:', e);
+		} finally {
+			isSubmitting = false;
+		}
 	}
 
 	function handleDelete() {
@@ -89,11 +103,8 @@
 				{/if}
 
 				<form
-					method="POST"
-					action="?/updateNotice"
-					use:enhance={submitUpdateForm}
 					class="edit-form"
-					onsubmit={handleUpdateSubmit}>
+					onsbmit={handleUpdateSubmit}>
 					<h3>Edit Notice</h3>
 
 					<label for="title">Title:</label>
@@ -115,21 +126,17 @@
 						placeholder="Use **bold**, *italic*, and [links](url) for formatting"
 					></textarea>
 
-					<label for="image_url">Image URL (Optional):</label>
-					<input
-						type="url"
-						id="image_url"
-						name="image_url"
-						bind:value={editFormData.image_url}
-						disabled={isSubmitting} />
-
-					<label for="category">Category (Optional):</label>
-					<input
-						type="text"
-						id="category"
-						name="category"
-						bind:value={editFormData.category}
-						disabled={isSubmitting} />
+					<label for="urgency">Urgency:</label>
+					<select
+						id="urgency"
+						name="urgency"
+						bind:value={editFormData.urgency}
+						disabled={isSubmitting}
+					>
+						{#each urgencyOptions as option}
+							<option value={option}>{option}</option>
+						{/each}
+					</select>
 
 					<label for="start_date">Start Date:</label>
 					<input

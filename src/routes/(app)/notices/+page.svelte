@@ -1,32 +1,23 @@
 <script>
-	import { enhance } from '$app/forms';
+	import AddNoticeForm from './AddNoticeForm.svelte';
 	import { formatText, stripMarkdown, truncateText } from '$lib/utils/markdown.js';
 
 	let { data } = $props();
 
 	let showForm = $state(false);
 	let formMessage = $state('');
-	let isSubmitting = $state(false);
+	let noticesList = $state(data.notices); // Local state for reactivity
 
 	function toggleForm() {
 		showForm = !showForm;
 		formMessage = ''; // Clear message when toggling
 	}
 
-	const submitForm = () => {
-		return async ({ result, update }) => {
-			if (result.type === 'success') {
-				formMessage = result.data.message;
-				showForm = false; // Hide form on success
-				// Optionally, clear form fields here if needed
-			} else if (result.type === 'error') {
-				formMessage = result.data.message;
-			} else if (result.type === 'failure') {
-				formMessage = result.data.message;
-			}
-			update();
-		};
-	};
+	function handleNoticeAdded(event) {
+		noticesList = [...noticesList, event.detail];
+		formMessage = 'Notice added successfully!';
+		showForm = false; // Hide form after successful submission
+	}
 </script>
 
 <div class="notices-container">
@@ -41,57 +32,12 @@
 	{/if}
 
 	{#if showForm}
-		<form
-			method="POST"
-			action="?/createNotice"
-			use:enhance={submitForm}
-			class="notice-form">
-			<label for="title">Title:</label>
-			<input type="text" id="title" name="title" required />
-
-			<label for="description">Description (Markdown supported):</label>
-			<textarea
-				id="description"
-				name="description"
-				required
-				disabled={isSubmitting}
-				placeholder="Use **bold**, *italic*, and [links](url) for formatting"></textarea>
-
-			<label for="category">Category (Optional):</label>
-			<input type="text" id="category" name="category" />
-
-			<label for="notice_start_date">Start Date:</label>
-			<input
-				type="datetime-local"
-				id="notice_start_date"
-				name="notice_start_date"
-				required
-				disabled={isSubmitting} />
-
-			<label for="notice_end_date">End Date (Optional):</label>
-			<input
-				type="datetime-local"
-				id="notice_end_date"
-				name="notice_end_date"
-				disabled={isSubmitting} />
-
-			<label for="location">Location (Optional):</label>
-			<input
-				type="text"
-				id="location"
-				name="location"
-				disabled={isSubmitting}
-				placeholder="Where is this event taking place?" />
-
-			<button type="submit" disabled={isSubmitting} class="submit-btn">
-				{isSubmitting ? 'Creating Notice...' : 'Create Notice'}
-			</button>
-		</form>
+		<AddNoticeForm on:noticeAdded={handleNoticeAdded} />
 	{/if}
 
 	<div class="notices-list">
-		{#if data.notices && data.notices.length > 0}
-			{#each data.notices as notice}
+		{#if noticesList && noticesList.length > 0}
+			{#each noticesList as notice}
 				<a href="/notices/{notice.id}" class="notice-card-link">
 					<div class="notice-card">
 						<h3>{notice.title}</h3>

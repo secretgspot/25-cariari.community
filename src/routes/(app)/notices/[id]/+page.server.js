@@ -22,34 +22,7 @@ export async function load({ params, locals: { getSession }, fetch }) {
 }
 
 export const actions = {
-  updateNotice: async ({ request, params, fetch }) => {
-    const { id } = params;
-    const formData = await request.formData();
-    
-    const updateData = {
-      title: formData.get('title'),
-      content: formData.get('content'),
-      image_url: formData.get('image_url') || null,
-      category: formData.get('category') || null,
-      tags: formData.get('tags') ? formData.get('tags').split(',').map(tag => tag.trim()).filter(tag => tag.length > 0) : []
-    };
-
-    const response = await fetch(`/api/notices/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(updateData)
-    });
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      return fail(response.status, result);
-    }
-
-    return { success: true, message: result.message };
-  },
+  
 
   deleteNotice: async ({ params, fetch }) => {
     const { id } = params;

@@ -58,19 +58,14 @@ export async function POST({ request, locals: { supabase, getSession } }) {
 		return json({ message: 'Unauthorized' }, { status: 401 });
 	}
 
-	const formData = await request.formData();
-	const title = formData.get('title');
-	const description = formData.get('description');
-	const urgency = formData.get('urgency');
-	const start_date = formData.get('notice_start_date');
-	const end_date = formData.get('notice_end_date');
+	const { title, description, urgency, start_date, end_date } = await request.json();
 
 	if (!title || !description) {
 		return json({ message: 'Title and description are required.' }, { status: 400 });
 	}
 
 	try {
-		const { error } = await supabase.from('notices').insert({
+		const { data: newNotice, error } = await supabase.from('notices').insert({
 			title,
 			description,
 			urgency,
@@ -78,14 +73,14 @@ export async function POST({ request, locals: { supabase, getSession } }) {
 			user_id: user.id,
 			start_date,
 			end_date
-		});
+		}).select().single();
 
 		if (error) {
 			console.error('Error creating notice:', error);
 			return json({ message: 'Failed to create notice: ' + error.message }, { status: 500 });
 		}
 
-		return json({ message: 'Notice created successfully!' }, { status: 201 });
+		return json({ message: 'Notice created successfully!', notice: newNotice }, { status: 201 });
 	} catch (err) {
 		console.error('Unexpected error creating notice:', err);
 		return json({ message: 'An unexpected error occurred while creating the notice.' }, { status: 500 });

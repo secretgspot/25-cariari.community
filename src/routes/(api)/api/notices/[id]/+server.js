@@ -63,6 +63,7 @@ export async function PATCH({ request, params, locals: { supabase, getSession } 
 	}
 
 	const updates = await request.json();
+	
 
 	try {
 		// Verify that the user is the author of the notice
@@ -84,7 +85,14 @@ export async function PATCH({ request, params, locals: { supabase, getSession } 
 		// Perform the update
 		const { data: updatedNotice, error: updateError } = await supabase
 			.from('notices')
-			.update({ ...updates, updated_at: new Date().toISOString() })
+			.update({
+				title,
+				description,
+				urgency,
+				start_date,
+				end_date,
+				updated_at: new Date().toISOString()
+			})
 			.eq('id', id)
 			.select()
 			.single();
