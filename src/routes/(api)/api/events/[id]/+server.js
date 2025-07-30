@@ -18,31 +18,11 @@ export async function GET({ params, locals: { supabase, getSession } }) {
   const { id } = params;
 
   try {
-    // Try to find by UUID first, then by slug
-    let event, eventError;
-    
-    // Check if id is a UUID (has dashes) or a slug
-    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
-    
-    if (isUUID) {
-      // Find by UUID
-      const result = await supabase
-        .from('events')
-        .select('*')
-        .eq('id', id)
-        .single();
-      event = result.data;
-      eventError = result.error;
-    } else {
-      // Find by slug
-      const result = await supabase
-        .from('events')
-        .select('*')
-        .eq('slug', id)
-        .single();
-      event = result.data;
-      eventError = result.error;
-    }
+    const { data: event, error: eventError } = await supabase
+      .from('events')
+      .select('*')
+      .eq('id', id)
+      .single();
 
     if (eventError || !event) {
       console.error('Error fetching event:', eventError?.message, eventError?.details);
@@ -86,13 +66,10 @@ export async function PATCH({ request, params, locals: { supabase, getSession } 
 
   try {
     // Verify that the user is the author of the event
-    // Check if id is a UUID or slug
-    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
-    
     const { data: event, error: fetchError } = await supabase
       .from('events')
       .select('user_id, id')
-      .eq(isUUID ? 'id' : 'slug', id)
+      .eq('id', id)
       .single();
 
     if (fetchError || !event) {
@@ -142,13 +119,10 @@ export async function DELETE({ params, locals: { supabase, getSession } }) {
 
   try {
     // Verify that the user is the author of the event
-    // Check if id is a UUID or slug
-    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
-    
     const { data: event, error: fetchError } = await supabase
       .from('events')
       .select('user_id, id')
-      .eq(isUUID ? 'id' : 'slug', id)
+      .eq('id', id)
       .single();
 
     if (fetchError || !event) {

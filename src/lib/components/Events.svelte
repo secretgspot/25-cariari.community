@@ -12,7 +12,7 @@
 		<div class="slides">
 			{#each data as event}
 				<div class="slide">
-					<a href={`/events/${event.slug}`} class="event-link">
+					<a href={`/events/${event.id}`} class="event-link">
 						{#if event.image_url}
 							<img src={event.image_url} alt={event.title} />
 						{:else}

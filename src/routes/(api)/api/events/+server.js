@@ -88,8 +88,6 @@ export async function POST({ request, locals: { supabase, getSession } }) {
 		return json({ message: 'Title, Description, and Start Date are required.' }, { status: 400 });
 	}
 
-	const slug = slugify(title);
-
 	try {
 		const { error } = await supabase.from('events').insert({
 			title,
@@ -99,7 +97,6 @@ export async function POST({ request, locals: { supabase, getSession } }) {
 			location: location || null,
 			image_url: image_url || null,
 			category: category || null,
-			slug,
 			is_published: true,
 			user_id: user.id,
 		});

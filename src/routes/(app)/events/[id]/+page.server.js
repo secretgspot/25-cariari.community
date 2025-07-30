@@ -3,7 +3,7 @@ import { error, fail, redirect } from '@sveltejs/kit';
 
 export async function load({ params, locals: { getSession }, fetch }) {
   const { user, is_logged_in } = await getSession();
-  const eventId = params.slug; // Use params.slug as the event ID
+  const eventId = params.id; // Use params.id as the event ID
   const response = await fetch(`/api/events/${eventId}`);
 
   if (!response.ok) {
@@ -23,7 +23,7 @@ export async function load({ params, locals: { getSession }, fetch }) {
 
 export const actions = {
   updateEvent: async ({ request, params, fetch }) => {
-    const eventId = params.slug;
+    const eventId = params.id;
     const formData = await request.formData();
     
     const updateData = {
@@ -54,7 +54,7 @@ export const actions = {
   },
 
   deleteEvent: async ({ params, fetch }) => {
-    const eventId = params.slug;
+    const eventId = params.id;
     const response = await fetch(`/api/events/${eventId}`, {
       method: 'DELETE'
     });

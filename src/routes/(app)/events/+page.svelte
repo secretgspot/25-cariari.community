@@ -40,7 +40,7 @@
 	<div class="events-list">
 		{#if data.events && data.events.length > 0}
 			{#each data.events as event}
-				<a href="/events/{event.slug}" class="event-card-link">
+				<a href="/events/{event.id}" class="event-card-link">
 					<div class="event-card">
 						<h3>{event.title}</h3>
 						{#if event.image_url}
