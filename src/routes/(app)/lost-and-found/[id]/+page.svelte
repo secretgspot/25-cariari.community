@@ -1,6 +1,7 @@
 <script>
 	import Comments from '$lib/Comments.svelte';
 	import { enhance } from '$app/forms';
+	import { goto } from '$app/navigation';
 
 	let { data } = $props();
 	let formMessage = $state('');
@@ -36,9 +37,10 @@
 
 	const submitDeleteForm = () => {
 		return async ({ result }) => {
-			// Delete form handles redirect automatically if successful
 			if (result.type === 'failure') {
 				formMessage = result.data?.message || 'Delete failed';
+			} else if (result.type === 'success') {
+				// Redirect is handled by the server action on success
 			}
 		};
 	};

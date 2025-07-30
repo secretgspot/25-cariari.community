@@ -5,32 +5,51 @@
 	import { goto } from '$app/navigation';
 
 	let { data } = $props();
+	let formMessage = $state('');
+	let isSubmitting = $state(false);
 
-	async function updateNotice(event) {
-		const formData = new FormData(event.target);
+	// Initialize form data with current notice data
+	let editFormData = $state({
+		title: data.notice?.title || '',
+		description: data.notice?.description || '',
+		image_url: data.notice?.image_url || '',
+		category: data.notice?.category || '',
+		start_date: data.notice?.start_date ? new Date(data.notice.start_date).toISOString().slice(0, 10) : '',
+		end_date: data.notice?.end_date ? new Date(data.notice.end_date).toISOString().slice(0, 10) : '',
+	});
 
-		const response = await fetch(event.target.action, {
-			method: 'POST',
-			body: formData,
-		});
+	const submitUpdateForm = () => {
+		return async ({ result, update }) => {
+			isSubmitting = false;
 
-		if (response.ok) {
-			// Refresh the page to show updated content
-			window.location.reload();
-		}
+			if (result.type === 'success') {
+				formMessage = result.data.message;
+			} else if (result.type === 'error') {
+				formMessage = result.data.message || 'An error occurred';
+			} else if (result.type === 'failure') {
+				formMessage = result.data?.message || 'Update failed';
+			}
+			await update();
+		};
+	};
+
+	const submitDeleteForm = () => {
+		return async ({ result }) => {
+			if (result.type === 'failure') {
+				formMessage = result.data?.message || 'Delete failed';
+			} else if (result.type === 'success') {
+				// Redirect is handled by the server action on success
+			}
+		};
+	};
+
+	function handleUpdateSubmit() {
+		isSubmitting = true;
+		formMessage = '';
 	}
 
-	async function deleteNotice(event) {
-		if (confirm('Are you sure you want to delete this notice?')) {
-			const response = await fetch(event.target.action, {
-				method: 'POST',
-				body: new FormData(event.target),
-			});
-
-			if (response.ok) {
-				goto('/notices');
-			}
-		}
+	function handleDelete() {
+		return confirm('Are you sure you want to delete this notice? This action cannot be undone.');
 	}
 </script>
 
@@ -43,7 +62,7 @@
 				alt={data.notice.title}
 				class="notice-detail-image" />
 		{/if}
-		<div class="notice-description">{@html formatText(data.notice.content)}</div>
+		<div class="notice-description">{@html formatText(data.notice.description)}</div>
 		{#if data.notice.category}
 			<p><strong>Category:</strong> {data.notice.category}</p>
 		{/if}
@@ -54,31 +73,88 @@
 			Posted: {new Date(data.notice.created_at).toLocaleDateString()}
 		</p>
 
+		<!-- Edit/Delete section for notice owner -->
 		{#if data.isOwner}
-			<details style="margin-top: 1em;">
+			<details class="notice-actions">
 				<summary>Manage Notice</summary>
-				<form method="POST" action="?/updateNotice" onsubmit={updateNotice}>
+
+				{#if formMessage}
+					<p class="form-message">{formMessage}</p>
+				{/if}
+
+				<form
+					method="POST"
+					action="?/updateNotice"
+					use:enhance={submitUpdateForm}
+					class="edit-form"
+					onsubmit={handleUpdateSubmit}>
+					<h3>Edit Notice</h3>
+
+					<label for="title">Title:</label>
 					<input
 						type="text"
+						id="title"
 						name="title"
-						bind:value={data.notice.title}
-						placeholder="Title"
+						bind:value={editFormData.title}
 						required
-						class="input" />
+						disabled={isSubmitting} />
+
+					<label for="description">Description (Markdown supported):</label>
 					<textarea
-						name="content"
-						bind:value={data.notice.content}
-						placeholder="Content"
+						id="description"
+						name="description"
+						bind:value={editFormData.description}
 						required
-						class="textarea"></textarea>
-					<button type="submit" class="button">Update</button>
+						disabled={isSubmitting}
+						placeholder="Use **bold**, *italic*, and [links](url) for formatting"></textarea>
+
+					<label for="image_url">Image URL (Optional):</label>
+					<input
+						type="url"
+						id="image_url"
+						name="image_url"
+						bind:value={editFormData.image_url}
+						disabled={isSubmitting} />
+
+					<label for="category">Category (Optional):</label>
+					<input
+						type="text"
+						id="category"
+						name="category"
+						bind:value={editFormData.category}
+						disabled={isSubmitting} />
+
+					<label for="start_date">Start Date:</label>
+					<input
+						type="date"
+						id="start_date"
+						name="start_date"
+						bind:value={editFormData.start_date}
+						disabled={isSubmitting} />
+
+					<label for="end_date">End Date (Optional):</label>
+					<input
+						type="date"
+						id="end_date"
+						name="end_date"
+						bind:value={editFormData.end_date}
+						disabled={isSubmitting} />
+
+					<div class="form-actions">
+						<button type="submit" disabled={isSubmitting} class="update-btn">
+							{isSubmitting ? 'Updating...' : 'Update Notice'}
+						</button>
+					</div>
 				</form>
+
 				<form
 					method="POST"
 					action="?/deleteNotice"
-					onsubmit={deleteNotice}
-					style="margin-top: 1em;">
-					<button type="submit" class="button is-danger">Delete</button>
+					use:enhance={submitDeleteForm}
+					class="delete-form">
+					<button type="submit" class="delete-btn" onclick={handleDelete}>
+						Delete Notice
+					</button>
 				</form>
 			</details>
 		{/if}
@@ -116,53 +192,117 @@
 		color: #555;
 	}
 
-	details {
-		background-color: #f0f0f0;
+	.notice-actions {
+		margin: 2em 0;
+		border: 1px solid #ddd;
+		border-radius: 8px;
+		padding: 0;
+		background-color: #fff;
+	}
+
+	.notice-actions summary {
 		padding: 1em;
-		border-radius: 4px;
-		margin-top: 1em;
-	}
-
-	summary {
 		cursor: pointer;
+		background-color: #f8f9fa;
+		border-radius: 8px 8px 0 0;
 		font-weight: bold;
-		margin-bottom: 1em;
+		color: #495057;
 	}
 
-	.input,
-	.textarea {
+	.notice-actions summary:hover {
+		background-color: #e9ecef;
+	}
+
+	.notice-actions[open] summary {
+		border-bottom: 1px solid #ddd;
+		border-radius: 8px 8px 0 0;
+	}
+
+	.edit-form {
+		padding: 1.5em;
+		border-bottom: 1px solid #eee;
+	}
+
+	.delete-form {
+		padding: 1em 1.5em;
+		text-align: center;
+	}
+
+	.edit-form h3 {
+		margin-top: 0;
+		margin-bottom: 1em;
+		color: #333;
+	}
+
+	.edit-form label {
+		display: block;
+		margin-bottom: 0.5em;
+		font-weight: bold;
+		color: #555;
+	}
+
+	.edit-form input,
+	.edit-form textarea,
+	.edit-form select {
 		width: 100%;
-		padding: 0.5em;
+		padding: 0.8em;
 		margin-bottom: 1em;
 		border: 1px solid #ccc;
 		border-radius: 4px;
+		box-sizing: border-box;
 		font-family: inherit;
 	}
 
-	.textarea {
+	.edit-form textarea {
 		min-height: 100px;
 		resize: vertical;
 	}
 
-	.button {
-		padding: 0.5em 1em;
+	.form-actions {
+		display: flex;
+		gap: 1em;
+		margin-top: 1.5em;
+	}
+
+	.update-btn {
+		background-color: #28a745;
+		color: white;
+		padding: 0.8em 1.5em;
 		border: none;
-		border-radius: 4px;
+		border-radius: 5px;
 		cursor: pointer;
 		font-weight: bold;
-		background-color: #007bff;
-		color: white;
 	}
 
-	.button:hover {
-		background-color: #0056b3;
+	.update-btn:hover:not(:disabled) {
+		background-color: #218838;
 	}
 
-	.button.is-danger {
+	.update-btn:disabled {
+		background-color: #6c757d;
+		cursor: not-allowed;
+	}
+
+	.delete-btn {
 		background-color: #dc3545;
+		color: white;
+		padding: 0.8em 1.5em;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+		font-weight: bold;
 	}
 
-	.button.is-danger:hover {
+	.delete-btn:hover {
 		background-color: #c82333;
+	}
+
+	.form-message {
+		background-color: #d4edda;
+		color: #155724;
+		border: 1px solid #c3e6cb;
+		padding: 1em;
+		border-radius: 5px;
+		margin-bottom: 1em;
 	}
 </style>
