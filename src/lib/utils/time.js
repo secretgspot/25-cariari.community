@@ -70,3 +70,22 @@ export function timeFrom(val) {
 
 // Current time:
 // timeFrom(new Date()); // '0sec ago' (or very close to current time)
+
+/**
+ * Format date for display
+ * @param {string|Date} date - The date to format
+ * @returns {string} Formatted date string
+ */
+export function formatDate(date) {
+	return new Date(date).toLocaleDateString();
+}
+
+/**
+ * Format date and time for display
+ * @param {string|Date} date - The date to format
+ * @returns {string} Formatted date and time string
+ */
+export function formatDateTime(date) {
+	const d = new Date(date);
+	return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`;
+}

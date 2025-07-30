@@ -1,90 +1,27 @@
 <script>
-	import { enhance, applyAction } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
-	import UserContentList from './UserContentList.svelte';
+	import ProfileForm from './ProfileForm.svelte';
+	import UserContentSection from './UserContentSection.svelte';
+	import { deleteItem } from '$lib/utils/api_helpers.js';
 
 	let { data } = $props();
-	console.log('/profile/+page: ', data);
 
 	let formMessage = $state('');
 
-	// Rune-based Reactive State for form fields
-	let profileFormData = $state({
-		username: data.userProfile?.username || '',
-		full_name: data.userProfile?.full_name || '',
-		avatar_url: data.userProfile?.avatar_url || '',
-		bio: data.userProfile?.bio || '',
-	});
-
-	// This effect will run whenever `data.userProfile` changes (e.g., after a successful update)
-	$effect(() => {
-		if (data.userProfile) {
-			profileFormData = {
-				username: data.userProfile.username || '',
-				full_name: data.userProfile.full_name || '',
-				avatar_url: data.userProfile.avatar_url || '',
-				bio: data.userProfile.bio || '',
-			};
-		}
-	});
-
-	const submitForm = () => {
-		return async ({ result, update }) => {
-			if (result.type === 'success') {
-				formMessage = result.data.message;
-				await applyAction(result); // Apply the action result to the page
-				await update({ reset: false }); // Re-run load function without resetting form
-			} else if (result.type === 'error') {
-				formMessage = result.data.message;
-				await applyAction(result);
-				await update({ reset: false });
-			} else if (result.type === 'failure') {
-				formMessage = result.data.message;
-				await applyAction(result);
-				await update({ reset: false });
-			}
-		};
-	};
-
-	const deleteItem = async (id, type) => {
-		console.log(`Attempting to delete ${type}: ${id}`);
-		if (!confirm(`Are you sure you want to delete this ${type}?`)) return;
+	// Generic delete handler that works for all content types
+	const handleDelete = async (id, type) => {
+		const endpoint = type === 'comment' ? `/api/comments/${id}` : `/api/${type}s/${id}`;
 
 		try {
-			const response = await fetch(`/api/${type}s/${id}`, {
-				method: 'DELETE',
-			});
-
-			if (!response.ok) {
-				const errData = await response.json();
-				throw new Error(errData.message || `Failed to delete ${type}`);
-			}
+			await deleteItem(endpoint, type);
 			await invalidateAll();
-		} catch (e) {
-			console.error(`Error deleting ${type}:`, e);
-			formMessage = `Error deleting ${type}: ${e.message}`;
+		} catch (error) {
+			formMessage = `Error deleting ${type}: ${error.message}`;
 		}
 	};
 
-	const deleteComment = async (commentId) => {
-		console.log(`Attempting to delete comment: ${commentId}`);
-		if (!confirm('Are you sure you want to delete this comment?')) return;
-
-		try {
-			const response = await fetch(`/api/comments/${commentId}`, {
-				method: 'DELETE',
-			});
-
-			if (!response.ok) {
-				const errData = await response.json();
-				throw new Error(errData.message || 'Failed to delete comment');
-			}
-			// Refresh comments data after deletion
-			await invalidateAll();
-		} catch (e) {
-			console.error('Error deleting comment:', e);
-			formMessage = `Error deleting comment: ${e.message}`;
-		}
+	const handleFormMessage = (message) => {
+		formMessage = message;
 	};
 </script>
 
@@ -92,110 +29,69 @@
 	<h1>User Profile</h1>
 
 	{#if data.user}
-		<p><strong>Email:</strong> {data.user.email}</p>
-		<p>
-			<strong>Member Since:</strong>
-			{new Date(data.user.created_at).toLocaleDateString()}
-		</p>
+		<div class="user-info">
+			<p><strong>Email:</strong> {data.user.email}</p>
+			<p>
+				<strong>Member Since:</strong>
+				{new Date(data.user.created_at).toLocaleDateString()}
+			</p>
+		</div>
 
 		{#if formMessage}
-			<p class="form-message">{formMessage}</p>
+			<div class="form-message">{formMessage}</div>
 		{/if}
 
-		<form
-			method="POST"
-			action="?/updateProfile"
-			use:enhance={submitForm}
-			class="profile-form">
-			<label for="username">Username:</label>
-			<input
-				type="text"
-				id="username"
-				name="username"
-				bind:value={profileFormData.username}
-				required />
+		<ProfileForm userProfile={data.userProfile} onMessage={handleFormMessage} />
 
-			<label for="full_name">Full Name:</label>
-			<input
-				type="text"
-				id="full_name"
-				name="full_name"
-				bind:value={profileFormData.full_name} />
-
-			<label for="avatar_url">Avatar URL:</label>
-			<input
-				type="url"
-				id="avatar_url"
-				name="avatar_url"
-				bind:value={profileFormData.avatar_url} />
-
-			<label for="bio">Bio:</label>
-			<textarea id="bio" name="bio" bind:value={profileFormData.bio}></textarea>
-
-			<button type="submit">Save Changes</button>
-		</form>
-
-		<UserContentList
+		<UserContentSection
 			title="My Lost & Found Posts"
 			items={data.lostAndFoundPosts}
 			itemKey="item_name"
 			linkPrefix="/lost-and-found"
 			type="lost-and-found"
-			deleteHandler={deleteItem}>
-			<svelte:fragment slot="additionalInfo" let:item>
-				- {item.description} ({item.type})
-			</svelte:fragment>
-		</UserContentList>
+			onDelete={handleDelete}
+			formatAdditionalInfo={(item) => `${item.description} (${item.type})`} />
 
-		<UserContentList
+		<UserContentSection
 			title="My Events"
 			items={data.events}
 			itemKey="title"
 			linkPrefix="/events"
 			type="event"
-			deleteHandler={deleteItem}>
-			<svelte:fragment slot="additionalInfo" let:item>
-				- {item.description} (Date: {new Date(item.event_start_date).toLocaleDateString()}
-				{new Date(item.event_start_date).toLocaleTimeString()}{#if item.event_end_date}
-					- {new Date(item.event_end_date).toLocaleDateString()}
-					{new Date(item.event_end_date).toLocaleTimeString()}{/if})
-			</svelte:fragment>
-		</UserContentList>
+			onDelete={handleDelete}
+			formatAdditionalInfo={(item) => {
+				const startDate = new Date(item.event_start_date);
+				const endDate = item.event_end_date ? new Date(item.event_end_date) : null;
+				return `${item.description} (Date: ${startDate.toLocaleDateString()} ${startDate.toLocaleTimeString()}${endDate ? ` - ${endDate.toLocaleDateString()} ${endDate.toLocaleTimeString()}` : ''})`;
+			}} />
 
-		<UserContentList
+		<UserContentSection
 			title="My Notices"
 			items={data.notices}
 			itemKey="title"
 			linkPrefix="/notices"
 			type="notice"
-			deleteHandler={deleteItem}>
-			<svelte:fragment slot="additionalInfo" let:item>
-				- {item.content} (Posted: {new Date(item.created_at).toLocaleDateString()})
-			</svelte:fragment>
-		</UserContentList>
+			onDelete={handleDelete}
+			formatAdditionalInfo={(item) =>
+				`${item.content} (Posted: ${new Date(item.created_at).toLocaleDateString()})`} />
 
-		<UserContentList
+		<UserContentSection
 			title="My Services"
 			items={data.services}
 			itemKey="title"
 			linkPrefix="/services"
 			type="service"
-			deleteHandler={deleteItem}>
-			<svelte:fragment slot="additionalInfo" let:item>
-				- {item.description} ({item.category})
-			</svelte:fragment>
-		</UserContentList>
+			onDelete={handleDelete}
+			formatAdditionalInfo={(item) => `${item.description} (${item.category})`} />
 
-		<UserContentList
+		<UserContentSection
 			title="My Comments"
 			items={data.comments}
 			itemKey="content"
 			type="comment"
-			deleteHandler={deleteComment}>
-			<svelte:fragment slot="additionalInfo" let:item>
-				({new Date(item.created_at).toLocaleDateString()})
-			</svelte:fragment>
-		</UserContentList>
+			onDelete={handleDelete}
+			formatAdditionalInfo={(item) =>
+				`(${new Date(item.created_at).toLocaleDateString()})`} />
 	{:else}
 		<p>Please log in to view your profile.</p>
 	{/if}
@@ -216,12 +112,12 @@
 		margin-bottom: 1em;
 	}
 
-	p {
+	.user-info p {
 		margin-bottom: 0.5em;
 		color: #666;
 	}
 
-	strong {
+	.user-info strong {
 		color: #333;
 	}
 
@@ -232,40 +128,5 @@
 		padding: 1em;
 		border-radius: 5px;
 		margin-bottom: 1.5em;
-	}
-
-	.profile-form label {
-		display: block;
-		margin-bottom: 0.5em;
-		font-weight: bold;
-	}
-
-	.profile-form input[type='text'],
-	.profile-form input[type='url'],
-	.profile-form textarea {
-		width: 100%;
-		padding: 0.8em;
-		margin-bottom: 1em;
-		border: 1px solid #ccc;
-		border-radius: 4px;
-		box-sizing: border-box;
-	}
-
-	.profile-form textarea {
-		min-height: 100px;
-		resize: vertical;
-	}
-
-	.profile-form button[type='submit'] {
-		background-color: #28a745;
-		color: white;
-		padding: 0.8em 1.5em;
-		border: none;
-		border-radius: 5px;
-		cursor: pointer;
-	}
-
-	.profile-form button[type='submit']:hover {
-		background-color: #218838;
 	}
 </style>

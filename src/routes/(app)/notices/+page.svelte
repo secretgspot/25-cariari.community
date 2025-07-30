@@ -1,4 +1,6 @@
+<!-- /notices/+page.svelte -->
 <script>
+	import { invalidateAll } from '$app/navigation';
 	import AddNoticeForm from './AddNoticeForm.svelte';
 	import { formatText, stripMarkdown, truncateText } from '$lib/utils/markdown.js';
 
@@ -6,17 +8,18 @@
 
 	let showForm = $state(false);
 	let formMessage = $state('');
-	let noticesList = $state(data.notices); // Local state for reactivity
 
 	function toggleForm() {
 		showForm = !showForm;
 		formMessage = ''; // Clear message when toggling
 	}
 
-	function handleNoticeAdded(event) {
-		noticesList = [...noticesList, event.detail];
+	async function handleNoticeAdded(notice) {
 		formMessage = 'Notice added successfully!';
 		showForm = false; // Hide form after successful submission
+
+		// Refresh the data from the server
+		await invalidateAll();
 	}
 </script>
 
@@ -32,12 +35,12 @@
 	{/if}
 
 	{#if showForm}
-		<AddNoticeForm on:noticeAdded={handleNoticeAdded} />
+		<AddNoticeForm onNoticeAdded={handleNoticeAdded} />
 	{/if}
 
 	<div class="notices-list">
-		{#if noticesList && noticesList.length > 0}
-			{#each noticesList as notice}
+		{#if data.notices && data.notices.length > 0}
+			{#each data.notices as notice}
 				<a href="/notices/{notice.id}" class="notice-card-link">
 					<div class="notice-card">
 						<h3>{notice.title}</h3>
@@ -86,6 +89,8 @@
 		border-radius: 5px;
 		cursor: pointer;
 		margin-bottom: 1.5em;
+		font-size: 0.95em;
+		transition: background-color 0.2s;
 	}
 
 	.toggle-form-button:hover {
@@ -99,40 +104,7 @@
 		padding: 1em;
 		border-radius: 5px;
 		margin-bottom: 1.5em;
-	}
-
-	.notice-form label {
-		display: block;
-		margin-bottom: 0.5em;
-		font-weight: bold;
-	}
-
-	.notice-form input[type='text'],
-	.notice-form textarea {
-		width: 100%;
-		padding: 0.8em;
-		margin-bottom: 1em;
-		border: 1px solid #ccc;
-		border-radius: 4px;
-		box-sizing: border-box;
-	}
-
-	.notice-form textarea {
-		min-height: 100px;
-		resize: vertical;
-	}
-
-	.notice-form button[type='submit'] {
-		background-color: #28a745;
-		color: white;
-		padding: 0.8em 1.5em;
-		border: none;
-		border-radius: 5px;
-		cursor: pointer;
-	}
-
-	.notice-form button[type='submit']:hover {
-		background-color: #218838;
+		font-size: 0.9em;
 	}
 
 	.notices-list {
@@ -147,17 +119,20 @@
 		border-radius: 8px;
 		padding: 1.5em;
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+		transition: all 0.2s ease-in-out;
 	}
 
 	.notice-card h3 {
 		color: #007bff;
 		margin-top: 0;
 		margin-bottom: 0.5em;
+		font-size: 1.1em;
 	}
 
 	.notice-card p {
 		margin-bottom: 0.5em;
 		color: #555;
+		line-height: 1.5;
 	}
 
 	.notice-image {
@@ -170,6 +145,9 @@
 	.notice-date {
 		font-size: 0.9em;
 		color: #888;
+		margin-top: 1em;
+		border-top: 1px solid #eee;
+		padding-top: 0.5em;
 	}
 
 	.notice-card-link {
@@ -181,7 +159,5 @@
 	.notice-card-link:hover .notice-card {
 		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 		transform: translateY(-2px);
-		transition: all 0.2s ease-in-out;
 	}
-	/* Added a comment to force re-compilation */
 </style>
