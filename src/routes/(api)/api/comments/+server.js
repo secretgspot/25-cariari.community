@@ -1,15 +1,15 @@
 import { json } from '@sveltejs/kit';
 
 export async function GET({ url, locals: { supabase } }) {
-	const news_id = url.searchParams.get('news_id');
+	const notice_id = url.searchParams.get('notice_id');
 	const event_id = url.searchParams.get('event_id');
 	const lost_and_found_id = url.searchParams.get('lost_and_found_id');
 	const service_id = url.searchParams.get('service_id');
 
 	let query = supabase.from('comments').select('*, profiles(username, avatar_url)');
 
-	if (news_id) {
-		query = query.eq('news_id', news_id);
+	if (notice_id) {
+		query = query.eq('notice_id', notice_id);
 	} else if (event_id) {
 		query = query.eq('event_id', event_id);
 	} else if (lost_and_found_id) {
@@ -17,7 +17,7 @@ export async function GET({ url, locals: { supabase } }) {
 	} else if (service_id) {
 		query = query.eq('service_id', service_id);
 	} else {
-		return json({ message: 'A parent ID (news_id, event_id, lost_and_found_id, or service_id) is required.' }, { status: 400 });
+		return json({ message: 'A parent ID (notice_id, event_id, lost_and_found_id, or service_id) is required.' }, { status: 400 });
 	}
 
 	const { data: comments, error: commentsError } = await query.order('created_at', { ascending: true });
@@ -45,20 +45,20 @@ export async function POST({ request, locals: { supabase, getSession } }) {
 		return json({ message: 'Unauthorized' }, { status: 401 });
 	}
 
-	const { news_id, event_id, lost_and_found_id, service_id, content } = await request.json();
+	const { notice_id, event_id, lost_and_found_id, service_id, content } = await request.json();
 
 	if (!content) {
 		return json({ message: 'Comment content is required.' }, { status: 400 });
 	}
 
-	if (!news_id && !event_id && !lost_and_found_id && !service_id) {
-		return json({ message: 'A parent ID (news_id, event_id, lost_and_found_id, or service_id) is required.' }, { status: 400 });
+	if (!notice_id && !event_id && !lost_and_found_id && !service_id) {
+		return json({ message: 'A parent ID (notice_id, event_id, lost_and_found_id, or service_id) is required.' }, { status: 400 });
 	}
 
 	try {
 		const { error: commentError } = await supabase.from('comments').insert({
 			user_id: session.user.id,  // Always use the verified user id here
-			news_id,
+			notice_id,
 			event_id,
 			lost_and_found_id,
 			service_id,

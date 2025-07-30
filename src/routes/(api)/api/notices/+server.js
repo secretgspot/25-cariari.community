@@ -20,7 +20,7 @@ export async function GET({ url, locals: { supabase, getSession } }) {
 		const limit = url.searchParams.get('limit');
 
 		const query = supabase
-			.from('news')
+			.from('notices')
 			.select('*', { count: 'exact' })
 			.order('created_at', { ascending: false });
 
@@ -70,7 +70,7 @@ export async function POST({ request, locals: { supabase, getSession } }) {
 	}
 
 	try {
-		const { error } = await supabase.from('news').insert({
+		const { error } = await supabase.from('notices').insert({
 			title,
 			description,
 			urgency,

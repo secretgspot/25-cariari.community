@@ -33,7 +33,7 @@ export async function GET({ params, locals: { supabase, getSession } }) {
 				.eq('id', uuid)
 				.single(),
 			supabase
-				.from('news')
+				.from('notices')
 				.select('id', { count: 'exact' })
 				.eq('user_id', uuid),
 			supabase

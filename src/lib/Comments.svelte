@@ -48,7 +48,7 @@
 			const body = {
 				content: newCommentContent,
 			};
-			if (type === 'news_id') body.news_id = parentId;
+			if (type === 'notice_id') body.notice_id = parentId;
 			if (type === 'event_id') body.event_id = parentId;
 			if (type === 'lost_and_found_id') body.lost_and_found_id = parentId;
 			if (type === 'service_id') body.service_id = parentId;

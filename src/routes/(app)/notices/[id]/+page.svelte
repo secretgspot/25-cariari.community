@@ -14,8 +14,12 @@
 		description: data.notice?.description || '',
 		image_url: data.notice?.image_url || '',
 		category: data.notice?.category || '',
-		start_date: data.notice?.start_date ? new Date(data.notice.start_date).toISOString().slice(0, 10) : '',
-		end_date: data.notice?.end_date ? new Date(data.notice.end_date).toISOString().slice(0, 10) : '',
+		start_date: data.notice?.start_date
+			? new Date(data.notice.start_date).toISOString().slice(0, 10)
+			: '',
+		end_date: data.notice?.end_date
+			? new Date(data.notice.end_date).toISOString().slice(0, 10)
+			: '',
 	});
 
 	const submitUpdateForm = () => {
@@ -49,7 +53,9 @@
 	}
 
 	function handleDelete() {
-		return confirm('Are you sure you want to delete this notice? This action cannot be undone.');
+		return confirm(
+			'Are you sure you want to delete this notice? This action cannot be undone.',
+		);
 	}
 </script>
 
@@ -106,7 +112,8 @@
 						bind:value={editFormData.description}
 						required
 						disabled={isSubmitting}
-						placeholder="Use **bold**, *italic*, and [links](url) for formatting"></textarea>
+						placeholder="Use **bold**, *italic*, and [links](url) for formatting"
+					></textarea>
 
 					<label for="image_url">Image URL (Optional):</label>
 					<input
@@ -159,7 +166,7 @@
 			</details>
 		{/if}
 
-		<Comments parentId={data.notice.id} type="news_id" userData={data} />
+		<Comments parentId={data.notice.id} type="notice_id" userData={data} />
 	{:else}
 		<p>Notice not found.</p>
 	{/if}

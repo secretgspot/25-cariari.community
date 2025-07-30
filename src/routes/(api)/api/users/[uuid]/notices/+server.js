@@ -19,7 +19,7 @@ export async function GET({ params, locals: { supabase, getSession } }) {
 
 	try {
 		const { data: notices, error: noticesError } = await supabase
-			.from('news')
+			.from('notices')
 			.select('*')
 			.eq('user_id', uuid)
 			.order('created_at', { ascending: false })
@@ -55,7 +55,7 @@ export async function DELETE({ params, locals: { supabase, getSession } }) {
 
 	try {
 		const { error: deleteError } = await supabase
-			.from('news')
+			.from('notices')
 			.delete()
 			.eq('user_id', uuid);
 
