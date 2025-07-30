@@ -30,7 +30,7 @@ export async function GET({ params, locals: { supabase, getSession } }) {
 			supabase
 				.from('profiles')
 				.select('*')
-				.eq('id', uuid)
+				.eq('user_id', uuid)
 				.single(),
 			supabase
 				.from('notices')

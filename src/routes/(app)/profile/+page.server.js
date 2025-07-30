@@ -66,6 +66,7 @@ export async function load({ locals: { getSession }, fetch }) {
 		user,
 		is_logged_in,
 		is_admin,
+		profile: profileResult.profile || null,
 		lostAndFoundPosts: lostAndFoundResult || [],
 		events: eventsResult || [],
 		notices: noticesResult || [],
