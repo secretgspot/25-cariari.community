@@ -1,83 +1,86 @@
-<!-- AddNoticeForm.svelte -->
+<!-- AddServiceForm.svelte -->
 <script>
+	import { enhance } from '$app/forms';
 	import Button from '$lib/buttons/Button.svelte';
 
-	let { onNoticeAdded } = $props();
+	let { onServiceAdded } = $props();
+
+	const today = new Date();
+	const sevenDaysFromNow = new Date();
+	sevenDaysFromNow.setDate(today.getDate() + 7);
+	const formatDate = (date) => {
+		const year = date.getFullYear();
+		const month = (date.getMonth() + 1).toString().padStart(2, '0');
+		const day = date.getDate().toString().padStart(2, '0');
+		return `${year}-${month}-${day}`;
+	};
 
 	let formData = $state({
 		title: '',
 		description: '',
-		urgency: 'Default',
-		startDate: '',
-		endDate: '',
+		category: 'Offering',
+		image_url: '',
+		startDate: formatDate(today),
+		endDate: formatDate(sevenDaysFromNow),
 	});
 
 	let loading = $state(false);
 	let error = $state(null);
 	let success = $state(false);
 
-	const urgencyOptions = ['Default', 'Low', 'Medium', 'High'];
+	const categoryOptions = ['Offering', 'Wanted']; // Fixed typo
 
-	async function handleSubmit() {
+	// Clear form function
+	function clearForm() {
+		formData = {
+			title: '',
+			description: '',
+			category: 'Offering',
+			image_url: '',
+			startDate: formatDate(today),
+			endDate: formatDate(sevenDaysFromNow),
+		};
+	}
+</script>
+
+<form
+	method="POST"
+	action="?/createService"
+	use:enhance={({ formElement, formData, action, cancel, submitter }) => {
 		loading = true;
 		error = null;
 		success = false;
 
-		const newNotice = {
-			title: formData.title,
-			description: formData.description,
-			urgency: formData.urgency,
-			start_date: formData.startDate || null,
-			end_date: formData.endDate || null,
-		};
-
-		try {
-			const response = await fetch('/api/notices', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(newNotice),
-			});
-
-			if (!response.ok) {
-				const errData = await response.json();
-				throw new Error(errData.message || 'Failed to add notice.');
-			}
-
-			const result = await response.json();
-			success = true;
-
-			// Call the callback function instead of dispatching
-			if (onNoticeAdded) {
-				onNoticeAdded(result.notice);
-			}
-
-			// Clear form
-			formData = {
-				title: '',
-				description: '',
-				urgency: 'Default',
-				startDate: '',
-				endDate: '',
-			};
-		} catch (e) {
-			error = e.message;
-			console.error('Error adding notice:', e);
-		} finally {
+		return async ({ result, update }) => {
 			loading = false;
-		}
-	}
-</script>
 
-<form onsubmit={handleSubmit} class="notice-form">
-	<h2 class="form-title">Add New Notice</h2>
+			if (result.type === 'success') {
+				success = true;
+				clearForm();
+
+				// Call the callback function
+				if (onServiceAdded && result.data?.service) {
+					onServiceAdded(result.data.service);
+				}
+			} else if (result.type === 'failure') {
+				error = result.data?.message || 'Failed to add service';
+			} else if (result.type === 'error') {
+				error = 'An unexpected error occurred';
+			}
+
+			// Update the page
+			await update();
+		};
+	}}
+	class="service-form">
+	<h2 class="form-title">Add New Service</h2>
 
 	<div class="form-group">
 		<label for="title" class="form-label">Title</label>
 		<input
 			type="text"
 			id="title"
+			name="title"
 			bind:value={formData.title}
 			required
 			class="form-input" />
@@ -87,6 +90,7 @@
 		<label for="description" class="form-label">Description (supports Markdown)</label>
 		<textarea
 			id="description"
+			name="description"
 			bind:value={formData.description}
 			required
 			rows="5"
@@ -95,26 +99,46 @@
 	</div>
 
 	<div class="form-group">
-		<label for="urgency" class="form-label">Urgency</label>
-		<select id="urgency" bind:value={formData.urgency} class="form-select">
-			{#each urgencyOptions as option}
+		<label for="category" class="form-label">Category</label>
+		<select
+			id="category"
+			name="category"
+			bind:value={formData.category}
+			class="form-select">
+			{#each categoryOptions as option}
 				<option value={option}>{option}</option>
 			{/each}
 		</select>
 	</div>
 
 	<div class="form-group">
-		<label for="startDate" class="form-label">Start Date (Optional)</label>
+		<label for="image_url" class="form-label">Image URL (Optional):</label>
+		<input
+			type="text"
+			id="image_url"
+			name="image_url"
+			bind:value={formData.image_url}
+			class="form-input" />
+	</div>
+
+	<div class="form-group">
+		<label for="start_date" class="form-label">Start Date (Optional)</label>
 		<input
 			type="date"
-			id="startDate"
+			id="start_date"
+			name="start_date"
 			bind:value={formData.startDate}
 			class="form-input" />
 	</div>
 
 	<div class="form-group">
-		<label for="endDate" class="form-label">End Date (Optional)</label>
-		<input type="date" id="endDate" bind:value={formData.endDate} class="form-input" />
+		<label for="end_date" class="form-label">End Date (Optional)</label>
+		<input
+			type="date"
+			id="end_date"
+			name="end_date"
+			bind:value={formData.endDate}
+			class="form-input" />
 	</div>
 
 	{#if error}
@@ -122,16 +146,16 @@
 	{/if}
 
 	{#if success}
-		<p class="success-message">Notice added successfully!</p>
+		<p class="success-message">Service added successfully!</p>
 	{/if}
 
 	<Button type="submit" disabled={loading}>
-		{loading ? 'Adding...' : 'Add Notice'}
+		{loading ? 'Adding...' : 'Add Service'}
 	</Button>
 </form>
 
 <style>
-	.notice-form {
+	.service-form {
 		background-color: #fff;
 		border: 1px solid #ddd;
 		border-radius: 8px;

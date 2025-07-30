@@ -1,4 +1,3 @@
-<!-- /notices/+page.svelte -->
 <script>
 	import { invalidateAll } from '$app/navigation';
 	import AddNoticeForm from './AddNoticeForm.svelte';

@@ -10,7 +10,7 @@
 	<div class="notices-wrap">
 		{#each notices as notice}
 			<a href={`/notices/${notice.id}`}>
-				<span class="urgency {notice.urgency}"></span>
+				<span class="urgency {notice.urgency.toLowerCase()}"></span>
 				<strong class="message">{notice.title}</strong>
 				<!-- <span class="time-posted">{timeFrom(notice.created_at)}</span> -->
 				{#if notice.start_date}

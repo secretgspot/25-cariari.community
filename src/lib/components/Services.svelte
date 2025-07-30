@@ -14,7 +14,7 @@
 					<img class="image" src={service.image_url} alt={service.title} />
 				{:else}
 					<div class="placeholder-image">
-						<span>{service.category == 'wanted' ? '🔍' : '✋'}</span>
+						<span>{service.category == 'Wanted' ? '🔍' : '✋'}</span>
 					</div>
 				{/if}
 				<strong class="message">{service.title}</strong>
