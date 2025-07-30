@@ -15,6 +15,7 @@ export async function load(event) {
 	const cookies = session?.cookies || [];
 
 	const parentData = await event.parent();
+	// console.log('(app)/+layout.server: parent data loaded', parentData);
 
 	/////// SANITY CHECK ////////
 	const is_admin = user.app_metadata?.claims_admin || false;
@@ -22,9 +23,9 @@ export async function load(event) {
 	console.log(`${is_admin ? '🔥' : '👻'}👤: ${user.id} 🌐${event.url.pathname}`);
 
 	return {
-		user,
-		is_admin,
-		cookies,
-		profile: parentData.profile, // Get profile from parent layout
+		// user,
+		// is_admin,
+		// cookies,
+		// profile: parentData.profile, // Get profile from parent layout
 	};
 }

@@ -5,7 +5,7 @@
 
 	let { data } = $props();
 	// console.log('Nav data: ', data);
-	// console.log('Nav page data: ', page.data);
+	// console.log('Nav page data: ', page.data); // DO NOT NEED PAGEDATA in NAV, IT BRINGS TOO MUCH DATA SUCH AS noticesPosts, servicesPosts and everything else that's available in data
 </script>
 
 <header class="site-header">

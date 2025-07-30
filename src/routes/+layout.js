@@ -17,11 +17,16 @@ export const load = async ({ fetch, data, depends }) => {
 		}
 	);
 
+	// console.log('(app)/+layout: ', data);
+
+	// Fetch user details from supabase public.profiles table to pass to the layout based on currently logged in user. user data already available in `data` from `+layout.server.js`
+
 	return {
 		supabase,
 		session: data.session,
 		user: data.user,
 		is_logged_in: data.is_logged_in,
 		is_admin: data.is_admin,
+		cookies: data.cookies[0] || [], // Ensure cookies is an array
 	};
 };
