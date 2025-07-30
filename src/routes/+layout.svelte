@@ -2,6 +2,7 @@
 	import { navigating } from '$app/state';
 	import { invalidate } from '$app/navigation';
 	import Nav from '$lib/Nav.svelte';
+	import Footer from '$lib/Footer.svelte';
 	import 'open-props/style';
 
 	let { children, data } = $props();
@@ -37,12 +38,14 @@
 	{:else}
 		{@render children?.()}
 	{/if}
+
+	<Footer />
 </main>
 
 <style>
 	main {
 		display: grid;
-		margin-block: var(--size-8);
+		margin-block-start: var(--size-8);
 		gap: var(--size-8);
 		margin-inline: var(--size-3);
 	}
