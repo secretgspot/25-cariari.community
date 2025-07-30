@@ -63,7 +63,7 @@ export async function POST({ request, locals: { supabase, getSession } }) {
 	const title = formData.get('title');
 	const description = formData.get('description');
 	const category = formData.get('category');
-    const image_url = formData.get('image_url');
+	const image_url = formData.get('image_url');
 	const start_date = formData.get('service_start_date');
 	const end_date = formData.get('service_end_date');
 
@@ -76,7 +76,7 @@ export async function POST({ request, locals: { supabase, getSession } }) {
 			title,
 			description,
 			category,
-            image_url,
+			image_url,
 			is_published: true,
 			user_id: user.id,
 			start_date,

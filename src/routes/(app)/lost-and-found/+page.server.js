@@ -9,10 +9,7 @@ export async function load({ locals: { getSession }, fetch }) {
 	}
 
 	try {
-		console.log('Fetching from /api/lost-and-found...');
 		const response = await fetch('/api/lost-and-found');
-		console.log('Response status:', response.status);
-		console.log('Response ok:', response.ok);
 
 		if (!response.ok) {
 			console.error('Error fetching lost and found from API, status:', response.status);
@@ -20,42 +17,9 @@ export async function load({ locals: { getSession }, fetch }) {
 		}
 
 		const result = await response.json();
-		console.log('Raw API result:', JSON.stringify(result, null, 2));
-		console.log('Is result an array?', Array.isArray(result));
-		console.log('Result keys:', Object.keys(result));
 
 		// Handle both array response and object with lostandfound property
-		let lostandfound;
-		if (Array.isArray(result)) {
-			lostandfound = result;
-			console.log('Using result as array, length:', result.length);
-		} else if (result.lostandfound) {
-			lostandfound = result.lostandfound;
-			console.log('Using result.lostandfound, length:', result.lostandfound.length);
-		} else {
-			// Check for other possible property names
-			const possibleKeys = ['items', 'data', 'lost_and_found', 'lostAndFound', 'notices'];
-			let found = false;
-
-			for (const key of possibleKeys) {
-				if (result[key] && Array.isArray(result[key])) {
-					lostandfound = result[key];
-					console.log(`Found data in result.${key}, length:`, result[key].length);
-					found = true;
-					break;
-				}
-			}
-
-			if (!found) {
-				console.log('No array found in result, using empty array');
-				lostandfound = [];
-			}
-		}
-
-		console.log('Final lostandfound array length:', lostandfound.length);
-		if (lostandfound.length > 0) {
-			console.log('First item:', JSON.stringify(lostandfound[0], null, 2));
-		}
+		const lostandfound = Array.isArray(result) ? result : (result.lostandfound || []);
 
 		return { lostandfound };
 	} catch (error) {

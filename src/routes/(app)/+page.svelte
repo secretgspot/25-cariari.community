@@ -6,7 +6,7 @@
 
 	let { data } = $props();
 
-	console.log('(app)/+page.svelte data: ', data);
+	// console.log('(app)/+page.svelte data: ', data);
 </script>
 
 <header class="hero">

@@ -21,18 +21,19 @@ export async function GET({ url, request, locals: { supabase, getSession } }) {
 	let session = await getSession();
 
 	// TEMPORARY: Allow testing with X-Test-User-ID header
-	if (!session.is_logged_in) {
+	if (!session) {
 		const testUserId = request.headers.get('X-Test-User-ID');
 		if (testUserId) {
-			session = { user: { id: testUserId }, is_logged_in: true };
+			session = { user: { id: testUserId } }; // Mock session for testing
 		}
 	}
 
-	if (!session.is_logged_in) {
+	if (!session) {
 		return json({ message: 'Unauthorized' }, { status: 401 });
 	}
 
 	try {
+		// Get limit parameter from query string
 		const limit = url.searchParams.get('limit');
 
 		let query = supabase
@@ -40,8 +41,9 @@ export async function GET({ url, request, locals: { supabase, getSession } }) {
 			.select('*', { count: 'exact' })
 			.order('event_start_date', { ascending: false });
 
+		// Apply limit if provided
 		if (limit && !isNaN(parseInt(limit))) {
-			query = query.limit(parseInt(limit));
+			query.limit(parseInt(limit));
 		}
 
 		const { data: events, count, error: eventsError } = await query;
@@ -59,17 +61,17 @@ export async function GET({ url, request, locals: { supabase, getSession } }) {
 }
 
 export async function POST({ request, locals: { supabase, getSession } }) {
-	let session = await getSession();
+	let { user } = await getSession();
 
 	// TEMPORARY: Allow testing with X-Test-User-ID header
-	if (!session.is_logged_in) {
+	if (!user) {
 		const testUserId = request.headers.get('X-Test-User-ID');
 		if (testUserId) {
-			session = { user: { id: testUserId }, is_logged_in: true };
+			user = { id: testUserId };
 		}
 	}
 
-	if (!session.is_logged_in || !session.user?.id) {
+	if (!user) {
 		return json({ message: 'Unauthorized' }, { status: 401 });
 	}
 
@@ -99,7 +101,7 @@ export async function POST({ request, locals: { supabase, getSession } }) {
 			category: category || null,
 			slug,
 			is_published: true,
-			user_id: session.user.id,  // Use verified user id here only
+			user_id: user.id,
 		});
 
 		if (error) {

@@ -1,51 +1,50 @@
-<!-- AddServiceForm.svelte -->
 <script>
 	import { enhance } from '$app/forms';
 	import Button from '$lib/buttons/Button.svelte';
 
-	let { onServiceAdded } = $props();
-
-	const today = new Date();
-	const sevenDaysFromNow = new Date();
-	sevenDaysFromNow.setDate(today.getDate() + 7);
-	const formatDate = (date) => {
-		const year = date.getFullYear();
-		const month = (date.getMonth() + 1).toString().padStart(2, '0');
-		const day = date.getDate().toString().padStart(2, '0');
-		return `${year}-${month}-${day}`;
-	};
+	let { onEventAdded } = $props();
 
 	let formData = $state({
 		title: '',
 		description: '',
-		category: 'Offering',
+		category: '',
+		startDate: '',
+		endDate: '',
+		location: '',
 		image_url: '',
-		startDate: formatDate(today),
-		endDate: formatDate(sevenDaysFromNow),
 	});
 
 	let loading = $state(false);
 	let error = $state(null);
 	let success = $state(false);
 
-	const categoryOptions = ['Offering', 'Wanted'];
+	const categoryOptions = [
+		'Cultural',
+		'Sports',
+		'Workshop',
+		'Community Meeting',
+		'Social',
+		'Educational',
+		'Other',
+	];
 
 	// Clear form function
 	function clearForm() {
 		formData = {
 			title: '',
 			description: '',
-			category: 'Offering',
+			category: '',
+			startDate: '',
+			endDate: '',
+			location: '', // Fixed typo: was 'locatoin'
 			image_url: '',
-			startDate: formatDate(today),
-			endDate: formatDate(sevenDaysFromNow),
 		};
 	}
 </script>
 
 <form
 	method="POST"
-	action="?/createService"
+	action="?/createEvent"
 	use:enhance={({ formElement, formData, action, cancel, submitter }) => {
 		loading = true;
 		error = null;
@@ -59,11 +58,11 @@
 				clearForm();
 
 				// Call the callback function
-				if (onServiceAdded && result.data?.service) {
-					onServiceAdded(result.data.service);
+				if (onEventAdded && result.data?.event) {
+					onEventAdded(result.data.event);
 				}
 			} else if (result.type === 'failure') {
-				error = result.data?.message || 'Failed to add service';
+				error = result.data?.message || 'Failed to add event';
 			} else if (result.type === 'error') {
 				error = 'An unexpected error occurred';
 			}
@@ -72,8 +71,8 @@
 			await update();
 		};
 	}}
-	class="service-form">
-	<h2 class="form-title">Add New Service</h2>
+	class="event-form">
+	<h2 class="form-title">Add New Event</h2>
 
 	<div class="form-group">
 		<label for="title" class="form-label">Title</label>
@@ -105,6 +104,7 @@
 			name="category"
 			bind:value={formData.category}
 			class="form-select">
+			<option value="">Select a category</option>
 			{#each categoryOptions as option}
 				<option value={option}>{option}</option>
 			{/each}
@@ -112,7 +112,38 @@
 	</div>
 
 	<div class="form-group">
-		<label for="image_url" class="form-label">Image URL (Optional):</label>
+		<label for="startDate" class="form-label">Start Date (Required)</label>
+		<input
+			type="datetime-local"
+			id="startDate"
+			name="event_start_date"
+			bind:value={formData.startDate}
+			required
+			class="form-input" />
+	</div>
+
+	<div class="form-group">
+		<label for="endDate" class="form-label">End Date (Optional)</label>
+		<input
+			type="datetime-local"
+			id="endDate"
+			name="event_end_date"
+			bind:value={formData.endDate}
+			class="form-input" />
+	</div>
+
+	<div class="form-group">
+		<label for="location" class="form-label">Location (Optional)</label>
+		<input
+			type="text"
+			id="location"
+			name="location"
+			bind:value={formData.location}
+			class="form-input" />
+	</div>
+
+	<div class="form-group">
+		<label for="image_url" class="form-label">Image URL (Optional)</label>
 		<input
 			type="text"
 			id="image_url"
@@ -121,41 +152,21 @@
 			class="form-input" />
 	</div>
 
-	<div class="form-group">
-		<label for="start_date" class="form-label">Start Date (Optional)</label>
-		<input
-			type="date"
-			id="start_date"
-			name="start_date"
-			bind:value={formData.startDate}
-			class="form-input" />
-	</div>
-
-	<div class="form-group">
-		<label for="end_date" class="form-label">End Date (Optional)</label>
-		<input
-			type="date"
-			id="end_date"
-			name="end_date"
-			bind:value={formData.endDate}
-			class="form-input" />
-	</div>
-
 	{#if error}
 		<p class="error-message">{error}</p>
 	{/if}
 
 	{#if success}
-		<p class="success-message">Service added successfully!</p>
+		<p class="success-message">Notice added successfully!</p>
 	{/if}
 
 	<Button type="submit" disabled={loading}>
-		{loading ? 'Adding...' : 'Add Service'}
+		{loading ? 'Adding...' : 'Add Event'}
 	</Button>
 </form>
 
 <style>
-	.service-form {
+	.event-form {
 		background-color: #fff;
 		border: 1px solid #ddd;
 		border-radius: 8px;
