@@ -38,16 +38,16 @@
 			<!-- User Section -->
 			<a href="/profile" class="profile-link">
 				{#if data.is_admin}<span title="admin">🔥</span>{/if}
-				{#if data.profile?.avatar_url}
+				{#if data.userProfile?.avatar_url}
 					<img
-						src={data.profile.avatar_url}
-						alt="{data.profile?.username || 'User'} avatar"
+						src={data.userProfile.avatar_url}
+						alt="{data.userProfile?.username || 'User'} avatar"
 						class="avatar-image" />
 				{/if}
 
 				<span class="profile-name">
-					{#if data.profile?.username}
-						{data.profile.username}
+					{#if data.userProfile?.username}
+						{data.userProfile.username}
 					{:else if data.user?.email}
 						{data.user.email.split('@')[0]}
 					{:else}
