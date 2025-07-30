@@ -62,7 +62,7 @@ export async function load({ locals: { getSession }, fetch, parent }) {
 		user,
 		is_logged_in,
 		is_admin,
-		profile: userProfile, // Use the userProfile from parent layout
+		// profile: userProfile, // Use the userProfile from parent layout
 		lostAndFoundPosts: lostAndFoundResult || [],
 		events: eventsResult || [],
 		notices: noticesResult || [],

@@ -10,20 +10,20 @@
 
 	// Rune-based Reactive State for form fields
 	let profileFormData = $state({
-		username: data.profile?.username || '',
-		full_name: data.profile?.full_name || '',
-		avatar_url: data.profile?.avatar_url || '',
-		bio: data.profile?.bio || '',
+		username: data.userProfile?.username || '',
+		full_name: data.userProfile?.full_name || '',
+		avatar_url: data.userProfile?.avatar_url || '',
+		bio: data.userProfile?.bio || '',
 	});
 
-	// This effect will run whenever `data.profile` changes (e.g., after a successful update)
+	// This effect will run whenever `data.userProfile` changes (e.g., after a successful update)
 	$effect(() => {
-		if (data.profile) {
+		if (data.userProfile) {
 			profileFormData = {
-				username: data.profile.username || '',
-				full_name: data.profile.full_name || '',
-				avatar_url: data.profile.avatar_url || '',
-				bio: data.profile.bio || '',
+				username: data.userProfile.username || '',
+				full_name: data.userProfile.full_name || '',
+				avatar_url: data.userProfile.avatar_url || '',
+				bio: data.userProfile.bio || '',
 			};
 		}
 	});
