@@ -37,8 +37,8 @@
 			description: '',
 			category: 'Offering',
 			image_url: '',
-			startDate: formatDate(today),
-			endDate: formatDate(sevenDaysFromNow),
+			start_date: formatDate(today),
+			end_date: formatDate(sevenDaysFromNow),
 		};
 	}
 </script>
@@ -127,7 +127,7 @@
 			type="date"
 			id="start_date"
 			name="start_date"
-			bind:value={formData.startDate}
+			bind:value={formData.start_date}
 			class="form-input" />
 	</div>
 
@@ -137,7 +137,7 @@
 			type="date"
 			id="end_date"
 			name="end_date"
-			bind:value={formData.endDate}
+			bind:value={formData.end_date}
 			class="form-input" />
 	</div>
 

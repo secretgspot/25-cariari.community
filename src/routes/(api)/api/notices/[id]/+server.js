@@ -63,13 +63,12 @@ export async function PATCH({ request, params, locals: { supabase, getSession } 
 	}
 
 	const updates = await request.json();
-	
 
 	try {
 		// Verify that the user is the author of the notice
 		const { data: notice, error: fetchError } = await supabase
 			.from('notices')
-			.select('user_id')
+			.select('user_id, id')
 			.eq('id', id)
 			.single();
 
@@ -82,18 +81,11 @@ export async function PATCH({ request, params, locals: { supabase, getSession } 
 			return json({ message: 'You do not have permission to update this notice.' }, { status: 403 });
 		}
 
-		// Perform the update
+		// Perform the update (always use the actual UUID for update)
 		const { data: updatedNotice, error: updateError } = await supabase
 			.from('notices')
-			.update({
-				title,
-				description,
-				urgency,
-				start_date,
-				end_date,
-				updated_at: new Date().toISOString()
-			})
-			.eq('id', id)
+			.update({ ...updates, updated_at: new Date().toISOString() })
+			.eq('id', notice.id)
 			.select()
 			.single();
 
@@ -129,7 +121,7 @@ export async function DELETE({ params, locals: { supabase, getSession } }) {
 		// Verify that the user is the author of the notice
 		const { data: notice, error: fetchError } = await supabase
 			.from('notices')
-			.select('user_id')
+			.select('user_id, id')
 			.eq('id', id)
 			.single();
 
@@ -142,11 +134,11 @@ export async function DELETE({ params, locals: { supabase, getSession } }) {
 			return json({ message: 'You do not have permission to delete this notice.' }, { status: 403 });
 		}
 
-		// Perform the deletion
+		// Perform the deletion (always use the actual UUID for deletion)
 		const { error: deleteError } = await supabase
 			.from('notices')
 			.delete()
-			.eq('id', id);
+			.eq('id', notice.id);
 
 		if (deleteError) {
 			console.error('Error deleting notice:', deleteError?.message, deleteError?.details);

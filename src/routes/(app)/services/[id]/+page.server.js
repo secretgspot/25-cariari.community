@@ -3,93 +3,71 @@
 import { redirect, fail } from '@sveltejs/kit';
 
 export async function load({ params, locals: { getSession }, fetch }) {
-  const { user, is_logged_in } = await getSession();
+	const { user, is_logged_in } = await getSession();
 
-  if (!is_logged_in) {
-    throw redirect(303, '/login');
-  }
+	const { id } = params;
 
-  const { id } = params;
-  const [serviceResponse, commentsResponse] = await Promise.all([
-    fetch(`/api/services/${id}`),
-    fetch(`/api/services/${id}/comments`),
-  ]);
+	const response = await fetch(`/api/services/${id}`);
 
-  const serviceResult = await serviceResponse.json();
-  const commentsResult = await commentsResponse.json();
+	if (!response.ok) {
+		const result = await response.json();
+		throw error(response.status, result.message || 'Could not fetch service');
+	}
 
-  if (!serviceResponse.ok) {
-    console.error('Error fetching service from API:', serviceResult);
-    return { service: null, comments: [] };
-  }
+	const service = await response.json();
 
-  return {
-    service: serviceResult.service,
-    comments: commentsResult.comments || [],
-    user,
-    is_logged_in
-  };
+	return {
+		service,
+		user,
+		is_logged_in,
+		isOwner: user && service.user_id === user.id
+	};
 }
 
 export const actions = {
-  updateService: async ({ request, params, fetch }) => {
-    const { id } = params;
-    const formData = await request.formData();
-    
-    const updateData = {
-      title: formData.get('title'),
-      description: formData.get('description'),
-      category: formData.get('category'),
-      image_url: formData.get('image_url') || null,
-      start_date: formData.get('start_date'),
-      end_date: formData.get('end_date'),
-    };
+	updateService: async ({ request, params, fetch }) => {
+		const { id } = params;
+		const formData = await request.formData();
 
-    const response = await fetch(`/api/services/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(updateData)
-    });
+		const updateData = {
+			title: formData.get('title'),
+			description: formData.get('description'),
+			category: formData.get('category'),
+			image_url: formData.get('image_url') || null,
+			start_date: formData.get('start_date'),
+			end_date: formData.get('end_date'),
+		};
 
-    const result = await response.json();
+		const response = await fetch(`/api/services/${id}`, {
+			method: 'PATCH',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(updateData)
+		});
 
-    if (!response.ok) {
-      return fail(response.status, result);
-    }
+		const result = await response.json();
 
-    return { success: true, message: result.message };
-  },
+		if (!response.ok) {
+			return fail(response.status, result);
+		}
 
-  deleteService: async ({ params, fetch }) => {
-    const { id } = params;
-    const response = await fetch(`/api/services/${id}`, {
-      method: 'DELETE'
-    });
+		return { success: true, message: result.message };
+	},
 
-    const result = await response.json();
+	deleteService: async ({ params, fetch }) => {
+		const { id } = params;
+		const response = await fetch(`/api/services/${id}`, {
+			method: 'DELETE'
+		});
 
-    if (!response.ok) {
-      return fail(response.status, result);
-    }
+		const result = await response.json();
 
-    // Redirect to services list after successful deletion
-    throw redirect(303, '/services');
-  },
-  addComment: async ({ request, params, fetch }) => {
-    const formData = await request.formData();
-    const { id } = params;
-    const response = await fetch(`/api/services/${id}/comments`, {
-      method: 'POST',
-      body: formData,
-    });
-    const result = await response.json();
+		if (!response.ok) {
+			return fail(response.status, result);
+		}
 
-    if (!response.ok) {
-      return fail(response.status, result);
-    }
-
-    return { success: true, message: result.message };
-  },
+		// Redirect to services list after successful deletion
+		throw redirect(303, '/services');
+	}
 };
