@@ -7,7 +7,7 @@
 
 	let { data } = $props();
 
-	console.log('Notices data:', data);
+	// console.log('Notices data:', data);
 
 	let showForm = $state(false);
 	let formMessage = $state('');
