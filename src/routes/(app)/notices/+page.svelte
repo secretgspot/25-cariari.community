@@ -1,9 +1,13 @@
 <script>
 	import { invalidateAll } from '$app/navigation';
 	import AddNoticeForm from './AddNoticeForm.svelte';
+	import { Button } from '$lib/buttons';
+	import { timeFrom } from '$lib/utils/time.js';
 	import { formatText, stripMarkdown, truncateText } from '$lib/utils/markdown.js';
 
 	let { data } = $props();
+
+	console.log('Notices data:', data);
 
 	let showForm = $state(false);
 	let formMessage = $state('');
@@ -25,9 +29,12 @@
 <div class="notices-container">
 	<h1>Community Notices</h1>
 
-	<button onclick={toggleForm} class="toggle-form-button">
+	<Button onclick={toggleForm}>
+		{#snippet icon()}
+			➕
+		{/snippet}
 		{showForm ? 'Hide Form' : 'Add New Notice'}
-	</button>
+	</Button>
 
 	{#if formMessage}
 		<p class="form-message">{formMessage}</p>
@@ -42,20 +49,59 @@
 			{#each data.notices as notice}
 				<a href="/notices/{notice.id}" class="notice-card-link">
 					<div class="notice-card">
-						<h3>{notice.title}</h3>
+						<header class="notice-header">
+							<div class="title-wrap">
+								<h3>
+									<span class="urgency {notice.urgency.toLowerCase()}"></span>
+									{notice.title}
+								</h3>
+								<p class="notice-date">
+									Posted: {new Date(notice.created_at).toLocaleDateString()}
+								</p>
+							</div>
+							<div class="details-wrap">
+								{#if notice.start_date}
+									<span class="time-starts">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											fill="none"
+											viewBox="0 0 320 320">
+											<path
+												fill="#000"
+												d="M103.06 144A14.96 14.96 0 0 0 88 158.9a15.04 15.04 0 0 0 14.94 15.1l.13-30Zm175.79 26.74a15 15 0 0 0 .09-21.2L183.9 53.45a15 15 0 0 0-21.22-.14 15 15 0 0 0-.09 21.21l84.48 85.4-85.21 84.3a15 15 0 0 0-.1 21.22 15 15 0 0 0 21.22.13l95.87-94.84ZM103 159l-.06 15 165.28 1.07.07-15 .06-15L103.06 144l-.06 15Z" />
+											<path
+												stroke="#000"
+												stroke-linecap="round"
+												stroke-width="30"
+												d="M54 65v192" />
+										</svg>
+										{timeFrom(notice.start_date)}
+									</span>
+								{/if}
+								{#if notice.end_date}
+									<span class="time-expires">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											fill="none"
+											viewBox="0 0 320 320">
+											<path
+												fill="#000"
+												d="M50.06 144A14.96 14.96 0 0 0 35 158.9 15.04 15.04 0 0 0 49.94 174l.12-30Zm175.79 26.74a15 15 0 0 0 .09-21.2L130.9 53.45a15 15 0 0 0-21.22-.14 15 15 0 0 0-.09 21.21l84.48 85.4-85.21 84.3a15 15 0 0 0-.1 21.22 15 15 0 0 0 21.22.13l95.87-94.84ZM50 159l-.06 15 165.28 1.07.07-15 .06-15L50.06 144 50 159Z" />
+											<path
+												stroke="#000"
+												stroke-linecap="round"
+												stroke-width="30"
+												d="M265 64v192" />
+										</svg>
+										{timeFrom(notice.end_date)}
+									</span>
+								{/if}
+							</div>
+						</header>
 						{#if notice.image_url}
 							<img src={notice.image_url} alt={notice.title} class="notice-image" />
 						{/if}
-						<p>{notice.content}</p>
-						{#if notice.category}
-							<p><strong>Category:</strong> {notice.category}</p>
-						{/if}
-						{#if notice.tags && notice.tags.length > 0}
-							<p><strong>Tags:</strong> {notice.tags.join(', ')}</p>
-						{/if}
-						<p class="notice-date">
-							Posted: {new Date(notice.created_at).toLocaleDateString()}
-						</p>
+						<p>{@html formatText(notice.description)}</p>
 					</div>
 				</a>
 			{/each}
@@ -67,96 +113,111 @@
 
 <style>
 	.notices-container {
-		max-width: 800px;
-		margin: 2em auto;
-		padding: 2em;
-		background-color: #f9f9f9;
-		border-radius: 8px;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	}
+		h1 {
+			color: #333;
+			margin-bottom: 1em;
+		}
 
-	h1 {
-		color: #333;
-		margin-bottom: 1em;
-	}
-
-	.toggle-form-button {
-		background-color: #007bff;
-		color: white;
-		padding: 0.8em 1.2em;
-		border: none;
-		border-radius: 5px;
-		cursor: pointer;
-		margin-bottom: 1.5em;
-		font-size: 0.95em;
-		transition: background-color 0.2s;
-	}
-
-	.toggle-form-button:hover {
-		background-color: #0056b3;
-	}
-
-	.form-message {
-		background-color: #d4edda;
-		color: #155724;
-		border: 1px solid #c3e6cb;
-		padding: 1em;
-		border-radius: 5px;
-		margin-bottom: 1.5em;
-		font-size: 0.9em;
+		.form-message {
+			border: var(--border-size-1) solid var(--gray-1);
+			padding: var(--size-3);
+			border-radius: var(--radius-3);
+		}
 	}
 
 	.notices-list {
-		margin-top: 2em;
+		margin-block: var(--size-6);
 		display: grid;
-		gap: 1.5em;
+		gap: var(--size-3);
 	}
 
 	.notice-card {
-		background-color: #fff;
-		border: 1px solid #ddd;
-		border-radius: 8px;
-		padding: 1.5em;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-		transition: all 0.2s ease-in-out;
-	}
+		border: var(--border-size-1) solid var(--gray-1);
+		border-radius: var(--radius-2);
+		padding: var(--size-3);
 
-	.notice-card h3 {
-		color: #007bff;
-		margin-top: 0;
-		margin-bottom: 0.5em;
-		font-size: 1.1em;
-	}
+		.notice-header {
+			display: flex;
+			justify-content: space-between;
+		}
 
-	.notice-card p {
-		margin-bottom: 0.5em;
-		color: #555;
-		line-height: 1.5;
+		h3 {
+			margin: 0;
+			display: flex;
+			align-items: center;
+			gap: var(--size-3);
+		}
+
+		.urgency {
+			display: inline-block;
+			width: 21px;
+			height: 21px;
+			aspect-ratio: 1;
+			border-radius: var(--radius-round);
+			&.default {
+				background: var(--stone-3);
+			}
+			&.low {
+				background: var(--yellow-6);
+			}
+			&.medium {
+				background: var(--orange-6);
+			}
+			&.high {
+				background: var(--red-6);
+			}
+		}
+
+		.time-starts,
+		.time-expires {
+			display: flex;
+			align-items: center;
+			gap: var(--size-1);
+			font-size: smaller;
+			svg {
+				width: 12px;
+				height: 12px;
+			}
+		}
+
+		p {
+			margin-bottom: 0.5em;
+			color: #555;
+			line-height: 1.2;
+			overflow: hidden;
+			display: -webkit-box;
+			box-orient: vertical;
+			line-clamp: 12;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 12;
+			max-height: calc(var(--size-3) * 15);
+			text-overflow: ellipsis;
+		}
 	}
 
 	.notice-image {
 		max-width: 100%;
 		height: auto;
-		border-radius: 4px;
-		margin-bottom: 1em;
+		border-radius: var(--radius-2);
+		margin-bottom: var(--size-6);
 	}
 
 	.notice-date {
 		font-size: 0.9em;
-		color: #888;
-		margin-top: 1em;
-		border-top: 1px solid #eee;
-		padding-top: 0.5em;
+		color: var(--stone-9);
+		margin-bottom: var(--size-3);
+		border-bottom: var(--border-size-1) solid var(--gray-1);
+		padding-bottom: var(--size-1);
 	}
 
 	.notice-card-link {
 		text-decoration: none;
 		color: inherit;
 		display: block;
-	}
 
-	.notice-card-link:hover .notice-card {
-		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-		transform: translateY(-2px);
+		&:hover .notice-card {
+			box-shadow: 0 2px var(--stone-9);
+			transform: translateY(-3px);
+		}
 	}
 </style>

@@ -93,7 +93,7 @@
 			background: var(--stone-3);
 		}
 		&.low {
-			background: var(--green-6);
+			background: var(--yellow-6);
 		}
 		&.medium {
 			background: var(--orange-6);
