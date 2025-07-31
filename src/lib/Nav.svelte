@@ -43,6 +43,8 @@
 						src={data.userProfile.avatar_url}
 						alt="{data.userProfile?.username || 'User'} avatar"
 						class="avatar-image" />
+				{:else}
+					👤
 				{/if}
 
 				<span class="profile-name">
