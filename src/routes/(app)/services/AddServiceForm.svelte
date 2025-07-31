@@ -20,8 +20,8 @@
 		description: '',
 		category: 'Offering',
 		image_url: '',
-		startDate: formatDate(today),
-		endDate: formatDate(sevenDaysFromNow),
+		start_date: formatDate(today),
+		end_date: formatDate(sevenDaysFromNow),
 	});
 
 	let loading = $state(false);
@@ -149,19 +149,20 @@
 		<p class="success-message">Service added successfully!</p>
 	{/if}
 
-	<Button type="submit" disabled={loading}>
+	<Button type="submit" {loading} disabled={loading}>
+		{#snippet icon()}
+			📌
+		{/snippet}
 		{loading ? 'Adding...' : 'Add Service'}
 	</Button>
 </form>
 
 <style>
 	.service-form {
-		background-color: #fff;
-		border: 1px solid #ddd;
-		border-radius: 8px;
-		padding: 2em;
-		margin-bottom: 2em;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		border: var(--border-size-1) solid var(--gray-1);
+		border-radius: var(--border-size-3);
+		padding: var(--size-6);
+		margin-block: var(--size-3);
 	}
 
 	.form-title {

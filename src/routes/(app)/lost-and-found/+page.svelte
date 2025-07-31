@@ -1,6 +1,8 @@
 <script>
 	import { invalidateAll } from '$app/navigation';
 	import AddLostFoundForm from './AddLostFoundForm.svelte';
+	import { Button } from '$lib/buttons';
+	import { timeFrom } from '$lib/utils/time.js';
 	import { formatText, stripMarkdown, truncateText } from '$lib/utils/markdown.js';
 
 	let { data } = $props();
@@ -27,9 +29,12 @@
 <div class="lost-and-found-container">
 	<h1>Lost & Found</h1>
 
-	<button onclick={toggleForm} class="toggle-form-button">
+	<Button onclick={toggleForm}>
+		{#snippet icon()}
+			➕
+		{/snippet}
 		{showForm ? 'Hide Form' : 'Add New Lost/Found'}
-	</button>
+	</Button>
 
 	{#if formMessage}
 		<p class="form-message">{formMessage}</p>
@@ -71,88 +76,62 @@
 
 <style>
 	.lost-and-found-container {
-		max-width: 800px;
-		margin: 2em auto;
-		padding: 2em;
-		background-color: #f9f9f9;
-		border-radius: 8px;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	}
+		h1 {
+			color: #333;
+			margin-bottom: 1em;
+		}
 
-	h1 {
-		color: #333;
-		margin-bottom: 1em;
-	}
-
-	.toggle-form-button {
-		background-color: #007bff;
-		color: white;
-		padding: 0.8em 1.2em;
-		border: none;
-		border-radius: 5px;
-		cursor: pointer;
-		margin-bottom: 1.5em;
-	}
-
-	.toggle-form-button:hover {
-		background-color: #0056b3;
-	}
-
-	.form-message {
-		background-color: #d4edda;
-		color: #155724;
-		border: 1px solid #c3e6cb;
-		padding: 1em;
-		border-radius: 5px;
-		margin-bottom: 1.5em;
+		.form-message {
+			border: var(--border-size-1) solid var(--gray-1);
+			padding: var(--size-3);
+			border-radius: var(--radius-3);
+		}
 	}
 
 	.lost-and-found-list {
-		margin-top: 2em;
+		margin-block: var(--size-6);
 		display: grid;
-		gap: 1.5em;
+		gap: var(--size-3);
 	}
 
 	.post-card {
-		background-color: #fff;
-		border: 1px solid #ddd;
-		border-radius: 8px;
-		padding: 1.5em;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-	}
+		border: var(--border-size-1) solid var(--gray-1);
+		border-radius: var(--radius-2);
+		padding: var(--size-3);
 
-	.post-card h3 {
-		color: #007bff;
-		margin-top: 0;
-		margin-bottom: 0.5em;
-	}
+		h3 {
+			margin: 0;
+			display: flex;
+			align-items: center;
+			gap: var(--size-3);
+		}
 
-	.post-card p {
-		margin-bottom: 0.5em;
-		color: #555;
+		p {
+			margin-bottom: 0.5em;
+			color: #555;
+		}
 	}
 
 	.post-image {
 		max-width: 100%;
 		height: auto;
-		border-radius: 4px;
-		margin-top: 1em;
+		border-radius: var(--radius-2);
+		margin-bottom: var(--size-6);
 	}
 
 	.post-date {
 		font-size: 0.9em;
-		color: #888;
+		color: var(--stone-9);
 	}
 
 	.post-card-link {
 		text-decoration: none;
 		color: inherit;
 		display: block;
-	}
 
-	.post-card-link:hover .post-card {
-		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-		transform: translateY(-2px);
-		transition: all 0.2s ease-in-out;
+		&:hover .post-card {
+			box-shadow: 0 2px var(--stone-9);
+			transform: translateY(-3px);
+		}
 	}
 </style>

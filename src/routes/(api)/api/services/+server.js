@@ -64,8 +64,8 @@ export async function POST({ request, locals: { supabase, getSession } }) {
 	const description = formData.get('description');
 	const category = formData.get('category');
 	const image_url = formData.get('image_url');
-	const start_date = formData.get('service_start_date');
-	const end_date = formData.get('service_end_date');
+	const start_date = formData.get('start_date');
+	const end_date = formData.get('end_date');
 
 	if (!title || !description) {
 		return json({ message: 'Title and description are required.' }, { status: 400 });
