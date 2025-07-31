@@ -1,8 +1,11 @@
 <!-- ProfileForm.svelte -->
 <script>
 	import { enhance, applyAction } from '$app/forms';
+	import Button from '$lib/buttons/Button.svelte';
 
 	let { userProfile, onMessage } = $props();
+
+	let loading = $state(false);
 
 	// Rune-based Reactive State for form fields
 	let profileFormData = $state({
@@ -26,14 +29,17 @@
 
 	const submitForm = () => {
 		return async ({ result, update }) => {
+			loading = true;
 			const message = result.data?.message || 'An error occurred';
 
 			if (result.type === 'success') {
-				onMessage(message);
+				loading = false;
+				onMessage({ message, success: true });
 				await applyAction(result);
 				await update({ reset: false });
 			} else if (result.type === 'error' || result.type === 'failure') {
-				onMessage(message);
+				loading = false;
+				onMessage({ message, success: false });
 				await applyAction(result);
 				await update({ reset: false });
 			}
@@ -46,7 +52,7 @@
 	action="?/updateProfile"
 	use:enhance={submitForm}
 	class="profile-form">
-	<label for="username">Username:</label>
+	<label for="username">Username</label>
 	<input
 		type="text"
 		id="username"
@@ -54,14 +60,14 @@
 		bind:value={profileFormData.username}
 		required />
 
-	<label for="full_name">Full Name:</label>
+	<label for="full_name">Full Name</label>
 	<input
 		type="text"
 		id="full_name"
 		name="full_name"
 		bind:value={profileFormData.full_name} />
 
-	<label for="avatar_url">Avatar URL:</label>
+	<label for="avatar_url">Avatar URL</label>
 	<input
 		type="url"
 		id="avatar_url"
@@ -71,42 +77,36 @@
 	<label for="bio">Bio:</label>
 	<textarea id="bio" name="bio" bind:value={profileFormData.bio}></textarea>
 
-	<button type="submit">Save Changes</button>
+	<Button type="submit" {loading} disabled={loading}>
+		{#snippet icon()}
+			📌
+		{/snippet}
+		{loading ? 'Saving...' : 'Save Changes'}
+	</Button>
 </form>
 
 <style>
-	.profile-form label {
-		display: block;
-		margin-bottom: 0.5em;
-		font-weight: bold;
-	}
+	.profile-form {
+		margin-block: var(--size-6);
 
-	.profile-form input[type='text'],
-	.profile-form input[type='url'],
-	.profile-form textarea {
-		width: 100%;
-		padding: 0.8em;
-		margin-bottom: 1em;
-		border: 1px solid #ccc;
-		border-radius: 4px;
-		box-sizing: border-box;
-	}
-
-	.profile-form textarea {
-		min-height: 100px;
-		resize: vertical;
-	}
-
-	.profile-form button[type='submit'] {
-		background-color: #28a745;
-		color: white;
-		padding: 0.8em 1.5em;
-		border: none;
-		border-radius: 5px;
-		cursor: pointer;
-	}
-
-	.profile-form button[type='submit']:hover {
-		background-color: #218838;
+		label {
+			display: block;
+			margin-bottom: 0.5em;
+			font-weight: bold;
+		}
+		input[type='text'],
+		input[type='url'],
+		textarea {
+			width: 100%;
+			padding: 0.8em;
+			margin-bottom: 1em;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			box-sizing: border-box;
+		}
+		textarea {
+			min-height: 100px;
+			resize: vertical;
+		}
 	}
 </style>

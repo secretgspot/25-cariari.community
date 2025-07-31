@@ -1,33 +1,45 @@
 <script>
 	import { enhance } from '$app/forms';
+	import Button from '$lib/buttons/Button.svelte';
 
 	let { form } = $props();
+
+	let loading = $state(false);
 </script>
 
-<main>
+<div class="login-form-container">
 	<h1>Login</h1>
 	<form method="POST" action="?/login" use:enhance>
 		<label for="email">Email</label>
-		<input type="email" id="email" name="email" value={form?.values?.email ?? ''} required />
+		<input
+			type="email"
+			id="email"
+			name="email"
+			value={form?.values?.email ?? ''}
+			required />
 
 		<label for="password">Password</label>
 		<input type="password" id="password" name="password" required />
 
+		<Button type="submit" {loading} disabled={loading}>
+			{#snippet icon()}
+				👤
+			{/snippet}
+			{loading ? 'Login in...' : 'Login'}
+		</Button>
+
 		{#if form?.error}
 			<p class="error">{form.error}</p>
 		{/if}
-
-		<button type="submit">Login</button>
 	</form>
-</main>
+</div>
 
 <style>
-	main {
+	.login-form-container {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		min-height: 100vh;
 	}
 
 	h1 {

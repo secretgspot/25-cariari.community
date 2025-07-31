@@ -191,7 +191,7 @@
 	.btn-icon:hover {
 		background: transparent;
 		color: var(--primary-content);
-		outline: solid 6px var(--stone-6);
+		outline: solid 3px var(--stone-1);
 	}
 	.btn-icon .icon_wrap {
 		padding: var(--size-1);

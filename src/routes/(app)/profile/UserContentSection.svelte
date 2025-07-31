@@ -1,7 +1,10 @@
 <!-- UserContentSection.svelte -->
 <script>
-	let { title, items, itemKey, linkPrefix, type, onDelete, formatAdditionalInfo } =
-		$props();
+	import Button from '$lib/buttons/Button.svelte';
+
+	let { title, items, itemKey, linkPrefix, type, onDelete } = $props();
+
+	let loading = $state(false);
 
 	const handleDelete = async (id) => {
 		if (!confirm(`Are you sure you want to delete this ${type}?`)) return;
@@ -23,16 +26,18 @@
 						{:else}
 							<span class="item-title">{item[itemKey]}</span>
 						{/if}
-						{#if formatAdditionalInfo}
-							<span class="item-details">{formatAdditionalInfo(item)}</span>
-						{/if}
 					</div>
-					<button
-						class="delete-btn"
+
+					<Button
+						size="icon"
+						aria-label="Delete {type}"
 						onclick={() => handleDelete(item.id)}
-						aria-label="Delete {type}">
-						Delete
-					</button>
+						{loading}
+						disabled={loading}>
+						{#snippet icon()}
+							❌
+						{/snippet}
+					</Button>
 				</li>
 			{/each}
 		</ul>
@@ -46,17 +51,13 @@
 
 <style>
 	.content-section {
-		margin: 2em 0;
-		padding: 1.5em;
-		background-color: white;
-		border-radius: 8px;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-	}
+		margin-block: var(--size-8);
 
-	h2 {
-		color: #333;
-		margin-bottom: 1em;
-		font-size: 1.25em;
+		h2 {
+			color: #333;
+			margin-bottom: 1em;
+			font-size: 1.25em;
+		}
 	}
 
 	.content-list {
@@ -69,8 +70,8 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		padding: 1em;
-		border-bottom: 1px solid #eee;
+		padding: var(--size-2);
+		border-bottom: var(--border-size-1) solid var(--stone-3);
 	}
 
 	.content-item:last-child {
@@ -94,27 +95,6 @@
 	.item-title {
 		font-weight: 500;
 		color: #333;
-	}
-
-	.item-details {
-		display: block;
-		margin-top: 0.25em;
-		color: #666;
-		font-size: 0.9em;
-	}
-
-	.delete-btn {
-		background-color: #dc3545;
-		color: white;
-		border: none;
-		padding: 0.5em 1em;
-		border-radius: 4px;
-		cursor: pointer;
-		font-size: 0.9em;
-	}
-
-	.delete-btn:hover {
-		background-color: #c82333;
 	}
 
 	.no-items {

@@ -7,6 +7,7 @@
 	let { data } = $props();
 
 	let formMessage = $state('');
+	let formStatus = $state();
 
 	// Generic delete handler that works for all content types
 	const handleDelete = async (id, type) => {
@@ -21,7 +22,8 @@
 	};
 
 	const handleFormMessage = (message) => {
-		formMessage = message;
+		formMessage = message.message;
+		formStatus = message.success;
 	};
 </script>
 
@@ -37,20 +39,19 @@
 			</p>
 		</div>
 
-		{#if formMessage}
-			<div class="form-message">{formMessage}</div>
-		{/if}
-
 		<ProfileForm userProfile={data.userProfile} onMessage={handleFormMessage} />
+
+		{#if formMessage}
+			<div class="form-message" class:success={formStatus}>{formMessage}</div>
+		{/if}
 
 		<UserContentSection
 			title="My Lost & Found Posts"
-			items={data.lostAndFoundPosts}
-			itemKey="item_name"
+			items={data.lostandfounds}
+			itemKey="title"
 			linkPrefix="/lost-and-found"
 			type="lost-and-found"
-			onDelete={handleDelete}
-			formatAdditionalInfo={(item) => `${item.description} (${item.type})`} />
+			onDelete={handleDelete} />
 
 		<UserContentSection
 			title="My Events"
@@ -58,12 +59,7 @@
 			itemKey="title"
 			linkPrefix="/events"
 			type="event"
-			onDelete={handleDelete}
-			formatAdditionalInfo={(item) => {
-				const startDate = new Date(item.event_start_date);
-				const endDate = item.event_end_date ? new Date(item.event_end_date) : null;
-				return `${item.description} (Date: ${startDate.toLocaleDateString()} ${startDate.toLocaleTimeString()}${endDate ? ` - ${endDate.toLocaleDateString()} ${endDate.toLocaleTimeString()}` : ''})`;
-			}} />
+			onDelete={handleDelete} />
 
 		<UserContentSection
 			title="My Notices"
@@ -71,9 +67,7 @@
 			itemKey="title"
 			linkPrefix="/notices"
 			type="notice"
-			onDelete={handleDelete}
-			formatAdditionalInfo={(item) =>
-				`${item.content} (Posted: ${new Date(item.created_at).toLocaleDateString()})`} />
+			onDelete={handleDelete} />
 
 		<UserContentSection
 			title="My Services"
@@ -81,17 +75,14 @@
 			itemKey="title"
 			linkPrefix="/services"
 			type="service"
-			onDelete={handleDelete}
-			formatAdditionalInfo={(item) => `${item.description} (${item.category})`} />
+			onDelete={handleDelete} />
 
 		<UserContentSection
 			title="My Comments"
 			items={data.comments}
 			itemKey="content"
 			type="comment"
-			onDelete={handleDelete}
-			formatAdditionalInfo={(item) =>
-				`(${new Date(item.created_at).toLocaleDateString()})`} />
+			onDelete={handleDelete} />
 	{:else}
 		<p>Please log in to view your profile.</p>
 	{/if}
@@ -99,34 +90,31 @@
 
 <style>
 	.profile-container {
-		max-width: 800px;
-		margin: 2em auto;
-		padding: 2em;
-		background-color: #f9f9f9;
-		border-radius: 8px;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	}
+		h1 {
+			color: #333;
+			margin-bottom: 1em;
+		}
+		p {
+			margin-bottom: 0.5em;
+			color: #666;
+		}
 
-	h1 {
-		color: #333;
-		margin-bottom: 1em;
-	}
+		strong {
+			color: #333;
+		}
 
-	.user-info p {
-		margin-bottom: 0.5em;
-		color: #666;
-	}
-
-	.user-info strong {
-		color: #333;
+		.user-info {
+			font-size: small;
+		}
 	}
 
 	.form-message {
-		background-color: #d4edda;
-		color: #155724;
-		border: 1px solid #c3e6cb;
-		padding: 1em;
-		border-radius: 5px;
-		margin-bottom: 1.5em;
+		border: var(--border-size-1) solid var(--red-3);
+		padding: var(--size-3);
+		border-radius: var(--radius-2);
+		margin-block: var(--size-6);
+		&.success {
+			border-color: var(--green-3);
+		}
 	}
 </style>
