@@ -1,5 +1,6 @@
 <script>
 	import { enhance } from '$app/forms';
+	import { Button } from '$lib/buttons';
 
 	let { event, isOwner } = $props();
 	let formMessage = $state('');
@@ -208,9 +209,12 @@
 			</div>
 
 			<div class="form-actions">
-				<button type="submit" disabled={isSubmitting} class="update-btn">
+				<Button type="submit" green loading={isSubmitting} disabled={isSubmitting}>
+					{#snippet icon()}
+						👍
+					{/snippet}
 					{isSubmitting ? 'Updating...' : 'Update Event'}
-				</button>
+				</Button>
 			</div>
 		</form>
 
@@ -219,9 +223,12 @@
 			action="?/deleteEvent"
 			use:enhance={submitDeleteForm}
 			class="delete-form">
-			<button type="submit" class="delete-btn" disabled={isDeleting}>
+			<Button type="submit" red loading={isDeleting} disabled={isDeleting}>
+				{#snippet icon()}
+					❌
+				{/snippet}
 				{isDeleting ? 'Deleting...' : 'Delete Event'}
-			</button>
+			</Button>
 		</form>
 	</details>
 {/if}
@@ -314,44 +321,6 @@
 		display: flex;
 		gap: 1em;
 		margin-top: 1.5em;
-	}
-
-	.update-btn {
-		background-color: #28a745;
-		color: white;
-		padding: 0.8em 1.5em;
-		border: none;
-		border-radius: 5px;
-		cursor: pointer;
-		font-weight: bold;
-	}
-
-	.update-btn:hover:not(:disabled) {
-		background-color: #218838;
-	}
-
-	.update-btn:disabled {
-		background-color: #6c757d;
-		cursor: not-allowed;
-	}
-
-	.delete-btn {
-		background-color: #dc3545;
-		color: white;
-		padding: 0.8em 1.5em;
-		border: none;
-		border-radius: 5px;
-		cursor: pointer;
-		font-weight: bold;
-	}
-
-	.delete-btn:hover:not(:disabled) {
-		background-color: #c82333;
-	}
-
-	.delete-btn:disabled {
-		background-color: #6c757d;
-		cursor: not-allowed;
 	}
 
 	.form-message {

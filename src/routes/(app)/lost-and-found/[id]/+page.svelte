@@ -1,6 +1,8 @@
 <script>
 	import Comments from '$lib/Comments.svelte';
 	import ManageLostAndFound from './ManageLostAndFound.svelte';
+	import { formatText } from '$lib/utils/markdown.js';
+	import { timeFrom } from '$lib/utils/time.js';
 
 	let { data } = $props();
 </script>
@@ -11,7 +13,7 @@
 		{#if data.post.image_url}
 			<img src={data.post.image_url} alt={data.post.title} class="post-detail-image" />
 		{/if}
-		<p>{data.post.description}</p>
+		<p>{@html formatText(data.post.description)}</p>
 		<p class="post-detail-meta">
 			<strong>Date Lost/Found:</strong>
 			{new Date(data.post.date).toLocaleDateString()}
@@ -34,12 +36,6 @@
 
 <style>
 	.post-detail-container {
-		max-width: 800px;
-		margin: 2em auto;
-		padding: 2em;
-		background-color: #f9f9f9;
-		border-radius: 8px;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	}
 
 	h1 {

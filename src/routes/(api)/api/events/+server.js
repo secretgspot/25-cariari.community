@@ -1,22 +1,5 @@
 import { json } from '@sveltejs/kit';
 
-// Your slugify function stays unchanged
-function slugify(text) {
-	const baseSlug = text
-		.toString()
-		.normalize('NFD')
-		.replace(/\p{M}/gu, '')
-		.toLowerCase()
-		.trim()
-		.replace(/\s+/g, '-')
-		.replace(/[--]+/g, '-')
-		.replace(/-+$/, '');
-
-	// Append a short unique identifier to ensure uniqueness
-	const uniqueId = Math.random().toString(36).substring(2, 8); // 6 random alphanumeric chars
-	return `${baseSlug}-${uniqueId}`;
-}
-
 export async function GET({ url, request, locals: { supabase, getSession } }) {
 	let session = await getSession();
 

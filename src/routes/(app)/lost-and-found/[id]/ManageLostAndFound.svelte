@@ -1,12 +1,11 @@
 <script>
 	import { enhance } from '$app/forms';
+	import { Button } from '$lib/buttons';
 
 	let { post, isOwner } = $props();
 	let formMessage = $state('');
 	let isSubmitting = $state(false);
 	let isDeleting = $state(false);
-
-	console.log('lost and found iswoenr: ', isOwner);
 
 	// Form state
 	let formData = $state({
@@ -173,9 +172,12 @@
 				placeholder="https://example.com/image.jpg" />
 
 			<div class="form-actions">
-				<button type="submit" disabled={isSubmitting} class="update-btn">
-					{isSubmitting ? 'Updating...' : 'Update Post'}
-				</button>
+				<Button type="submit" green loading={isSubmitting} disabled={isSubmitting}>
+					{#snippet icon()}
+						👍
+					{/snippet}
+					{isSubmitting ? 'Updating...' : 'Update Lost/Found'}
+				</Button>
 			</div>
 		</form>
 
@@ -184,9 +186,12 @@
 			action="?/deletePost"
 			use:enhance={submitDeleteForm}
 			class="delete-form">
-			<button type="submit" class="delete-btn" disabled={isDeleting}>
-				{isDeleting ? 'Deleting...' : 'Delete Post'}
-			</button>
+			<Button type="submit" red loading={isDeleting} disabled={isDeleting}>
+				{#snippet icon()}
+					❌
+				{/snippet}
+				{isDeleting ? 'Deleting...' : 'Delete Notice'}
+			</Button>
 		</form>
 	</details>
 {/if}

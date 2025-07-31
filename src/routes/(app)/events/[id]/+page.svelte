@@ -2,9 +2,9 @@
 	import Comments from '$lib/Comments.svelte';
 	import ManageEvent from './ManageEvent.svelte';
 	import { formatText } from '$lib/utils/markdown.js';
+	import { timeFrom } from '$lib/utils/time.js';
 
 	let { data } = $props();
-	console.log('Event/[id] data: ', data);
 </script>
 
 <div class="event-detail-container">
@@ -43,12 +43,6 @@
 
 <style>
 	.event-detail-container {
-		max-width: 800px;
-		margin: 2em auto;
-		padding: 2em;
-		background-color: #f9f9f9;
-		border-radius: 8px;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	}
 
 	h1 {
