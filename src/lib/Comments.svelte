@@ -1,5 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
+	import Button from '$lib/buttons/Button.svelte';
 	import { ago } from '$lib/utils/time.js';
 
 	let { parentId, type, userData } = $props();
@@ -139,7 +140,13 @@
 	{#if userData?.is_logged_in}
 		<div class="new-comment-form">
 			<textarea bind:value={newCommentContent} placeholder="Add a comment..."></textarea>
-			<button onclick={submitComment} disabled={loading}>Submit Comment</button>
+
+			<Button onclick={submitComment} {loading} disabled={loading}>
+				{#snippet icon()}
+					👍
+				{/snippet}
+				{loading ? 'Adding...' : 'Submit Comment'}
+			</Button>
 		</div>
 	{:else}
 		<p>Please <a href="/login">log in</a> to add comments.</p>
@@ -182,66 +189,50 @@
 
 <style>
 	.comments-section {
-		margin-top: 2em;
-		padding: 1.5em;
-		background-color: #f0f2f5;
-		border-radius: 8px;
-	}
-
-	h2 {
-		color: #333;
-		margin-bottom: 1em;
+		h2 {
+			color: #333;
+			margin-bottom: var(--size-3);
+		}
 	}
 
 	.new-comment-form {
 		display: flex;
 		flex-direction: column;
-		gap: 0.5em;
-		margin-bottom: 1.5em;
-	}
+		gap: var(--size-3);
+		margin-bottom: var(--size-8);
 
-	.new-comment-form textarea {
-		width: 100%;
-		min-height: 80px;
-		padding: 0.8em;
-		border: 1px solid #ccc;
-		border-radius: 4px;
-		resize: vertical;
-	}
+		textarea {
+			width: auto;
+			min-height: 90px;
+			padding: var(--size-2);
+			border: var(--border-size-1) solid var(--gray-1);
+			border-radius: var(--border-size-3);
+			resize: vertical;
+		}
 
-	.new-comment-form button {
-		align-self: flex-end;
-		background-color: #007bff;
-		color: white;
-		padding: 0.6em 1em;
-		border: none;
-		border-radius: 5px;
-		cursor: pointer;
-	}
-
-	.new-comment-form button:hover {
-		background-color: #0056b3;
+		:global(button) {
+			align-self: end;
+		}
 	}
 
 	.comments-list {
 		display: flex;
 		flex-direction: column;
-		gap: 1em;
+		gap: var(--size-3);
 	}
 
 	.comment-card {
-		background-color: #fff;
-		border: 1px solid #ddd;
-		border-radius: 8px;
-		padding: 1em;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+		border: var(--border-size-1) solid var(--gray-1);
+		border-radius: var(--border-size-3);
+		padding: var(--size-3);
+		/* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); */
 	}
 
 	.comment-header {
 		display: flex;
 		align-items: center;
-		gap: 0.5em;
-		margin-bottom: 0.5em;
+		gap: var(--size-2);
+		margin-bottom: var(--size-3);
 	}
 
 	.comment-avatar {
@@ -253,17 +244,18 @@
 
 	.comment-author {
 		font-weight: bold;
-		color: #555;
+		color: var(--stone-9);
 	}
 
 	.comment-date {
 		font-size: 0.8em;
-		color: #888;
+		color: var(--stone-6);
 	}
 
 	.comment-content {
-		margin-bottom: 0.5em;
-		color: #333;
+		margin-bottom: var(--size-2);
+		color: var(--stone-9);
+		font-size: smaller;
 	}
 
 	.comment-actions button {
@@ -281,6 +273,6 @@
 
 	.error-message {
 		color: red;
-		margin-top: 1em;
+		margin-top: var(--size-3);
 	}
 </style>
