@@ -10,28 +10,40 @@
 <div class="event-detail-container">
 	{#if data.event}
 		<h1>{data.event.title}</h1>
+
+		<div class="event-detail-meta">
+			<div class="date">
+				<span>
+					<strong>Starts:</strong>
+					{timeFrom(data.event.event_start_date)}
+				</span>
+				{#if data.event.event_end_date}
+					<span>
+						<strong>Ends:</strong>
+						{timeFrom(data.event.event_end_date)}
+					</span>
+				{/if}
+			</div>
+			{#if data.event.location}
+				<div class="location">
+					<strong>Location:</strong>
+					{data.event.location}
+				</div>
+			{/if}
+		</div>
+
 		{#if data.event.image_url}
 			<img src={data.event.image_url} alt={data.event.title} class="event-detail-image" />
 		{/if}
+		<p class="posted">
+			Posted: {timeFrom(data.event.created_at)}
+		</p>
+
 		<div class="event-description">{@html formatText(data.event.description)}</div>
-		<p class="event-detail-meta">
-			<strong>Date:</strong>
-			{new Date(data.event.event_start_date).toLocaleDateString()}
-			{new Date(data.event.event_start_date).toLocaleTimeString()}
-			{#if data.event.event_end_date}
-				- {new Date(data.event.event_end_date).toLocaleDateString()}
-				{new Date(data.event.event_end_date).toLocaleTimeString()}
-			{/if}
-		</p>
-		{#if data.event.location}
-			<p><strong>Location:</strong> {data.event.location}</p>
-		{/if}
+
 		{#if data.event.category}
-			<p><strong>Category:</strong> {data.event.category}</p>
+			<span class="category">{data.event.category}</span>
 		{/if}
-		<p class="event-detail-date">
-			Posted: {new Date(data.event.created_at).toLocaleDateString()}
-		</p>
 
 		<ManageEvent event={data.event} isOwner={data.isOwner} />
 
@@ -43,23 +55,46 @@
 
 <style>
 	.event-detail-container {
-	}
+		position: relative;
+		h1 {
+			color: var(--stone-11);
+			margin-bottom: var(--size-1);
+		}
 
-	h1 {
-		color: #333;
-		margin-bottom: 1em;
-	}
+		.event-detail-meta {
+			color: var(--stone-9);
+			margin-block: 0 var(--size-2);
 
-	.event-detail-image {
-		max-width: 100%;
-		height: auto;
-		border-radius: 4px;
-		margin-bottom: 1em;
-	}
+			.date {
+				display: flex;
+				gap: var(--size-4);
+			}
+			strong {
+				font-size: small;
+			}
+		}
 
-	.event-detail-meta,
-	.event-detail-date {
-		font-size: 0.9em;
-		color: #555;
+		.category {
+			position: absolute;
+			top: 0;
+			right: 0;
+		}
+
+		.event-detail-image {
+			max-width: 100%;
+			width: 100%;
+			height: auto;
+			border-radius: var(--radius-2);
+			margin-bottom: 0;
+		}
+
+		.posted {
+			font-size: small;
+			margin-top: 0;
+		}
+
+		.event-description {
+			margin-block: var(--size-6);
+		}
 	}
 </style>

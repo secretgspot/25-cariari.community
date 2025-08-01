@@ -48,30 +48,42 @@
 				<a href="/events/{event.id}" class="event-card-link">
 					<div class="event-card">
 						<h3>{event.title}</h3>
+
+						<div class="event-meta">
+							<div class="date">
+								<span>
+									<strong>Starts:</strong>
+									{timeFrom(event.event_start_date)}
+								</span>
+								{#if event.event_end_date}
+									<span>
+										<strong>Ends:</strong>
+										{timeFrom(event.event_end_date)}
+									</span>
+								{/if}
+							</div>
+							{#if event.location}
+								<div class="location">
+									<strong>Location:</strong>
+									{event.location}
+								</div>
+							{/if}
+						</div>
+
 						{#if event.image_url}
 							<img src={event.image_url} alt={event.title} class="event-image" />
 						{/if}
+						<p class="posted">
+							Posted: {timeFrom(event.created_at)}
+						</p>
+
 						<div class="event-description">
 							{@html formatText(truncateText(stripMarkdown(event.description), 200))}
 						</div>
-						<p class="event-meta">
-							<strong>Date:</strong>
-							{new Date(event.event_start_date).toLocaleDateString()}
-							{new Date(event.event_start_date).toLocaleTimeString()}
-							{#if event.event_end_date}
-								- {new Date(event.event_end_date).toLocaleDateString()}
-								{new Date(event.event_end_date).toLocaleTimeString()}
-							{/if}
-						</p>
-						{#if event.location}
-							<p><strong>Location:</strong> {event.location}</p>
-						{/if}
+
 						{#if event.category}
-							<p><strong>Category:</strong> {event.category}</p>
+							<span class="category">{event.category}</span>
 						{/if}
-						<p class="event-date">
-							Posted: {new Date(event.created_at).toLocaleDateString()}
-						</p>
 					</div>
 				</a>
 			{/each}
@@ -83,9 +95,10 @@
 
 <style>
 	.events-container {
+		position: relative;
 		h1 {
-			color: #333;
-			margin-bottom: 1em;
+			color: var(--stone-11);
+			margin-bottom: var(--size-6);
 		}
 
 		.form-message {
@@ -102,33 +115,54 @@
 	}
 
 	.event-card {
+		position: relative;
 		border: var(--border-size-1) solid var(--gray-1);
 		border-radius: var(--radius-2);
-		padding: var(--size-3);
 
 		h3 {
-			margin: 0;
 			display: flex;
 			align-items: center;
 			gap: var(--size-3);
+			color: var(--stone-11);
+			margin: var(--size-3);
 		}
 
-		p {
-			margin-bottom: 0.5em;
-			color: #555;
+		.event-meta {
+			color: var(--stone-9);
+			margin: var(--size-3);
+
+			.date {
+				display: flex;
+				gap: var(--size-4);
+			}
+			strong {
+				font-size: small;
+			}
 		}
-	}
 
-	.event-image {
-		max-width: 100%;
-		height: auto;
-		border-radius: var(--radius-2);
-		margin-bottom: var(--size-6);
-	}
+		.category {
+			position: absolute;
+			top: 0;
+			right: 0;
+			font-size: small;
+			margin: var(--size-2);
+		}
 
-	.event-date {
-		font-size: 0.9em;
-		color: var(--stone-9);
+		.event-description {
+			margin: var(--size-3);
+		}
+
+		.event-image {
+			max-width: 100%;
+			width: 100%;
+			height: auto;
+			margin-bottom: 0;
+		}
+
+		.posted {
+			font-size: small;
+			margin: 0 var(--size-1);
+		}
 	}
 
 	.event-card-link {
@@ -137,7 +171,7 @@
 		display: block;
 
 		&:hover .event-card {
-			box-shadow: 0 2px var(--stone-9);
+			box-shadow: var(--shadow-1);
 			transform: translateY(-3px);
 		}
 	}
