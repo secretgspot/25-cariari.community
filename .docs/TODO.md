@@ -8,6 +8,14 @@ editing comment didn't refresh it even on page that seemed to refreshed. had to 
 
 takes a while sometimes until new comments appear, is it due to cache in api?
 
+### Result
+
+appears to be due to cache
+
 ## Events
 
 when adding new event it should appear at the top of the list?
+
+## Notices
+
+when adding new notice no success message appears in /notices after it's been added, should probably be toaster

@@ -71,11 +71,11 @@
 			await update();
 		};
 	}}
-	class="event-form">
+	class="add-form">
 	<h2 class="form-title">Add New Event</h2>
 
 	<div class="form-group">
-		<label for="title" class="form-label">Title</label>
+		<label for="title" class="form-label">Title <span class="required">*</span></label>
 		<input
 			type="text"
 			id="title"
@@ -86,23 +86,25 @@
 	</div>
 
 	<div class="form-group">
-		<label for="description" class="form-label">Description (supports Markdown)</label>
+		<label for="description" class="form-label"
+			>Description <span class="required">*</span></label>
 		<textarea
 			id="description"
 			name="description"
 			bind:value={formData.description}
 			required
-			rows="5"
 			placeholder="Use **bold**, *italic*, and [links](url) for formatting"
 			class="form-textarea"></textarea>
 	</div>
 
 	<div class="form-group">
-		<label for="category" class="form-label">Category</label>
+		<label for="category" class="form-label"
+			>Category <span class="required">*</span></label>
 		<select
 			id="category"
 			name="category"
 			bind:value={formData.category}
+			required
 			class="form-select">
 			<option value="">Select a category</option>
 			{#each categoryOptions as option}
@@ -112,7 +114,8 @@
 	</div>
 
 	<div class="form-group">
-		<label for="startDate" class="form-label">Start Date (Required)</label>
+		<label for="startDate" class="form-label"
+			>Start Date <span class="required">*</span></label>
 		<input
 			type="datetime-local"
 			id="startDate"
@@ -123,7 +126,8 @@
 	</div>
 
 	<div class="form-group">
-		<label for="endDate" class="form-label">End Date (Optional)</label>
+		<label for="endDate" class="form-label"
+			>End Date <span class="required">*</span></label>
 		<input
 			type="datetime-local"
 			id="endDate"
@@ -133,7 +137,7 @@
 	</div>
 
 	<div class="form-group">
-		<label for="location" class="form-label">Location (Optional)</label>
+		<label for="location" class="form-label">Location</label>
 		<input
 			type="text"
 			id="location"
@@ -143,7 +147,7 @@
 	</div>
 
 	<div class="form-group">
-		<label for="image_url" class="form-label">Image URL (Optional)</label>
+		<label for="image_url" class="form-label">Image URL</label>
 		<input
 			type="text"
 			id="image_url"
@@ -169,76 +173,4 @@
 </form>
 
 <style>
-	.event-form {
-		border: var(--border-size-1) solid var(--gray-1);
-		border-radius: var(--border-size-3);
-		padding: var(--size-6);
-		margin-block: var(--size-3);
-	}
-
-	.form-title {
-		font-size: 1.25em;
-		font-weight: 600;
-		margin-bottom: 1.5em;
-		color: #333;
-	}
-
-	.form-group {
-		margin-bottom: 1.5em;
-	}
-
-	.form-label {
-		display: block;
-		font-size: 0.9em;
-		font-weight: 500;
-		color: #374151;
-		margin-bottom: 0.5em;
-	}
-
-	.form-input,
-	.form-textarea,
-	.form-select {
-		width: 100%;
-		padding: 0.75em;
-		border: 1px solid #d1d5db;
-		border-radius: 6px;
-		font-size: 0.9em;
-		box-sizing: border-box;
-		transition:
-			border-color 0.2s,
-			box-shadow 0.2s;
-	}
-
-	.form-input:focus,
-	.form-textarea:focus,
-	.form-select:focus {
-		outline: none;
-		border-color: #6366f1;
-		box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-	}
-
-	.form-textarea {
-		resize: vertical;
-		min-height: 120px;
-	}
-
-	.error-message {
-		color: #ef4444;
-		font-size: 0.9em;
-		margin-bottom: 1em;
-		padding: 0.75em;
-		background-color: #fef2f2;
-		border: 1px solid #fecaca;
-		border-radius: 4px;
-	}
-
-	.success-message {
-		color: #10b981;
-		font-size: 0.9em;
-		margin-bottom: 1em;
-		padding: 0.75em;
-		background-color: #f0fdf4;
-		border: 1px solid #bbf7d0;
-		border-radius: 4px;
-	}
 </style>
