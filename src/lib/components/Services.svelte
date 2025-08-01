@@ -18,7 +18,6 @@
 					</div>
 				{/if}
 				<strong class="message">{service.title}</strong>
-				<!-- <span class="category {service.category}">{service.category}</span> -->
 				<Icon size="21" kind={service.category} />
 			</a>
 		{/each}
@@ -30,11 +29,11 @@
 		border-radius: var(--border-size-3);
 		border: none;
 		padding-inline: 0;
-	}
 
-	legend {
-		span {
-			font-weight: 600;
+		legend {
+			span {
+				font-weight: 600;
+			}
 		}
 	}
 
@@ -57,7 +56,7 @@
 			color: var(--blue-6);
 			&:hover {
 				color: var(--blue-9);
-				box-shadow: var(--shadow-2);
+				box-shadow: var(--shadow-1);
 			}
 		}
 	}
@@ -82,15 +81,10 @@
 
 	.message {
 		flex: 1;
-		white-space: nowrap;
+		/* white-space: nowrap; */
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
-
-	/* .category {
-		text-transform: uppercase;
-		font-size: x-small;
-	} */
 
 	.view-all {
 		display: inline-block;

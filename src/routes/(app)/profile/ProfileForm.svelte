@@ -52,30 +52,42 @@
 	action="?/updateProfile"
 	use:enhance={submitForm}
 	class="profile-form">
-	<label for="username">Username</label>
-	<input
-		type="text"
-		id="username"
-		name="username"
-		bind:value={profileFormData.username}
-		required />
+	<div class="form-group">
+		<label for="username" class="form-label">Username</label>
+		<input
+			type="text"
+			id="username"
+			name="username"
+			bind:value={profileFormData.username}
+			required
+			class="form-input" />
+	</div>
 
-	<label for="full_name">Full Name</label>
-	<input
-		type="text"
-		id="full_name"
-		name="full_name"
-		bind:value={profileFormData.full_name} />
+	<div class="form-group">
+		<label for="full_name" class="form-label">Full Name</label>
+		<input
+			type="text"
+			id="full_name"
+			name="full_name"
+			bind:value={profileFormData.full_name}
+			class="form-input" />
+	</div>
 
-	<label for="avatar_url">Avatar URL</label>
-	<input
-		type="url"
-		id="avatar_url"
-		name="avatar_url"
-		bind:value={profileFormData.avatar_url} />
+	<div class="form-group">
+		<label for="avatar_url" class="form-label">Avatar URL</label>
+		<input
+			type="url"
+			id="avatar_url"
+			name="avatar_url"
+			bind:value={profileFormData.avatar_url}
+			class="form-input" />
+	</div>
 
-	<label for="bio">Bio:</label>
-	<textarea id="bio" name="bio" bind:value={profileFormData.bio}></textarea>
+	<div class="form-group">
+		<label for="bio" class="form-label">Bio:</label>
+		<textarea id="bio" name="bio" bind:value={profileFormData.bio} class="form-textarea"
+		></textarea>
+	</div>
 
 	<Button type="submit" {loading} disabled={loading}>
 		{#snippet icon()}
@@ -88,25 +100,5 @@
 <style>
 	.profile-form {
 		margin-block: var(--size-6);
-
-		label {
-			display: block;
-			margin-bottom: 0.5em;
-			font-weight: bold;
-		}
-		input[type='text'],
-		input[type='url'],
-		textarea {
-			width: 100%;
-			padding: 0.8em;
-			margin-bottom: 1em;
-			border: 1px solid #ccc;
-			border-radius: 4px;
-			box-sizing: border-box;
-		}
-		textarea {
-			min-height: 100px;
-			resize: vertical;
-		}
 	}
 </style>

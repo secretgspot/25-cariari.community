@@ -43,13 +43,14 @@
 	.lost-found-container {
 		border-radius: var(--border-size-3);
 		border: none;
-	}
 
-	legend {
-		span {
-			font-weight: 600;
+		legend {
+			span {
+				font-weight: 600;
+			}
 		}
 	}
+
 	.items-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -63,20 +64,20 @@
 		overflow: hidden;
 		border: var(--border-size-1) solid var(--gray-1);
 		&:hover {
-			box-shadow: var(--shadow-2);
+			box-shadow: var(--shadow-1);
 		}
-	}
 
-	.item-link {
-		display: block;
-		text-decoration: none;
-		color: inherit;
-	}
+		img {
+			width: 100%;
+			height: 120px;
+			object-fit: cover;
+		}
 
-	.item-card img {
-		width: 100%;
-		height: 120px;
-		object-fit: cover;
+		.item-link {
+			display: block;
+			text-decoration: none;
+			color: inherit;
+		}
 	}
 
 	.placeholder-image {
@@ -91,42 +92,41 @@
 
 	.item-info {
 		padding: var(--size-3);
-	}
 
-	.item-info h3 {
-		margin: 0 0 0.5em 0;
-		font-size: 1em;
-		line-height: 1.3;
-	}
-
-	.item-type {
-		margin: 0 0 0.3em 0;
-		padding: 0.2em 0.5em;
-		border-radius: 12px;
-		font-size: 0.7em;
-		font-weight: bold;
-		text-transform: uppercase;
-		display: inline-block;
-		&.lost {
-			background-color: var(--red-1);
-			color: var(--red-6);
+		h3 {
+			margin: 0 0 var(--size-2) 0;
+			font-size: 1em;
+			line-height: 1.3;
 		}
 
-		&.found {
-			background-color: var(--green-1);
-			color: var(--green-6);
+		.item-type {
+			margin: 0 0 var(--size-1) 0;
+			padding: var(--size-1) var(--size-2);
+			border-radius: var(--border-size-3);
+			font-size: var(--size-3);
+			font-weight: bold;
+			text-transform: uppercase;
+			display: inline-block;
+			&.lost {
+				background-color: var(--red-1);
+				color: var(--red-6);
+			}
+			&.found {
+				background-color: var(--green-1);
+				color: var(--green-6);
+			}
 		}
-	}
 
-	.item-date,
-	.item-location {
-		margin: 0.3em 0;
-		color: var(--gray-5);
-		font-size: 0.8em;
-	}
+		.item-date,
+		.item-location {
+			margin: var(--size-2) 0;
+			color: var(--gray-5);
+			font-size: small;
+		}
 
-	.item-location {
-		color: var(--gray-6);
+		.item-location {
+			color: var(--gray-6);
+		}
 	}
 
 	.view-all {

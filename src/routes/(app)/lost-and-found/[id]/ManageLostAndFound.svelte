@@ -91,9 +91,6 @@
 			class="edit-form">
 			<h3>Edit Lost & Found Post</h3>
 
-			<!-- Add hidden inputs to ensure data is sent -->
-			<input type="hidden" name="id" value={post?.id || ''} />
-
 			<div class="form-group">
 				<label for="title" class="form-label"
 					>Title <span class="required">*</span></label>

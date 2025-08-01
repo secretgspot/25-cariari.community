@@ -22,11 +22,12 @@
 		align-items: center;
 	}
 	.backdrop {
-		/* background: rgba(255,255,255,0.18); */
-		/* background: var(--bg-primary); */
-		width: 100%;
-		height: 100%;
-		position: absolute;
+		z-index: 8;
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
 		backdrop-filter: blur(30px);
 	}
 </style>

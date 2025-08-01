@@ -80,7 +80,7 @@
 			color: var(--blue-6);
 			&:hover {
 				color: var(--blue-9);
-				box-shadow: var(--shadow-2);
+				box-shadow: var(--shadow-1);
 			}
 		}
 	}

@@ -19,7 +19,7 @@ export async function GET({ locals: { supabase } }) {
 				.from('events')
 				.select('*')
 				.limit(5)
-				.order('start_date', { ascending: false }),
+				.order('created_at', { ascending: false }),
 
 			supabase
 				.from('lost_and_found')
