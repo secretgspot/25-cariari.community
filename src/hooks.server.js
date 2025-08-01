@@ -17,7 +17,6 @@ export async function handle({ event, resolve }) {
 
 	// Securely get authenticated session and verified user
 	event.locals.getSession = async () => {
-		// First, get the verified user by contacting Supabase Auth server
 		const { data: { user }, error: userError } = await event.locals.supabase.auth.getUser();
 
 		if (userError || !user) {
@@ -27,33 +26,27 @@ export async function handle({ event, resolve }) {
 				user: null,
 				is_logged_in: false,
 				is_admin: false,
-				cookies: event.cookies.getAll(),
 			};
 		}
 
-		// Optionally get the session metadata (do NOT trust session.user)
-		const { data: { session } } = await event.locals.supabase.auth.getSession();
-
-		// Confirm session exists
-		if (!session) {
-			return {
-				session: null,
-				user: null,
-				is_logged_in: false,
-				is_admin: false,
-				cookies: event.cookies.getAll(),
-			};
-		}
+		// Don't need to check sessionError anymore – userError handles authentication failures
+		//const { data: { session }, error: sessionError } = await event.locals.supabase.auth.getSession(); // Removed
+		//if (sessionError || !session) {
+		//	return {
+		//		session: null,
+		//		user: null,
+		//		is_logged_in: false,
+		//		is_admin: false,
+		//	};
+		//}
 
 		// Check admin claim or other custom claims
-		const is_admin = user.app_metadata?.claims_admin || false;
+		const is_admin = user.app_metadata?.admin || false;
 
 		return {
-			session,      // safe to return for expiry or tokens, but do NOT use session.user
 			user,         // trusted verified user object for auth & authorization
 			is_logged_in: true,
 			is_admin,
-			cookies: event.cookies.getAll(),
 		};
 	};
 

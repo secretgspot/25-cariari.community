@@ -11,10 +11,10 @@ export async function load(event) {
 	}
 
 	// Get auth cookies for client
-	const { data: { session } } = await event.locals.supabase.auth.getSession();
-	const cookies = session?.cookies || [];
+	// const { data: { session } } = await event.locals.supabase.auth.getSession();
+	// const cookies = session?.cookies || [];
 
-	const parentData = await event.parent();
+	// const parentData = await event.parent();
 	// console.log('(app)/+layout.server: parent data loaded', parentData);
 
 	/////// SANITY CHECK ////////

@@ -26,7 +26,8 @@ export async function load({ locals: { getSession, supabase } }) {
 					.from('profiles')
 					.insert({
 						user_id: user.id,
-						updated_at: new Date().toISOString()
+						updated_at: new Date().toISOString(),
+						username: user.email.split('@')[0], // example default
 					})
 					.select()
 					.single();
@@ -43,11 +44,11 @@ export async function load({ locals: { getSession, supabase } }) {
 	}
 
 	return {
-		session,
+		// session,
 		user,
 		is_logged_in,
 		is_admin,
-		cookies,
+		// cookies,
 		userProfile, // Now available sitewide
 	};
 }

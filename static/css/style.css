@@ -6,3 +6,114 @@ body {
 	margin: 0;
 	;
 }
+
+/* Common MANAGE ACTIONS styling */
+.manage-actions {
+	margin-block: var(--size-8);
+	border: var(--border-size-1) solid var(--gray-1);
+	border-radius: var(--border-size-3);
+	padding: 0;
+
+	summary {
+		padding: var(--size-3);
+		cursor: pointer;
+		background-color: var(--gray-1);
+		border-radius: var(--border-size-3) var(--border-size-3) 0 0;
+		font-weight: bold;
+		color: var(--stone-9);
+
+		&:hover {
+			background-color: var(--gray-2);
+		}
+	}
+
+	&[open] summary {
+		border-bottom: var(--border-size-1) solid var(--gray-2);
+		border-radius: var(--border-size-3) var(--border-size-3) 0 0;
+	}
+
+	.form-message {
+		background-color: var(--green-1);
+		color: var(--green-12);
+		padding: var(--size-3);
+		border: var(--border-size-1) solid var(--green-6);
+		border-radius: var(--border-size-3);
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
+		margin-bottom: 0;
+
+		&.error {
+			background-color: var(--red-1);
+			color: var(--red-12);
+			border-color: var(--red-6);
+		}
+	}
+}
+
+/* common INPUT styling */
+.required {
+	color: var(--red-6);
+}
+
+.edit-form {
+	padding: var(--size-5);
+	border-bottom: var(--border-size-1) solid var(--gray-1);
+}
+
+.delete-form {
+	padding: var(--size-5);
+	text-align: center;
+}
+
+.edit-form h3 {
+	margin-top: 0;
+	margin-bottom: var(--size-5);
+	color: var(--stone-9);
+	font-size: 1.25em;
+	font-weight: 600;
+}
+
+.form-group {
+	margin-bottom: var(--size-5);
+}
+
+.form-label {
+	display: block;
+	font-size: 0.9em;
+	font-weight: 500;
+	color: var(--stone-8);
+	margin-bottom: var(--size-2);
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+	width: 100%;
+	padding: var(--size-3) var(--size-2);
+	border: var(--border-size-1) solid var(--gray-1);
+	border-radius: var(--border-size-3);
+	font-size: 0.9em;
+	box-sizing: border-box;
+	transition:
+		border-color 0.2s,
+		box-shadow 0.2s;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+	outline: none;
+	border-color: var(--blue-3);
+	box-shadow: var(--shadow-1);
+}
+
+.form-textarea {
+	resize: vertical;
+	min-height: 120px;
+}
+
+.form-actions {
+	display: flex;
+	gap: var(--size-3);
+	margin-top: var(--size-8);
+}

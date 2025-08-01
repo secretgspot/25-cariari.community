@@ -12,7 +12,7 @@ declare namespace App {
       user: import('@supabase/supabase-js').User | null;
       is_logged_in: boolean;
       is_admin: boolean;
-      cookies?: string[]; // optional if you want to expose cookies as in your hooks
+      // cookies?: string[]; // optional if you want to expose cookies as in your hooks
     }>;
   }
 

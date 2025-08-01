@@ -90,18 +90,8 @@
 </script>
 
 {#if isOwner}
-	<details class="notice-actions">
+	<details class="manage-actions">
 		<summary>Manage Notice</summary>
-
-		{#if formMessage}
-			<p
-				class="form-message"
-				class:error={formMessage.includes('required') ||
-					formMessage.includes('failed') ||
-					formMessage.includes('error')}>
-				{formMessage}
-			</p>
-		{/if}
 
 		<form
 			method="POST"
@@ -111,7 +101,8 @@
 			<h3>Edit Notice</h3>
 
 			<div class="form-group">
-				<label for="title" class="form-label">Title</label>
+				<label for="title" class="form-label"
+					>Title <span class="required">*</span></label>
 				<input
 					type="text"
 					id="title"
@@ -119,25 +110,26 @@
 					bind:value={formData.title}
 					required
 					disabled={isSubmitting}
+					placeholder="Enter a title for your notice"
 					class="form-input" />
 			</div>
 
 			<div class="form-group">
 				<label for="description" class="form-label"
-					>Description (supports Markdown)</label>
+					>Description <span class="required">*</span></label>
 				<textarea
 					id="description"
 					name="description"
 					bind:value={formData.description}
 					required
 					disabled={isSubmitting}
-					rows="5"
 					placeholder="Use **bold**, *italic*, and [links](url) for formatting"
 					class="form-textarea"></textarea>
 			</div>
 
 			<div class="form-group">
-				<label for="urgency" class="form-label">Urgency</label>
+				<label for="urgency" class="form-label"
+					>Urgency <span class="required">*</span></label>
 				<select
 					id="urgency"
 					name="urgency"
@@ -151,7 +143,7 @@
 			</div>
 
 			<div class="form-group">
-				<label for="start_date" class="form-label">Start Date (Optional)</label>
+				<label for="start_date" class="form-label">Start Date</label>
 				<input
 					type="date"
 					id="start_date"
@@ -162,7 +154,7 @@
 			</div>
 
 			<div class="form-group">
-				<label for="end_date" class="form-label">End Date (Optional)</label>
+				<label for="end_date" class="form-label">End Date</label>
 				<input
 					type="date"
 					id="end_date"
@@ -194,111 +186,18 @@
 				{isDeleting ? 'Deleting...' : 'Delete Notice'}
 			</Button>
 		</form>
+
+		{#if formMessage}
+			<p
+				class="form-message"
+				class:error={formMessage.includes('required') ||
+					formMessage.includes('failed') ||
+					formMessage.includes('error')}>
+				{formMessage}
+			</p>
+		{/if}
 	</details>
 {/if}
 
 <style>
-	.notice-actions {
-		margin: 2em 0;
-		border: 1px solid #ddd;
-		border-radius: 8px;
-		padding: 0;
-		background-color: #fff;
-	}
-
-	.notice-actions summary {
-		padding: 1em;
-		cursor: pointer;
-		background-color: #f8f9fa;
-		border-radius: 8px 8px 0 0;
-		font-weight: bold;
-		color: #495057;
-	}
-
-	.notice-actions summary:hover {
-		background-color: #e9ecef;
-	}
-
-	.notice-actions[open] summary {
-		border-bottom: 1px solid #ddd;
-		border-radius: 8px 8px 0 0;
-	}
-
-	.edit-form {
-		padding: 1.5em;
-		border-bottom: 1px solid #eee;
-	}
-
-	.delete-form {
-		padding: 1em 1.5em;
-		text-align: center;
-	}
-
-	.edit-form h3 {
-		margin-top: 0;
-		margin-bottom: 1.5em;
-		color: #333;
-		font-size: 1.25em;
-		font-weight: 600;
-	}
-
-	.form-group {
-		margin-bottom: 1.5em;
-	}
-
-	.form-label {
-		display: block;
-		font-size: 0.9em;
-		font-weight: 500;
-		color: #374151;
-		margin-bottom: 0.5em;
-	}
-
-	.form-input,
-	.form-textarea,
-	.form-select {
-		width: 100%;
-		padding: 0.75em;
-		border: 1px solid #d1d5db;
-		border-radius: 6px;
-		font-size: 0.9em;
-		box-sizing: border-box;
-		transition:
-			border-color 0.2s,
-			box-shadow 0.2s;
-	}
-
-	.form-input:focus,
-	.form-textarea:focus,
-	.form-select:focus {
-		outline: none;
-		border-color: #6366f1;
-		box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-	}
-
-	.form-textarea {
-		resize: vertical;
-		min-height: 120px;
-	}
-
-	.form-actions {
-		display: flex;
-		gap: 1em;
-		margin-top: 1.5em;
-	}
-
-	.form-message {
-		background-color: #d4edda;
-		color: #155724;
-		border: 1px solid #c3e6cb;
-		padding: 1em;
-		border-radius: 5px;
-		margin-bottom: 1em;
-	}
-
-	.form-message.error {
-		background-color: #f8d7da;
-		color: #721c24;
-		border-color: #f5c6cb;
-	}
 </style>

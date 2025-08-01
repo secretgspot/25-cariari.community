@@ -49,9 +49,9 @@
 
 	// Spinner sizes for icon state specifically
 	const getIconSpinnerSize = $derived.by(() => {
-		if (size === 'icon') return '21';
-		if (size === 'small') return '27';
-		return '36';
+		if (size === 'icon') return '12';
+		if (size === 'small') return '15';
+		return '16';
 	});
 </script>
 

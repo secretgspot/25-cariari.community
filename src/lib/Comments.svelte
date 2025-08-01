@@ -189,6 +189,7 @@
 
 <style>
 	.comments-section {
+		margin-block-start: var(--size-9);
 		h2 {
 			color: #333;
 			margin-bottom: var(--size-3);
