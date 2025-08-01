@@ -5,9 +5,10 @@
 </script>
 
 <fieldset class="events-container">
-	<legend
-		><span>Upcoming Events</span> •
-		<a href="/events" class="view-all">View all</a></legend>
+	<legend>
+		<span>Upcoming Events</span> •
+		<a href="/events" class="view-all">View all</a>
+	</legend>
 	<div class="slider-container" use:dragable>
 		<div class="slides">
 			{#each data as event}
@@ -41,12 +42,16 @@
 	.events-container {
 		border-radius: var(--border-size-3);
 		border: none;
+		/* Prevent the fieldset from contributing to page overflow */
+		min-width: 0;
+	}
 
-		legend {
-			span {
-				font-weight: 600;
-			}
-		}
+	.events-container legend {
+		font-weight: 600;
+	}
+
+	.events-container legend span {
+		font-weight: 600;
 	}
 
 	.slider-container {
@@ -56,74 +61,123 @@
 		scrollbar-width: thin;
 		scrollbar-color: var(--blue-6) var(--gray-3);
 		margin-block: var(--size-3);
-		&::scrollbar {
-			height: 9px;
-		}
-		&::scrollbar-track {
-			background: transparent;
-			border-radius: var(--border-size-3);
-		}
+		/* Ensure container doesn't exceed parent width */
+		width: 100%;
+		box-sizing: border-box;
+	}
 
-		&::scrollbar-thumb {
-			background: var(--blue-6);
-			border-radius: var(--border-size-3);
-		}
+	.slider-container::-webkit-scrollbar {
+		height: 9px;
+	}
 
-		&::scrollbar-thumb:hover {
-			background: var(--blue-9);
-		}
+	.slider-container::-webkit-scrollbar-track {
+		background: transparent;
+		border-radius: var(--border-size-3);
+	}
+
+	.slider-container::-webkit-scrollbar-thumb {
+		background: var(--blue-6);
+		border-radius: var(--border-size-3);
+	}
+
+	.slider-container::-webkit-scrollbar-thumb:hover {
+		background: var(--blue-9);
 	}
 
 	.slides {
 		display: flex;
 		gap: var(--size-3);
+		/* Ensure slides container can shrink */
+		min-width: 0;
 	}
 
 	.slide {
-		flex: 0 0 99%;
+		/* Mobile first: 1 event visible at a time with small gap visible */
+		flex: 0 0 calc(100% - var(--size-6));
 		border: var(--border-size-1) solid var(--gray-1);
-		img {
-			width: 100%;
-			/* height: 180px; */
-			object-fit: cover;
-			aspect-ratio: 1;
-		}
-		.event-link {
-			display: block;
-			text-decoration: none;
-			color: inherit;
-		}
+		border-radius: var(--border-size-2);
+		overflow: hidden;
+		box-sizing: border-box;
+	}
 
-		.placeholder-image {
-			width: 100%;
-			background: var(--gradient-23);
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			color: var(--gray-0);
-			aspect-ratio: 1;
-		}
+	.slide img {
+		width: 100%;
+		object-fit: cover;
+		aspect-ratio: 1;
+		display: block;
+	}
 
-		.event-info {
-			padding: var(--size-3);
-			h3 {
-				margin: 0 0 var(--size-2) 0;
-				font-size: 1.1em;
-				line-height: 1.3;
-			}
-			.event-date {
-				margin: 0;
-				color: var(--gray-6);
-				font-size: smaller;
-			}
-		}
+	.event-link {
+		display: block;
+		text-decoration: none;
+		color: inherit;
+		/* Ensure link doesn't add extra space */
+		line-height: 0;
+	}
+
+	.placeholder-image {
+		width: 100%;
+		background: var(--gradient-23);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--gray-0);
+		aspect-ratio: 1;
+	}
+
+	.event-info {
+		padding: var(--size-3);
+		/* Reset line-height for text content */
+		line-height: normal;
+	}
+
+	.event-info h3 {
+		margin: 0 0 var(--size-2) 0;
+		font-size: 1.1em;
+		line-height: 1.3;
+	}
+
+	.event-info .event-date {
+		margin: 0;
+		color: var(--gray-6);
+		font-size: 0.875rem;
 	}
 
 	.view-all {
 		display: inline-block;
 		text-decoration: none;
-		&:hover {
-			text-decoration: underline;
+	}
+
+	.view-all:hover {
+		text-decoration: underline;
+	}
+
+	/* Responsive adjustments - mobile first */
+	@media (min-width: 480px) {
+		.slide {
+			/* Small tablets: show 1.5 events */
+			flex: 0 0 calc(70% - var(--size-3));
+		}
+	}
+
+	@media (min-width: 768px) {
+		.slide {
+			/* Tablets: show 2 events */
+			flex: 0 0 calc(50% - var(--size-3));
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.slide {
+			/* Desktop: show 3 events */
+			flex: 0 0 calc(33.333% - var(--size-3));
+		}
+	}
+
+	@media (min-width: 1200px) {
+		.slide {
+			/* Large desktop: show 4 events */
+			flex: 0 0 calc(25% - var(--size-3));
 		}
 	}
 </style>

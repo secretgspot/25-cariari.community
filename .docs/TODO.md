@@ -19,3 +19,7 @@ when adding new event it should appear at the top of the list?
 ## Notices
 
 when adding new notice no success message appears in /notices after it's been added, should probably be toaster
+
+## Homepage
+
+Upcoming events sized wrong on mobile, why? padding in .event-info responsible
