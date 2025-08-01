@@ -4,6 +4,7 @@
 	import Nav from '$lib/Nav.svelte';
 	import Footer from '$lib/Footer.svelte';
 	import FixedLine from '$lib/loaders/FixedLine.svelte';
+	import Splash from '$lib/loaders/Splash.svelte';
 	import 'open-props/style';
 
 	let { children, data } = $props();
@@ -29,20 +30,16 @@
 	});
 </script>
 
-<Nav {data} />
-
-<main>
-	{#if navigating.complete}
-		<!-- <div class="loading-indicator" aria-live="polite">
-			<p>Loading...</p>
-		</div> -->
-		<FixedLine kind="spiral" size="1" />
-	{:else}
+{#if navigating.complete}
+	<FixedLine kind="spiral" size="1" />
+	<Splash />
+{:else}
+	<Nav {data} />
+	<main>
 		{@render children?.()}
-	{/if}
-
-	<Footer />
-</main>
+		<Footer />
+	</main>
+{/if}
 
 <style>
 	main {
@@ -51,11 +48,4 @@
 		gap: var(--size-8);
 		margin-inline: var(--size-3);
 	}
-
-	/* .loading-indicator {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		min-height: 200px;
-	} */
 </style>
