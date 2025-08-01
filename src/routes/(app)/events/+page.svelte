@@ -49,7 +49,7 @@
 					<div class="event-card">
 						<h3>{event.title}</h3>
 
-						<div class="event-meta">
+						<div class="meta">
 							<div class="date">
 								<span>
 									<strong>Starts:</strong>
@@ -71,13 +71,13 @@
 						</div>
 
 						{#if event.image_url}
-							<img src={event.image_url} alt={event.title} class="event-image" />
+							<img src={event.image_url} alt={event.title} class="image" />
 						{/if}
 						<p class="posted">
 							Posted: {timeFrom(event.created_at)}
 						</p>
 
-						<div class="event-description">
+						<div class="description">
 							{@html formatText(truncateText(stripMarkdown(event.description), 200))}
 						</div>
 
@@ -127,7 +127,7 @@
 			margin: var(--size-3);
 		}
 
-		.event-meta {
+		.meta {
 			color: var(--stone-9);
 			margin: var(--size-3);
 
@@ -148,11 +148,11 @@
 			margin: var(--size-2);
 		}
 
-		.event-description {
+		.description {
 			margin: var(--size-3);
 		}
 
-		.event-image {
+		.image {
 			max-width: 100%;
 			width: 100%;
 			height: auto;

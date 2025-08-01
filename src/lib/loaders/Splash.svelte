@@ -3,10 +3,10 @@
 	import LogoSvg from '$lib/LogoSvg.svelte';
 </script>
 
-<div transition:fade|global class="splash">
+<div transition:fade class="splash">
 	<div class="backdrop"></div>
 
-	<LogoSvg animate={true} kind="gold" size="150" time={3} />
+	<LogoSvg animate={true} invert={true} ring={false} kind="gold" size="69" time={3} />
 </div>
 
 <style>
@@ -29,5 +29,6 @@
 		left: 0;
 		right: 0;
 		backdrop-filter: blur(30px);
+		background: rgba(255, 255, 255, 0.888);
 	}
 </style>

@@ -48,15 +48,21 @@
 				<a href="/services/{service.id}" class="service-card-link">
 					<div class="service-card">
 						<h3>{service.title}</h3>
+
 						{#if service.image_url}
-							<img src={service.image_url} alt={service.title} class="service-image" />
+							<img src={service.image_url} alt={service.title} class="image" />
 						{/if}
-						<p>{service.description}</p>
+
+						<div class="description">
+							{@html formatText(truncateText(stripMarkdown(service.description), 200))}
+						</div>
+
 						{#if service.category}
-							<p><strong>Category:</strong> {service.category}</p>
+							<span class="category">{service.category}</span>
 						{/if}
-						<p class="service-date">
-							Posted: {new Date(service.created_at).toLocaleDateString()}
+
+						<p class="posted">
+							Posted: {timeFrom(service.created_at)}
 						</p>
 					</div>
 				</a>
@@ -69,9 +75,10 @@
 
 <style>
 	.services-container {
+		position: relative;
 		h1 {
-			color: #333;
-			margin-bottom: 1em;
+			color: var(--stone-11);
+			margin-bottom: var(--size-6);
 		}
 
 		.form-message {
@@ -88,33 +95,46 @@
 	}
 
 	.service-card {
+		position: relative;
 		border: var(--border-size-1) solid var(--gray-1);
 		border-radius: var(--radius-2);
-		padding: var(--size-3);
+		padding: var(--size-3) var(--size-3) var(--size-6);
 
 		h3 {
-			margin: 0;
 			display: flex;
 			align-items: center;
 			gap: var(--size-3);
+			color: var(--stone-11);
+			margin-block: var(--size-3);
 		}
 
-		p {
-			margin-bottom: 0.5em;
-			color: #555;
+		.category {
+			position: absolute;
+			top: 0;
+			right: 0;
+			font-size: small;
+			margin: var(--size-2);
 		}
-	}
 
-	.service-image {
-		max-width: 100%;
-		height: auto;
-		border-radius: var(--radius-2);
-		margin-bottom: var(--size-6);
-	}
+		.image {
+			max-width: 100%;
+			width: 100%;
+			height: auto;
+			border-radius: var(--radius-2);
+		}
 
-	.service-date {
-		font-size: 0.9em;
-		color: var(--stone-9);
+		.posted {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			font-size: small;
+			margin: var(--size-2);
+			color: var(--stone-6);
+		}
+
+		.description {
+			margin-block: var(--size-3);
+		}
 	}
 
 	.service-card-link {
@@ -123,7 +143,7 @@
 		display: block;
 
 		&:hover .service-card {
-			box-shadow: 0 2px var(--stone-9);
+			box-shadow: var(--shadow-1);
 			transform: translateY(-3px);
 		}
 	}

@@ -1,4 +1,5 @@
 <script>
+	import { timeFromShort } from '$lib/utils/time.js';
 	import { dragable } from '$lib/utils/dragable.js';
 
 	let { data } = $props();
@@ -24,11 +25,7 @@
 						<div class="event-info">
 							<h3>{event.title}</h3>
 							<p class="event-date">
-								{new Date(event.event_start_date).toLocaleDateString()}
-								{new Date(event.event_start_date).toLocaleTimeString([], {
-									hour: '2-digit',
-									minute: '2-digit',
-								})}
+								{timeFromShort(event.event_start_date)}
 							</p>
 						</div>
 					</a>
@@ -64,24 +61,23 @@
 		/* Ensure container doesn't exceed parent width */
 		width: 100%;
 		box-sizing: border-box;
-	}
 
-	.slider-container::-webkit-scrollbar {
-		height: 9px;
-	}
+		&::scrollbar {
+			height: 9px;
+		}
 
-	.slider-container::-webkit-scrollbar-track {
-		background: transparent;
-		border-radius: var(--border-size-3);
-	}
+		&::scrollbar-track {
+			background: transparent;
+			border-radius: var(--border-size-3);
+		}
 
-	.slider-container::-webkit-scrollbar-thumb {
-		background: var(--blue-6);
-		border-radius: var(--border-size-3);
-	}
-
-	.slider-container::-webkit-scrollbar-thumb:hover {
-		background: var(--blue-9);
+		&::scrollbar-thumb {
+			background: var(--blue-6);
+			border-radius: var(--border-size-3);
+			&:hover {
+				background: var(--blue-9);
+			}
+		}
 	}
 
 	.slides {
@@ -98,13 +94,13 @@
 		border-radius: var(--border-size-2);
 		overflow: hidden;
 		box-sizing: border-box;
-	}
 
-	.slide img {
-		width: 100%;
-		object-fit: cover;
-		aspect-ratio: 1;
-		display: block;
+		img {
+			width: 100%;
+			object-fit: cover;
+			aspect-ratio: 1;
+			display: block;
+		}
 	}
 
 	.event-link {
@@ -127,29 +123,31 @@
 
 	.event-info {
 		padding: var(--size-3);
-		/* Reset line-height for text content */
 		line-height: normal;
-	}
+		display: flex;
+		justify-content: space-between;
+		gap: var(--size-2);
 
-	.event-info h3 {
-		margin: 0 0 var(--size-2) 0;
-		font-size: 1.1em;
-		line-height: 1.3;
-	}
+		h3 {
+			margin: 0 0 var(--size-2) 0;
+			font-size: 1.1em;
+			line-height: 1.3;
+		}
 
-	.event-info .event-date {
-		margin: 0;
-		color: var(--gray-6);
-		font-size: 0.875rem;
+		.event-date {
+			margin: 0;
+			color: var(--stone-9);
+			font-weight: 600;
+			/* white-space: nowrap; */
+		}
 	}
 
 	.view-all {
 		display: inline-block;
 		text-decoration: none;
-	}
-
-	.view-all:hover {
-		text-decoration: underline;
+		&:hover {
+			text-decoration: underline;
+		}
 	}
 
 	/* Responsive adjustments - mobile first */

@@ -2,6 +2,7 @@
 	import Comments from '$lib/Comments.svelte';
 	import ManageService from './ManageService.svelte';
 	import { formatText } from '$lib/utils/markdown.js';
+	import { timeFrom } from '$lib/utils/time.js';
 
 	let { data } = $props();
 </script>
@@ -9,19 +10,19 @@
 <div class="service-detail-container">
 	{#if data.service}
 		<h1>{data.service.title}</h1>
+
 		{#if data.service.image_url}
-			<img
-				src={data.service.image_url}
-				alt={data.service.title}
-				class="service-detail-image" />
+			<img src={data.service.image_url} alt={data.service.title} class="image" />
 		{/if}
-		<p class="service-content">{data.service.description}</p>
-		{#if data.service.category}
-			<p><strong>Category:</strong> {data.service.category}</p>
-		{/if}
-		<p class="service-detail-date">
-			Posted on: {new Date(data.service.created_at).toLocaleDateString()}
+		<p class="posted">
+			Posted: {timeFrom(data.service.created_at)}
 		</p>
+
+		<p class="description">{@html formatText(data.service.description)}</p>
+
+		{#if data.service.category}
+			<span class="category">{data.service.category}</span>
+		{/if}
 
 		<ManageService service={data.service} isOwner={data.isOwner} />
 
@@ -33,22 +34,34 @@
 
 <style>
 	.service-detail-container {
-	}
+		position: relative;
+		h1 {
+			color: var(--stone-11);
+			margin-bottom: var(--size-1);
+		}
 
-	h1 {
-		color: #333;
-		margin-bottom: 1em;
-	}
+		.category {
+			position: absolute;
+			top: 0;
+			right: 0;
+		}
 
-	.service-detail-image {
-		max-width: 100%;
-		height: auto;
-		border-radius: 4px;
-		margin-bottom: 1em;
-	}
+		.image {
+			max-width: 100%;
+			width: 100%;
+			height: auto;
+			border-radius: var(--radius-2);
+			margin-bottom: 0;
+		}
 
-	.service-detail-date {
-		font-size: 0.9em;
-		color: #555;
+		.posted {
+			font-size: small;
+			margin-top: 0;
+			color: var(--stone-6);
+		}
+
+		.description {
+			margin-block: var(--size-3);
+		}
 	}
 </style>

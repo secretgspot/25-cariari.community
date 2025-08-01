@@ -11,7 +11,7 @@
 	{#if data.event}
 		<h1>{data.event.title}</h1>
 
-		<div class="event-detail-meta">
+		<div class="meta">
 			<div class="date">
 				<span>
 					<strong>Starts:</strong>
@@ -33,13 +33,13 @@
 		</div>
 
 		{#if data.event.image_url}
-			<img src={data.event.image_url} alt={data.event.title} class="event-detail-image" />
+			<img src={data.event.image_url} alt={data.event.title} class="image" />
 		{/if}
 		<p class="posted">
 			Posted: {timeFrom(data.event.created_at)}
 		</p>
 
-		<div class="event-description">{@html formatText(data.event.description)}</div>
+		<div class="description">{@html formatText(data.event.description)}</div>
 
 		{#if data.event.category}
 			<span class="category">{data.event.category}</span>
@@ -61,7 +61,7 @@
 			margin-bottom: var(--size-1);
 		}
 
-		.event-detail-meta {
+		.meta {
 			color: var(--stone-9);
 			margin-block: 0 var(--size-2);
 
@@ -80,7 +80,7 @@
 			right: 0;
 		}
 
-		.event-detail-image {
+		.image {
 			max-width: 100%;
 			width: 100%;
 			height: auto;
@@ -91,9 +91,10 @@
 		.posted {
 			font-size: small;
 			margin-top: 0;
+			color: var(--stone-6);
 		}
 
-		.event-description {
+		.description {
 			margin-block: var(--size-6);
 		}
 	}
