@@ -4,7 +4,6 @@
 	import { formatText } from '$lib/utils/markdown.js';
 
 	let { data } = $props();
-	console.log('Service/[id] data: ', data);
 </script>
 
 <div class="service-detail-container">

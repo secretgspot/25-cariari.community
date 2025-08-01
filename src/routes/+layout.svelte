@@ -3,6 +3,7 @@
 	import { invalidate } from '$app/navigation';
 	import Nav from '$lib/Nav.svelte';
 	import Footer from '$lib/Footer.svelte';
+	import FixedLine from '$lib/loaders/FixedLine.svelte';
 	import 'open-props/style';
 
 	let { children, data } = $props();
@@ -32,9 +33,10 @@
 
 <main>
 	{#if navigating.complete}
-		<div class="loading-indicator" aria-live="polite">
+		<!-- <div class="loading-indicator" aria-live="polite">
 			<p>Loading...</p>
-		</div>
+		</div> -->
+		<FixedLine kind="spiral" size="1" />
 	{:else}
 		{@render children?.()}
 	{/if}
@@ -50,10 +52,10 @@
 		margin-inline: var(--size-3);
 	}
 
-	.loading-indicator {
+	/* .loading-indicator {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		min-height: 200px;
-	}
+	} */
 </style>

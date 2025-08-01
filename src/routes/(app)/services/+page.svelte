@@ -7,8 +7,6 @@
 
 	let { data } = $props();
 
-	console.log('services data: ', data);
-
 	let showForm = $state(false);
 	let formMessage = $state('');
 

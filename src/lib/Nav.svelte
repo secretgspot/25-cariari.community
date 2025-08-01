@@ -92,6 +92,7 @@
 		padding: var(--size-3);
 		background-color: rgb(255 255 255 / 90%);
 		backdrop-filter: blur(10px);
+		z-index: 3;
 	}
 
 	nav.site-nav {
