@@ -37,7 +37,7 @@
 
 			<!-- User Section -->
 			<a href="/profile" class="profile-link">
-				{#if data.is_admin}<span title="admin">🔥</span>{/if}
+				{#if data.is_admin}<span title="admin" class="admin-indicator">🔥</span>{/if}
 				{#if data.userProfile?.avatar_url}
 					<img
 						src={data.userProfile.avatar_url}
@@ -120,11 +120,12 @@
 			position: relative;
 			display: flex;
 			gap: var(--size-2);
-			span {
+			.admin-indicator {
 				position: absolute;
 				bottom: 0px;
-				right: -3px;
+				left: 0px;
 				z-index: 2;
+				font-size: small;
 			}
 			.avatar-image {
 				border-radius: var(--radius-round);

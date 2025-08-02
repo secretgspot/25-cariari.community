@@ -8,7 +8,7 @@
 <footer class="site-footer">
 	<!-- Footer info -->
 	<div class="info-wrapper">
-		©{new Date().getFullYear()} Cariari Community •
+		©{new Date().getFullYear()} •
 		<LinkButton href="/about" title="About CC">About</LinkButton>
 		• <LinkButton href="/about#privacy" title="Privacy Policy">Privacy</LinkButton>
 		• <LinkButton href="/about#terms" title="Terms of Service">Terms</LinkButton>
@@ -29,7 +29,6 @@
 
 		.info-wrapper {
 			font-size: small;
-			color: var(--color-text-secondary);
 		}
 
 		.logo-link {

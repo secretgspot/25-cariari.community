@@ -17,7 +17,7 @@
 
 ## Events
 
-- [ ] should have image placeholder if no image supplied
+- [x] should have image placeholder if no image supplied
 
 ## Lost & Found
 
