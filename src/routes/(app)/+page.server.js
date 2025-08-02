@@ -4,17 +4,7 @@ import { redirect, error, fail } from '@sveltejs/kit';
 export async function load({ locals: { getSession }, fetch }) {
 	const { user, is_logged_in } = await getSession();
 
-	// If not logged in, return early with empty data
-	if (!is_logged_in) {
-		return {
-			user,
-			is_logged_in,
-			noticesPosts: [],
-			eventsPosts: [],
-			lostAndFoundPosts: [],
-			servicesPosts: []
-		};
-	}
+	
 
 	let homepageData = {
 		notices: [],
