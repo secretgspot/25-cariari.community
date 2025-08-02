@@ -3,11 +3,9 @@
 	import ProfileForm from './ProfileForm.svelte';
 	import UserContentSection from './UserContentSection.svelte';
 	import { deleteItem } from '$lib/utils/api_helpers.js';
+	import { addToast } from '$lib/toasts';
 
 	let { data } = $props();
-
-	let formMessage = $state('');
-	let formStatus = $state();
 
 	// Generic delete handler that works for all content types
 	const handleDelete = async (id, type) => {
@@ -17,13 +15,22 @@
 			await deleteItem(endpoint, type);
 			await invalidateAll();
 		} catch (error) {
-			formMessage = `Error deleting ${type}: ${error.message}`;
+			addToast({
+				message: `Error deleting ${type}: ${error.message}`,
+				type: 'error',
+				dismissible: true,
+				timeout: 0,
+			});
 		}
 	};
 
 	const handleFormMessage = (message) => {
-		formMessage = message.message;
-		formStatus = message.success;
+		addToast({
+			message: message.message,
+			type: message.success ? 'success' : 'error',
+			dismissible: !message.success,
+			timeout: message.success ? 1200 : 0,
+		});
 	};
 </script>
 
@@ -40,10 +47,6 @@
 		</div>
 
 		<ProfileForm userProfile={data.userProfile} onMessage={handleFormMessage} />
-
-		{#if formMessage}
-			<div class="form-message" class:success={formStatus}>{formMessage}</div>
-		{/if}
 
 		<UserContentSection
 			title="My Lost & Found Posts"
@@ -91,30 +94,20 @@
 <style>
 	.profile-container {
 		h1 {
-			color: #333;
-			margin-bottom: 1em;
+			color: var(--stone-11);
+			margin-bottom: var(--size-3);
 		}
 		p {
-			margin-bottom: 0.5em;
-			color: #666;
+			margin-bottom: var(--size-2);
+			color: var(--stone-11);
 		}
 
 		strong {
-			color: #333;
+			color: var(--stone-6);
 		}
 
 		.user-info {
 			font-size: small;
-		}
-	}
-
-	.form-message {
-		border: var(--border-size-1) solid var(--red-3);
-		padding: var(--size-3);
-		border-radius: var(--radius-2);
-		margin-block: var(--size-6);
-		&.success {
-			border-color: var(--green-3);
 		}
 	}
 </style>

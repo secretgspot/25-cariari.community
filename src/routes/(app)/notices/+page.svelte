@@ -114,8 +114,8 @@
 <style>
 	.notices-container {
 		h1 {
-			color: #333;
-			margin-bottom: 1em;
+			color: var(--stone-11);
+			margin-bottom: var(--size-3);
 		}
 	}
 

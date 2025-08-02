@@ -1,9 +1,9 @@
 <script>
 	import { enhance } from '$app/forms';
 	import { Button } from '$lib/buttons';
+	import { addToast } from '$lib/toasts';
 
 	let { notice, isOwner } = $props();
-	let formMessage = $state('');
 	let isSubmitting = $state(false);
 	let isDeleting = $state(false);
 
@@ -42,18 +42,31 @@
 
 	const submitUpdateForm = async ({ form, data, action, cancel, submitter }) => {
 		isSubmitting = true;
-		formMessage = '';
 
 		return async ({ result, update }) => {
 			isSubmitting = false;
 
 			if (result.type === 'success') {
-				formMessage = result.data.message;
+				addToast({
+					message: result.data.message,
+					type: 'success',
+					timeout: 1200,
+				});
 				await update();
 			} else if (result.type === 'error') {
-				formMessage = result.data.message || 'An error occurred';
+				addToast({
+					message: result.data.message || 'An error occurred',
+					type: 'error',
+					dismissible: true,
+					timeout: 0,
+				});
 			} else if (result.type === 'failure') {
-				formMessage = result.data?.message || 'Update failed';
+				addToast({
+					message: result.data?.message || 'Update failed',
+					type: 'error',
+					dismissible: true,
+					timeout: 0,
+				});
 			}
 		};
 	};
@@ -70,7 +83,6 @@
 		}
 
 		isDeleting = true;
-		formMessage = '';
 
 		return async ({ result }) => {
 			const { applyAction } = await import('$app/forms');
@@ -78,9 +90,19 @@
 			isDeleting = false;
 
 			if (result.type === 'failure') {
-				formMessage = result.data?.message || 'Delete failed';
+				addToast({
+					message: result.data?.message || 'Delete failed',
+					type: 'error',
+					dismissible: true,
+					timeout: 0,
+				});
 			} else if (result.type === 'error') {
-				formMessage = result.data?.message || 'An error occurred during deletion';
+				addToast({
+					message: result.data?.message || 'An error occurred during deletion',
+					type: 'error',
+					dismissible: true,
+					timeout: 0,
+				});
 			} else if (result.type === 'redirect') {
 				// Let applyAction handle the redirect
 				await applyAction(result);
@@ -186,16 +208,6 @@
 				{isDeleting ? 'Deleting...' : 'Delete Notice'}
 			</Button>
 		</form>
-
-		{#if formMessage}
-			<p
-				class="form-message"
-				class:error={formMessage.includes('required') ||
-					formMessage.includes('failed') ||
-					formMessage.includes('error')}>
-				{formMessage}
-			</p>
-		{/if}
 	</details>
 {/if}
 
