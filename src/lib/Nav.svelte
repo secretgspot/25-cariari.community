@@ -10,7 +10,7 @@
 
 <header class="site-header">
 	<!-- Brand/Logo Section -->
-	<a href="/">
+	<a href="/" class="logo-link">
 		<Logo size="30px" title="Cariari Community" />
 	</a>
 
@@ -93,6 +93,10 @@
 		background-color: rgb(255 255 255 / 90%);
 		backdrop-filter: blur(10px);
 		z-index: 3;
+	}
+
+	.logo-link {
+		color: var(--stone-12);
 	}
 
 	nav.site-nav {

@@ -15,7 +15,7 @@
 	</div>
 
 	<!-- Brand/Logo Section -->
-	<a href="/">
+	<a href="/" class="logo-link">
 		<Logo size="30px" title="Cariari Community" />
 	</a>
 </footer>
@@ -30,6 +30,10 @@
 		.info-wrapper {
 			font-size: small;
 			color: var(--color-text-secondary);
+		}
+
+		.logo-link {
+			color: var(--stone-12);
 		}
 	}
 </style>
