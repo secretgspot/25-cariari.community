@@ -30,7 +30,7 @@ import { SUPABASE_SERVICE_ROLE_KEY } from '$env/static/private';
     userId,
     {
      app_metadata: {
-      claims_admin: false
+      admin: false
      }
     }
    );

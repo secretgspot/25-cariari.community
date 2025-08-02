@@ -18,7 +18,7 @@ export async function load(event) {
 	// console.log('(app)/+layout.server: parent data loaded', parentData);
 
 	/////// SANITY CHECK ////////
-	const is_admin = user.app_metadata?.claims_admin || false;
+	const is_admin = user.app_metadata?.admin || false;
 	console.log('(app)/+layout.server: authenticated user detected 👍');
 	console.log(`${is_admin ? '🔥' : '👻'}👤: ${user.id} 🌐${event.url.pathname}`);
 
