@@ -71,26 +71,55 @@ export async function load({ locals: { getSession }, fetch, parent }) {
 }
 
 export const actions = {
-	updateProfile: async ({ request, fetch }) => {
+	updateProfile: async ({ request, locals: { supabase, getSession } }) => {
+		const session = await getSession();
+		if (!session) {
+			return fail(401, { message: 'Unauthorized' });
+		}
+
 		const formData = await request.formData();
 		const username = formData.get('username');
 		const full_name = formData.get('full_name');
-		const avatar_url = formData.get('avatar_url');
 		const bio = formData.get('bio');
+		const avatarFile = formData.get('avatar_url');
 
-		const response = await fetch('/api/profile', {
-			method: 'PATCH',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ username, full_name, avatar_url, bio }),
-		});
-		const result = await response.json();
+		// Get the current avatar_url from the profile, not user_metadata
+		const { data: currentProfile } = await supabase
+			.from('profiles')
+			.select('avatar_url')
+			.eq('user_id', session.user.id)
+			.single();
 
-		if (!response.ok) {
-			return fail(response.status, result);
+		let avatar_url = currentProfile?.avatar_url;
+
+		if (avatarFile && avatarFile.size > 0) {
+			const { data, error: uploadError } = await supabase.storage
+				.from('uploads')
+				.upload(`avatars/${session.user.id}/${Date.now()}_${avatarFile.name}`, avatarFile);
+
+			if (uploadError) {
+				console.error('Avatar upload error:', uploadError);
+				return fail(500, { message: 'Failed to upload avatar: ' + uploadError.message });
+			}
+
+			const { data: publicUrlData } = supabase.storage.from('uploads').getPublicUrl(data.path);
+			avatar_url = publicUrlData.publicUrl;
 		}
 
-		return { success: true, message: result.message, profile: result.profile };
+		const { error: profileError } = await supabase.from('profiles').upsert({
+			user_id: session.user.id,
+			username,
+			full_name,
+			bio,
+			avatar_url,
+			updated_at: new Date(),
+		});
+
+		if (profileError) {
+			console.error('Profile update error:', profileError);
+			return fail(500, { message: 'Failed to update profile: ' + profileError.message });
+		}
+
+		return { success: true, message: 'Profile updated successfully!' };
 	},
 };

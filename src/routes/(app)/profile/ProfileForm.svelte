@@ -51,6 +51,7 @@
 	method="POST"
 	action="?/updateProfile"
 	use:enhance={submitForm}
+	enctype="multipart/form-data"
 	class="profile-form">
 	<div class="form-group">
 		<label for="username" class="form-label">Username</label>
@@ -74,12 +75,11 @@
 	</div>
 
 	<div class="form-group">
-		<label for="avatar_url" class="form-label">Avatar URL</label>
+		<label for="avatar_url" class="form-label">Avatar</label>
 		<input
-			type="url"
+			type="file"
 			id="avatar_url"
 			name="avatar_url"
-			bind:value={profileFormData.avatar_url}
 			class="form-input" />
 	</div>
 
