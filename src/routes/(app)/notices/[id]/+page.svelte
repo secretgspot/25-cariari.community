@@ -1,5 +1,4 @@
 <script>
-	import { goto } from '$app/navigation';
 	import Comments from '$lib/Comments.svelte';
 	import ManageNotice from './ManageNotice.svelte';
 	import { formatText } from '$lib/utils/markdown.js';
@@ -12,13 +11,13 @@
 	{#if data.notice}
 		<header class="notice-header">
 			<div class="title-wrap">
+				<p class="posted">
+					Posted: {timeFrom(data.notice.created_at)}
+				</p>
 				<h1>
 					<span class="urgency {data.notice.urgency.toLowerCase()}"></span>
 					{data.notice.title}
 				</h1>
-				<p class="notice-date">
-					Posted: {new Date(data.notice.created_at).toLocaleDateString()}
-				</p>
 			</div>
 			<div class="details-wrap">
 				{#if data.notice.start_date}
@@ -54,12 +53,9 @@
 			</div>
 		</header>
 		{#if data.notice.image_url}
-			<img
-				src={data.notice.image_url}
-				alt={data.notice.title}
-				class="notice-detail-image" />
+			<img src={data.notice.image_url} alt={data.notice.title} class="image" />
 		{/if}
-		<div class="notice-description">{@html formatText(data.notice.description)}</div>
+		<div class="description">{@html formatText(data.notice.description)}</div>
 
 		<!-- Use the extracted ManageNotice component -->
 		<ManageNotice notice={data.notice} isOwner={data.isOwner} />
@@ -119,15 +115,20 @@
 		}
 	}
 
-	.notice-detail-image {
+	.image {
 		max-width: 100%;
 		height: auto;
 		border-radius: 4px;
 		margin-bottom: 1em;
 	}
 
-	.notice-detail-date {
-		font-size: 0.9em;
-		color: #555;
+	.posted {
+		font-size: small;
+		margin-top: 0;
+		color: var(--stone-6);
+	}
+
+	.description {
+		margin-block: var(--size-3);
 	}
 </style>

@@ -10,16 +10,14 @@
 	let loading = $state(true);
 	let error = $state(null);
 
+	let formError = $state(null);
+
 	async function fetchComments() {
 		loading = true;
 		error = null;
 		try {
 			const url = `/api/comments?${type}=${parentId}`;
-			// console.log('Fetching comments from:', url);
-			// console.log('parentId:', parentId, 'type:', type);
-
 			const response = await fetch(url);
-			// console.log('Response status:', response.status, 'ok:', response.ok);
 
 			if (!response.ok) {
 				const errData = await response.json();
@@ -39,12 +37,14 @@
 
 	async function submitComment() {
 		if (!newCommentContent.trim()) {
-			error = 'Comment cannot be empty.';
+			formError = 'Comment cannot be empty.';
 			return;
 		}
 
 		loading = true;
-		error = null;
+		formError = null; // Clear form error
+		error = null; // Clear API error
+
 		try {
 			const body = {
 				content: newCommentContent,
@@ -77,7 +77,6 @@
 		}
 	}
 
-	// TODO: Implement edit and delete functionality
 	async function editComment(commentId, currentContent) {
 		const updatedContent = prompt('Edit your comment:', currentContent);
 		if (!updatedContent || !updatedContent.trim()) return;
@@ -147,17 +146,21 @@
 				{/snippet}
 				{loading ? 'Adding...' : 'Submit Comment'}
 			</Button>
+
+			{#if formError}
+				<div class="form-message">{formError}</div>
+			{/if}
 		</div>
 	{:else}
 		<p>Please <a href="/login">log in</a> to add comments.</p>
 	{/if}
 
 	{#if loading}
-		<p>Loading comments...</p>
+		<p class="loading-comments">Loading comments...</p>
 	{:else if error}
 		<p class="error-message">Error: {error}</p>
 	{:else if comments.length === 0}
-		<p>No comments yet. Be the first to comment!</p>
+		<p class="no-comments">No comments yet. Be the first to comment!</p>
 	{:else}
 		<div class="comments-list">
 			{#each comments as comment (comment.id)}
@@ -272,8 +275,31 @@
 		text-decoration: underline;
 	}
 
+	.form-message {
+		border: var(--border-size-1) solid var(--red-3);
+		padding: var(--size-3);
+		border-radius: var(--radius-2);
+		margin-block: var(--size-6);
+		/* &.success {
+			border-color: var(--green-3);
+		} */
+	}
+
 	.error-message {
-		color: red;
-		margin-top: var(--size-3);
+		border: var(--border-size-1) solid var(--red-3);
+		padding: var(--size-3);
+		border-radius: var(--radius-2);
+		margin-block: var(--size-6);
+	}
+
+	.no-comments,
+	.loading-comments {
+		border: var(--border-size-1) solid var(--gray-1);
+		padding: var(--size-3);
+		border-radius: var(--radius-2);
+		margin-block: var(--size-6);
+	}
+	.loading-comments {
+		text-align: center;
 	}
 </style>

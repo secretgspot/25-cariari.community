@@ -12,6 +12,41 @@ body {
 	;
 }
 
+pre {
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	max-width: 100%;
+	background-color: var(--stone-0);
+	border: var(--border-size-1) solid var(--gray-1);
+	border-radius: var(--border-size-3);
+	padding: var(--size-3);
+	margin-block: var(--size-3);
+	font-family: monospace;
+	color: var(--stone-9);
+	overflow-x: auto;
+}
+
+blockquote {
+	margin-block: var(--size-3);
+	padding: var(--size-2) var(--size-3);
+	border-left: var(--border-size-3) solid var(--stone-3);
+	background-color: var(--gray-0);
+	font-style: normal;
+	color: var(--stone-9);
+	max-width: 100%;
+}
+
+code {
+	background-color: var(--stone-0);
+	color: var(--purple-9);
+	padding: var(--size-1) var(--size-2);
+	border-radius: var(--border-size-3);
+	font-family: monospace;
+	font-size: smaller;
+	border: none;
+}
+
 /* Common ADD FORM styling */
 .add-form {
 	border: var(--border-size-1) solid var(--gray-1);
