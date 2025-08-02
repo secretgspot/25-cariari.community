@@ -113,8 +113,15 @@
 			gap: var(--size-2);
 		}
 		.profile-link {
+			position: relative;
 			display: flex;
 			gap: var(--size-2);
+			span {
+				position: absolute;
+				bottom: 0px;
+				right: -3px;
+				z-index: 2;
+			}
 			.avatar-image {
 				border-radius: var(--radius-round);
 				max-height: 27px;

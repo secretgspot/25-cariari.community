@@ -15,7 +15,8 @@
 			<img src={data.service.image_url} alt={data.service.title} class="image" />
 		{/if}
 		<p class="posted">
-			Posted: {timeFrom(data.service.created_at)}
+			<span>Posted: {timeFrom(data.service.created_at)}</span>
+			<span>Expires: {timeFrom(data.service.end_date)}</span>
 		</p>
 
 		<p class="description">{@html formatText(data.service.description)}</p>
@@ -58,6 +59,8 @@
 			font-size: small;
 			margin-top: 0;
 			color: var(--stone-6);
+			display: flex;
+			justify-content: space-between;
 		}
 
 		.description {

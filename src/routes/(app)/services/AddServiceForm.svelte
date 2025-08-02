@@ -130,7 +130,10 @@
 			id="start_date"
 			name="start_date"
 			bind:value={formData.start_date}
+			readonly
 			class="form-input" />
+		<!-- Hidden input to ensure the value is submitted -->
+		<input type="hidden" name="start_date" value={formData.end_date} />
 	</div>
 
 	<div class="form-group">
@@ -140,7 +143,10 @@
 			id="end_date"
 			name="end_date"
 			bind:value={formData.end_date}
+			readonly
 			class="form-input" />
+		<!-- Hidden input to ensure the value is submitted -->
+		<input type="hidden" name="end_date" value={formData.end_date} />
 	</div>
 
 	{#if error}

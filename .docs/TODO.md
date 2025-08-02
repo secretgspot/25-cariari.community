@@ -1,31 +1,15 @@
 # TODO
 
-## Comments
-
-when entering empty comment and get Error: Comment cannot be empty all comments dissapear, error message should be separate and not affect existent comment list
-
-editing comment didn't refresh it even on page that seemed to refreshed. had to do manual refresh to see it
-
-takes a while sometimes until new comments appear, is it due to cache in api?
-
-### Result
-
-appears to be due to cache
-
-## Events
-
-when adding new event it should appear at the top of the list?
-
-## Notices
-
-when adding new notice no success message appears in /notices after it's been added, should probably be toaster
-
-## Homepage
-
-Upcoming events sized wrong on mobile, why? padding in .event-info responsible
-
 ## General
 
 - [ ] Upload photo to bucket instead of Image URL
 - [x] services should have 1 week date that are not changeable after posting, disable date management in ManageForm. date is not loaded from service
-- [ ] when comments return an error it should not hide all other comments in the list
+- [x] when comments return an error it should not hide all other comments in the list
+
+## Services
+
+- [ ] adding new service displays Service added succesfully! it should be a toaster
+
+## Notices
+
+- [ ] when adding new notice no success message appears in /notices after it's been added, should probably be toaster
