@@ -174,7 +174,7 @@
 						<span class="comment-date">{ago(comment.created_at)} ago</span>
 					</div>
 					<p class="comment-content">{comment.content}</p>
-					{#if userData?.user?.id === comment.user_id}
+					{#if userData?.user?.id === comment.user_id || userData?.is_admin}
 						<div class="comment-actions">
 							<button onclick={() => editComment(comment.id, comment.content)}
 								>Edit</button>

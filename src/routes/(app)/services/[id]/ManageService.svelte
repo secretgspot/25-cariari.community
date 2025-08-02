@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { Button } from '$lib/buttons';
 
-	let { service, isOwner } = $props();
+	let { service, isOwner, is_admin } = $props();
 	let formMessage = $state('');
 	let isSubmitting = $state(false);
 	let isDeleting = $state(false);
@@ -163,18 +163,24 @@
 					name="start_date"
 					bind:value={formData.start_date}
 					disabled={isSubmitting}
+					readonly
 					class="form-input" />
+				<!-- Hidden input to ensure the value is submitted -->
+				<input type="hidden" name="start_date" value={formData.start_date} />
 			</div>
 
 			<div class="form-group">
-				<label for="end_date" class="form-label">End Date (Optional)</label>
+				<label for="end_date" class="form-label">End Date</label>
 				<input
 					type="date"
 					id="end_date"
 					name="end_date"
 					bind:value={formData.end_date}
 					disabled={isSubmitting}
+					readonly
 					class="form-input" />
+				<!-- Hidden input to ensure the value is submitted -->
+				<input type="hidden" name="end_date" value={formData.end_date} />
 			</div>
 
 			<div class="form-actions">

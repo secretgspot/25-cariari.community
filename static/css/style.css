@@ -28,6 +28,12 @@ body {
 }
 
 /* Common MANAGE ACTIONS styling */
+[readonly] {
+	background: var(--gray-0);
+	color: var(--gray-6);
+	cursor: not-allowed;
+}
+
 .manage-actions {
 	margin-block: var(--size-8);
 	border: var(--border-size-1) solid var(--gray-1);

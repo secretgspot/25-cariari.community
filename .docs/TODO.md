@@ -27,3 +27,5 @@ Upcoming events sized wrong on mobile, why? padding in .event-info responsible
 ## General
 
 - [ ] Upload photo to bucket instead of Image URL
+- [x] services should have 1 week date that are not changeable after posting, disable date management in ManageForm. date is not loaded from service
+- [ ] when comments return an error it should not hide all other comments in the list
