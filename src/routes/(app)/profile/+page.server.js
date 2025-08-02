@@ -83,7 +83,6 @@ export const actions = {
 		const bio = formData.get('bio');
 		const avatarFile = formData.get('avatar_url');
 
-		// Get the current avatar_url from the profile, not user_metadata
 		const { data: currentProfile } = await supabase
 			.from('profiles')
 			.select('avatar_url')
@@ -93,13 +92,17 @@ export const actions = {
 		let avatar_url = currentProfile?.avatar_url;
 
 		if (avatarFile && avatarFile.size > 0) {
+			if (avatar_url) {
+				const oldAvatarPath = avatar_url.split('/uploads/').pop();
+				await supabase.storage.from('uploads').remove([oldAvatarPath]);
+			}
+
 			const { data, error: uploadError } = await supabase.storage
 				.from('uploads')
 				.upload(`avatars/${session.user.id}/${Date.now()}_${avatarFile.name}`, avatarFile);
 
 			if (uploadError) {
-				console.error('Avatar upload error:', uploadError);
-				return fail(500, { message: 'Failed to upload avatar: ' + uploadError.message });
+				return fail(500, { message: 'Failed to upload avatar. ' + uploadError.message });
 			}
 
 			const { data: publicUrlData } = supabase.storage.from('uploads').getPublicUrl(data.path);
@@ -116,8 +119,7 @@ export const actions = {
 		});
 
 		if (profileError) {
-			console.error('Profile update error:', profileError);
-			return fail(500, { message: 'Failed to update profile: ' + profileError.message });
+			return fail(500, { message: 'Failed to update profile. ' + profileError.message });
 		}
 
 		return { success: true, message: 'Profile updated successfully!' };
