@@ -1,7 +1,8 @@
 <script>
 	import { onMount } from 'svelte';
 	import Button from '$lib/buttons/Button.svelte';
-	import { ago } from '$lib/utils/time.js';
+	import { timeFrom } from '$lib/utils/time.js';
+	import { addToast } from '$lib/toasts';
 
 	let { parentId, type, userData } = $props();
 
@@ -37,7 +38,12 @@
 
 	async function submitComment() {
 		if (!newCommentContent.trim()) {
-			formError = 'Comment cannot be empty.';
+			// formError = 'Comment cannot be empty.';
+			addToast({
+				message: 'Comment cannot be empty.',
+				type: 'error',
+				timeout: 3000,
+			});
 			return;
 		}
 
@@ -174,7 +180,7 @@
 						{/if}
 						<span class="comment-author"
 							>{comment.profiles?.username || 'Community Member'}</span>
-						<span class="comment-date">{ago(comment.created_at)} ago</span>
+						<span class="comment-date">{timeFrom(comment.created_at)}</span>
 					</div>
 					<p class="comment-content">{comment.content}</p>
 					{#if userData?.user?.id === comment.user_id || userData?.is_admin}
@@ -194,7 +200,7 @@
 	.comments-section {
 		margin-block-start: var(--size-9);
 		h2 {
-			color: #333;
+			color: var(--stone-11);
 			margin-bottom: var(--size-3);
 		}
 	}
@@ -222,57 +228,62 @@
 	.comments-list {
 		display: flex;
 		flex-direction: column;
-		gap: var(--size-3);
+		gap: var(--size-2);
 	}
 
 	.comment-card {
+		position: relative;
 		border: var(--border-size-1) solid var(--gray-1);
 		border-radius: var(--border-size-3);
-		padding: var(--size-3);
-		/* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); */
-	}
+		padding: var(--size-2);
 
-	.comment-header {
-		display: flex;
-		align-items: center;
-		gap: var(--size-2);
-		margin-bottom: var(--size-3);
-	}
+		.comment-header {
+			display: flex;
+			align-items: center;
+			gap: var(--size-2);
+			margin-bottom: var(--size-3);
+			font-size: small;
 
-	.comment-avatar {
-		width: 30px;
-		height: 30px;
-		border-radius: 50%;
-		object-fit: cover;
-	}
+			.comment-avatar {
+				width: 18px;
+				height: 18px;
+				border-radius: var(--radius-round);
+				object-fit: cover;
+				aspect-ratio: 1;
+			}
 
-	.comment-author {
-		font-weight: bold;
-		color: var(--stone-9);
-	}
+			.comment-author {
+				font-weight: bold;
+				color: var(--stone-7);
+			}
 
-	.comment-date {
-		font-size: 0.8em;
-		color: var(--stone-6);
-	}
+			.comment-date {
+				color: var(--stone-6);
+			}
+		}
 
-	.comment-content {
-		margin-bottom: var(--size-2);
-		color: var(--stone-9);
-		font-size: smaller;
-	}
+		.comment-content {
+			margin-block: var(--size-1);
+			color: var(--stone-11);
+			font-size: smaller;
+		}
 
-	.comment-actions button {
-		background: none;
-		border: none;
-		color: #007bff;
-		cursor: pointer;
-		font-size: 0.8em;
-		margin-right: 0.5em;
-	}
+		.comment-actions {
+			position: absolute;
+			top: 0;
+			right: 0;
 
-	.comment-actions button:hover {
-		text-decoration: underline;
+			button {
+				background: none;
+				border: none;
+				color: var(--blue-6);
+				cursor: pointer;
+				font-size: x-small;
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+		}
 	}
 
 	.form-message {

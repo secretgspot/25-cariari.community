@@ -6,6 +6,7 @@
 - [x] services should have 1 week date that are not changeable after posting, disable date management in ManageForm. date is not loaded from service
 - [x] when comments return an error it should not hide all other comments in the list
 - [x] should toaster appear on manage forms?
+- [ ] Add forms should have toaster for error?
 
 ## Services
 
