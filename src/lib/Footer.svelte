@@ -1,17 +1,17 @@
 <script>
-	import { page } from '$app/state';
+	import { LinkButton } from './buttons';
 	import Logo from './Logo.svelte';
-	import Icon from './Icon.svelte';
 
-	let { data } = $props();
-	// console.log('Nav data: ', data);
-	// console.log('Nav page data: ', page.data); // DO NOT NEED PAGEDATA in NAV, IT BRINGS TOO MUCH DATA SUCH AS noticesPosts, servicesPosts and everything else that's available in data
+	// let { data } = $props();
 </script>
 
 <footer class="site-footer">
 	<!-- Footer info -->
 	<div class="info-wrapper">
-		©{new Date().getFullYear()} Cariari Community
+		©{new Date().getFullYear()} Cariari Community •
+		<LinkButton href="/about" title="About CC">About</LinkButton>
+		• <LinkButton href="/about#privacy" title="Privacy Policy">Privacy</LinkButton>
+		• <LinkButton href="/about#terms" title="Terms of Service">Terms</LinkButton>
 	</div>
 
 	<!-- Brand/Logo Section -->

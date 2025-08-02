@@ -41,10 +41,10 @@
 		cursor: pointer;
 		font-size: inherit;
 		text-decoration: none;
-		box-shadow: var(--accent) 0 -2px 0 -1px inset;
-		color: var(--primary-content);
+		box-shadow: var(--blue-9) 0 -2px 0 -1px inset;
+		color: var(--blue-6);
 		padding-bottom: 2px;
-		transition: box-shadow calc(var(--transition) / 2) ease-in-out;
+		transition: box-shadow calc(var(--transition, 0.3ms) / 2) ease-in-out;
 		display: inline-flex;
 		justify-content: center;
 		align-items: center;
@@ -52,12 +52,12 @@
 	}
 	button:hover,
 	a:hover {
-		box-shadow: var(--accent) inset 0 -3px 0 -1px;
-		color: var(--accent);
+		box-shadow: var(--blue-9) inset 0 -3px 0 -1px;
+		color: var(--blue-9);
 	}
 	button.active,
 	a.active {
-		box-shadow: var(--accent) inset 0 -5px 0 -1px;
-		color: var(--accent);
+		box-shadow: var(--blue-9) inset 0 -5px 0 -1px;
+		color: var(--blue-9);
 	}
 </style>
