@@ -173,7 +173,7 @@
 								class="comment-avatar" />
 						{/if}
 						<span class="comment-author"
-							>{comment.profiles?.username || userData.user.email.split('@')[0]}</span>
+							>{comment.profiles?.username || 'Community Member'}</span>
 						<span class="comment-date">{ago(comment.created_at)} ago</span>
 					</div>
 					<p class="comment-content">{comment.content}</p>

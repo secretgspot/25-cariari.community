@@ -10,16 +10,22 @@
 <div class="login-form-container">
 	<h1>Login</h1>
 	<form method="POST" action="?/login" use:enhance>
-		<label for="email">Email</label>
-		<input
-			type="email"
-			id="email"
-			name="email"
-			value={form?.values?.email ?? ''}
-			required />
+		<div class="form-group">
+			<label for="email" class="form-label">Email <span class="required">*</span></label>
+			<input
+				type="email"
+				class="form-input"
+				id="email"
+				name="email"
+				value={form?.values?.email ?? ''}
+				required />
+		</div>
 
-		<label for="password">Password</label>
-		<input type="password" id="password" name="password" required />
+		<div class="form-group">
+			<label for="password" class="form-label"
+				>Password <span class="required">*</span></label>
+			<input type="password" class="form-input" id="password" name="password" required />
+		</div>
 
 		<Button type="submit" {loading} disabled={loading}>
 			{#snippet icon()}
@@ -40,44 +46,24 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-	}
-
-	h1 {
-		margin-bottom: 1rem;
+		gap: var(--size-6);
+		margin-block: var(--size-6);
 	}
 
 	form {
 		display: flex;
 		flex-direction: column;
 		width: 300px;
+		gap: var(--size-5);
 	}
 
-	label {
-		margin-top: 0.5rem;
-	}
-
-	input {
-		padding: 0.5rem;
-		margin-bottom: 1rem;
-		border: 1px solid #ccc;
-		border-radius: 4px;
+	.form-group {
+		margin-bottom: 0;
 	}
 
 	.error {
-		color: red;
-		margin-bottom: 1rem;
-	}
-
-	button {
-		padding: 0.75rem;
-		background-color: #007bff;
-		color: white;
-		border: none;
-		border-radius: 4px;
-		cursor: pointer;
-	}
-
-	button:hover {
-		background-color: #0056b3;
+		border: var(--border-size-1) solid var(--red-6);
+		padding: var(--size-3);
+		border-radius: var(--radius-3);
 	}
 </style>
