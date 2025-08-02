@@ -13,3 +13,13 @@
 ## Notices
 
 - [ ] when adding new notice no success message appears in /notices after it's been added, should probably be toaster
+
+## Events
+
+- [ ] should have image placeholder if no image supplied
+
+## Server
+
+- [ ] logged in as admin yet shown as ghost
+(app)/+layout.server: authenticated user detected 👍
+👻👤: 59427676-0fc2-4cdf-ba09-b0b6d739bcf2 🌐/events

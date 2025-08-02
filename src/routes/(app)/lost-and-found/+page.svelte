@@ -4,22 +4,26 @@
 	import { Button } from '$lib/buttons';
 	import { timeFrom } from '$lib/utils/time.js';
 	import { formatText, stripMarkdown, truncateText } from '$lib/utils/markdown.js';
+	import { addToast } from '$lib/toasts';
 
 	let { data } = $props();
 
 	// console.log('/lost-and-found data: ', data);
 
 	let showForm = $state(false);
-	let formMessage = $state('');
 
 	function toggleForm() {
 		showForm = !showForm;
-		formMessage = ''; // Clear message when toggling
 	}
 
 	async function handleLostAndFoundAdded(lostandfound) {
-		formMessage = 'Lost/Found added successfully!';
 		showForm = false; // Hide form after successful submission
+
+		addToast({
+			message: `Lost/Found added successfully!`,
+			type: 'success',
+			timeout: 1200,
+		});
 
 		// Refresh the data from the server
 		await invalidateAll();
@@ -36,10 +40,6 @@
 		{showForm ? 'Hide Form' : 'Add New Lost/Found'}
 	</Button>
 
-	{#if formMessage}
-		<p class="form-message">{formMessage}</p>
-	{/if}
-
 	{#if showForm}
 		<AddLostFoundForm onLostAndFoundAdded={handleLostAndFoundAdded} />
 	{/if}
@@ -50,7 +50,7 @@
 				<a href="/lost-and-found/{post.id}" class="post-card-link">
 					<div class="post-card">
 						<h3>{post.title} ({post.category})</h3>
-						<p>{post.description}</p>
+						<p>{@html formatText(truncateText(stripMarkdown(post.description), 200))}</p>
 						<p>
 							<strong>Date:</strong>
 							{new Date(post.date).toLocaleDateString()}
@@ -79,12 +79,6 @@
 		h1 {
 			color: #333;
 			margin-bottom: 1em;
-		}
-
-		.form-message {
-			border: var(--border-size-1) solid var(--gray-1);
-			padding: var(--size-3);
-			border-radius: var(--radius-3);
 		}
 	}
 

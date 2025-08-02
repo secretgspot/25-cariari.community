@@ -4,22 +4,24 @@
 	import { Button } from '$lib/buttons';
 	import { timeFrom } from '$lib/utils/time.js';
 	import { formatText, stripMarkdown, truncateText } from '$lib/utils/markdown.js';
+	import { addToast } from '$lib/toasts';
 
 	let { data } = $props();
 
-	// console.log('Notices data:', data);
-
 	let showForm = $state(false);
-	let formMessage = $state('');
 
 	function toggleForm() {
 		showForm = !showForm;
-		formMessage = ''; // Clear message when toggling
 	}
 
 	async function handleNoticeAdded(notice) {
-		formMessage = 'Notice added successfully!';
 		showForm = false; // Hide form after successful submission
+
+		addToast({
+			message: `Notice added successfully!`,
+			type: 'success',
+			timeout: 1200,
+		});
 
 		// Refresh the data from the server
 		await invalidateAll();
@@ -35,10 +37,6 @@
 		{/snippet}
 		{showForm ? 'Hide Form' : 'Add New Notice'}
 	</Button>
-
-	{#if formMessage}
-		<p class="form-message">{formMessage}</p>
-	{/if}
 
 	{#if showForm}
 		<AddNoticeForm onNoticeAdded={handleNoticeAdded} />
@@ -101,7 +99,9 @@
 						{#if notice.image_url}
 							<img src={notice.image_url} alt={notice.title} class="notice-image" />
 						{/if}
-						<p>{@html formatText(notice.description)}</p>
+						<p>
+							{@html formatText(truncateText(stripMarkdown(notice.description), 200))}
+						</p>
 					</div>
 				</a>
 			{/each}
@@ -116,12 +116,6 @@
 		h1 {
 			color: #333;
 			margin-bottom: 1em;
-		}
-
-		.form-message {
-			border: var(--border-size-1) solid var(--gray-1);
-			padding: var(--size-3);
-			border-radius: var(--radius-3);
 		}
 	}
 

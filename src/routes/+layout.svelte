@@ -5,6 +5,7 @@
 	import Footer from '$lib/Footer.svelte';
 	import FixedLine from '$lib/loaders/FixedLine.svelte';
 	import Splash from '$lib/loaders/Splash.svelte';
+	import { Toasts } from '$lib/toasts';
 	import 'open-props/style';
 
 	let { children, data } = $props();
@@ -29,6 +30,8 @@
 		};
 	});
 </script>
+
+<Toasts />
 
 {#if navigating.complete}
 	<FixedLine kind="spiral" size="1" />

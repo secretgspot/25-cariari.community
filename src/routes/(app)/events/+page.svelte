@@ -4,20 +4,24 @@
 	import { Button } from '$lib/buttons';
 	import { timeFrom } from '$lib/utils/time.js';
 	import { formatText, stripMarkdown, truncateText } from '$lib/utils/markdown.js';
+	import { addToast } from '$lib/toasts';
 
 	let { data } = $props();
 
 	let showForm = $state(false);
-	let formMessage = $state('');
 
 	function toggleForm() {
 		showForm = !showForm;
-		formMessage = ''; // Clear message when toggling
 	}
 
 	async function handleEventAdded(event) {
-		formMessage = 'Event added successfully!';
 		showForm = false; // Hide form after successful submission
+
+		addToast({
+			message: `Event added successfully!`,
+			type: 'success',
+			timeout: 1200,
+		});
 
 		// Refresh the data from the server
 		await invalidateAll();
@@ -33,10 +37,6 @@
 		{/snippet}
 		{showForm ? 'Hide Form' : 'Add New Event'}
 	</Button>
-
-	{#if formMessage}
-		<p class="form-message">{formMessage}</p>
-	{/if}
 
 	{#if showForm}
 		<AddEventForm onEventAdded={handleEventAdded} />
@@ -99,12 +99,6 @@
 		h1 {
 			color: var(--stone-11);
 			margin-bottom: var(--size-6);
-		}
-
-		.form-message {
-			border: var(--border-size-1) solid var(--gray-1);
-			padding: var(--size-3);
-			border-radius: var(--radius-3);
 		}
 	}
 
