@@ -34,7 +34,12 @@
 
 		{#if data.event.image_url}
 			<img src={data.event.image_url} alt={data.event.title} class="image" />
+		{:else}
+			<div class="placeholder-image">
+				<span>No Image</span>
+			</div>
 		{/if}
+
 		<p class="posted">
 			Posted: {timeFrom(data.event.created_at)}
 		</p>
@@ -86,6 +91,16 @@
 			height: auto;
 			border-radius: var(--radius-2);
 			margin-bottom: 0;
+		}
+
+		.placeholder-image {
+			width: 100%;
+			background: var(--gradient-23);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: var(--gray-0);
+			aspect-ratio: 1;
 		}
 
 		.posted {

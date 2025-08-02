@@ -72,7 +72,12 @@
 
 						{#if event.image_url}
 							<img src={event.image_url} alt={event.title} class="image" />
+						{:else}
+							<div class="placeholder-image">
+								<span>No Image</span>
+							</div>
 						{/if}
+
 						<p class="posted">
 							Posted: {timeFrom(event.created_at)}
 						</p>
@@ -153,9 +158,20 @@
 			margin-bottom: 0;
 		}
 
+		.placeholder-image {
+			width: 100%;
+			background: var(--gradient-23);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: var(--gray-0);
+			aspect-ratio: 1;
+		}
+
 		.posted {
 			font-size: small;
 			margin: 0 var(--size-1);
+			display: none; /* do we need it */
 		}
 	}
 
