@@ -22,7 +22,7 @@ export async function GET({ url, request, locals: { supabase, getSession } }) {
 		let query = supabase
 			.from('events')
 			.select('*', { count: 'exact' })
-			.order('event_start_date', { ascending: false });
+			.order('event_start_date', { ascending: true });
 
 		// Apply limit if provided
 		if (limit && !isNaN(parseInt(limit))) {

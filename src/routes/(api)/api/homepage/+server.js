@@ -13,25 +13,25 @@ export async function GET({ locals: { supabase } }) {
 				.from('notices')
 				.select('*')
 				.limit(5)
-				.order('created_at', { ascending: false }),
+				.order('created_at', { ascending: true }),
 
 			supabase
 				.from('events')
 				.select('*')
 				.limit(5)
-				.order('created_at', { ascending: false }),
+				.order('event_start_date', { ascending: true }),
 
 			supabase
 				.from('lost_and_found')
 				.select('*')
 				.limit(4)
-				.order('created_at', { ascending: false }),
+				.order('created_at', { ascending: true }),
 
 			supabase
 				.from('services')
 				.select('*')
 				.limit(5)
-				.order('created_at', { ascending: false })
+				.order('created_at', { ascending: true })
 		]);
 
 		return json({

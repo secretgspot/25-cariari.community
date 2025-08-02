@@ -23,3 +23,7 @@ when adding new notice no success message appears in /notices after it's been ad
 ## Homepage
 
 Upcoming events sized wrong on mobile, why? padding in .event-info responsible
+
+## General
+
+- [ ] Upload photo to bucket instead of Image URL
