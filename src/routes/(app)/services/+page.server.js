@@ -41,14 +41,14 @@ export const actions = {
 
 			// Handle file upload if provided
 			if (imageFile && imageFile.size > 0) {
-				console.log('🔄 Processing service image upload...');
+				// console.log('🔄 Processing service image upload...');
 
 				// Generate unique filename with proper extension
 				const fileExtension = imageFile.name.split('.').pop() || 'jpg';
 				const fileName = `${session.user.id}_${Date.now()}.${fileExtension}`;
 				const filePath = `services/${fileName}`;
 
-				console.log('⬆️ Uploading to path:', filePath);
+				// console.log('⬆️ Uploading to path:', filePath);
 
 				// Upload the file
 				const { data: uploadData, error: uploadError } = await supabase.storage
@@ -63,7 +63,7 @@ export const actions = {
 					return fail(500, { message: 'Failed to upload image: ' + uploadError.message });
 				}
 
-				console.log('✅ Upload successful:', uploadData);
+				// console.log('✅ Upload successful:', uploadData);
 
 				// Get public URL
 				const { data: publicUrlData } = supabase.storage
@@ -72,7 +72,7 @@ export const actions = {
 
 				// Set the uploaded image URL
 				formData.set('image_url', publicUrlData.publicUrl);
-				console.log('🔗 New image URL:', publicUrlData.publicUrl);
+				// console.log('🔗 New image URL:', publicUrlData.publicUrl);
 			}
 
 			// Send the FormData directly to your API endpoint

@@ -44,13 +44,13 @@ export const actions = {
 
 			// Handle file upload if provided
 			if (imageFile && imageFile.size > 0) {
-				console.log('🔄 Processing event image upload...');
+				// console.log('🔄 Processing event image upload...');
 
 				// Delete old image if it exists
 				if (currentEvent?.image_url) {
 					const oldImagePath = currentEvent.image_url.split('/uploads/').pop();
 					if (oldImagePath) {
-						console.log('🗑️ Deleting old image:', oldImagePath);
+						// console.log('🗑️ Deleting old image:', oldImagePath);
 						await supabase.storage.from('uploads').remove([oldImagePath]);
 					}
 				}
@@ -60,7 +60,7 @@ export const actions = {
 				const fileName = `${session.user.id}_${Date.now()}.${fileExtension}`;
 				const filePath = `events/${fileName}`;
 
-				console.log('⬆️ Uploading to path:', filePath);
+				// console.log('⬆️ Uploading to path:', filePath);
 
 				// Upload the new file
 				const { data: uploadData, error: uploadError } = await supabase.storage
@@ -75,7 +75,7 @@ export const actions = {
 					return fail(500, { message: 'Failed to upload image: ' + uploadError.message });
 				}
 
-				console.log('✅ Upload successful:', uploadData);
+				// console.log('✅ Upload successful:', uploadData);
 
 				// Get public URL
 				const { data: publicUrlData } = supabase.storage
@@ -83,7 +83,7 @@ export const actions = {
 					.getPublicUrl(uploadData.path);
 
 				newImageUrl = publicUrlData.publicUrl;
-				console.log('🔗 New image URL:', newImageUrl);
+				// console.log('🔗 New image URL:', newImageUrl);
 			}
 
 			const updateData = {
@@ -110,7 +110,7 @@ export const actions = {
 				return fail(response.status, result);
 			}
 
-			console.log('✅ Event updated successfully');
+			// console.log('✅ Event updated successfully');
 			// Return success data directly (no type/data wrapper)
 			return {
 				message: result.message || 'Event updated successfully!'
@@ -136,7 +136,7 @@ export const actions = {
 			if (currentEvent?.image_url) {
 				const imagePath = currentEvent.image_url.split('/uploads/').pop();
 				if (imagePath) {
-					console.log('🗑️ Deleting event image:', imagePath);
+					// console.log('🗑️ Deleting event image:', imagePath);
 					await supabase.storage.from('uploads').remove([imagePath]);
 				}
 			}
@@ -152,7 +152,7 @@ export const actions = {
 				return fail(response.status, result);
 			}
 
-			console.log('✅ Event and associated files deleted successfully');
+			// console.log('✅ Event and associated files deleted successfully');
 			// Redirect to events list after successful deletion
 			throw redirect(303, '/events');
 

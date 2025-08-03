@@ -110,6 +110,20 @@ code {
 			border-color: var(--red-6);
 		}
 	}
+
+	.delete-form {
+		background: var(--red-0);
+	}
+}
+
+/* common ADD and MANAGE forms */
+.image-preview {
+	border-radius: var(--border-size-3);
+	object-fit: cover;
+	margin-bottom: var(--size-3);
+	box-shadow: var(--shadow-1);
+	width: 100%;
+	height: auto;
 }
 
 /* common INPUT styling */

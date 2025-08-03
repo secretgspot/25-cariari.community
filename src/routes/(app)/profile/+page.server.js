@@ -95,12 +95,12 @@ export const actions = {
 
 			// Handle file upload
 			if (avatarFile && avatarFile.size > 0) {
-				console.log('🔄 Processing file upload...');
+				// console.log('🔄 Processing file upload...');
 
 				// Delete old avatar if it exists
 				if (avatar_url) {
 					const oldAvatarPath = avatar_url.split('/uploads/').pop();
-					console.log('🗑️ Deleting old avatar:', oldAvatarPath);
+					// console.log('🗑️ Deleting old avatar:', oldAvatarPath);
 					await supabase.storage.from('uploads').remove([oldAvatarPath]);
 				}
 
@@ -109,7 +109,7 @@ export const actions = {
 				const fileName = `${session.user.id}_${Date.now()}.${fileExtension}`;
 				const filePath = `avatars/${fileName}`;
 
-				console.log('⬆️ Uploading to path:', filePath);
+				// console.log('⬆️ Uploading to path:', filePath);
 
 				// Upload the file
 				const { data: uploadData, error: uploadError } = await supabase.storage
@@ -124,7 +124,7 @@ export const actions = {
 					return fail(500, { message: 'Failed to upload avatar: ' + uploadError.message });
 				}
 
-				console.log('✅ Upload successful:', uploadData);
+				// console.log('✅ Upload successful:', uploadData);
 
 				// Get public URL
 				const { data: publicUrlData } = supabase.storage
@@ -132,11 +132,11 @@ export const actions = {
 					.getPublicUrl(uploadData.path);
 
 				avatar_url = publicUrlData.publicUrl;
-				console.log('🔗 New avatar URL:', avatar_url);
+				// console.log('🔗 New avatar URL:', avatar_url);
 			}
 
 			// Update profile in database
-			console.log('💾 Updating profile in database...');
+			// console.log('💾 Updating profile in database...');
 			const { error: profileError } = await supabase
 				.from('profiles')
 				.upsert({
@@ -153,7 +153,7 @@ export const actions = {
 				return fail(500, { message: 'Failed to update profile: ' + profileError.message });
 			}
 
-			console.log('✅ Profile updated successfully');
+			// console.log('✅ Profile updated successfully');
 			return {
 				type: 'success',
 				data: {

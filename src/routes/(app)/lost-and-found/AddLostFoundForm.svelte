@@ -1,7 +1,7 @@
 <script>
 	import { enhance } from '$app/forms';
 	import Button from '$lib/buttons/Button.svelte';
-	import Compressor from 'compressorjs';
+	import { compressFile } from '$lib/utils/file.js';
 
 	let { onLostAndFoundAdded } = $props();
 
@@ -35,25 +35,6 @@
 
 	const categoryOptions = ['Lost', 'Found'];
 
-	function compressFile(file) {
-		return new Promise((resolve, reject) => {
-			new Compressor(file, {
-				quality: 0.7,
-				maxWidth: 800,
-				maxHeight: 600,
-				mimeType: 'image/jpeg',
-				convertSize: 100000,
-				success(result) {
-					previewUrl = URL.createObjectURL(result);
-					const fileName = file.name.replace(/\.[^/.]+$/, '') + '.jpg';
-					const compressedFileObj = new File([result], fileName, { type: 'image/jpeg' });
-					resolve(compressedFileObj);
-				},
-				error: reject,
-			});
-		});
-	}
-
 	async function handleFileChange(event) {
 		const file = event.target.files[0];
 		if (!file) {
@@ -61,12 +42,15 @@
 			return;
 		}
 
-		compressedFile = await compressFile(file).catch((error) => {
-			console.error('Compression error:', error);
+		try {
+			const { file: compressed, previewUrl: url } = await compressFile(file);
+			compressedFile = compressed;
+			previewUrl = url;
+		} catch (err) {
+			console.error('Compression error:', err);
 			error = 'Image compression failed.';
 			resetFileState();
-			return null;
-		});
+		}
 	}
 
 	function resetFileState() {
@@ -245,12 +229,4 @@
 </form>
 
 <style>
-	.image-preview {
-		max-width: 300px;
-		max-height: 200px;
-		border-radius: 8px;
-		object-fit: cover;
-		margin-bottom: 1rem;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-	}
 </style>
