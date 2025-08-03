@@ -72,8 +72,6 @@ export async function load({ locals: { getSession }, fetch, parent }) {
 
 export const actions = {
 	updateProfile: async ({ request, locals: { supabase, getSession } }) => {
-		console.log('🔥 UpdateProfile action called');
-
 		const session = await getSession();
 		if (!session) {
 			return fail(401, { message: 'Unauthorized' });
@@ -85,23 +83,6 @@ export const actions = {
 			const full_name = formData.get('full_name')?.toString() || '';
 			const bio = formData.get('bio')?.toString() || '';
 			const avatarFile = formData.get('avatar_url');
-
-			console.log('📝 Form data received:', {
-				username,
-				full_name,
-				bio,
-				hasFile: !!avatarFile
-			});
-
-			// Debug the received file
-			if (avatarFile && avatarFile.size > 0) {
-				console.log('📁 Server received file:', {
-					name: avatarFile.name,
-					type: avatarFile.type,
-					size: `${(avatarFile.size / 1024 / 1024).toFixed(2)}MB`,
-					constructor: avatarFile.constructor.name
-				});
-			}
 
 			// Get current profile to handle avatar replacement
 			const { data: currentProfile } = await supabase

@@ -129,7 +129,9 @@
 			}
 			.avatar-image {
 				border-radius: var(--radius-round);
+				aspect-ratio: 1;
 				max-height: 27px;
+				object-fit: cover;
 			}
 			.profile-name {
 				display: none;
