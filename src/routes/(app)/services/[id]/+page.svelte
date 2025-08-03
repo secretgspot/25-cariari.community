@@ -14,6 +14,7 @@
 		{#if data.service.image_url}
 			<img src={data.service.image_url} alt={data.service.title} class="image" />
 		{/if}
+
 		<p class="posted">
 			<span>Posted: {timeFrom(data.service.start_date)}</span>
 			<span>Expires: {timeFrom(data.service.end_date)}</span>

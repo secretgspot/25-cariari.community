@@ -10,11 +10,13 @@
 <div class="post-detail-container">
 	{#if data.post}
 		<h1>{data.post.title} ({data.post.category})</h1>
+
 		{#if data.post.image_url}
-			<img src={data.post.image_url} alt={data.post.title} class="post-detail-image" />
+			<img src={data.post.image_url} alt={data.post.title} class="image" />
 		{/if}
+
 		<p>{@html formatText(data.post.description)}</p>
-		<p class="post-detail-meta">
+		<p class="meta">
 			<strong>Date Lost/Found:</strong>
 			{new Date(data.post.date).toLocaleDateString()}
 		</p>
@@ -22,7 +24,7 @@
 			<p><strong>Location:</strong> {data.post.location}</p>
 		{/if}
 		<p><strong>Contact:</strong> {data.post.contact}</p>
-		<p class="post-detail-date">
+		<p class="date">
 			Posted: {new Date(data.post.created_at).toLocaleDateString()}
 		</p>
 
@@ -36,23 +38,30 @@
 
 <style>
 	.post-detail-container {
-	}
+		position: relative;
+		h1 {
+			color: var(--stone-11);
+			margin-bottom: var(--size-1);
+		}
 
-	h1 {
-		color: #333;
-		margin-bottom: 1em;
-	}
+		.meta {
+			color: var(--stone-9);
+			margin-block: 0 var(--size-2);
+		}
+		.date {
+			display: flex;
+			gap: var(--size-4);
+		}
+		strong {
+			font-size: small;
+		}
 
-	.post-detail-image {
-		max-width: 100%;
-		height: auto;
-		border-radius: 4px;
-		margin-bottom: 1em;
-	}
-
-	.post-detail-meta,
-	.post-detail-date {
-		font-size: 0.9em;
-		color: #555;
+		.image {
+			max-width: 100%;
+			width: 100%;
+			height: auto;
+			border-radius: var(--radius-2);
+			margin-bottom: 0;
+		}
 	}
 </style>
