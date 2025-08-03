@@ -158,3 +158,15 @@ export function formatDateTime(date) {
 	const d = new Date(date);
 	return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`;
 }
+
+/**
+ * Calculates the expiration date for an item, based on its creation date and a specified number of days.
+ * @param {string|Date} createdAt - The creation date of the item (e.g., post.created_at).
+ * @param {number} days - The number of days until the item expires.
+ * @returns {Date} The calculated expiration date.
+ */
+export function getExpirationDate(createdAt, days) {
+	const createdDate = new Date(createdAt);
+	// Add 'days' in milliseconds: days * 24 hours/day * 60 minutes/hour * 60 seconds/minute * 1000 milliseconds/second
+	return new Date(createdDate.getTime() + (days * 24 * 60 * 60 * 1000));
+}

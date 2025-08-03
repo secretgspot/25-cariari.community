@@ -2,7 +2,12 @@
 	import { invalidateAll } from '$app/navigation';
 	import AddLostFoundForm from './AddLostFoundForm.svelte';
 	import { Button } from '$lib/buttons';
-	import { timeFrom } from '$lib/utils/time.js';
+	import {
+		timeFrom,
+		timeFromLong,
+		timeFromPrecise,
+		getExpirationDate,
+	} from '$lib/utils/time.js';
 	import { formatText, stripMarkdown, truncateText } from '$lib/utils/markdown.js';
 	import { addToast } from '$lib/toasts';
 
@@ -49,22 +54,34 @@
 			{#each data.lostandfound as post}
 				<a href="/lost-and-found/{post.id}" class="post-card-link">
 					<div class="post-card">
-						<h3>{post.title} ({post.category})</h3>
-						<p>{@html formatText(truncateText(stripMarkdown(post.description), 200))}</p>
-						<p>
+						{#if post.image_url}
+							<img src={post.image_url} alt={post.title} class="image" />
+						{/if}
+						<!-- {#if post.image_url}
+							<img src={post.image_url} alt={post.title} class="image" />
+						{:else}
+							<div class="placeholder-image">
+								<span>No Image</span>
+							</div>
+						{/if} -->
+
+						<div class="meta">
+							<span>Posted: {timeFrom(post.created_at)}</span>
+							<span
+								>Expires in: {timeFromLong(getExpirationDate(post.created_at, 14))}</span>
+						</div>
+						<h3 class="title">{post.title} ({post.category})</h3>
+						<div class="description">
+							{@html formatText(truncateText(stripMarkdown(post.description), 200))}
+						</div>
+						<!-- <p>
 							<strong>Date:</strong>
 							{new Date(post.date).toLocaleDateString()}
-						</p>
-						{#if post.location}
+						</p> -->
+						<!-- {#if post.location}
 							<p><strong>Location:</strong> {post.location}</p>
-						{/if}
-						<p><strong>Contact:</strong> {post.contact}</p>
-						{#if post.image_url}
-							<img src={post.image_url} alt={post.title} class="post-image" />
-						{/if}
-						<p class="post-date">
-							Posted: {new Date(post.created_at).toLocaleDateString()}
-						</p>
+						{/if} -->
+						<!-- <p><strong>Contact:</strong> {post.contact}</p> -->
 					</div>
 				</a>
 			{/each}
@@ -77,7 +94,6 @@
 <style>
 	.lost-and-found-container {
 		h1 {
-			color: #333;
 			margin-bottom: 1em;
 		}
 	}
@@ -91,31 +107,45 @@
 	.post-card {
 		border: var(--border-size-1) solid var(--gray-1);
 		border-radius: var(--radius-2);
-		padding: var(--size-3);
+		/* padding: var(--size-3); */
 
-		h3 {
-			margin: 0;
+		.image {
+			max-width: 100%;
+			width: 100%;
+			height: auto;
+			object-fit: cover;
+			aspect-ratio: 1;
+			border-radius: var(--radius-2);
+		}
+
+		/* .placeholder-image {
+			width: 100%;
+			background: var(--gradient-23);
 			display: flex;
 			align-items: center;
-			gap: var(--size-3);
+			justify-content: center;
+			color: var(--gray-0);
+			aspect-ratio: 1;
+			border-radius: var(--radius-2);
+		} */
+
+		.meta {
+			display: flex;
+			justify-content: space-between;
+			font-size: small;
+			color: var(--stone-9);
+			margin-inline: var(--size-3);
+			margin-block: var(--size-1);
 		}
 
-		p {
-			margin-bottom: 0.5em;
-			color: #555;
+		.title {
+			margin-block: var(--size-3);
+			margin-inline: var(--size-3);
 		}
-	}
 
-	.post-image {
-		max-width: 100%;
-		height: auto;
-		border-radius: var(--radius-2);
-		margin-bottom: var(--size-6);
-	}
-
-	.post-date {
-		font-size: 0.9em;
-		color: var(--stone-9);
+		.description {
+			margin-inline: var(--size-3);
+		}
 	}
 
 	.post-card-link {
