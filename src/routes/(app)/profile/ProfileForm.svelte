@@ -10,6 +10,8 @@
 	let compressedFile = $state(null);
 	let previewUrl = $state(userProfile?.avatar_url || null);
 	let fileInput = $state();
+	let hasNewImage = $state(false); // Track if user has selected a new image
+	let isSubmitting = $state(false); // Track submission state
 
 	// Form state
 	let formData = $state({
@@ -26,7 +28,11 @@
 			if (formData.full_name !== (userProfile.full_name || ''))
 				formData.full_name = userProfile.full_name || '';
 			if (formData.bio !== (userProfile.bio || '')) formData.bio = userProfile.bio || '';
-			if (!previewUrl && userProfile.avatar_url) previewUrl = userProfile.avatar_url;
+
+			// Only update preview URL if user hasn't selected a new image and we're not submitting
+			if (!hasNewImage && !isSubmitting && previewUrl !== userProfile.avatar_url) {
+				previewUrl = userProfile.avatar_url;
+			}
 		}
 	});
 
@@ -35,8 +41,11 @@
 		if (!file) {
 			compressedFile = null;
 			previewUrl = userProfile?.avatar_url || null;
+			hasNewImage = false;
 			return;
 		}
+
+		hasNewImage = true; // Mark that user has selected a new image
 
 		console.log('🔵 Original file:', {
 			name: file.name,
@@ -75,12 +84,14 @@
 			onMessage({ message: 'Image compression failed.', success: false });
 			compressedFile = null;
 			previewUrl = userProfile?.avatar_url || null;
+			hasNewImage = false;
 		}
 	}
 
 	async function handleSubmit(event) {
 		event.preventDefault();
 		loading = true;
+		isSubmitting = true;
 
 		try {
 			const submitFormData = new FormData();
@@ -112,10 +123,10 @@
 			const result = await response.json();
 
 			if (result.type === 'success') {
-				// Reset form
+				// Reset form state
 				if (fileInput) fileInput.value = '';
 				compressedFile = null;
-				previewUrl = userProfile?.avatar_url || null;
+				hasNewImage = false;
 
 				// Invalidate to refresh data
 				await invalidateAll();
@@ -129,6 +140,7 @@
 			onMessage({ message: 'Failed to update profile', success: false });
 		} finally {
 			loading = false;
+			isSubmitting = false;
 		}
 	}
 </script>
