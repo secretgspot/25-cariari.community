@@ -113,6 +113,7 @@ code {
 
 	.delete-form {
 		background: var(--red-0);
+		padding: var(--size-2) var(--size-5);
 	}
 }
 
@@ -134,20 +135,16 @@ code {
 .edit-form {
 	padding: var(--size-5);
 	border-bottom: var(--border-size-1) solid var(--gray-1);
+
+	h3 {
+		margin-top: 0;
+		margin-bottom: var(--size-5);
+		color: var(--stone-9);
+		font-size: 1.25em;
+		font-weight: 600;
+	}
 }
 
-.delete-form {
-	padding: var(--size-5);
-	text-align: center;
-}
-
-.edit-form h3 {
-	margin-top: 0;
-	margin-bottom: var(--size-5);
-	color: var(--stone-9);
-	font-size: 1.25em;
-	font-weight: 600;
-}
 
 .form-group {
 	margin-bottom: var(--size-5);

@@ -272,7 +272,7 @@
 			action="?/deleteService"
 			use:enhance={submitDeleteForm}
 			class="delete-form">
-			<Button type="submit" red loading={isDeleting} disabled={isDeleting}>
+			<Button type="submit" size="small" red loading={isDeleting} disabled={isDeleting}>
 				{#snippet icon()}
 					❌
 				{/snippet}
