@@ -72,56 +72,118 @@ export async function load({ locals: { getSession }, fetch, parent }) {
 
 export const actions = {
 	updateProfile: async ({ request, locals: { supabase, getSession } }) => {
+		console.log('🔥 UpdateProfile action called');
+
 		const session = await getSession();
 		if (!session) {
 			return fail(401, { message: 'Unauthorized' });
 		}
 
-		const formData = await request.formData();
-		const username = formData.get('username');
-		const full_name = formData.get('full_name');
-		const bio = formData.get('bio');
-		const avatarFile = formData.get('avatar_url');
+		try {
+			const formData = await request.formData();
+			const username = formData.get('username')?.toString() || '';
+			const full_name = formData.get('full_name')?.toString() || '';
+			const bio = formData.get('bio')?.toString() || '';
+			const avatarFile = formData.get('avatar_url');
 
-		const { data: currentProfile } = await supabase
-			.from('profiles')
-			.select('avatar_url')
-			.eq('user_id', session.user.id)
-			.single();
+			console.log('📝 Form data received:', {
+				username,
+				full_name,
+				bio,
+				hasFile: !!avatarFile
+			});
 
-		let avatar_url = currentProfile?.avatar_url;
-
-		if (avatarFile && avatarFile.size > 0) {
-			if (avatar_url) {
-				const oldAvatarPath = avatar_url.split('/uploads/').pop();
-				await supabase.storage.from('uploads').remove([oldAvatarPath]);
+			// Debug the received file
+			if (avatarFile && avatarFile.size > 0) {
+				console.log('📁 Server received file:', {
+					name: avatarFile.name,
+					type: avatarFile.type,
+					size: `${(avatarFile.size / 1024 / 1024).toFixed(2)}MB`,
+					constructor: avatarFile.constructor.name
+				});
 			}
 
-			const { data, error: uploadError } = await supabase.storage
-				.from('uploads')
-				.upload(`avatars/${session.user.id}/${Date.now()}_${avatarFile.name}`, avatarFile);
+			// Get current profile to handle avatar replacement
+			const { data: currentProfile } = await supabase
+				.from('profiles')
+				.select('avatar_url')
+				.eq('user_id', session.user.id)
+				.single();
 
-			if (uploadError) {
-				return fail(500, { message: 'Failed to upload avatar. ' + uploadError.message });
+			let avatar_url = currentProfile?.avatar_url;
+
+			// Handle file upload
+			if (avatarFile && avatarFile.size > 0) {
+				console.log('🔄 Processing file upload...');
+
+				// Delete old avatar if it exists
+				if (avatar_url) {
+					const oldAvatarPath = avatar_url.split('/uploads/').pop();
+					console.log('🗑️ Deleting old avatar:', oldAvatarPath);
+					await supabase.storage.from('uploads').remove([oldAvatarPath]);
+				}
+
+				// Generate unique filename with proper extension
+				const fileExtension = avatarFile.name.split('.').pop() || 'jpg';
+				const fileName = `${session.user.id}_${Date.now()}.${fileExtension}`;
+				const filePath = `avatars/${fileName}`;
+
+				console.log('⬆️ Uploading to path:', filePath);
+
+				// Upload the file
+				const { data: uploadData, error: uploadError } = await supabase.storage
+					.from('uploads')
+					.upload(filePath, avatarFile, {
+						cacheControl: '3600',
+						upsert: false
+					});
+
+				if (uploadError) {
+					console.error('❌ Upload error:', uploadError);
+					return fail(500, { message: 'Failed to upload avatar: ' + uploadError.message });
+				}
+
+				console.log('✅ Upload successful:', uploadData);
+
+				// Get public URL
+				const { data: publicUrlData } = supabase.storage
+					.from('uploads')
+					.getPublicUrl(uploadData.path);
+
+				avatar_url = publicUrlData.publicUrl;
+				console.log('🔗 New avatar URL:', avatar_url);
 			}
 
-			const { data: publicUrlData } = supabase.storage.from('uploads').getPublicUrl(data.path);
-			avatar_url = publicUrlData.publicUrl;
+			// Update profile in database
+			console.log('💾 Updating profile in database...');
+			const { error: profileError } = await supabase
+				.from('profiles')
+				.upsert({
+					user_id: session.user.id,
+					username,
+					full_name,
+					bio,
+					avatar_url,
+					updated_at: new Date().toISOString(),
+				});
+
+			if (profileError) {
+				console.error('❌ Profile update error:', profileError);
+				return fail(500, { message: 'Failed to update profile: ' + profileError.message });
+			}
+
+			console.log('✅ Profile updated successfully');
+			return {
+				type: 'success',
+				data: {
+					message: 'Profile updated successfully!',
+					avatar_url
+				}
+			};
+
+		} catch (error) {
+			console.error('❌ Unexpected error in updateProfile:', error);
+			return fail(500, { message: 'An unexpected error occurred: ' + error.message });
 		}
-
-		const { error: profileError } = await supabase.from('profiles').upsert({
-			user_id: session.user.id,
-			username,
-			full_name,
-			bio,
-			avatar_url,
-			updated_at: new Date(),
-		});
-
-		if (profileError) {
-			return fail(500, { message: 'Failed to update profile. ' + profileError.message });
-		}
-
-		return { success: true, message: 'Profile updated successfully!' };
 	},
 };

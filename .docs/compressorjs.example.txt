@@ -1,0 +1,212 @@
+The file you provided is a SvelteKit `+page.server.js` file, which runs on the server. The example you showed for `compressorjs` is in a Svelte `+page.svelte` file, which runs on the client (in the browser).
+
+**`compressorjs` is a client-side library and cannot be used directly in your `+page.server.js` file.** Server-side environments typically don't have access to browser-specific APIs like the `File` or `Blob` objects in the same way, which `compressorjs` relies on for image compression.
+
+-----
+
+### How to Implement Image Compression in Your SvelteKit App
+
+To compress an image before uploading it to the server in your SvelteKit application, you'll need to handle the compression on the **client-side** (in a `.svelte` file) before the form data is sent to your `+page.server.js` file.
+
+Here's a breakdown of the steps and how to adapt your code:
+
+#### 1\. Client-Side (Svelte Component - `+page.svelte` or a dedicated component)
+
+You'll need to modify the part of your Svelte component that handles the file input.
+
+  * **Install `compressorjs`:**
+
+    ```bash
+    npm install compressorjs
+    ```
+
+  * **Import `compressorjs`:**
+
+    ```svelte
+    <script>
+        import Compressor from 'compressorjs';
+        // ... other imports
+    </script>
+    ```
+
+  * **Handle File Input and Compression:**
+    When the user selects an avatar file, you'll intercept it, compress it, and then add the compressed file to your `FormData`.
+
+    Here's a conceptual example for your `avatarFile` upload:
+
+    ```svelte
+    <script>
+        import { enhance } from '$app/forms';
+        import { page } from '$app/stores';
+        import Compressor from 'compressorjs';
+        import { v4 as uuidv4 } from 'uuid'; // For unique file names, if you need them on the client for temporary storage or naming.
+
+        let avatarInput; // To reference the file input element
+        let compressedAvatarFile; // To store the compressed file object
+
+        async function handleAvatarChange(event) {
+            const file = event.target.files[0];
+            if (file) {
+                try {
+                    // This creates a Promise that resolves with the compressed file
+                    compressedAvatarFile = await new Promise((resolve, reject) => {
+                        new Compressor(file, {
+                            quality: 0.6, // 60% quality
+                            maxWidth: 800, // Example: Max width of 800px
+                            maxHeight: 800, // Example: Max height of 800px
+                            convertSize: 500000, // Files larger than 500kb convert to JPEG
+                            success(result) {
+                                console.log('Compressed avatar file size:', result.size, 'bytes');
+                                resolve(result);
+                            },
+                            error(err) {
+                                console.error('Avatar compression error:', err.message);
+                                reject(err);
+                            },
+                        });
+                    });
+                } catch (error) {
+                    // Handle compression error (e.g., show a toast message)
+                    console.error("Error during avatar compression:", error);
+                    compressedAvatarFile = null; // Clear any previously compressed file
+                    avatarInput.value = ''; // Clear the file input
+                }
+            } else {
+                compressedAvatarFile = null;
+            }
+        }
+
+        // In your form's enhance function:
+    </script>
+
+    <form
+        method="POST"
+        action="?/updateProfile"
+        enctype="multipart/form-data"
+        use:enhance={({ form, data, action, cancel }) => {
+            if (compressedAvatarFile) {
+                // Remove the original file if it exists (though usually it won't be appended yet)
+                data.delete('avatar_url');
+                // Append the compressed file with the correct name expected by your server action
+                data.append('avatar_url', compressedAvatarFile, compressedAvatarFile.name);
+            }
+
+            // Other form data handling...
+
+            return async ({ result, update }) => {
+                // Post-submission logic
+                await update(); // Update page data
+                if (result.type === 'success') {
+                    // Reset file input after successful upload
+                    if (avatarInput) {
+                        avatarInput.value = '';
+                    }
+                    compressedAvatarFile = null; // Clear the compressed file from state
+                }
+            };
+        }}
+    >
+        <input
+            type="file"
+            name="avatar_url"
+            accept="image/*"
+            bind:this={avatarInput}
+            onchange={handleAvatarChange}
+        />
+        </form>
+    ```
+
+    **Key Points for Client-Side:**
+
+      * The `onchange` event listener on the `file` input triggers the `handleAvatarChange` function.
+      * Inside `handleAvatarChange`, `compressorjs` compresses the selected file.
+      * The `use:enhance` action is crucial. Before the form is submitted, you can modify the `formData` object. This is where you'll **replace the original, uncompressed file with the `compressedAvatarFile`**.
+
+#### 2\. Server-Side (`+page.server.js`)
+
+Your existing `updateProfile` action in `+page.server.js` should largely remain the same because it expects a `File` object from `formData.get('avatar_url')`. When `compressorjs` provides a `Blob` (which acts like a `File` for form data), the server will receive it as if it were a regular file upload.
+
+```javascript
+// +page.server.js
+
+export const actions = {
+	updateProfile: async ({ request, locals: { supabase, getSession } }) => {
+		const session = await getSession();
+		if (!session) {
+			return fail(401, { message: 'Unauthorized' });
+		}
+
+		const formData = await request.formData();
+		const username = formData.get('username');
+		const full_name = formData.get('full_name');
+		const bio = formData.get('bio');
+		const avatarFile = formData.get('avatar_url'); // This will now be the compressed file from the client!
+
+		const { data: currentProfile } = await supabase
+			.from('profiles')
+			.select('avatar_url')
+			.eq('user_id', session.user.id)
+			.single();
+
+		let avatar_url = currentProfile?.avatar_url;
+
+		if (avatarFile && avatarFile.size > 0) {
+			// Check if avatarFile is indeed a File/Blob (it should be if compressed successfully)
+			if (!(avatarFile instanceof File || avatarFile instanceof Blob)) {
+                return fail(400, { message: 'Invalid file type for avatar.' });
+            }
+
+			if (avatar_url) {
+				const oldAvatarPath = avatar_url.split('/uploads/').pop();
+				await supabase.storage.from('uploads').remove([oldAvatarPath]);
+			}
+
+			// Supabase storage expects a Blob/File object, which compressorjs provides.
+            // The `avatarFile` here is already compressed from the client-side.
+			const { data, error: uploadError } = await supabase.storage
+				.from('uploads')
+				.upload(`avatars/${session.user.id}/${Date.now()}_${avatarFile.name}`, avatarFile);
+
+			if (uploadError) {
+				return fail(500, { message: 'Failed to upload avatar. ' + uploadError.message });
+			}
+
+			const { data: publicUrlData } = supabase.storage.from('uploads').getPublicUrl(data.path);
+			avatar_url = publicUrlData.publicUrl;
+		}
+
+		const { error: profileError } = await supabase.from('profiles').upsert({
+			user_id: session.user.id,
+			username,
+			full_name,
+			bio,
+			avatar_url,
+			updated_at: new Date(),
+		});
+
+		if (profileError) {
+			return fail(500, { message: 'Failed to update profile. ' + profileError.message });
+		}
+
+		return { success: true, message: 'Profile updated successfully!' };
+	},
+};
+```
+
+-----
+
+### Summary of Changes
+
+1.  **Client-Side (`.svelte` file):**
+
+      * Import `Compressor` from `compressorjs`.
+      * Add an `onchange` event handler to your file input.
+      * Inside the `onchange` handler, use `new Compressor()` to compress the selected file. This operation is asynchronous, so use `await` with a `Promise`.
+      * In the `use:enhance` function for your form, check if a compressed file exists. If so, **replace** the original file in the `formData` with the compressed version using `formData.append('avatar_url', compressedAvatarFile, compressedAvatarFile.name);`.
+
+2.  **Server-Side (`+page.server.js` file):**
+
+      * No significant changes are needed here for handling the file itself, as `formData.get('avatar_url')` will now receive the *compressed* `Blob`/`File` object directly from the client.
+      * You might want to add a check `if (!(avatarFile instanceof File || avatarFile instanceof Blob))` for robustness, though if the client-side is correctly implemented, this shouldn't be strictly necessary for normal operation.
+
+By performing the compression on the client, you reduce the amount of data sent over the network, leading to faster uploads and less storage consumption on your Supabase bucket.
