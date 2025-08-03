@@ -72,7 +72,13 @@
 		};
 	}}
 	class="add-form">
-	<h2 class="form-title">Add New Event</h2>
+	<div class="form-title">
+		<h2>Add New Event</h2>
+		<p>
+			Community Events feature a diverse range of happenings open to everyone. Events are
+			automatically removed upon reaching their specified end date and time.
+		</p>
+	</div>
 
 	<div class="form-group">
 		<label for="title" class="form-label">Title <span class="required">*</span></label>

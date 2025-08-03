@@ -55,10 +55,11 @@ code {
 	margin-block: var(--size-3);
 
 	.form-title {
-		font-size: 1.25em;
-		font-weight: 600;
-		margin-bottom: var(--size-7);
-		color: var(--stone-11);
+		margin-bottom: var(--size-9);
+
+		h2 {
+			margin-top: 0;
+		}
 	}
 }
 

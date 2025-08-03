@@ -73,7 +73,14 @@
 		};
 	}}
 	class="add-form">
-	<h2 class="form-title">Add New Service</h2>
+	<div class="form-title">
+		<h2>Add New Service</h2>
+		<p>
+			Services provides a platform to either offer your skills (Offering) or seek
+			assistance (Wanted) within the community. Each service listing remains active for
+			one week from the date of creation.
+		</p>
+	</div>
 
 	<div class="form-group">
 		<label for="title" class="form-label">Title <span class="required">*</span></label>

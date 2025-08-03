@@ -74,7 +74,13 @@
 		};
 	}}
 	class="add-form">
-	<h2 class="form-title">Add New Lost & Found</h2>
+	<div class="form-title">
+		<h2>Add New Lost & Found</h2>
+		<p>
+			The Lost and Found section is for reporting items or pets that have been misplaced
+			or discovered within the community.
+		</p>
+	</div>
 
 	<div class="form-group">
 		<label for="title" class="form-label">Title <span class="required">*</span></label>

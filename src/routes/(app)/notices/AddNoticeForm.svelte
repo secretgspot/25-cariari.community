@@ -71,7 +71,13 @@
 </script>
 
 <form onsubmit={handleSubmit} class="add-form">
-	<h2 class="form-title">Add New Notice</h2>
+	<div class="form-title">
+		<h2>Add New Notice</h2>
+		<p>
+			Community Notices are for important announcements and updates relevant to the
+			community. Urgency levels help prioritize information.
+		</p>
+	</div>
 
 	<div class="form-group">
 		<label for="title" class="form-label">Title <span class="required">*</span></label>
