@@ -3,7 +3,7 @@
 	import { Button } from '$lib/buttons';
 	import { addToast } from '$lib/toasts';
 
-	let { notice, isOwner } = $props();
+	let { notice, isOwner, is_admin } = $props();
 	let isSubmitting = $state(false);
 	let isDeleting = $state(false);
 
@@ -111,7 +111,7 @@
 	};
 </script>
 
-{#if isOwner}
+{#if isOwner || is_admin}
 	<details class="manage-actions">
 		<summary>Manage Notice</summary>
 

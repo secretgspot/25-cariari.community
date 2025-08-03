@@ -2,7 +2,7 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 
 export async function load({ params, locals: { getSession }, fetch }) {
-	const { user, is_logged_in } = await getSession();
+	const { user, is_logged_in, is_admin } = await getSession();
 	const { id } = params;
 	const response = await fetch(`/api/lost-and-found/${id}`);
 
@@ -17,7 +17,7 @@ export async function load({ params, locals: { getSession }, fetch }) {
 		post,
 		user,
 		is_logged_in,
-		isOwner: user && post.user_id === user.id
+		isOwner: user && (post.user_id === user.id || is_admin)
 	};
 }
 

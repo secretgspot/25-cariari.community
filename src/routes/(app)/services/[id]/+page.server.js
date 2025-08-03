@@ -20,7 +20,7 @@ export async function load({ params, locals: { getSession }, fetch }) {
 		user,
 		is_logged_in,
 		is_admin,
-		isOwner: user && service.user_id === user.id
+				isOwner: user && (service.user_id === user.id || is_admin)
 	};
 }
 

@@ -49,7 +49,7 @@ export async function GET({ params, locals: { supabase, getSession } }) {
 
 export async function PATCH({ request, params, locals: { supabase, getSession } }) {
 	const { id } = params;
-	let { user } = await getSession();
+	let { user, is_admin } = await getSession();
 
 	// TEMPORARY: Allow testing with X-Test-User-ID header
 	if (!user) {
@@ -78,7 +78,7 @@ export async function PATCH({ request, params, locals: { supabase, getSession } 
 			return json({ message: 'Service not found or you do not have permission to update it.' }, { status: 404 });
 		}
 
-		if (service.user_id !== user.id) {
+		if (service.user_id !== user.id && !is_admin) {
 			return json({ message: 'You do not have permission to update this service.' }, { status: 403 });
 		}
 
@@ -104,7 +104,7 @@ export async function PATCH({ request, params, locals: { supabase, getSession } 
 
 export async function DELETE({ params, locals: { supabase, getSession } }) {
 	const { id } = params;
-	let { user } = await getSession();
+	let { user, is_admin } = await getSession();
 
 	// TEMPORARY: Allow testing with X-Test-User-ID header
 	if (!user) {
@@ -131,7 +131,7 @@ export async function DELETE({ params, locals: { supabase, getSession } }) {
 			return json({ message: 'Service not found or you do not have permission to delete it.' }, { status: 404 });
 		}
 
-		if (service.user_id !== user.id) {
+		if (service.user_id !== user.id && !is_admin) {
 			return json({ message: 'You do not have permission to delete this service.' }, { status: 403 });
 		}
 

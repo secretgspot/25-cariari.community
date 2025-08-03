@@ -51,7 +51,7 @@ export async function GET({ params, locals: { supabase, getSession } }) {
 
 export async function PATCH({ request, params, locals: { supabase, getSession } }) {
 	const { id } = params;
-	let { user } = await getSession();
+	let { user, is_admin } = await getSession();
 
 	// TEMPORARY: Allow testing with X-Test-User-ID header
 	if (!user) {
@@ -80,7 +80,7 @@ export async function PATCH({ request, params, locals: { supabase, getSession } 
 			return json({ message: 'Post not found or you do not have permission to update it.' }, { status: 404 });
 		}
 
-		if (post.user_id !== user.id) {
+		if (post.user_id !== user.id && !is_admin) {
 			return json({ message: 'You do not have permission to update this post.' }, { status: 403 });
 		}
 
@@ -109,7 +109,7 @@ export async function PATCH({ request, params, locals: { supabase, getSession } 
 
 export async function DELETE({ params, locals: { supabase, getSession } }) {
 	const { id } = params;
-	let { user } = await getSession();
+	let { user, is_admin } = await getSession();
 
 	// TEMPORARY: Allow testing with X-Test-User-ID header
 	if (!user) {
@@ -136,7 +136,7 @@ export async function DELETE({ params, locals: { supabase, getSession } }) {
 			return json({ message: 'Post not found or you do not have permission to delete it.' }, { status: 404 });
 		}
 
-		if (post.user_id !== user.id) {
+		if (post.user_id !== user.id && !is_admin) {
 			return json({ message: 'You do not have permission to delete this post.' }, { status: 403 });
 		}
 

@@ -2,7 +2,7 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 
 export async function load({ params, locals: { getSession }, fetch }) {
-	const { user, is_logged_in } = await getSession();
+	const { user, is_logged_in, is_admin } = await getSession();
 
 	const { id } = params;
 
@@ -19,7 +19,7 @@ export async function load({ params, locals: { getSession }, fetch }) {
 		event,
 		user,
 		is_logged_in,
-		isOwner: user && event.user_id === user.id
+		isOwner: user && (event.user_id === user.id || is_admin)
 	};
 }
 

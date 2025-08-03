@@ -4,7 +4,7 @@
 	import { addToast } from '$lib/toasts';
 	import { compressFile } from '$lib/utils/file.js';
 
-	let { post, isOwner } = $props();
+	let { post, isOwner, is_admin } = $props();
 	let isSubmitting = $state(false);
 	let isDeleting = $state(false);
 
@@ -147,7 +147,7 @@
 	};
 </script>
 
-{#if isOwner}
+{#if isOwner || is_admin}
 	<details class="manage-actions">
 		<summary>Manage Lost/Found</summary>
 
