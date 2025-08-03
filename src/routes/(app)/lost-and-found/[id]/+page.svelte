@@ -7,7 +7,7 @@
 	let { data } = $props();
 </script>
 
-<div class="post-detail-container">
+<div class="lost-found-detail-container">
 	{#if data.post}
 		<h1>{data.post.title} ({data.post.category})</h1>
 
@@ -37,7 +37,7 @@
 </div>
 
 <style>
-	.post-detail-container {
+	.lost-found-detail-container {
 		position: relative;
 		h1 {
 			color: var(--stone-11);

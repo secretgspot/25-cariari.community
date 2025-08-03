@@ -11,8 +11,7 @@ export async function load({ params, locals: { getSession }, fetch }) {
 		throw error(response.status, result.message || 'Could not fetch lost and found post');
 	}
 
-	const result = await response.json();
-	const post = result.lostandfound; // Extract the actual post data
+	const post = await response.json();
 
 	return {
 		post,
@@ -37,8 +36,7 @@ export const actions = {
 
 			// Get current post data to check for existing image
 			const currentPostResponse = await fetch(`/api/lost-and-found/${id}`);
-			const currentPostResult = currentPostResponse.ok ? await currentPostResponse.json() : null;
-			const currentPost = currentPostResult?.lostandfound;
+			const currentPost = currentPostResponse.ok ? await currentPostResponse.json() : null;
 
 			let newImageUrl = currentPost?.image_url || null;
 
@@ -130,8 +128,7 @@ export const actions = {
 		try {
 			// Get current post data to delete associated image
 			const currentPostResponse = await fetch(`/api/lost-and-found/${id}`);
-			const currentPostResult = currentPostResponse.ok ? await currentPostResponse.json() : null;
-			const currentPost = currentPostResult?.lostandfound;
+			const currentPost = currentPostResponse.ok ? await currentPostResponse.json() : null;
 
 			// Delete associated image from storage if it exists
 			if (currentPost?.image_url) {

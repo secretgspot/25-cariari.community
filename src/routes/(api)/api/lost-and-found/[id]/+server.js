@@ -40,10 +40,8 @@ export async function GET({ params, locals: { supabase, getSession } }) {
 		}
 
 		return json({
-			lostandfound: {
-				...lostandfound,
-				comments_count: commentsCount || 0
-			}
+			...lostandfound,
+			comments_count: commentsCount || 0
 		}, { status: 200 });
 	} catch (err) {
 		console.error('Unexpected error fetching lost and found post:', err);
@@ -101,7 +99,7 @@ export async function PATCH({ request, params, locals: { supabase, getSession } 
 
 		return json({
 			message: 'Post updated successfully!',
-			lostandfound: updatedPost
+			...updatedPost
 		}, { status: 200 });
 	} catch (err) {
 		console.error('Unexpected error updating lost and found post:', err);
