@@ -1,6 +1,7 @@
 <script>
 	import { enhance } from '$app/forms';
 	import Button from '$lib/buttons/Button.svelte';
+	import Compressor from 'compressorjs';
 
 	let { onLostAndFoundAdded } = $props();
 
@@ -18,7 +19,6 @@
 		title: '',
 		description: '',
 		category: 'Lost',
-		image_url: '',
 		date: formatDate(today),
 		location: '',
 		contact: '',
@@ -28,7 +28,52 @@
 	let error = $state(null);
 	let success = $state(false);
 
+	// File upload states
+	let compressedFile = $state(null);
+	let previewUrl = $state(null);
+	let fileInput = $state();
+
 	const categoryOptions = ['Lost', 'Found'];
+
+	function compressFile(file) {
+		return new Promise((resolve, reject) => {
+			new Compressor(file, {
+				quality: 0.7,
+				maxWidth: 800,
+				maxHeight: 600,
+				mimeType: 'image/jpeg',
+				convertSize: 100000,
+				success(result) {
+					previewUrl = URL.createObjectURL(result);
+					const fileName = file.name.replace(/\.[^/.]+$/, '') + '.jpg';
+					const compressedFileObj = new File([result], fileName, { type: 'image/jpeg' });
+					resolve(compressedFileObj);
+				},
+				error: reject,
+			});
+		});
+	}
+
+	async function handleFileChange(event) {
+		const file = event.target.files[0];
+		if (!file) {
+			resetFileState();
+			return;
+		}
+
+		compressedFile = await compressFile(file).catch((error) => {
+			console.error('Compression error:', error);
+			error = 'Image compression failed.';
+			resetFileState();
+			return null;
+		});
+	}
+
+	function resetFileState() {
+		compressedFile = null;
+		previewUrl = null;
+		if (fileInput) fileInput.value = '';
+	}
 
 	// Clear form function
 	function clearForm() {
@@ -36,21 +81,33 @@
 			title: '',
 			description: '',
 			category: 'Lost',
-			image_url: '',
 			date: formatDate(today),
 			location: '',
 			contact: '',
 		};
+		resetFileState();
 	}
 </script>
 
 <form
 	method="POST"
 	action="?/createLostAndFound"
-	use:enhance={({ formElement, formData, action, cancel, submitter }) => {
+	enctype="multipart/form-data"
+	use:enhance={({
+		formElement,
+		formData: enhanceFormData,
+		action,
+		cancel,
+		submitter,
+	}) => {
 		loading = true;
 		error = null;
 		success = false;
+
+		// Add compressed file to form data if available
+		if (compressedFile) {
+			enhanceFormData.append('image_file', compressedFile);
+		}
 
 		return async ({ result, update }) => {
 			loading = false;
@@ -121,13 +178,18 @@
 	</div>
 
 	<div class="form-group">
-		<label for="image_url" class="form-label">Image URL</label>
+		<label for="image_upload" class="form-label">Item Image</label>
+		{#if previewUrl}
+			<img src={previewUrl} alt="preview" class="image-preview" />
+		{/if}
 		<input
-			type="text"
-			id="image_url"
-			name="image_url"
-			bind:value={formData.image_url}
-			class="form-input" />
+			type="file"
+			id="image_upload"
+			name="image_upload"
+			class="form-input"
+			accept="image/*"
+			bind:this={fileInput}
+			onchange={handleFileChange} />
 	</div>
 
 	<div class="form-group">
@@ -183,4 +245,12 @@
 </form>
 
 <style>
+	.image-preview {
+		max-width: 300px;
+		max-height: 200px;
+		border-radius: 8px;
+		object-fit: cover;
+		margin-bottom: 1rem;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	}
 </style>
