@@ -4,7 +4,7 @@
 	import { addToast } from '$lib/toasts';
 	import { compressFile } from '$lib/utils/file.js';
 
-	let { service, isOwner } = $props();
+	let { service, isOwner, is_admin } = $props();
 	let isSubmitting = $state(false);
 	let isDeleting = $state(false);
 
