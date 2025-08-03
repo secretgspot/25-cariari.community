@@ -309,8 +309,6 @@
 		padding: var(--size-3);
 		border-radius: var(--radius-2);
 		margin-block: var(--size-6);
-	}
-	.loading-comments {
 		text-align: center;
 	}
 </style>
