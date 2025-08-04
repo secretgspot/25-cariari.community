@@ -119,7 +119,7 @@
 		<h2>Add New Lost & Found</h2>
 		<p>
 			The Lost and Found section is for reporting items or pets that have been misplaced
-			or discovered within the community.
+			or discovered within the community. All posts will be removed after two weeks.
 		</p>
 	</div>
 

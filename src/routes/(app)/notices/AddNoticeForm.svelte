@@ -75,7 +75,8 @@
 		<h2>Add New Notice</h2>
 		<p>
 			Community Notices are for important announcements and updates relevant to the
-			community. Urgency levels help prioritize information.
+			community. Urgency levels help prioritize information. Unless an End Date is
+			provided, notices will expire in 30 days.
 		</p>
 	</div>
 

@@ -1,6 +1,7 @@
 <script>
 	import Icon from '$lib/Icon.svelte';
 	import ExpirationIndicator from '$lib/ExpirationIndicator.svelte';
+	import { isExpired } from '$lib/utils/time.js';
 
 	let { data } = $props();
 </script>
@@ -11,7 +12,9 @@
 		<a href="/services" class="view-all">View all</a></legend>
 	<div class="services-wrap">
 		{#each data as service}
-			<a href={`/services/${service.id}`}>
+			<a
+				href={`/services/${service.id}`}
+				class:expired={isExpired(service.start_date, 7)}>
 				{#if service.image_url}
 					<img class="image" src={service.image_url} alt={service.title} />
 				{:else}
@@ -63,6 +66,9 @@
 			&:hover {
 				color: var(--blue-9);
 				box-shadow: var(--shadow-1);
+			}
+			&.expired {
+				opacity: 0.6;
 			}
 		}
 	}

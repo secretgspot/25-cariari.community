@@ -117,9 +117,9 @@
 	<div class="form-title">
 		<h2>Add New Service</h2>
 		<p>
-			Services provides a platform to either offer your skills (Offering) or seek
-			assistance (Wanted) within the community. Each service listing remains active for
-			one week from the date of creation.
+			The Services section is for both offering your skills (Offering) and seeking
+			assistance (Wanted) within the community. All service listings expire after one
+			week.
 		</p>
 	</div>
 

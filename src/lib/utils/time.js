@@ -170,3 +170,52 @@ export function getExpirationDate(createdAt, days) {
 	// Add 'days' in milliseconds: days * 24 hours/day * 60 minutes/hour * 60 seconds/minute * 1000 milliseconds/second
 	return new Date(createdDate.getTime() + (days * 24 * 60 * 60 * 1000));
 }
+
+/**
+ * Checks if an item, based on its creation date and an expiration duration, has already expired.
+ * @param {string|Date} createdAt - The creation date of the item.
+ * @param {number} expirationDays - The number of days after creation until the item expires.
+ * @returns {boolean} - True if the item has expired, false otherwise.
+ */
+export function isExpired(createdAt, expirationDays) {
+	const now = new Date();
+	const expirationDate = getExpirationDate(createdAt, expirationDays);
+
+	// Check for invalid date inputs from getExpirationDate
+	if (isNaN(expirationDate.getTime())) {
+		console.error("Invalid 'createdAt' or 'expirationDays' provided, resulting in an invalid expiration date.");
+		return true; // Consider it expired if the date is invalid to prevent indefinite display
+	}
+
+	// An item is expired if its expiration date is in the past relative to now
+	return expirationDate <= now;
+}
+
+// Example Usage (for testing purposes)
+/*
+// Assume current time is Sunday, August 3, 2025, 8:03:38 PM CST
+
+// Item created 5 days ago, expires after 7 days (should NOT be expired)
+const recentItem = "2025-07-29T20:00:00Z"; // August 3 - 5 days = July 29
+console.log(`Recent item (created ${recentItem}, 7-day expiration): ${isExpired(recentItem, 7)}`); // Expected: false
+
+// Item created 8 days ago, expires after 7 days (should BE expired)
+const oldItem = "2025-07-26T20:00:00Z"; // August 3 - 8 days = July 26
+console.log(`Old item (created ${oldItem}, 7-day expiration): ${isExpired(oldItem, 7)}`);     // Expected: true
+
+// Item created right now, expires after 1 day (should NOT be expired)
+const newItemNow = new Date().toISOString();
+console.log(`New item (created now, 1-day expiration): ${isExpired(newItemNow, 1)}`);     // Expected: false
+
+// Item created 15 days ago, expires after 14 days (should BE expired) - for Lost and Found
+const lostAndFoundItem = "2025-07-19T10:00:00Z"; // August 3 - 15 days = July 19
+console.log(`Lost and Found (created ${lostAndFoundItem}, 14-day expiration): ${isExpired(lostAndFoundItem, 14)}`); // Expected: true
+
+// Item created 20 days ago, expires after 30 days (should NOT be expired) - for Community Notice
+const communityNoticeItem = "2025-07-14T10:00:00Z"; // August 3 - 20 days = July 14
+console.log(`Community Notice (created ${communityNoticeItem}, 30-day expiration): ${isExpired(communityNoticeItem, 30)}`); // Expected: false
+
+// Item created 35 days ago, expires after 30 days (should BE expired) - for Community Notice
+const oldCommunityNoticeItem = "2025-06-29T10:00:00Z"; // August 3 - 35 days = June 29
+console.log(`Old Community Notice (created ${oldCommunityNoticeItem}, 30-day expiration): ${isExpired(oldCommunityNoticeItem, 30)}`); // Expected: true
+*/

@@ -1,4 +1,7 @@
 <script>
+	import ExpirationIndicator from '$lib/ExpirationIndicator.svelte';
+	import { isExpired, getExpirationDate } from '$lib/utils/time.js';
+
 	let { data } = $props();
 </script>
 
@@ -9,7 +12,7 @@
 
 	<div class="items-grid">
 		{#each data as post}
-			<div class="item-card">
+			<div class="item-card" class:expired={isExpired(post.created_at, 14)}>
 				<a href={`/lost-and-found/${post.id}`} class="item-link">
 					{#if post.image_url}
 						<img src={post.image_url} alt={post.title} />
@@ -34,6 +37,9 @@
 						</p>
 					</div>
 				</a>
+				<ExpirationIndicator
+					start_date={post.created_at}
+					end_date={getExpirationDate(post.created_at, 14)} />
 			</div>
 		{/each}
 	</div>
@@ -60,11 +66,15 @@
 	}
 
 	.item-card {
+		position: relative;
 		border-radius: var(--border-size-3);
 		overflow: hidden;
 		border: var(--border-size-1) solid var(--gray-1);
 		&:hover {
 			box-shadow: var(--shadow-1);
+		}
+		&.expired {
+			opacity: 0.6;
 		}
 
 		img {
