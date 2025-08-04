@@ -1,5 +1,7 @@
 <script>
 	import Icon from '$lib/Icon.svelte';
+	import ExpirationIndicator from '$lib/ExpirationIndicator.svelte';
+
 	let { data } = $props();
 </script>
 
@@ -19,6 +21,9 @@
 				{/if}
 				<strong class="message">{service.title}</strong>
 				<Icon size="21" kind={service.category} />
+				<ExpirationIndicator
+					start_date={service.start_date}
+					end_date={service.end_date} />
 			</a>
 		{/each}
 	</div>
@@ -44,6 +49,7 @@
 		margin-block: var(--size-3);
 
 		a {
+			position: relative;
 			text-decoration: none;
 			display: flex;
 			flex: 1;
