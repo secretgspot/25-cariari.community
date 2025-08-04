@@ -2,7 +2,12 @@
 	import Comments from '$lib/Comments.svelte';
 	import ManageLostAndFound from './ManageLostAndFound.svelte';
 	import { formatText } from '$lib/utils/markdown.js';
-	import { timeFrom } from '$lib/utils/time.js';
+	import {
+		timeFrom,
+		timeFromLong,
+		getExpirationDate,
+		formatDate,
+	} from '$lib/utils/time.js';
 
 	let { data } = $props();
 </script>
@@ -11,22 +16,31 @@
 	{#if data.post}
 		<h1>{data.post.title} ({data.post.category})</h1>
 
+		<div class="meta">
+			<span>Posted: {timeFrom(data.post.created_at)}</span>
+			<span>Expires in: {timeFromLong(getExpirationDate(data.post.created_at, 14))}</span>
+		</div>
+
 		{#if data.post.image_url}
 			<img src={data.post.image_url} alt={data.post.title} class="image" />
 		{/if}
 
-		<p>{@html formatText(data.post.description)}</p>
-		<p class="meta">
-			<strong>Date Lost/Found:</strong>
-			{new Date(data.post.date).toLocaleDateString()}
-		</p>
-		{#if data.post.location}
-			<p><strong>Location:</strong> {data.post.location}</p>
-		{/if}
-		<p><strong>Contact:</strong> {data.post.contact}</p>
-		<p class="date">
-			Posted: {new Date(data.post.created_at).toLocaleDateString()}
-		</p>
+		<div class="description">{@html formatText(data.post.description)}</div>
+
+		<fieldset class="details">
+			<legend>Details</legend>
+
+			{#if data.post.location}
+				<p><strong>Location:</strong> {data.post.location}</p>
+			{/if}
+
+			<p><strong>Contact:</strong> {data.post.contact}</p>
+
+			<p class="date">
+				<strong>Date:</strong>
+				{formatDate(data.post.created_at)}
+			</p>
+		</fieldset>
 
 		<ManageLostAndFound post={data.post} isOwner={data.isOwner} />
 
@@ -40,20 +54,16 @@
 	.lost-found-detail-container {
 		position: relative;
 		h1 {
-			color: var(--stone-11);
-			margin-bottom: var(--size-1);
+			margin-bottom: var(--size-3);
 		}
 
 		.meta {
-			color: var(--stone-9);
-			margin-block: 0 var(--size-2);
-		}
-		.date {
 			display: flex;
-			gap: var(--size-4);
-		}
-		strong {
+			justify-content: space-between;
 			font-size: small;
+			color: var(--stone-9);
+			margin-inline: var(--size-3);
+			margin-block: var(--size-1);
 		}
 
 		.image {
@@ -62,6 +72,24 @@
 			height: auto;
 			border-radius: var(--radius-2);
 			margin-bottom: 0;
+		}
+
+		.description {
+			margin-inline: var(--size-3);
+		}
+
+		.details {
+			margin-block-start: var(--size-6);
+			border-radius: var(--border-size-3);
+			display: flex;
+			flex-direction: column;
+			gap: var(--size-1);
+			p {
+				margin-block: var(--size-1);
+				strong {
+					font-size: smaller;
+				}
+			}
 		}
 	}
 </style>

@@ -94,7 +94,7 @@
 <style>
 	.lost-and-found-container {
 		h1 {
-			margin-bottom: 1em;
+			margin-bottom: var(--size-7);
 		}
 	}
 
