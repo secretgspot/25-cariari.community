@@ -97,7 +97,6 @@
 		/* Small tablets and larger mobile devices (481px - 768px) */
 		@media (min-width: 481px) {
 			place-content: center;
-			grid-template-columns: 1fr 2fr;
 		}
 
 		/* Tablets and small laptops (769px - 1024px) */
@@ -119,6 +118,10 @@
 		background: white;
 		padding: var(--size-3);
 		border-radius: var(--border-size-3);
+		/* Small tablets and larger mobile devices (481px - 768px) */
+		@media (min-width: 481px) {
+			min-width: 450px;
+		}
 	}
 
 	.success {

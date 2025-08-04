@@ -61,6 +61,16 @@
 
 <style>
 	.about-container {
+		/* Tablets and small laptops (769px - 1024px) */
+		@media (min-width: 769px) {
+			max-width: 666px;
+			justify-self: center;
+			margin-block: var(--size-8);
+		}
+		/* Large desktops and high-resolution screens (1025px and up) */
+		@media (min-width: 1025px) {
+		}
+
 		h1 {
 			place-self: center;
 			margin-block-end: var(--size-9);
@@ -68,6 +78,15 @@
 
 		p {
 			text-align: justify;
+		}
+
+		#contacts {
+			p {
+				/* Small tablets and larger mobile devices (481px - 768px) */
+				@media (min-width: 481px) {
+					text-align: center;
+				}
+			}
 		}
 
 		#privacy,
