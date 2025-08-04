@@ -2,7 +2,7 @@
 <script>
 	import { invalidateAll } from '$app/navigation';
 	import Button from '$lib/buttons/Button.svelte';
-	import Compressor from 'compressorjs';
+	import { compressFile } from '$lib/utils/file.js';
 
 	let { userProfile, onMessage } = $props();
 
@@ -29,24 +29,7 @@
 		}
 	});
 
-	function compressFile(file) {
-		return new Promise((resolve, reject) => {
-			new Compressor(file, {
-				quality: 0.7,
-				maxWidth: 222,
-				maxHeight: 222,
-				mimeType: 'image/jpeg',
-				convertSize: 100000,
-				success(result) {
-					previewUrl = URL.createObjectURL(result);
-					const fileName = file.name.replace(/\.[^/.]+$/, '') + '.jpg';
-					const compressedFileObj = new File([result], fileName, { type: 'image/jpeg' });
-					resolve(compressedFileObj);
-				},
-				error: reject,
-			});
-		});
-	}
+	
 
 	async function handleFileChange(event) {
 		const file = event.target.files[0];
@@ -55,12 +38,15 @@
 			return;
 		}
 
-		compressedFile = await compressFile(file).catch((error) => {
-			console.error('Compression error:', error);
+				try {
+			const { file: compressed, previewUrl: url } = await compressFile(file);
+			compressedFile = compressed;
+			previewUrl = url;
+		} catch (err) {
+			console.error('Compression error:', err);
 			onMessage({ message: 'Image compression failed.', success: false });
 			resetFileState();
-			return null;
-		});
+		}
 	}
 
 	function resetFileState() {
