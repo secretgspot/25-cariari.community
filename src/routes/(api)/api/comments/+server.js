@@ -33,13 +33,7 @@ export async function GET({ url, locals: { supabase } }) {
 export async function POST({ request, locals: { supabase, getSession } }) {
 	let session = await getSession();
 
-	// TEMPORARY: Allow testing with X-Test-User-ID header
-	if (!session.is_logged_in) {
-		const testUserId = request.headers.get('X-Test-User-ID');
-		if (testUserId) {
-			session = { user: { id: testUserId }, is_logged_in: true };
-		}
-	}
+	
 
 	if (!session.is_logged_in || !session.user?.id) {
 		return json({ message: 'Unauthorized' }, { status: 401 });

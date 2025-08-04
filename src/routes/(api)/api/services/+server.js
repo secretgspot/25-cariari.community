@@ -4,13 +4,7 @@ import { json } from '@sveltejs/kit';
 export async function GET({ url, locals: { supabase, getSession } }) {
 	let session = await getSession();
 
-	// TEMPORARY: Allow testing with X-Test-User-ID header
-	if (!session) {
-		const testUserId = request.headers.get('X-Test-User-ID');
-		if (testUserId) {
-			session = { user: { id: testUserId } }; // Mock session for testing
-		}
-	}
+	
 
 	if (!session) {
 		return json({ message: 'Unauthorized' }, { status: 401 });
@@ -47,13 +41,7 @@ export async function GET({ url, locals: { supabase, getSession } }) {
 export async function POST({ request, locals: { supabase, getSession } }) {
 	let { user } = await getSession();
 
-	// TEMPORARY: Allow testing with X-Test-User-ID header
-	if (!user) {
-		const testUserId = request.headers.get('X-Test-User-ID');
-		if (testUserId) {
-			user = { id: testUserId };
-		}
-	}
+	
 
 	if (!user) {
 		return json({ message: 'Unauthorized' }, { status: 401 });

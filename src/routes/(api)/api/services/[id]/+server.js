@@ -4,13 +4,7 @@ import { json } from '@sveltejs/kit';
 export async function GET({ params, locals: { supabase, getSession } }) {
 	let session = await getSession();
 
-	// TEMPORARY: Allow testing with X-Test-User-ID header
-	if (!session) {
-		const testUserId = request.headers.get('X-Test-User-ID');
-		if (testUserId) {
-			session = { user: { id: testUserId } }; // Mock session for testing
-		}
-	}
+	
 
 	if (!session) {
 		return json({ message: 'Unauthorized' }, { status: 401 });
@@ -51,13 +45,7 @@ export async function PATCH({ request, params, locals: { supabase, getSession } 
 	const { id } = params;
 	let { user, is_admin } = await getSession();
 
-	// TEMPORARY: Allow testing with X-Test-User-ID header
-	if (!user) {
-		const testUserId = request.headers.get('X-Test-User-ID');
-		if (testUserId) {
-			user = { id: testUserId };
-		}
-	}
+
 
 	if (!user) {
 		return json({ message: 'Unauthorized' }, { status: 401 });
@@ -106,13 +94,7 @@ export async function DELETE({ params, locals: { supabase, getSession } }) {
 	const { id } = params;
 	let { user, is_admin } = await getSession();
 
-	// TEMPORARY: Allow testing with X-Test-User-ID header
-	if (!user) {
-		const testUserId = request.headers.get('X-Test-User-ID');
-		if (testUserId) {
-			user = { id: testUserId };
-		}
-	}
+
 
 	if (!user) {
 		return json({ message: 'Unauthorized' }, { status: 401 });
