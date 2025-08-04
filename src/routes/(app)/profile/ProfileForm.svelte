@@ -29,8 +29,6 @@
 		}
 	});
 
-	
-
 	async function handleFileChange(event) {
 		const file = event.target.files[0];
 		if (!file) {
@@ -38,7 +36,7 @@
 			return;
 		}
 
-				try {
+		try {
 			const { file: compressed, previewUrl: url } = await compressFile(file);
 			compressedFile = compressed;
 			previewUrl = url;
