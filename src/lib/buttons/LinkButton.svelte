@@ -49,15 +49,13 @@
 		justify-content: center;
 		align-items: center;
 		white-space: nowrap;
-	}
-	button:hover,
-	a:hover {
-		box-shadow: var(--blue-9) inset 0 -3px 0 -1px;
-		color: var(--blue-9);
-	}
-	button.active,
-	a.active {
-		box-shadow: var(--blue-9) inset 0 -5px 0 -1px;
-		color: var(--blue-9);
+		&:hover {
+			box-shadow: var(--blue-9) inset 0 -3px 0 -1px;
+			color: var(--blue-9);
+		}
+		&.active {
+			box-shadow: var(--blue-9) inset 0 -5px 0 -1px;
+			color: var(--blue-9);
+		}
 	}
 </style>

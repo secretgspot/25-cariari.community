@@ -1,6 +1,5 @@
 <script>
 	import { navigating } from '$app/stores';
-	import { computeClasses } from './utils.js';
 	import { Spinner } from '$lib/loaders';
 
 	let {
@@ -25,59 +24,18 @@
 		}
 	}
 
-	// Derived values
-	const classes = $derived(
-		`button ${rest.class ?? ''} ${computeClasses('btn', {
-			size,
-			shadow,
-			outline,
-			right,
-		})}`,
-	);
-
+	// Only keep the derived values we actually need
 	const isDisabled = $derived(disabled || loading || $navigating);
 	const isLinkType = $derived(isLink || href);
 	const linkHref = $derived(href ?? 'javascript:void(0);');
 	const linkTarget = $derived(external ? '_blank' : null);
-
-	// Simplified spinner size logic
-	const spinnerSizes = {
-		icon: { normal: '21', whenIcon: '12' },
-		block: { normal: '15', whenIcon: '15' },
-		small: { normal: '12', whenIcon: '15' },
-		medium: { normal: '18', whenIcon: '16' },
-	};
-
-	const getSpinnerSize = $derived(spinnerSizes[size]?.normal || '18');
-	const getIconSpinnerSize = $derived(spinnerSizes[size]?.whenIcon || '16');
-
-	// Component props for common elements
-	const commonProps = $derived({
-		class: classes,
-		'class:disabled': isDisabled,
-		onclick: handleClick,
-		...rest,
-	});
-
-	const linkProps = $derived({
-		...commonProps,
-		'data-sveltekit-prefetch': true,
-		role: 'button',
-		href: linkHref,
-		target: linkTarget,
-	});
-
-	const buttonProps = $derived({
-		...commonProps,
-		disabled: isDisabled,
-	});
 </script>
 
 <!-- Icon Content Component -->
 {#snippet iconContent()}
 	<div class="icon_wrap">
 		{#if loading}
-			<Spinner size={size === 'icon' ? getSpinnerSize : getIconSpinnerSize} />
+			<Spinner size={16} />
 		{:else if icon}
 			{@render icon()}
 		{:else}
@@ -91,7 +49,7 @@
 	<div class="content_wrap">
 		{#if size === 'block'}
 			<span class="title">
-				{#if loading}<Spinner size={getSpinnerSize} />{/if}
+				{#if loading}<Spinner size={16} />{/if}
 				{@render children?.()}
 			</span>
 		{:else}
@@ -114,11 +72,30 @@
 
 <!-- Main Template -->
 {#if isLinkType}
-	<a {...linkProps}>
+	<a
+		class="button {size} {rest.class ?? ''}"
+		class:disabled={isDisabled}
+		class:shadow
+		class:outline
+		class:right
+		href={linkHref}
+		target={linkTarget}
+		role="button"
+		data-sveltekit-prefetch
+		onclick={handleClick}
+		{...rest}>
 		{@render buttonContent()}
 	</a>
 {:else}
-	<button {...buttonProps}>
+	<button
+		class="button {size} {rest.class ?? ''}"
+		class:disabled={isDisabled}
+		class:shadow
+		class:outline
+		class:right
+		disabled={isDisabled}
+		onclick={handleClick}
+		{...rest}>
 		{@render buttonContent()}
 	</button>
 {/if}
@@ -163,8 +140,8 @@
 		flex-flow: column;
 	}
 
-	/* Size-specific styles */
-	.btn-icon {
+	/* Size-specific styles - updated to use size directly instead of btn- prefix */
+	.icon {
 		display: inline-flex;
 		align-items: center;
 		border-radius: var(--border-size-3);
@@ -184,7 +161,7 @@
 		}
 	}
 
-	.btn-small {
+	.small {
 		align-items: center;
 		white-space: nowrap;
 		box-shadow: var(--shadow-1);
@@ -204,7 +181,7 @@
 		}
 	}
 
-	.btn-medium {
+	.medium {
 		align-items: center;
 		box-shadow: var(--shadow-1);
 
@@ -233,7 +210,7 @@
 		}
 	}
 
-	.btn-block {
+	.block {
 		width: 100%;
 		padding: var(--padding-small);
 		font-weight: 600;
