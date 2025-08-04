@@ -50,5 +50,24 @@
 		margin-block-start: var(--size-8);
 		gap: var(--size-8);
 		margin-inline: var(--size-3);
+
+		/* Small tablets and larger mobile devices (481px - 768px) */
+		@media (min-width: 481px) {
+		}
+
+		/* Tablets and small laptops (769px - 1024px) */
+		@media (min-width: 769px) {
+		}
+
+		/* Large desktops and high-resolution screens (1025px and up) */
+		@media (min-width: 1025px) {
+			background: white;
+			padding: var(--size-3);
+			border-radius: var(--border-size-3);
+		}
+
+		/* Extra-large screens (1440px and up) */
+		@media (min-width: 1440px) {
+		}
 	}
 </style>
