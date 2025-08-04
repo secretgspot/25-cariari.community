@@ -229,33 +229,8 @@
 					onchange={handleFileChange} />
 			</div>
 
-			<div class="form-group">
-				<label for="start_date" class="form-label">Start Date</label>
-				<input
-					type="date"
-					id="start_date"
-					name="start_date"
-					bind:value={formData.start_date}
-					disabled={isSubmitting}
-					readonly
-					class="form-input" />
-				<!-- Hidden input to ensure the value is submitted -->
-				<input type="hidden" name="start_date" value={formData.start_date} />
-			</div>
-
-			<div class="form-group">
-				<label for="end_date" class="form-label">End Date</label>
-				<input
-					type="date"
-					id="end_date"
-					name="end_date"
-					bind:value={formData.end_date}
-					disabled={isSubmitting}
-					readonly
-					class="form-input" />
-				<!-- Hidden input to ensure the value is submitted -->
-				<input type="hidden" name="end_date" value={formData.end_date} />
-			</div>
+			<input type="hidden" name="start_date" value={formData.start_date} />
+			<input type="hidden" name="end_date" value={formData.end_date} />
 
 			<div class="form-actions">
 				<Button type="submit" green loading={isSubmitting} disabled={isSubmitting}>
