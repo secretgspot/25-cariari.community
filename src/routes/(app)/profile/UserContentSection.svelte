@@ -67,12 +67,10 @@
 
 <style>
 	.content-section {
-		margin-block: var(--size-8);
+		margin-block: var(--size-9);
 
 		h2 {
-			color: #333;
-			margin-bottom: 1em;
-			font-size: 1.25em;
+			margin-bottom: var(--size-3);
 		}
 	}
 
@@ -99,7 +97,7 @@
 	}
 
 	.item-link {
-		color: #007bff;
+		color: var(--blue-6);
 		text-decoration: none;
 		font-weight: 500;
 	}
@@ -110,11 +108,9 @@
 
 	.item-title {
 		font-weight: 500;
-		color: #333;
 	}
 
 	.no-items {
-		color: #666;
 		font-style: italic;
 	}
 </style>
