@@ -145,7 +145,8 @@
 		height: min-content;
 		border: var(--border-size-1) solid var(--gray-1);
 		border-radius: var(--border-size-3);
-		background: var(--stone-1);
+		background: transparent;
+		/* background: var(--stone-1); */
 		/* color: var(--primary-content); */
 		text-decoration: none;
 		padding: 0;
@@ -200,6 +201,7 @@
 	.btn-small {
 		align-items: center;
 		white-space: nowrap;
+		box-shadow: var(--shadow-1);
 	}
 	.btn-small:active,
 	.btn-small:focus,
@@ -219,7 +221,7 @@
 	.btn-medium {
 		/* width: 270px; */
 		align-items: center;
-		/* box-shadow: var(--shadow-small); */
+		box-shadow: var(--shadow-1);
 	}
 	.btn-medium:active,
 	.btn-medium:focus,
