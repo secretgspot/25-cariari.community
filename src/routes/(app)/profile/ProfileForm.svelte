@@ -170,7 +170,7 @@
 
 	<Button type="submit" {loading} disabled={loading}>
 		{#snippet icon()}
-			📌
+			👍
 		{/snippet}
 		{loading ? 'Saving...' : 'Save Changes'}
 	</Button>
