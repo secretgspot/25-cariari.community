@@ -41,12 +41,33 @@
 		text-align: center;
 		padding-block: var(--size-3);
 
-		/* h1 {
-		} */
+		/* Small tablets and larger mobile devices (481px - 768px) */
+		@media (min-width: 481px) {
+		}
+
+		/* Tablets and small laptops (769px - 1024px) */
+		@media (min-width: 769px) {
+		}
+
+		/* Large desktops and high-resolution screens (1025px and up) */
+		@media (min-width: 1025px) {
+			margin-block: var(--size-10) var(--size-6);
+		}
+
+		/* Extra-large screens (1440px and up) */
+		@media (min-width: 1440px) {
+		}
 
 		p {
 			max-width: 30ch;
 			margin: 0 auto;
+			/* Tablets and small laptops (769px - 1024px) */
+			@media (min-width: 769px) {
+				max-width: 40ch;
+			}
+			/* Large desktops and high-resolution screens (1025px and up) */
+			@media (min-width: 1025px) {
+			}
 		}
 	}
 </style>
