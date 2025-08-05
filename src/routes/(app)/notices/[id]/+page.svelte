@@ -74,6 +74,7 @@
 <style>
 	.notice-detail-container {
 		max-width: 72ch;
+		width: 100%;
 		place-self: center;
 		/* Tablets and small laptops (769px - 1024px) */
 		@media (min-width: 769px) {
