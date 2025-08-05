@@ -96,7 +96,7 @@
 									{notice.title}
 								</h3>
 								<p class="notice-date">
-									Posted: {new Date(notice.created_at).toLocaleDateString()}
+									Posted: {timeFrom(notice.created_at)}
 								</p>
 							</div>
 							<div class="details-wrap">
@@ -138,9 +138,6 @@
 								{/if}
 							</div>
 						</header>
-						{#if notice.image_url}
-							<img src={notice.image_url} alt={notice.title} class="notice-image" />
-						{/if}
 						<p>
 							{@html formatText(truncateText(stripMarkdown(notice.description), 200))}
 						</p>

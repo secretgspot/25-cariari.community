@@ -127,10 +127,10 @@ code {
 		}
 	}
 
-	.delete-form {
+	/* .delete-form {
 		background: var(--red-0);
 		padding: var(--size-2) var(--size-5);
-	}
+	} */
 }
 
 /* common ADD and MANAGE forms */
@@ -203,6 +203,8 @@ code {
 
 .form-actions {
 	display: flex;
+	align-items: center;
+	justify-content: space-between;
 	gap: var(--size-3);
 	margin-top: var(--size-8);
 }

@@ -3,10 +3,11 @@
 	import { Button } from '$lib/buttons';
 	import { addToast } from '$lib/toasts';
 	import { compressFile } from '$lib/utils/file.js';
+	import Dialog from '$lib/Dialog.svelte';
 
 	let { event, isOwner, is_admin } = $props();
 	let isSubmitting = $state(false);
-	let isDeleting = $state(false);
+	let showDeleteDialog = $state(false);
 
 	// File upload states
 	let compressedFile = $state(null);
@@ -124,45 +125,6 @@
 					dismissible: true,
 					timeout: 0,
 				});
-			}
-		};
-	};
-
-	const submitDeleteForm = ({ formElement, formData, action, cancel }) => {
-		// Show confirmation dialog
-		if (
-			!confirm(
-				'Are you sure you want to delete this event? This action cannot be undone.',
-			)
-		) {
-			cancel(); // Cancel the form submission
-			return;
-		}
-
-		isDeleting = true;
-
-		return async ({ result }) => {
-			const { applyAction } = await import('$app/forms');
-
-			isDeleting = false;
-
-			if (result.type === 'failure') {
-				addToast({
-					message: result.data?.message || 'Delete failed',
-					type: 'error',
-					dismissible: true,
-					timeout: 0,
-				});
-			} else if (result.type === 'error') {
-				addToast({
-					message: result.data?.message || 'An error occurred during deletion',
-					type: 'error',
-					dismissible: true,
-					timeout: 0,
-				});
-			} else if (result.type === 'redirect') {
-				// Let applyAction handle the redirect
-				await applyAction(result);
 			}
 		};
 	};
@@ -294,41 +256,57 @@
 								fill="var(--red-6)"
 								d="m556.79 623.045 55.327-206.482c.761-2.839 1.666-6.354 2.945-9.213 1.447-3.237 4.15-7.526 9.942-10.228l.272-.124c5.704-2.569 11.483-2.292 15.568-1.677 3.667.552 7.836 1.7 11.219 2.607l16.794 4.5 16.795 4.5c3.382.906 7.566 1.996 11.018 3.352 3.845 1.51 8.989 4.159 12.644 9.236l.173.244.17.245c3.501 5.149 3.686 10.112 3.327 13.583-.322 3.116-1.296 6.613-2.057 9.452l-55.326 206.482c-.22.82-.737 3.021-1.849 5.113-1.112 2.091-2.684 3.818-3.253 4.481l-26.173 30.501c-4.68 5.453-9.21 10.793-13.384 14.366-3.634 3.109-12.048 9.36-24.245 6.224l-.289-.076c-12.353-3.31-16.568-13.046-18.172-17.591-1.829-5.182-3.082-12.071-4.408-19.134l-7.417-39.501c-.161-.859-.659-3.139-.576-5.507.072-2.071.581-3.988.855-4.984l.1-.369Zm128.862-216.117-16.795-4.5-16.794-4.5 33.589 9Z" /></svg>
 					{/snippet}
-					{isSubmitting ? 'Updating...' : 'Update Event'}
+					{isSubmitting ? 'Updating...' : 'Update'}
+				</Button>
+
+				<Button
+					type="button"
+					size="small"
+					red
+					loading={isSubmitting}
+					disabled={isSubmitting}
+					onclick={() => (showDeleteDialog = true)}>
+					{#snippet icon()}
+						<svg
+							width="21"
+							height="21"
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 271 297">
+							<path
+								stroke="var(--red-6)"
+								stroke-linecap="round"
+								stroke-width="50"
+								d="M25-25h298.265"
+								transform="scale(.94832 1.04914) rotate(45 -30.53 13.668)" />
+							<path
+								stroke="var(--red-6)"
+								stroke-linecap="round"
+								stroke-width="50"
+								d="M25-25h298.265"
+								transform="scale(.94832 1.04914) rotate(-45 361.132 94.18)" />
+						</svg>
+					{/snippet}
+					Delete
 				</Button>
 			</div>
 		</form>
-
-		<form
-			method="POST"
-			action="?/deleteEvent"
-			use:enhance={submitDeleteForm}
-			class="delete-form">
-			<Button type="submit" size="small" red loading={isDeleting} disabled={isDeleting}>
-				{#snippet icon()}
-					<svg
-						width="21"
-						height="21"
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 271 297"
-						><path
-							stroke="var(--red-6)"
-							stroke-linecap="round"
-							stroke-width="50"
-							d="M25-25h298.265"
-							transform="scale(.94832 1.04914) rotate(45 -30.53 13.668)" /><path
-							stroke="var(--red-6)"
-							stroke-linecap="round"
-							stroke-width="50"
-							d="M25-25h298.265"
-							transform="scale(.94832 1.04914) rotate(-45 361.132 94.18)" /></svg>
-				{/snippet}
-				{isDeleting ? 'Deleting...' : 'Delete Event'}
-			</Button>
-		</form>
 	</details>
 {/if}
+
+<Dialog
+	open={showDeleteDialog}
+	title="Delete Event"
+	message="Are you sure you want to delete this event? This action cannot be undone."
+	type="confirm"
+	onConfirm={() => {
+		const deleteForm = document.createElement('form');
+		deleteForm.method = 'POST';
+		deleteForm.action = `?/deleteEvent`;
+		document.body.appendChild(deleteForm);
+		deleteForm.submit();
+	}}
+	onCancel={() => (showDeleteDialog = false)} />
 
 <style>
 </style>
