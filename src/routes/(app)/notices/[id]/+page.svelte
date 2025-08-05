@@ -73,11 +73,23 @@
 
 <style>
 	.notice-detail-container {
+		max-width: 72ch;
+		place-self: center;
+		/* Tablets and small laptops (769px - 1024px) */
+		@media (min-width: 769px) {
+			margin-block: var(--size-8);
+		}
+
+		/* Large desktops and high-resolution screens (1025px and up) */
+		@media (min-width: 1025px) {
+			margin-block: var(--size-9);
+		}
 	}
 
 	.notice-header {
 		display: flex;
 		justify-content: space-between;
+		margin-block-end: var(--size-9);
 
 		h1 {
 			margin: 0;

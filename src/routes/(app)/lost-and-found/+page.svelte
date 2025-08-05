@@ -51,7 +51,9 @@
 
 <svelte:head>
 	<title>Lost & Found - Cariari Community</title>
-	<meta name="description" content="Browse lost and found items in the Cariari community." />
+	<meta
+		name="description"
+		content="Browse lost and found items in the Cariari community." />
 </svelte:head>
 
 <div class="lost-and-found-container">
@@ -140,8 +142,9 @@
 
 <style>
 	.lost-and-found-container {
+		position: relative;
 		h1 {
-			margin-bottom: var(--size-7);
+			margin-bottom: var(--size-6);
 		}
 
 		nav.options {
@@ -151,6 +154,8 @@
 			input[type='search'] {
 				max-width: 150px;
 				box-shadow: var(--shadow-1);
+				align-self: center;
+				padding: var(--size-2);
 			}
 		}
 
@@ -226,17 +231,17 @@
 	.post-card-link {
 		text-decoration: none;
 		color: inherit;
-		display: block;
+		display: inline-block;
 		width: 100%;
 		margin-bottom: var(--size-7);
 		break-inside: avoid;
-		box-shadow: var(--shadow-1);
 		border-radius: var(--border-size-3);
 		border: var(--border-size-1) solid var(--gray-1);
 		position: relative;
+		transition: transform 0.2s ease;
 
 		&:hover {
-			box-shadow: var(--shadow-2);
+			box-shadow: var(--shadow-1);
 			transform: translateY(-3px);
 		}
 	}

@@ -44,7 +44,9 @@
 
 <svelte:head>
 	<title>Events - Cariari Community</title>
-	<meta name="description" content="View upcoming community events and activities for Cariari." />
+	<meta
+		name="description"
+		content="View upcoming community events and activities for Cariari." />
 </svelte:head>
 
 <div class="events-container">
@@ -159,6 +161,8 @@
 			input[type='search'] {
 				max-width: 150px;
 				box-shadow: var(--shadow-1);
+				align-self: center;
+				padding: var(--size-2);
 			}
 		}
 
@@ -232,6 +236,8 @@
 			width: 100%;
 			height: auto;
 			margin-bottom: 0;
+			aspect-ratio: 1;
+			object-fit: cover;
 		}
 
 		.placeholder-image {
@@ -258,13 +264,13 @@
 		width: 100%;
 		margin-bottom: var(--size-7);
 		break-inside: avoid;
-		box-shadow: var(--shadow-1);
 		border-radius: var(--border-size-3);
 		border: var(--border-size-1) solid var(--gray-1);
 		position: relative;
+		transition: transform 0.2s ease;
 
 		&:hover {
-			box-shadow: var(--shadow-2);
+			box-shadow: var(--shadow-1);
 			transform: translateY(-3px);
 		}
 	}

@@ -69,6 +69,7 @@ code {
 	border-radius: var(--border-size-3);
 	padding: var(--size-6);
 	margin-block: var(--size-3);
+	background: var(--stone-0);
 
 	.form-title {
 		margin-bottom: var(--size-9);

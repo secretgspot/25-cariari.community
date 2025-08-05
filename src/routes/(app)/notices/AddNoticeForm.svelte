@@ -70,7 +70,7 @@
 	}
 </script>
 
-<form onsubmit={handleSubmit} class="add-form">
+<form onsubmit={handleSubmit} class="add-form {formData.urgency.toLocaleLowerCase()}">
 	<div class="form-title">
 		<h2>Add New Notice</h2>
 		<p>
@@ -142,4 +142,18 @@
 </form>
 
 <style>
+	.add-form {
+		&.default {
+			background: var(--stone-0);
+		}
+		&.low {
+			background: var(--yellow-0);
+		}
+		&.medium {
+			background: var(--orange-0);
+		}
+		&.high {
+			background: var(--red-0);
+		}
+	}
 </style>

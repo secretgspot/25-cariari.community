@@ -44,7 +44,9 @@
 
 <svelte:head>
 	<title>Notices - Cariari Community</title>
-	<meta name="description" content="View community notices and announcements for Cariari." />
+	<meta
+		name="description"
+		content="View community notices and announcements for Cariari." />
 </svelte:head>
 
 <div class="notices-container">
@@ -157,8 +159,9 @@
 
 <style>
 	.notices-container {
+		position: relative;
 		h1 {
-			margin-bottom: var(--size-3);
+			margin-bottom: var(--size-6);
 		}
 
 		nav.options {
@@ -168,6 +171,8 @@
 			input[type='search'] {
 				max-width: 150px;
 				box-shadow: var(--shadow-1);
+				align-self: center;
+				padding: var(--size-2);
 			}
 		}
 
@@ -184,8 +189,6 @@
 	}
 
 	.notice-card {
-		border: var(--border-size-1) solid var(--gray-1);
-		border-radius: var(--radius-2);
 		padding: var(--size-3);
 
 		.notice-header {
@@ -257,9 +260,15 @@
 		text-decoration: none;
 		color: inherit;
 		display: block;
+		width: 100%;
+		margin-bottom: var(--size-4);
+		border-radius: var(--border-size-3);
+		border: var(--border-size-1) solid var(--gray-1);
+		position: relative;
+		transition: transform 0.2s ease;
 
-		&:hover .notice-card {
-			box-shadow: 0 2px var(--stone-9);
+		&:hover {
+			box-shadow: var(--shadow-1);
 			transform: translateY(-3px);
 		}
 	}
