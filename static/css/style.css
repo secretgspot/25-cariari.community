@@ -182,11 +182,21 @@ code {
 	border: var(--border-size-1) solid var(--gray-1);
 	border-radius: var(--border-size-3);
 	font-size: 0.9em;
-	box-sizing: border-box;
 	transition:
 		border-color 0.2s,
 		box-shadow 0.2s;
 }
+
+input[type="file"]::file-selector-button {
+	padding: var(--size-2) var(--size-1);
+	border: var(--border-size-1) solid var(--gray-1);
+	border-radius: var(--border-size-3);
+	font-size: 0.9em;
+	transition:
+		border-color 0.2s,
+		box-shadow 0.2s;
+}
+
 
 .form-input:focus,
 .form-textarea:focus,

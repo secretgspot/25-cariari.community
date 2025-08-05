@@ -38,6 +38,8 @@
 
 ```
 
+[Cariari.Community](https://25-cariari-community.vercel.app)
+
 ## Cariari Community Site Plan
 
 **Goal:** To create a central online hub for the Cariari community, fostering connection, information sharing, and engagement.
