@@ -7,6 +7,11 @@
 	let { data } = $props();
 </script>
 
+<svelte:head>
+	<title>{data.event.title} - Events - Cariari Community</title>
+	<meta name="description" content={data.event.description} />
+</svelte:head>
+
 <div class="event-detail-container">
 	{#if data.event}
 		<h1>{data.event.title}</h1>

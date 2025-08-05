@@ -42,6 +42,11 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Events - Cariari Community</title>
+	<meta name="description" content="View upcoming community events and activities for Cariari." />
+</svelte:head>
+
 <div class="events-container">
 	<h1>Community Events</h1>
 

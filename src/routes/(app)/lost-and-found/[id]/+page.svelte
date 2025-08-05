@@ -12,6 +12,11 @@
 	let { data } = $props();
 </script>
 
+<svelte:head>
+	<title>{data.post.title} - Lost & Found - Cariari Community</title>
+	<meta name="description" content={data.post.description} />
+</svelte:head>
+
 <div class="lost-found-detail-container">
 	{#if data.post}
 		<h1>{data.post.title} ({data.post.category})</h1>

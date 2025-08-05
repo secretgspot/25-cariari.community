@@ -42,6 +42,11 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Notices - Cariari Community</title>
+	<meta name="description" content="View community notices and announcements for Cariari." />
+</svelte:head>
+
 <div class="notices-container">
 	<h1>Community Notices</h1>
 

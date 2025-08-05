@@ -42,6 +42,11 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Services - Cariari Community</title>
+	<meta name="description" content="Browse community services offered in Cariari." />
+</svelte:head>
+
 <div class="services-container">
 	<h1>Community Services</h1>
 

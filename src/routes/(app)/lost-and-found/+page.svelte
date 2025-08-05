@@ -49,6 +49,11 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Lost & Found - Cariari Community</title>
+	<meta name="description" content="Browse lost and found items in the Cariari community." />
+</svelte:head>
+
 <div class="lost-and-found-container">
 	<h1>Lost & Found</h1>
 

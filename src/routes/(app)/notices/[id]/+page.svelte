@@ -7,6 +7,11 @@
 	let { data } = $props();
 </script>
 
+<svelte:head>
+	<title>{data.notice.title} - Notices - Cariari Community</title>
+	<meta name="description" content={data.notice.description} />
+</svelte:head>
+
 <div class="notice-detail-container">
 	{#if data.notice}
 		<header class="notice-header">
