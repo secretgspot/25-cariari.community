@@ -1,6 +1,8 @@
 <script>
-	import { navigating } from '$app/stores';
+	import { navigating } from '$app/state';
 	import { Spinner } from '$lib/loaders';
+	import { playChime, playChimeSequence, chimePatterns } from '$lib/utils/audio.js';
+	import { vibrate, vibratePatterns } from '$lib/utils/vibrate.js';
 
 	let {
 		size = 'medium', // icon, small, medium, block
@@ -12,6 +14,9 @@
 		isLink = false,
 		href = false,
 		external = false,
+		sound = true,
+		sound_pattern = 'tick', // basic, successA, successB, successC, failA, failB, failC, notification, warning, tick, swipe, bell, click
+		buzz = true,
 		icon,
 		children,
 		onclick,
@@ -19,13 +24,33 @@
 	} = $props();
 
 	function handleClick(event) {
-		if (onclick) {
-			onclick(event);
+		if (sound) {
+			const selectedPattern = chimePatterns[sound_pattern];
+			if (selectedPattern) {
+				if (Array.isArray(selectedPattern)) {
+					playChimeSequence(selectedPattern);
+				} else {
+					playChime(
+						selectedPattern.frequency,
+						selectedPattern.duration,
+						selectedPattern.volume,
+						selectedPattern.waveType,
+					);
+				}
+			}
+		}
+
+		if (buzz) {
+			vibrate(vibratePatterns.basic);
+		}
+
+		if (rest.onclick) {
+			rest.onclick(event);
 		}
 	}
 
 	// Only keep the derived values we actually need
-	const isDisabled = $derived(disabled || loading || $navigating);
+	const isDisabled = $derived(disabled || loading || navigating.complete);
 	const isLinkType = $derived(isLink || href);
 	const linkHref = $derived(href ?? 'javascript:void(0);');
 	const linkTarget = $derived(external ? '_blank' : null);
@@ -82,8 +107,8 @@
 		target={linkTarget}
 		role="button"
 		data-sveltekit-prefetch
-		onclick={handleClick}
-		{...rest}>
+		{...rest}
+		onclick={handleClick}>
 		{@render buttonContent()}
 	</a>
 {:else}
@@ -94,8 +119,8 @@
 		class:outline
 		class:right
 		disabled={isDisabled}
-		onclick={handleClick}
-		{...rest}>
+		{...rest}
+		onclick={handleClick}>
 		{@render buttonContent()}
 	</button>
 {/if}
