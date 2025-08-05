@@ -138,9 +138,9 @@
 								{/if}
 							</div>
 						</header>
-						<p>
+						<div class="description">
 							{@html formatText(truncateText(stripMarkdown(notice.description), 200))}
-						</p>
+						</div>
 					</div>
 				</a>
 			{/each}
@@ -227,18 +227,9 @@
 			}
 		}
 
-		p {
+		.description {
 			margin-bottom: 0.5em;
-			color: #555;
-			line-height: 1.2;
-			overflow: hidden;
-			display: -webkit-box;
-			box-orient: vertical;
-			line-clamp: 12;
-			-webkit-box-orient: vertical;
-			-webkit-line-clamp: 12;
-			max-height: calc(var(--size-3) * 15);
-			text-overflow: ellipsis;
+			color: var(--gray-6);
 		}
 	}
 
