@@ -15,9 +15,9 @@
 	</div>
 
 	<!-- Brand/Logo Section -->
-	<a href="/" class="logo-link">
+	<LinkButton href="/" underline={false} class="logo-link">
 		<Logo size="30px" title="Cariari Community" />
-	</a>
+	</LinkButton>
 </footer>
 
 <style>
@@ -31,7 +31,7 @@
 			font-size: small;
 		}
 
-		.logo-link {
+		:global(.logo-link) {
 			color: var(--stone-12);
 		}
 	}

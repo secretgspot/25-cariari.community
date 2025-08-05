@@ -1,4 +1,5 @@
 <script>
+	import { LinkButton } from '$lib/buttons';
 	import { timeFromShort } from '$lib/utils/time.js';
 	import { dragable } from '$lib/utils/dragable.js';
 
@@ -8,7 +9,7 @@
 <fieldset class="events-container">
 	<legend>
 		<span>Upcoming Events</span> •
-		<a href="/events" class="view-all">View all</a>
+		<LinkButton href="/events" class="view-all">View all</LinkButton>
 	</legend>
 	<div class="slider-container" use:dragable>
 		<div class="slides">
@@ -41,14 +42,12 @@
 		border: none;
 		/* Prevent the fieldset from contributing to page overflow */
 		min-width: 0;
-	}
 
-	.events-container legend {
-		font-weight: 600;
-	}
-
-	.events-container legend span {
-		font-weight: 600;
+		legend {
+			span {
+				font-weight: 600;
+			}
+		}
 	}
 
 	.slider-container {
@@ -139,14 +138,6 @@
 			color: var(--stone-9);
 			font-weight: 600;
 			/* white-space: nowrap; */
-		}
-	}
-
-	.view-all {
-		display: inline-block;
-		text-decoration: none;
-		&:hover {
-			text-decoration: underline;
 		}
 	}
 

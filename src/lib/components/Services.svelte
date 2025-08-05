@@ -1,4 +1,5 @@
 <script>
+	import { LinkButton } from '$lib/buttons';
 	import Icon from '$lib/Icon.svelte';
 	import ExpirationIndicator from '$lib/ExpirationIndicator.svelte';
 	import { isExpired } from '$lib/utils/time.js';
@@ -7,9 +8,10 @@
 </script>
 
 <fieldset class="services-container">
-	<legend
-		><span>Newest Services</span> •
-		<a href="/services" class="view-all">View all</a></legend>
+	<legend>
+		<span>Newest Services</span> •
+		<LinkButton href="/services" class="view-all">View all</LinkButton>
+	</legend>
 	<div class="services-wrap">
 		{#each data as service}
 			<a
@@ -96,13 +98,5 @@
 		/* white-space: nowrap; */
 		overflow: hidden;
 		text-overflow: ellipsis;
-	}
-
-	.view-all {
-		display: inline-block;
-		text-decoration: none;
-		&:hover {
-			text-decoration: underline;
-		}
 	}
 </style>

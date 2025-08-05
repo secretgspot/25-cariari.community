@@ -1,4 +1,5 @@
 <script>
+	import { LinkButton } from '$lib/buttons';
 	import ExpirationIndicator from '$lib/ExpirationIndicator.svelte';
 	import { isExpired, getExpirationDate } from '$lib/utils/time.js';
 
@@ -6,9 +7,10 @@
 </script>
 
 <fieldset class="lost-found-container">
-	<legend
-		><span>Lost & Found</span> •
-		<a href="/lost-and-found" class="view-all">View all</a></legend>
+	<legend>
+		<span>Lost & Found</span> •
+		<LinkButton href="/lost-and-found" class="view-all">View all</LinkButton>
+	</legend>
 
 	<div class="items-grid">
 		{#each data as post}
@@ -136,14 +138,6 @@
 
 		.item-location {
 			color: var(--gray-6);
-		}
-	}
-
-	.view-all {
-		display: inline-block;
-		text-decoration: none;
-		&:hover {
-			text-decoration: underline;
 		}
 	}
 </style>

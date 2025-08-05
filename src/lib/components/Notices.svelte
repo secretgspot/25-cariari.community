@@ -1,12 +1,14 @@
 <script>
+	import { LinkButton } from '$lib/buttons';
 	import { timeFrom } from '$lib/utils/time.js';
 	let { data } = $props();
 </script>
 
 <fieldset class="notices-container">
-	<legend
-		><span>Latest Notices</span> •
-		<a href="/notices" class="view-all">View all</a></legend>
+	<legend>
+		<span>Latest Notices</span> •
+		<LinkButton href="/notices" class="view-all">View all</LinkButton>
+	</legend>
 	<div class="notices-wrap">
 		{#each data as notice}
 			<a href={`/notices/${notice.id}`}>
