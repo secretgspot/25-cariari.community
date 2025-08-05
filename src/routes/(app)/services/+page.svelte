@@ -140,8 +140,25 @@
 
 	.services-list {
 		margin-block: var(--size-6);
-		display: grid;
-		gap: var(--size-3);
+		column-gap: var(--size-3);
+		column-count: 1;
+		/* Small tablets and larger mobile devices (481px - 768px) */
+		@media (min-width: 481px) {
+			column-count: 2;
+		}
+
+		/* Tablets and small laptops (769px - 1024px) */
+		@media (min-width: 769px) {
+			column-count: 3;
+		}
+
+		/* Large desktops and high-resolution screens (1025px and up) */
+		@media (min-width: 1025px) {
+		}
+
+		/* Extra-large screens (1440px and up) */
+		@media (min-width: 1440px) {
+		}
 	}
 
 	.service-card {
@@ -191,6 +208,9 @@
 		text-decoration: none;
 		color: inherit;
 		display: block;
+		width: 100%;
+		margin-bottom: var(--size-7);
+		break-inside: avoid;
 
 		&:hover .service-card {
 			box-shadow: var(--shadow-1);
