@@ -1,3 +1,3 @@
 # TODO
 
-- [/] Larger than mobile styling
+- [-] Larger than mobile styling

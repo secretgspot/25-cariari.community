@@ -187,10 +187,6 @@
 	}
 
 	.event-card {
-		position: relative;
-		border: var(--border-size-1) solid var(--gray-1);
-		border-radius: var(--radius-2);
-
 		h3 {
 			display: flex;
 			align-items: center;
@@ -257,9 +253,13 @@
 		width: 100%;
 		margin-bottom: var(--size-7);
 		break-inside: avoid;
+		box-shadow: var(--shadow-1);
+		border-radius: var(--border-size-3);
+		border: var(--border-size-1) solid var(--gray-1);
+		position: relative;
 
-		&:hover .event-card {
-			box-shadow: var(--shadow-1);
+		&:hover {
+			box-shadow: var(--shadow-2);
 			transform: translateY(-3px);
 		}
 	}
