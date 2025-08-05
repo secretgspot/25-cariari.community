@@ -140,7 +140,6 @@
 		flex-flow: column;
 	}
 
-	/* Size-specific styles - updated to use size directly instead of btn- prefix */
 	.icon {
 		display: inline-flex;
 		align-items: center;

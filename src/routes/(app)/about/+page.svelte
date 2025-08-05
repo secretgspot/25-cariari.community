@@ -101,7 +101,7 @@
 			margin-block-end: var(--size-6);
 		}
 
-		:global(.btn-small) {
+		:global(.small) {
 			margin-block-start: var(--size-6);
 			width: min-content;
 		}

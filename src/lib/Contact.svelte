@@ -137,6 +137,8 @@
 		p {
 			text-wrap: balance;
 			line-height: 1.5;
+			text-align: center;
+			margin-block-start: var(--size-7);
 		}
 	}
 
@@ -156,7 +158,7 @@
 			left: -50%;
 			width: 200%;
 			height: 50%;
-			background-image: var(--gradient-29);
+			background-image: var(--gradient-23);
 			animation: animate 6s linear infinite;
 			transition: all 0.3ms linear;
 		}
