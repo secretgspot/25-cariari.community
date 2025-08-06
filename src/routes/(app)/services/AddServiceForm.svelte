@@ -7,21 +7,14 @@
 	let { onServiceAdded } = $props();
 
 	const today = new Date();
-	const sevenDaysFromNow = new Date();
-	sevenDaysFromNow.setDate(today.getDate() + 7);
-	const formatDate = (date) => {
-		const year = date.getFullYear();
-		const month = (date.getMonth() + 1).toString().padStart(2, '0');
-		const day = date.getDate().toString().padStart(2, '0');
-		return `${year}-${month}-${day}`;
-	};
+	const sevenDaysFromNow = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
 
 	let formData = $state({
 		title: '',
 		description: '',
 		category: 'Offering',
-		start_date: formatDate(today),
-		end_date: formatDate(sevenDaysFromNow),
+		start_date: today.toISOString(),
+		end_date: sevenDaysFromNow.toISOString(),
 	});
 
 	let loading = $state(false);
@@ -59,14 +52,17 @@
 		if (fileInput) fileInput.value = '';
 	}
 
-	// Clear form function
+	// Update the clearForm function:
 	function clearForm() {
+		const newToday = new Date();
+		const newSevenDaysFromNow = new Date(newToday.getTime() + 7 * 24 * 60 * 60 * 1000);
+
 		formData = {
 			title: '',
 			description: '',
 			category: 'Offering',
-			start_date: formatDate(today),
-			end_date: formatDate(sevenDaysFromNow),
+			start_date: newToday.toISOString(),
+			end_date: newSevenDaysFromNow.toISOString(),
 		};
 		resetFileState();
 	}

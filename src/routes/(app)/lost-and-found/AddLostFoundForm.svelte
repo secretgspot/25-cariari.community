@@ -5,9 +5,6 @@
 
 	let { onLostAndFoundAdded } = $props();
 
-	const today = new Date();
-	const sevenDaysFromNow = new Date();
-	sevenDaysFromNow.setDate(today.getDate() + 7);
 	const formatDate = (date) => {
 		const year = date.getFullYear();
 		const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -15,11 +12,13 @@
 		return `${year}-${month}-${day}`;
 	};
 
+	const getTodayFormatted = () => formatDate(new Date());
+
 	let formData = $state({
 		title: '',
 		description: '',
 		category: 'Lost',
-		date: formatDate(today),
+		date: getTodayFormatted(),
 		location: '',
 		contact: '',
 	});
@@ -59,13 +58,13 @@
 		if (fileInput) fileInput.value = '';
 	}
 
-	// Clear form function
+	// Clear form function - updated to get fresh today date
 	function clearForm() {
 		formData = {
 			title: '',
 			description: '',
 			category: 'Lost',
-			date: formatDate(today),
+			date: getTodayFormatted(), // Get fresh today date
 			location: '',
 			contact: '',
 		};
