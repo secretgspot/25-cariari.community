@@ -8,7 +8,9 @@
 
 	const handleDelete = async (id) => {
 		if (!confirm(`Are you sure you want to delete this ${type}?`)) return;
+		loading = true;
 		await onDelete(id, type);
+		loading = false;
 	};
 </script>
 
@@ -36,8 +38,8 @@
 						disabled={loading}>
 						{#snippet icon()}
 							<svg
-								width="12"
-								height="12"
+								width="16"
+								height="16"
 								xmlns="http://www.w3.org/2000/svg"
 								fill="none"
 								viewBox="0 0 271 297"

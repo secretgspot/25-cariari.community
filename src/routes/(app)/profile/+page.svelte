@@ -9,10 +9,25 @@
 
 	// Generic delete handler that works for all content types
 	const handleDelete = async (id, type) => {
-		const endpoint = type === 'comment' ? `/api/comments/${id}` : `/api/${type}s/${id}`;
+		let endpoint;
+
+		// Handle the 'lost-and-found' special case
+		if (type === 'lost-and-found') {
+			endpoint = `/api/lost-and-found/${id}`;
+		} else if (type === 'comment') {
+			endpoint = `/api/comments/${id}`;
+		} else {
+			// For all other types, add 's' to the end
+			endpoint = `/api/${type}s/${id}`;
+		}
 
 		try {
 			await deleteItem(endpoint, type);
+			addToast({
+				message: `${type} deleted successfully!`,
+				type: 'success',
+				timeout: 1200,
+			});
 			await invalidateAll();
 		} catch (error) {
 			addToast({
@@ -50,7 +65,7 @@
 
 		<UserContentSection
 			title="My Lost & Found Posts"
-			items={data.lostandfounds}
+			items={data.lostandfound}
 			itemKey="title"
 			linkPrefix="/lost-and-found"
 			type="lost-and-found"

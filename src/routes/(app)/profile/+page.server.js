@@ -62,7 +62,7 @@ export async function load({ locals: { getSession }, fetch, parent }) {
 		user,
 		is_logged_in,
 		is_admin,
-		lostandfounds: lostAndFoundResult || [],
+		lostandfound: lostAndFoundResult || [],
 		events: eventsResult || [],
 		notices: noticesResult || [],
 		comments: commentsResult || [],
