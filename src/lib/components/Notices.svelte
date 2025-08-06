@@ -1,7 +1,22 @@
+<!-- Simplified Notices Component (Database handles timezone) -->
 <script>
 	import { LinkButton } from '$lib/buttons';
-	import { timeFrom } from '$lib/utils/time.js';
+	import { getExpirationDate, timeFrom } from '$lib/utils/time.js';
+	import ExpirationIndicator from '$lib/ExpirationIndicator.svelte';
+
 	let { data } = $props();
+
+	// Helper to get standardized expiration date
+	function getNoticeEndDate(notice) {
+		return notice.end_date || getExpirationDate(notice.created_at, 30);
+	}
+
+	// Check if notice is expired
+	function isNoticeExpiredSimple(notice) {
+		const now = new Date();
+		const endDate = getNoticeEndDate(notice);
+		return now > new Date(endDate);
+	}
 </script>
 
 <fieldset class="notices-container">
@@ -11,7 +26,9 @@
 	</legend>
 	<div class="notices-wrap">
 		{#each data as notice}
-			<a href={`/notices/${notice.id}`}>
+			{@const endDate = getNoticeEndDate(notice)}
+			{@const expired = isNoticeExpiredSimple(notice)}
+			<a href={`/notices/${notice.id}`} class:expired>
 				<span class="urgency {notice.urgency.toLowerCase()}"></span>
 				<strong class="message">{notice.title}</strong>
 				<div class="time-wrap">
@@ -46,6 +63,10 @@
 						</span>
 					{/if}
 				</div>
+				<ExpirationIndicator
+					start_date={notice.created_at}
+					end_date={endDate}
+					updateInterval={30000} />
 			</a>
 		{/each}
 	</div>
@@ -71,6 +92,7 @@
 		margin-block: var(--size-3);
 
 		a {
+			position: relative;
 			text-decoration: none;
 			display: flex;
 			flex: 1;
@@ -84,6 +106,9 @@
 			&:hover {
 				color: var(--blue-9);
 				box-shadow: var(--shadow-1);
+			}
+			&.expired {
+				opacity: 0.6;
 			}
 		}
 	}

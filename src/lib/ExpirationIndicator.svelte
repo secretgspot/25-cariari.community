@@ -1,80 +1,85 @@
+<!-- ExpirationIndicator.svelte -->
 <script>
-	import { tick } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 
 	let {
 		start_date = '',
 		end_date = '',
 		height = '1px',
-		onProgress = (percentage) => {}, // Default empty function
+		updateInterval = 60000, // 1 minute by default
+		onProgress = () => {}, // Default empty function
 	} = $props();
 
 	let percentage = $state(0);
+	let interval = null;
 
-	$effect(() => {
-		const startDateObj = new Date(start_date);
-		const endDateObj = new Date(end_date);
-		const now = new Date(); // Get current time inside effect for reactivity
+	// Calculate expiration percentage
+	function calculatePercentage() {
+		if (!start_date || !end_date) return 0;
 
-		// Calculate total duration in milliseconds
-		const totalDurationMs = endDateObj.getTime() - startDateObj.getTime();
+		const startTime = new Date(start_date).getTime();
+		const endTime = new Date(end_date).getTime();
+		const currentTime = Date.now();
 
-		// Calculate remaining duration in milliseconds
-		const remainingDurationMs = endDateObj.getTime() - now.getTime();
-
-		let newPercentage;
-
-		if (totalDurationMs <= 0) {
-			// If the duration is zero or negative (end_date is before or same as start_date),
-			// it means the item is already expired or dates are invalid.
-			newPercentage = 0; // Show an empty bar
-		} else if (remainingDurationMs <= 0) {
-			// If remaining time is zero or negative, but total duration was positive,
-			// it means the item has just expired or expired in the past.
-			newPercentage = 0; // Show an empty bar
-		} else if (now.getTime() < startDateObj.getTime()) {
-			// If current time is before the start_date, the item hasn't started expiring yet.
-			// It should appear full (100%)
-			newPercentage = 100;
-		} else {
-			// Calculate percentage of remaining time relative to total duration
-			newPercentage = (remainingDurationMs / totalDurationMs) * 100;
-
-			// Clamp the percentage between 0 and 100
-			newPercentage = Math.max(0, Math.min(100, newPercentage));
+		// Invalid dates or zero duration
+		if (isNaN(startTime) || isNaN(endTime) || endTime <= startTime) {
+			return 0;
 		}
 
-		// Only update and call the callback if the percentage actually changed
+		// Before start date - show full (100%)
+		if (currentTime < startTime) {
+			return 100;
+		}
+
+		// After end date - expired (0%)
+		if (currentTime >= endTime) {
+			return 0;
+		}
+
+		// Calculate remaining percentage
+		const totalDuration = endTime - startTime;
+		const remainingDuration = endTime - currentTime;
+		return Math.max(0, Math.min(100, (remainingDuration / totalDuration) * 100));
+	}
+
+	// Update percentage and trigger callback
+	function updatePercentage() {
+		const newPercentage = calculatePercentage();
 		if (newPercentage !== percentage) {
 			percentage = newPercentage;
 			onProgress(percentage);
 		}
+	}
+
+	// Initial calculation and setup interval
+	onMount(() => {
+		updatePercentage();
+
+		if (updateInterval > 0) {
+			interval = setInterval(updatePercentage, updateInterval);
+		}
 	});
 
-	// Optional: Update percentage periodically for real-time updates.
-	// This is crucial for an "expiration indicator" that changes over time without a page refresh.
-	let interval;
+	// Cleanup interval
+	onDestroy(() => {
+		if (interval) {
+			clearInterval(interval);
+		}
+	});
+
+	// Recalculate when props change
 	$effect(() => {
-		// Clear any existing interval when props change or component unmounts
-		if (interval) clearInterval(interval);
-
-		// Update every minute (or more frequently if needed, but consider performance)
-		interval = setInterval(() => {
-			// Re-trigger the effect by subtly changing a prop or just by the interval running.
-			// The effect itself should re-evaluate `now = new Date()`
-			// A simple way to trigger the effect is to call it implicitly by changing a reactive variable,
-			// or just allowing the interval to update the state within the effect's scope.
-			// However, since `now` is inside the effect, the effect will naturally re-run and re-calculate.
-			// No explicit state change is needed outside if the logic is self-contained in the effect.
-			// The `now` variable is re-initialized on each effect run.
-		}, 1000 * 60); // Update every minute
-
-		// Cleanup function for the interval
-		return () => clearInterval(interval);
+		updatePercentage();
 	});
 </script>
 
 <div class="expiration-indicator-container" style="height: {height};">
-	<div class="expiration-indicator-fill" style="width: {percentage}%;"></div>
+	<div
+		class="expiration-indicator-fill"
+		style="width: {percentage}%;"
+		class:expired={percentage <= 10}
+		class:full={percentage >= 90}>
+	</div>
 </div>
 
 <style>
@@ -94,6 +99,13 @@
 		height: 100%;
 		border-radius: var(--border-size-3);
 		background-color: var(--gray-4);
-		transition: width 0.3s ease-out; /* Smooth transition for percentage changes */
+		transition: width 0.3s ease-out;
+		&.expired {
+			background-color: var(--red-3);
+		}
+
+		&.full {
+			background-color: var(--green-4);
+		}
 	}
 </style>
