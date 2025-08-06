@@ -1,13 +1,19 @@
 <!-- ContentItem.svelte -->
 <script>
 	import Button from '$lib/buttons/Button.svelte';
+	import Dialog from '$lib/Dialog.svelte';
 
 	let { item, itemKey, linkPrefix, type, onDelete } = $props();
 
 	let loading = $state(false);
+	let showDeleteDialog = $state(false);
 
-	const handleDelete = async () => {
-		if (!confirm(`Are you sure you want to delete this ${type}?`)) return;
+	const handleDelete = () => {
+		showDeleteDialog = true;
+	};
+
+	const confirmDelete = async () => {
+		showDeleteDialog = false; // Close dialog immediately
 		loading = true;
 		try {
 			await onDelete(item.id, type);
@@ -58,6 +64,14 @@
 		{/snippet}
 	</Button>
 </li>
+
+<Dialog
+	open={showDeleteDialog}
+	title="Delete {type}"
+	message="Are you sure you want to delete this {type}? This action cannot be undone."
+	type="confirm"
+	onConfirm={confirmDelete}
+	onCancel={() => (showDeleteDialog = false)} />
 
 <style>
 	.content-item {
