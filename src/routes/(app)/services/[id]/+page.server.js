@@ -20,10 +20,11 @@ export async function load({ params, locals: { getSession }, fetch }) {
 		user,
 		is_logged_in,
 		is_admin,
-				isOwner: user && (service.user_id === user.id || is_admin)
+		isOwner: user && (service.user_id === user.id || is_admin)
 	};
 }
 
+// Updated +page.server.js - Remove the redirect from deleteService action
 export const actions = {
 	updateService: async ({ request, params, fetch, locals: { supabase, getSession } }) => {
 		const session = await getSession();
@@ -124,6 +125,7 @@ export const actions = {
 		}
 	},
 
+	// Updated deleteService - Remove redirect, return success data
 	deleteService: async ({ params, fetch, locals: { supabase } }) => {
 		const { id } = params;
 
@@ -153,14 +155,12 @@ export const actions = {
 			}
 
 			// console.log('✅ Service and associated files deleted successfully');
-			// Redirect to services list after successful deletion
-			throw redirect(303, '/services');
+			// Return success data instead of redirecting
+			return {
+				message: result.message || 'Service deleted successfully!'
+			};
 
 		} catch (error) {
-			if (error.status === 303) {
-				// Re-throw redirect
-				throw error;
-			}
 			console.error('❌ Unexpected error in deleteService:', error);
 			return fail(500, {
 				message: 'An unexpected error occurred while deleting the service: ' + error.message

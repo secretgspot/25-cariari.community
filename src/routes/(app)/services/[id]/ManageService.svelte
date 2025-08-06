@@ -4,6 +4,7 @@
 	import { addToast } from '$lib/toasts';
 	import { compressFile } from '$lib/utils/file.js';
 	import Dialog from '$lib/Dialog.svelte';
+	import { goto } from '$app/navigation';
 
 	let { service, isOwner, is_admin } = $props();
 	let isSubmitting = $state(false);
@@ -202,8 +203,8 @@
 							height="21"
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
-							viewBox="0 0 719 724"
-							><path
+							viewBox="0 0 719 724">
+							<path
 								stroke="currentColor"
 								stroke-linecap="round"
 								stroke-width="50"
@@ -252,16 +253,37 @@
 <Dialog
 	open={showDeleteDialog}
 	title="Delete Service"
-	message="Are you sure you want to delete this service? This action cannot be undone."
 	type="confirm"
-	onConfirm={() => {
-		const deleteForm = document.createElement('form');
-		deleteForm.method = 'POST';
-		deleteForm.action = `?/deleteService`;
-		document.body.appendChild(deleteForm);
-		deleteForm.submit();
-	}}
-	onCancel={() => (showDeleteDialog = false)} />
+	onCancel={() => (showDeleteDialog = false)}>
+	{#snippet children()}
+		<form
+			method="POST"
+			action="?/deleteService"
+			use:enhance={() => {
+				isSubmitting = true;
+				showDeleteDialog = false;
+				return async ({ result }) => {
+					isSubmitting = false;
+					if (result.type === 'success') {
+						addToast({
+							message: result.data?.message || 'Service deleted successfully',
+							type: 'success',
+						});
+						goto('/services');
+					} else {
+						addToast({
+							message: result.data?.message || 'Failed to delete service',
+							type: 'error',
+							dismissible: true,
+							timeout: 0,
+						});
+					}
+				};
+			}}>
+			<p>Are you sure you want to delete this service? This action cannot be undone.</p>
+		</form>
+	{/snippet}
+</Dialog>
 
 <style>
 </style>

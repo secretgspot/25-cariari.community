@@ -4,6 +4,7 @@
 	import { addToast } from '$lib/toasts';
 	import { compressFile } from '$lib/utils/file.js';
 	import Dialog from '$lib/Dialog.svelte';
+	import { goto } from '$app/navigation';
 
 	let { event, isOwner, is_admin } = $props();
 	let isSubmitting = $state(false);
@@ -207,7 +208,6 @@
 			<div class="form-group">
 				<label for="image_upload" class="form-label">Event Image</label>
 
-				<!-- Show new preview only when file is selected -->
 				{#if previewUrl}
 					<img src={previewUrl} alt="preview" class="image-preview" />
 				{/if}
@@ -247,8 +247,8 @@
 							height="21"
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
-							viewBox="0 0 719 724"
-							><path
+							viewBox="0 0 719 724">
+							<path
 								stroke="currentColor"
 								stroke-linecap="round"
 								stroke-width="50"
@@ -297,16 +297,37 @@
 <Dialog
 	open={showDeleteDialog}
 	title="Delete Event"
-	message="Are you sure you want to delete this event? This action cannot be undone."
 	type="confirm"
-	onConfirm={() => {
-		const deleteForm = document.createElement('form');
-		deleteForm.method = 'POST';
-		deleteForm.action = `?/deleteEvent`;
-		document.body.appendChild(deleteForm);
-		deleteForm.submit();
-	}}
-	onCancel={() => (showDeleteDialog = false)} />
+	onCancel={() => (showDeleteDialog = false)}>
+	{#snippet children()}
+		<form
+			method="POST"
+			action="?/deleteEvent"
+			use:enhance={() => {
+				isSubmitting = true;
+				showDeleteDialog = false;
+				return async ({ result }) => {
+					isSubmitting = false;
+					if (result.type === 'success') {
+						addToast({
+							message: result.data?.message || 'Event deleted successfully',
+							type: 'success',
+						});
+						goto('/events');
+					} else {
+						addToast({
+							message: result.data?.message || 'Failed to delete event',
+							type: 'error',
+							dismissible: true,
+							timeout: 0,
+						});
+					}
+				};
+			}}>
+			<p>Are you sure you want to delete this event? This action cannot be undone.</p>
+		</form>
+	{/snippet}
+</Dialog>
 
 <style>
 </style>

@@ -6,6 +6,7 @@
 		message = 'This is a message from the dialog.',
 		type = 'alert',
 		open = false,
+		children,
 		onConfirm = () => {},
 		onCancel = () => {},
 	} = $props();
@@ -19,6 +20,17 @@
 			dialogRef.close();
 		}
 	});
+
+	// Function to find the form inside the dialog and submit it
+	function handleConfirm() {
+		const form = dialogRef.querySelector('form');
+		if (form) {
+			form.requestSubmit();
+		} else {
+			// Fallback if no form is found, run the default onConfirm prop
+			onConfirm();
+		}
+	}
 </script>
 
 <dialog
@@ -55,12 +67,16 @@
 	</header>
 
 	<div id="dialog-description">
-		<p>{message}</p>
+		{#if children}
+			{@render children()}
+		{:else}
+			<p>{message}</p>
+		{/if}
 	</div>
 
 	<footer>
 		{#if type === 'alert'}
-			<Button type="button" size="block" onclick={onConfirm}>OKAY</Button>
+			<Button type="button" size="block" onclick={handleConfirm}>OKAY</Button>
 		{:else if type === 'confirm'}
 			<Button onclick={onCancel}>
 				{#snippet icon()}
@@ -87,7 +103,7 @@
 				Cancel
 			</Button>
 
-			<Button type="button" red onclick={onConfirm}>
+			<Button type="button" red onclick={handleConfirm}>
 				{#snippet icon()}
 					👍
 				{/snippet}
@@ -98,6 +114,7 @@
 </dialog>
 
 <style>
+	/* Your styles here */
 	dialog {
 		--transition: 0.3s;
 		display: grid;

@@ -1,6 +1,6 @@
-/** @type {import('./$types').PageServerLoad} */
 import { error, fail, redirect } from '@sveltejs/kit';
 
+/** @type {import('./$types').PageServerLoad} */
 export async function load({ params, locals: { getSession }, fetch }) {
 	const { user, is_logged_in, is_admin } = await getSession();
 	const { id } = params;
@@ -17,12 +17,18 @@ export async function load({ params, locals: { getSession }, fetch }) {
 		notice,
 		user,
 		is_logged_in,
+		is_admin,
 		isOwner: user && (notice.user_id === user.id || is_admin)
 	};
 }
 
 export const actions = {
-	updateNotice: async ({ request, params, fetch }) => {
+	updateNotice: async ({ request, params, fetch, locals: { getSession } }) => {
+		const session = await getSession();
+		if (!session) {
+			return fail(401, { message: 'Unauthorized' });
+		}
+
 		const { id } = params;
 		const formData = await request.formData();
 
@@ -48,10 +54,17 @@ export const actions = {
 			return fail(response.status, result);
 		}
 
-		return { success: true, message: result.message };
+		return {
+			message: result.message || 'Notice updated successfully!'
+		};
 	},
 
-	deleteNotice: async ({ params, fetch }) => {
+	deleteNotice: async ({ params, fetch, locals: { getSession } }) => {
+		const session = await getSession();
+		if (!session) {
+			return fail(401, { message: 'Unauthorized' });
+		}
+
 		const { id } = params;
 		const response = await fetch(`/api/notices/${id}`, {
 			method: 'DELETE'
@@ -63,7 +76,8 @@ export const actions = {
 			return fail(response.status, result);
 		}
 
-		// Redirect to notices list after successful deletion
-		throw redirect(303, '/notices');
+		return {
+			message: result.message || 'Notice deleted successfully!'
+		};
 	}
 };
