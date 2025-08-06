@@ -1,25 +1,16 @@
+<!-- /profile/+page.svelte -->
 <script>
 	import { invalidateAll } from '$app/navigation';
 	import ProfileForm from './ProfileForm.svelte';
-	import UserContentSection from './UserContentSection.svelte';
-	import { deleteItem } from '$lib/utils/api_helpers.js';
+	import UserContentList from './UserContentList.svelte';
+	import ContentItem from './ContentItem.svelte';
+	import { deleteItem, buildDeleteEndpoint, ApiError } from '$lib/utils/api_helpers.js';
 	import { addToast } from '$lib/toasts';
 
 	let { data } = $props();
 
-	// Generic delete handler that works for all content types
 	const handleDelete = async (id, type) => {
-		let endpoint;
-
-		// Handle the 'lost-and-found' special case
-		if (type === 'lost-and-found') {
-			endpoint = `/api/lost-and-found/${id}`;
-		} else if (type === 'comment') {
-			endpoint = `/api/comments/${id}`;
-		} else {
-			// For all other types, add 's' to the end
-			endpoint = `/api/${type}s/${id}`;
-		}
+		const endpoint = buildDeleteEndpoint(type, id);
 
 		try {
 			await deleteItem(endpoint, type);
@@ -30,8 +21,11 @@
 			});
 			await invalidateAll();
 		} catch (error) {
+			const message =
+				error instanceof ApiError ? error.message : `Unexpected error deleting ${type}`;
+
 			addToast({
-				message: `Error deleting ${type}: ${error.message}`,
+				message,
 				type: 'error',
 				dismissible: true,
 				timeout: 0,
@@ -63,44 +57,65 @@
 
 		<ProfileForm userProfile={data.userProfile} onMessage={handleFormMessage} />
 
-		<UserContentSection
-			title="My Lost & Found Posts"
-			items={data.lostandfound}
-			itemKey="title"
-			linkPrefix="/lost-and-found"
-			type="lost-and-found"
-			onDelete={handleDelete} />
+		<UserContentList title="My Lost & Found Posts" items={data.lostandfound}>
+			{#snippet children(items)}
+				{#each items as item}
+					<ContentItem
+						{item}
+						itemKey="title"
+						linkPrefix="/lost-and-found"
+						type="lost-and-found"
+						onDelete={handleDelete} />
+				{/each}
+			{/snippet}
+		</UserContentList>
 
-		<UserContentSection
-			title="My Events"
-			items={data.events}
-			itemKey="title"
-			linkPrefix="/events"
-			type="event"
-			onDelete={handleDelete} />
+		<UserContentList title="My Events" items={data.events}>
+			{#snippet children(items)}
+				{#each items as item}
+					<ContentItem
+						{item}
+						itemKey="title"
+						linkPrefix="/events"
+						type="event"
+						onDelete={handleDelete} />
+				{/each}
+			{/snippet}
+		</UserContentList>
 
-		<UserContentSection
-			title="My Notices"
-			items={data.notices}
-			itemKey="title"
-			linkPrefix="/notices"
-			type="notice"
-			onDelete={handleDelete} />
+		<UserContentList title="My Notices" items={data.notices}>
+			{#snippet children(items)}
+				{#each items as item}
+					<ContentItem
+						{item}
+						itemKey="title"
+						linkPrefix="/notices"
+						type="notice"
+						onDelete={handleDelete} />
+				{/each}
+			{/snippet}
+		</UserContentList>
 
-		<UserContentSection
-			title="My Services"
-			items={data.services}
-			itemKey="title"
-			linkPrefix="/services"
-			type="service"
-			onDelete={handleDelete} />
+		<UserContentList title="My Services" items={data.services}>
+			{#snippet children(items)}
+				{#each items as item}
+					<ContentItem
+						{item}
+						itemKey="title"
+						linkPrefix="/services"
+						type="service"
+						onDelete={handleDelete} />
+				{/each}
+			{/snippet}
+		</UserContentList>
 
-		<UserContentSection
-			title="My Comments"
-			items={data.comments}
-			itemKey="content"
-			type="comment"
-			onDelete={handleDelete} />
+		<UserContentList title="My Comments" items={data.comments}>
+			{#snippet children(items)}
+				{#each items as item}
+					<ContentItem {item} itemKey="content" type="comment" onDelete={handleDelete} />
+				{/each}
+			{/snippet}
+		</UserContentList>
 	{:else}
 		<p>Please log in to view your profile.</p>
 	{/if}
