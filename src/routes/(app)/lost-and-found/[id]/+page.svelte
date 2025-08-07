@@ -1,5 +1,6 @@
 <script>
-	import Comments from '$lib/Comments.svelte';
+	import CommentsSection from '$lib/comments/CommentsSection.svelte';
+	// import Comments from '$lib/Comments.svelte';
 	import ManageLostAndFound from './ManageLostAndFound.svelte';
 	import { formatText } from '$lib/utils/markdown.js';
 	import {
@@ -49,7 +50,8 @@
 
 		<ManageLostAndFound post={data.post} isOwner={data.isOwner} />
 
-		<Comments parentId={data.post.id} type="lost_and_found_id" userData={data} />
+		<!-- <Comments parentId={data.post.id} type="lost_and_found_id" userData={data} /> -->
+		<CommentsSection parentId={data.post.id} type="lost_and_found_id" userData={data} />
 	{:else}
 		<p>Post not found.</p>
 	{/if}

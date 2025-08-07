@@ -1,5 +1,6 @@
 <script>
-	import Comments from '$lib/Comments.svelte';
+	import CommentsSection from '$lib/comments/CommentsSection.svelte';
+	// import Comments from '$lib/Comments.svelte';
 	import ManageService from './ManageService.svelte';
 	import { formatText } from '$lib/utils/markdown.js';
 	import { timeFrom } from '$lib/utils/time.js';
@@ -32,7 +33,8 @@
 
 		<ManageService service={data.service} isOwner={data.isOwner} />
 
-		<Comments parentId={data.service.id} type="service_id" userData={data} />
+		<!-- <Comments parentId={data.service.id} type="service_id" userData={data} /> -->
+		<CommentsSection parentId={data.service.id} type="service_id" userData={data} />
 	{:else}
 		<p>Service not found.</p>
 	{/if}

@@ -1,5 +1,6 @@
 <script>
-	import Comments from '$lib/Comments.svelte';
+	import CommentsSection from '$lib/comments/CommentsSection.svelte';
+	// import Comments from '$lib/Comments.svelte';
 	import ManageNotice from './ManageNotice.svelte';
 	import { formatText } from '$lib/utils/markdown.js';
 	import { timeFrom } from '$lib/utils/time.js';
@@ -65,7 +66,8 @@
 		<!-- Use the extracted ManageNotice component -->
 		<ManageNotice notice={data.notice} isOwner={data.isOwner} />
 
-		<Comments parentId={data.notice.id} type="notice_id" userData={data} />
+		<!-- <Comments parentId={data.notice.id} type="notice_id" userData={data} /> -->
+		<CommentsSection parentId={data.notice.id} type="notice_id" userData={data} />
 	{:else}
 		<p>Notice not found.</p>
 	{/if}

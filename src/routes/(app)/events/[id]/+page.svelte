@@ -1,5 +1,6 @@
 <script>
-	import Comments from '$lib/Comments.svelte';
+	import CommentsSection from '$lib/comments/CommentsSection.svelte';
+	// import Comments from '$lib/Comments.svelte';
 	import ManageEvent from './ManageEvent.svelte';
 	import { formatText } from '$lib/utils/markdown.js';
 	import { timeFrom } from '$lib/utils/time.js';
@@ -57,7 +58,8 @@
 
 		<ManageEvent event={data.event} isOwner={data.isOwner} />
 
-		<Comments parentId={data.event.id} type="event_id" userData={data} />
+		<!-- <Comments parentId={data.event.id} type="event_id" userData={data} /> -->
+		<CommentsSection parentId={data.event.id} type="event_id" userData={data} />
 	{:else}
 		<p>Event not found.</p>
 	{/if}
