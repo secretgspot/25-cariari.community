@@ -140,20 +140,22 @@
 
 	.services-list {
 		margin-block: var(--size-6);
-		column-gap: var(--size-3);
-		column-count: 1;
+		display: grid;
+		grid-template-columns: repeat(1, 1fr);
+		gap: var(--size-3);
 		/* Small tablets and larger mobile devices (481px - 768px) */
 		@media (min-width: 481px) {
-			column-count: 2;
+			grid-template-columns: repeat(2, 1fr);
 		}
 
 		/* Tablets and small laptops (769px - 1024px) */
 		@media (min-width: 769px) {
-			column-count: 3;
+			grid-template-columns: repeat(3, 1fr);
 		}
 
 		/* Large desktops and high-resolution screens (1025px and up) */
 		@media (min-width: 1025px) {
+			grid-template-columns: repeat(4, 1fr);
 		}
 
 		/* Extra-large screens (1440px and up) */
@@ -202,7 +204,6 @@
 		display: inline-flex;
 		flex-direction: column;
 		width: 100%;
-		margin-bottom: var(--size-7);
 		break-inside: avoid;
 		border-radius: var(--border-size-3);
 		border: var(--border-size-1) solid var(--gray-1);

@@ -119,9 +119,9 @@ export const chimePatterns = {
 
 	// Success patterns - ascending, positive tones
 	successA: [
-		{ frequency: 220, duration: 300, delay: 0, volume: 0.13, waveType: 'sine' },
-		{ frequency: 330, duration: 200, delay: 90, volume: 0.12, waveType: 'sine' },
-		{ frequency: 440, duration: 100, delay: 120, volume: 0.11, waveType: 'sine' }
+		{ frequency: 110, duration: 300, delay: 0, volume: 0.06, waveType: 'sine' },
+		{ frequency: 100, duration: 200, delay: 30, volume: 0.1, waveType: 'sine' },
+		{ frequency: 90, duration: 100, delay: 60, volume: 0.03, waveType: 'sine' }
 	],
 	successB: [
 		{ frequency: 369, duration: 120, delay: 0, volume: 0.25 },

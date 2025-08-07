@@ -100,7 +100,7 @@
 						<div class="category">{event.category}</div>
 
 						<div class="start-date">
-							{timeFrom(event.event_start_date)}
+							{timeFrom(event.event_start_date, { short: false })}
 						</div>
 
 						{#if event.image_url}
@@ -145,20 +145,21 @@
 
 	.events-list {
 		margin-block: var(--size-6);
-		column-gap: var(--size-3);
-		column-count: 1;
+		display: grid;
+		grid-template-columns: repeat(1, 1fr);
 		/* Small tablets and larger mobile devices (481px - 768px) */
 		@media (min-width: 481px) {
-			column-count: 2;
+			grid-template-columns: repeat(2, 1fr);
 		}
 
 		/* Tablets and small laptops (769px - 1024px) */
 		@media (min-width: 769px) {
-			column-count: 3;
+			grid-template-columns: repeat(3, 1fr);
 		}
 
 		/* Large desktops and high-resolution screens (1025px and up) */
 		@media (min-width: 1025px) {
+			grid-template-columns: repeat(4, 1fr);
 		}
 
 		/* Extra-large screens (1440px and up) */
@@ -185,8 +186,6 @@
 			background: #f8fafb0f;
 			padding: var(--size-2);
 			border-radius: var(--border-size-3);
-			aspect-ratio: 1;
-			width: min-content;
 			color: var(--blue-0);
 			font-weight: bold;
 			text-shadow: 1px 1px var(--stone-12);
@@ -235,7 +234,6 @@
 		display: inline-flex;
 		flex-direction: column;
 		width: 100%;
-		margin-bottom: var(--size-7);
 		break-inside: avoid;
 		border-radius: var(--border-size-3);
 		border: var(--border-size-1) solid var(--gray-1);
