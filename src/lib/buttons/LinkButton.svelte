@@ -1,7 +1,7 @@
 <script>
 	import { playChime, playChimeSequence, chimePatterns } from '$lib/utils/audio.js';
 	import { vibrate, vibratePatterns } from '$lib/utils/vibrate.js';
-	import { button_sounds, button_buzz } from '$lib/stores/settings';
+	import { settings } from '$lib/settings/settings.js';
 
 	/** @type {{disabled?: boolean, isLink?: boolean, href?: any, external?: boolean, children?: import('svelte').Snippet, [key: string]: any}} */
 	let {
@@ -13,12 +13,21 @@
 		sound = true,
 		sound_pattern = 'tick', // basic, successA, successB, successC, failA, failB, failC, notification, warning, tick, swipe, bell, click
 		buzz = true,
+		buzz_pattern = 'basic', // basic, successA, successB, successC, failA, failB, failC, notification, warning, tick, longPress, swipe
 		children,
 		...rest
 	} = $props();
 
+	// Get current settings reactively
+	let currentSettings = $state($settings);
+
+	// Update when settings change
+	$effect(() => {
+		currentSettings = $settings;
+	});
+
 	function handleClick(event) {
-		if (sound && $button_sounds) {
+		if (sound && currentSettings.button_sounds) {
 			const selectedPattern = chimePatterns[sound_pattern];
 			if (selectedPattern) {
 				if (Array.isArray(selectedPattern)) {
@@ -34,7 +43,7 @@
 			}
 		}
 
-		if (buzz && $button_buzz) {
+		if (buzz && currentSettings.button_buzz) {
 			vibrate(vibratePatterns.basic);
 		}
 

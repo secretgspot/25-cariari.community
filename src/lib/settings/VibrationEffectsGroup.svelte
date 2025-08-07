@@ -4,7 +4,8 @@
 
 	// Props
 	let {
-		enabled = $bindable(),
+		enabled = false,
+		onEnabledChange = () => {},
 		label = 'Vibration Effects',
 		patternKey = 'basic',
 	} = $props();
@@ -21,13 +22,22 @@
 
 	// Function to test the current pattern
 	function testPattern() {
-		vibrate(reactiveVibratePatterns[selectedPattern]);
+		vibrate(reactiveVibratePatterns[selectedPattern], true); // Force enabled for testing
+	}
+
+	// Handle enabled change
+	function handleEnabledChange(event) {
+		onEnabledChange(event.target.checked);
 	}
 </script>
 
 <fieldset>
 	<legend>
-		<input type="checkbox" id="enable-{label}" bind:checked={enabled} />
+		<input
+			type="checkbox"
+			id="enable-{label}"
+			checked={enabled}
+			onchange={handleEnabledChange} />
 		<label for="enable-{label}">{label}</label>
 		{#if enabled}
 			<button type="button" class="test-button" onclick={testPattern}>Test</button>

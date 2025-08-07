@@ -3,7 +3,7 @@
 	import { Spinner } from '$lib/loaders';
 	import { playChime, playChimeSequence, chimePatterns } from '$lib/utils/audio.js';
 	import { vibrate, vibratePatterns } from '$lib/utils/vibrate.js';
-	import { button_sounds, button_buzz } from '$lib/stores/settings';
+	import { settings } from '$lib/settings/settings.js';
 
 	let {
 		size = 'medium', // icon, small, medium, block
@@ -18,14 +18,24 @@
 		sound = true,
 		sound_pattern = 'tick', // basic, successA, successB, successC, failA, failB, failC, notification, warning, tick, swipe, bell, click
 		buzz = true,
+		buzz_pattern = 'basic', // basic, successA, successB, successC, failA, failB, failC, notification, warning, tick, longPress, swipe
 		icon,
 		children,
 		onclick,
 		...rest
 	} = $props();
 
+	// Get current settings reactively
+	let currentSettings = $state($settings);
+
+	// Update when settings change
+	$effect(() => {
+		currentSettings = $settings;
+	});
+
 	function handleClick(event) {
-		if (sound && $button_sounds) {
+		// Play sound if enabled both globally and on this button
+		if (sound && currentSettings.button_sounds) {
 			const selectedPattern = chimePatterns[sound_pattern];
 			if (selectedPattern) {
 				if (Array.isArray(selectedPattern)) {
@@ -41,10 +51,15 @@
 			}
 		}
 
-		if (buzz && $button_buzz) {
-			vibrate(vibratePatterns.basic);
+		// Trigger vibration if enabled both globally and on this button
+		if (buzz && currentSettings.button_buzz) {
+			const selectedVibratePattern = vibratePatterns[buzz_pattern];
+			if (selectedVibratePattern) {
+				vibrate(selectedVibratePattern);
+			}
 		}
 
+		// Call the original onclick handler
 		if (rest.onclick) {
 			rest.onclick(event);
 		}

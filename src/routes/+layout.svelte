@@ -9,9 +9,17 @@
 	import 'open-props/style';
 	import { playChimeSequence, chimePatterns } from '$lib/utils/audio.js';
 	import { vibrate, vibratePatterns } from '$lib/utils/vibrate.js';
-	import { navigation_sound, navigation_buzz } from '$lib/stores/settings';
+	import { settings } from '$lib/settings/settings.js';
 
 	let { children, data } = $props();
+
+	// Get current settings reactively
+	let currentSettings = $state($settings);
+
+	// Update when settings change
+	$effect(() => {
+		currentSettings = $settings;
+	});
 
 	// Set up auth state listener with proper cleanup
 	$effect(() => {
@@ -34,11 +42,16 @@
 	});
 
 	onNavigate((navigation) => {
-		if ($navigation_sound) {
-			playChimeSequence(chimePatterns.swipe);
+		// Play navigation sound if enabled
+		if (currentSettings.navigation_sound) {
+			const pattern = currentSettings.navigation_sound_pattern || 'swipe';
+			playChimeSequence(chimePatterns[pattern]);
 		}
-		if ($navigation_buzz) {
-			vibrate(vibratePatterns.tick);
+
+		// Trigger navigation vibration if enabled
+		if (currentSettings.navigation_buzz) {
+			const pattern = currentSettings.navigation_vibration_pattern || 'tick';
+			vibrate(vibratePatterns[pattern]);
 		}
 	});
 </script>

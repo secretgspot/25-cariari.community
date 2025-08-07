@@ -3,7 +3,12 @@
 	import { playChimeSequence, chimePatterns } from '$lib/utils/audio.js';
 
 	// Props
-	let { enabled = $bindable(), label = 'Audio Effects', patternKey = 'basic' } = $props();
+	let {
+		enabled = false,
+		onEnabledChange = () => {},
+		label = 'Audio Effects',
+		patternKey = 'basic',
+	} = $props();
 
 	// Create a deeply reactive copy of the chimePatterns object
 	const reactiveChimePatterns = $state(structuredClone(chimePatterns));
@@ -20,11 +25,20 @@
 	function testPattern() {
 		playChimeSequence(reactiveChimePatterns[selectedPattern]);
 	}
+
+	// Handle enabled change
+	function handleEnabledChange(event) {
+		onEnabledChange(event.target.checked);
+	}
 </script>
 
 <fieldset>
 	<legend>
-		<input type="checkbox" id="enable-{label}" bind:checked={enabled} />
+		<input
+			type="checkbox"
+			id="enable-{label}"
+			checked={enabled}
+			onchange={handleEnabledChange} />
 		<label for="enable-{label}">{label}</label>
 		{#if enabled}
 			<button type="button" class="test-button" onclick={testPattern}>Test</button>
