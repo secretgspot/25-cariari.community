@@ -24,7 +24,7 @@
 					</span>
 
 					{#if post.image_url}
-						<img src={post.image_url} alt={post.title} />
+						<img class="image" src={post.image_url} alt={post.title} />
 					{:else}
 						<div class="placeholder-image">
 							<span>{post.category === 'Lost' ? '🔍' : '✋'}</span>
@@ -93,53 +93,52 @@
 			opacity: 0.6;
 		}
 
-		img {
-			width: 100%;
-			/* height: 120px; */
-			object-fit: cover;
-			aspect-ratio: 1;
-		}
-
 		.item-link {
 			display: block;
 			text-decoration: none;
 			color: inherit;
 			position: relative;
-		}
-	}
 
-	.placeholder-image {
-		width: 100%;
-		height: 120px;
-		background: var(--gradient-23);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-size: 2em;
-	}
+			.category {
+				margin: 0 0 var(--size-1) 0;
+				padding: var(--size-1) var(--size-2);
+				border-radius: var(--border-size-3);
+				font-weight: bold;
+				text-transform: uppercase;
+				display: inline-block;
+				position: absolute;
+				font-size: small;
+				&.lost {
+					background-color: var(--red-1);
+					color: var(--red-6);
+				}
+				&.found {
+					background-color: var(--green-1);
+					color: var(--green-6);
+				}
+			}
 
-	.category {
-		margin: 0 0 var(--size-1) 0;
-		padding: var(--size-1) var(--size-2);
-		border-radius: var(--border-size-3);
-		font-weight: bold;
-		text-transform: uppercase;
-		display: inline-block;
-		position: absolute;
-		font-size: small;
-		&.lost {
-			background-color: var(--red-1);
-			color: var(--red-6);
-		}
-		&.found {
-			background-color: var(--green-1);
-			color: var(--green-6);
-		}
-	}
+			.image {
+				width: 100%;
+				object-fit: cover;
+				aspect-ratio: 1;
+			}
 
-	.title {
-		margin-block: var(--size-3);
-		margin-inline: var(--size-2);
-		font-size: smaller;
+			.title {
+				margin-block: var(--size-3);
+				margin-inline: var(--size-2);
+				font-size: smaller;
+			}
+		}
+
+		.placeholder-image {
+			width: 100%;
+			height: 120px;
+			background: var(--gradient-23);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 2em;
+		}
 	}
 </style>
