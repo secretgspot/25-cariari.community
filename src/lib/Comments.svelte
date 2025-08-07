@@ -73,6 +73,11 @@
 				throw new Error(errData.message || 'Failed to add comment');
 			}
 
+			addToast({
+				message: 'Comment added!',
+				type: 'success',
+				timeout: 1200,
+			});
 			newCommentContent = ''; // Clear input
 			await fetchComments(); // Refresh comments
 		} catch (e) {
@@ -182,6 +187,8 @@
 					<div class="comment-header">
 						{#if comment.profiles?.avatar_url}
 							<img
+								width="27px"
+								height="27px"
 								src={comment.profiles.avatar_url}
 								alt="Avatar"
 								class="comment-avatar" />

@@ -60,17 +60,8 @@ export function formatText(text) {
 		.replace(/^\*\*\*$/gm, '<hr>')
 
 		// Line breaks (convert double newlines to paragraphs, single to <br>)
-		.replace(/\n\n/g, '</p><p>')
-		.replace(/\n/g, '<br>')
-
-		// Wrap in paragraph tags if content doesn't start with block element
-		.replace(/^(?!<[h1-6|blockquote|pre|ul|ol|hr])/gm, '<p>')
-		.replace(/(?<!<\/[h1-6|blockquote|pre|ul|ol|hr]>)$/gm, '</p>')
-
-		// Clean up empty paragraphs and fix double paragraphs
-		.replace(/<p><\/p>/g, '')
-		.replace(/<p>(<[h1-6|blockquote|pre|ul|ol|hr])/g, '$1')
-		.replace(/(<\/[h1-6|blockquote|pre|ul|ol|hr]>)<\/p>/g, '$1');
+		.replace(/\n\n/g, '<p>')
+		.replace(/\n/g, '<br>');
 }
 
 /**
