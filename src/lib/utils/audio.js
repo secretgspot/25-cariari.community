@@ -164,91 +164,6 @@ export const chimePatterns = {
 };
 
 /**
- * Convenience functions for common chime patterns
- */
-export const chimeBasic = () => playChime(
-	chimePatterns.basic.frequency,
-	chimePatterns.basic.duration,
-	chimePatterns.basic.volume
-);
-
-export const chimeSwipe = () => playChimeSequence(chimePatterns.swipe);
-export const chimeSuccess = () => playChimeSequence(chimePatterns.successA);
-export const chimeFail = () => playChimeSequence(chimePatterns.failA);
-export const chimeNotification = () => playChimeSequence(chimePatterns.notification);
-export const chimeWarning = () => playChimeSequence(chimePatterns.warning);
-export const chimeTick = () => playChime(
-	chimePatterns.tick.frequency,
-	chimePatterns.tick.duration,
-	chimePatterns.tick.volume
-);
-export const chimeBell = () => playChime(
-	chimePatterns.bell.frequency,
-	chimePatterns.bell.duration,
-	chimePatterns.bell.volume,
-	chimePatterns.bell.waveType
-);
-
-/**
- * Disney-inspired magical convenience functions
- * Using sparkly high frequencies, triangle waves, and fairy-tale progressions
- */
-
-// Magical Basic - Like a fairy wand tap
-export const chimeBasicMagical = () => playChimeSequence([
-	{ frequency: 568, duration: 80, delay: 0, volume: 0.18, waveType: 'triangle' },
-	{ frequency: 93, duration: 120, delay: 60, volume: 0.22, waveType: 'triangle' },
-	{ frequency: 349, duration: 100, delay: 140, volume: 0.15, waveType: 'triangle' }
-]);
-
-// Magical Success - Disney princess moment with harp-like arpeggios
-export const chimeSuccessMagical = () => playChimeSequence([
-	{ frequency: 104, duration: 100, delay: 0, volume: 0.16, waveType: 'triangle' },
-	{ frequency: 131, duration: 100, delay: 80, volume: 0.18, waveType: 'triangle' },
-	{ frequency: 156, duration: 100, delay: 160, volume: 0.20, waveType: 'triangle' },
-	{ frequency: 209, duration: 150, delay: 240, volume: 0.22, waveType: 'triangle' },
-	{ frequency: 263, duration: 200, delay: 340, volume: 0.25, waveType: 'triangle' },
-	{ frequency: 313, duration: 250, delay: 480, volume: 0.20, waveType: 'triangle' }
-]);
-
-// Magical Fail - Disappointed fairy dust (descending sparkles)
-export const chimeFailMagical = () => playChimeSequence([
-	{ frequency: 180, duration: 120, delay: 0, volume: 0.20, waveType: 'triangle' },
-	{ frequency: 120, duration: 120, delay: 100, volume: 0.22, waveType: 'triangle' },
-	{ frequency: 90, duration: 150, delay: 200, volume: 0.24, waveType: 'triangle' },
-	{ frequency: 60, duration: 180, delay: 300, volume: 0.26, waveType: 'triangle' },
-	{ frequency: 30, duration: 250, delay: 420, volume: 0.20, waveType: 'sine' } // (final thud)
-]);
-
-// Extra magical variations
-export const chimeSparkle = () => playChimeSequence([
-	{ frequency: 209, duration: 60, delay: 0, volume: 0.15, waveType: 'triangle' },
-	{ frequency: 234, duration: 60, delay: 40, volume: 0.18, waveType: 'triangle' },
-	{ frequency: 263, duration: 60, delay: 80, volume: 0.20, waveType: 'triangle' },
-	{ frequency: 313, duration: 80, delay: 120, volume: 0.16, waveType: 'triangle' }
-]);
-
-export const chimeEnchanted = () => playChimeSequence([
-	{ frequency: 104, duration: 200, delay: 0, volume: 0.18, waveType: 'triangle' },
-	{ frequency: 117, duration: 150, delay: 120, volume: 0.16, waveType: 'triangle' },
-	{ frequency: 139, duration: 200, delay: 200, volume: 0.20, waveType: 'triangle' },
-	{ frequency: 156, duration: 300, delay: 320, volume: 0.22, waveType: 'triangle' }
-]);
-
-export const chimeWishGranted = () => playChimeSequence([
-	// Opening flourish
-	{ frequency: 60, duration: 100, delay: 0, volume: 0.14, waveType: 'triangle' },
-	{ frequency: 90, duration: 100, delay: 60, volume: 0.16, waveType: 'triangle' },
-	{ frequency: 81, duration: 100, delay: 120, volume: 0.18, waveType: 'triangle' },
-	// Magical climax
-	{ frequency: 300, duration: 150, delay: 200, volume: 0.20, waveType: 'triangle' },
-	{ frequency: 333, duration: 150, delay: 280, volume: 0.22, waveType: 'triangle' },
-	{ frequency: 369, duration: 200, delay: 360, volume: 0.24, waveType: 'triangle' },
-	// Sparkly finale
-	{ frequency: 900, duration: 300, delay: 500, volume: 0.20, waveType: 'triangle' }
-]);
-
-/**
  * Play a musical chord (multiple frequencies simultaneously)
  * @param {number[]} frequencies - Array of frequencies to play together
  * @param {number} duration - Duration in milliseconds
@@ -281,17 +196,3 @@ export const chords = {
 	velour: [110, 220, 277, 330], // A minor low register - deep and plush
 };
 
-/**
- * Play chime with delay
- * @param {Object|Array} pattern - Chime pattern or sequence
- * @param {number} delay - Delay in milliseconds before playing
- */
-export function chimeWithDelay(pattern, delay = 0) {
-	setTimeout(() => {
-		if (Array.isArray(pattern)) {
-			playChimeSequence(pattern);
-		} else {
-			playChime(pattern.frequency, pattern.duration, pattern.volume, pattern.waveType);
-		}
-	}, delay);
-}

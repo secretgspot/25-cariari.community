@@ -7,7 +7,7 @@
 	import Splash from '$lib/loaders/Splash.svelte';
 	import { Toasts } from '$lib/toasts';
 	import 'open-props/style';
-	import { chimeBell, chimeBasic, chimeSwipe } from '$lib/utils/audio.js';
+	import { playChimeSequence, chimePatterns } from '$lib/utils/audio.js';
 	import { vibrate, vibratePatterns } from '$lib/utils/vibrate.js';
 	import { navigation_sound, navigation_buzz } from '$lib/stores/settings';
 
@@ -35,7 +35,7 @@
 
 	onNavigate((navigation) => {
 		if ($navigation_sound) {
-			chimeSwipe();
+			playChimeSequence(chimePatterns.swipe);
 		}
 		if ($navigation_buzz) {
 			vibrate(vibratePatterns.tick);
