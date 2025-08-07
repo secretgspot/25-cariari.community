@@ -1,5 +1,6 @@
 <script>
-	import { navigating } from '$app/state';
+	import { navigating } from '$app/stores';
+	import { onNavigate } from '$app/navigation';
 	import { invalidate } from '$app/navigation';
 	import Nav from '$lib/Nav.svelte';
 	import Footer from '$lib/Footer.svelte';
@@ -7,6 +8,12 @@
 	import Splash from '$lib/loaders/Splash.svelte';
 	import { Toasts } from '$lib/toasts';
 	import 'open-props/style';
+	import {
+		chimeSuccess,
+		chimeNotification,
+		chimeTick,
+		chimeBell,
+	} from '$lib/utils/audio.js';
 
 	let { children, data } = $props();
 
@@ -28,6 +35,10 @@
 		return () => {
 			subscription?.unsubscribe();
 		};
+	});
+
+	onNavigate((navigation) => {
+		chimeBell();
 	});
 </script>
 
