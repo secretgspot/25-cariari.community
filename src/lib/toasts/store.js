@@ -1,6 +1,7 @@
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 import { playChimeSequence, chimePatterns } from '$lib/utils/audio';
 import { vibrate, vibratePatterns } from '$lib/utils/vibrate';
+import { notification_sound } from '$lib/stores/settings';
 
 // Create the writable store for toasts
 export const toasts = writable([]);
@@ -32,19 +33,21 @@ export const addToast = (toast) => {
 	toasts.update(currentToasts => [newToast, ...currentToasts]);
 
 	// Play sound and vibrate based on toast type
-	switch (newToast.type) {
-		case 'success':
-			playChimeSequence(chimePatterns.successA);
-			vibrate(vibratePatterns.successB);
-			break;
-		case 'error':
-			playChimeSequence(chimePatterns.failC);
-			vibrate(vibratePatterns.failB);
-			break;
-		default:
-			playChimeSequence(chimePatterns.swipe);
-			vibrate(vibratePatterns.basic);
-			break;
+	if (get(notification_sound)) {
+		switch (newToast.type) {
+			case 'success':
+				playChimeSequence(chimePatterns.successA);
+				vibrate(vibratePatterns.successB);
+				break;
+			case 'error':
+				playChimeSequence(chimePatterns.failC);
+				vibrate(vibratePatterns.failB);
+				break;
+			default:
+				playChimeSequence(chimePatterns.swipe);
+				vibrate(vibratePatterns.basic);
+				break;
+		}
 	}
 
 	// Auto-dismiss after timeout
