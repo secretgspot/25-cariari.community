@@ -16,6 +16,13 @@
 		{#each data as post}
 			<div class="item-card" class:expired={isExpired(post.created_at, 14)}>
 				<a href={`/lost-and-found/${post.id}`} class="item-link">
+					<span
+						class="category"
+						class:lost={post.category === 'Lost'}
+						class:found={post.category === 'Found'}>
+						{post.category}
+					</span>
+
 					{#if post.image_url}
 						<img src={post.image_url} alt={post.title} />
 					{:else}
@@ -23,21 +30,13 @@
 							<span>{post.category === 'Lost' ? '🔍' : '✋'}</span>
 						</div>
 					{/if}
-					<div class="item-info">
-						<h3>{post.title}</h3>
-						<p
-							class="item-type"
-							class:lost={post.category === 'Lost'}
-							class:found={post.category === 'Found'}>
-							{post.category}
-						</p>
-						<p class="item-date">
+					<h3 class="title">{post.title}</h3>
+
+					<!-- <div class="info">
+						<div class="date">
 							{new Date(post.date).toLocaleDateString()}
-						</p>
-						<p class="item-location">
-							{post.location || 'Location not specified'}
-						</p>
-					</div>
+						</div>
+					</div> -->
 				</a>
 				<ExpirationIndicator
 					start_date={post.created_at}
@@ -105,6 +104,7 @@
 			display: block;
 			text-decoration: none;
 			color: inherit;
+			position: relative;
 		}
 	}
 
@@ -118,42 +118,28 @@
 		font-size: 2em;
 	}
 
-	.item-info {
-		padding: var(--size-3);
-
-		h3 {
-			margin: 0 0 var(--size-2) 0;
-			font-size: 1em;
-			line-height: 1.3;
+	.category {
+		margin: 0 0 var(--size-1) 0;
+		padding: var(--size-1) var(--size-2);
+		border-radius: var(--border-size-3);
+		font-weight: bold;
+		text-transform: uppercase;
+		display: inline-block;
+		position: absolute;
+		font-size: small;
+		&.lost {
+			background-color: var(--red-1);
+			color: var(--red-6);
 		}
-
-		.item-type {
-			margin: 0 0 var(--size-1) 0;
-			padding: var(--size-1) var(--size-2);
-			border-radius: var(--border-size-3);
-			font-size: var(--size-3);
-			font-weight: bold;
-			text-transform: uppercase;
-			display: inline-block;
-			&.lost {
-				background-color: var(--red-1);
-				color: var(--red-6);
-			}
-			&.found {
-				background-color: var(--green-1);
-				color: var(--green-6);
-			}
+		&.found {
+			background-color: var(--green-1);
+			color: var(--green-6);
 		}
+	}
 
-		.item-date,
-		.item-location {
-			margin: var(--size-2) 0;
-			color: var(--gray-5);
-			font-size: small;
-		}
-
-		.item-location {
-			color: var(--gray-6);
-		}
+	.title {
+		margin-block: var(--size-3);
+		margin-inline: var(--size-2);
+		font-size: smaller;
 	}
 </style>
