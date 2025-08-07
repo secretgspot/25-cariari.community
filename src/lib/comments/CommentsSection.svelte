@@ -34,9 +34,13 @@
 		}
 	}
 
-	const handleCommentAdded = async () => {
-		// Refresh the entire comments list to get proper profile data
-		await fetchComments();
+		const handleCommentAdded = (newComment) => {
+		const enrichedComment = {
+			...newComment,
+			profiles: userData?.userProfile, // Add the current user's profile, safely access
+			created_at: newComment.created_at || new Date().toISOString(), // Use API's timestamp or fallback
+		};
+		comments = [enrichedComment, ...comments];
 	};
 
 	const handleCommentUpdated = (updatedComment) => {

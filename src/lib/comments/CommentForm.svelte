@@ -47,7 +47,7 @@
 			const newComment = await response.json();
 
 			// Trigger a refresh of the comments list instead of adding directly
-			onCommentAdded();
+												onCommentAdded(newComment);
 
 			addToast({
 				message: 'Comment added!',

@@ -50,21 +50,25 @@ export async function POST({ request, locals: { supabase, getSession } }) {
 	}
 
 	try {
-		const { error: commentError } = await supabase.from('comments').insert({
-			user_id: session.user.id,  // Always use the verified user id here
-			notice_id,
-			event_id,
-			lost_and_found_id,
-			service_id,
-			content,
-		});
+		const { data: newComment, error: commentError } = await supabase
+			.from('comments')
+			.insert({
+				user_id: session.user.id,  // Always use the verified user id here
+				notice_id,
+				event_id,
+				lost_and_found_id,
+				service_id,
+				content,
+			})
+			.select('*, profiles(username, avatar_url)') // Select the newly inserted comment with profile data
+			.single();
 
 		if (commentError) {
 			console.error('Error creating comment:', commentError);
 			return json({ message: 'Failed to create comment: ' + commentError.message }, { status: 500 });
 		}
 
-		return json({ message: 'Comment added successfully!' }, { status: 201 });
+		return json(newComment, { status: 201 });
 	} catch (err) {
 		console.error('Unexpected error creating comment:', err);
 		return json({ message: 'An unexpected error occurred while creating the comment.' }, { status: 500 });
