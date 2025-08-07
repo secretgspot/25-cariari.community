@@ -6,7 +6,7 @@
 	import ContentItem from './ContentItem.svelte';
 	import { deleteItem, buildDeleteEndpoint, ApiError } from '$lib/utils/api_helpers.js';
 	import { addToast } from '$lib/toasts';
-	import Settings from '$lib/components/Settings.svelte';
+	import Settings from '$lib/settings/Settings.svelte';
 	import { timeFrom, timeFromLong } from '$lib/utils/time.js';
 
 	let { data } = $props();

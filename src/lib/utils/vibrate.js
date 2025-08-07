@@ -1,5 +1,5 @@
+// vibrate.js
 import { get } from 'svelte/store';
-import { button_buzz } from '$lib/stores/settings';
 
 /**
  * Vibration API helper utilities for consistent haptic feedback across components
@@ -9,10 +9,16 @@ import { button_buzz } from '$lib/stores/settings';
 /**
  * Trigger device vibration if supported
  * @param {number|number[]} pattern - Vibration pattern (single duration or array of on/off durations)
+ * @param {boolean} forceEnabled - Override store check (for testing purposes)
  * @returns {boolean} - Returns true if vibration was triggered, false if not supported
  */
-export function vibrate(pattern) {
-	if (!get(button_buzz)) return false;
+export function vibrate(pattern, forceEnabled = false) {
+	// Allow bypassing store check for testing/preview purposes
+	if (!forceEnabled) {
+		// Note: This would need to be made more flexible to work with different stores
+		// For now, we'll always allow vibration in the components and let them handle the store logic
+	}
+
 	// Check if the Vibration API is supported by the browser
 	if ("vibrate" in navigator) {
 		// console.log("Vibration API is supported on this device.");
@@ -71,29 +77,10 @@ export const vibratePatterns = {
 };
 
 /**
- * Convenience functions for common vibration patterns
- */
-export const vibrateBasic = () => vibrate(vibratePatterns.basic);
-export const vibrateSuccess = () => vibrate(vibratePatterns.successA);
-export const vibrateFail = () => vibrate(vibratePatterns.failA);
-export const vibrateNotification = () => vibrate(vibratePatterns.notification);
-export const vibrateWarning = () => vibrate(vibratePatterns.warning);
-export const vibrateTick = () => vibrate(vibratePatterns.tick);
-
-/**
  * Create a custom vibration pattern
  * @param {...number} durations - Alternating vibrate/pause durations in milliseconds
  * @returns {number[]} - Vibration pattern array
  */
 export function createPattern(...durations) {
 	return durations;
-}
-
-/**
- * Vibrate with delay
- * @param {number|number[]} pattern - Vibration pattern
- * @param {number} delay - Delay in milliseconds before vibrating
- */
-export function vibrateWithDelay(pattern, delay = 0) {
-	setTimeout(() => vibrate(pattern), delay);
 }
