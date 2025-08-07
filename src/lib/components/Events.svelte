@@ -1,5 +1,6 @@
 <script>
 	import { LinkButton } from '$lib/buttons';
+	import ExpirationIndicator from '$lib/ExpirationIndicator.svelte';
 	import { timeFromShort } from '$lib/utils/time.js';
 	import { dragable } from '$lib/utils/dragable.js';
 
@@ -30,6 +31,9 @@
 							</span>
 						</div>
 					</a>
+					<ExpirationIndicator
+						start_date={event.created_at}
+						end_date={event.event_end_date} />
 				</div>
 			{/each}
 		</div>
@@ -91,6 +95,7 @@
 		border: var(--border-size-1) solid var(--gray-1);
 		border-radius: var(--border-size-2);
 		overflow: hidden;
+		position: relative;
 
 		/* Responsive adjustments - mobile first */
 		@media (min-width: 480px) {
