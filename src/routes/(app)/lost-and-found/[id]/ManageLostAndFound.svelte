@@ -224,7 +224,7 @@
 			</div>
 
 			<div class="form-actions">
-				<Button type="submit" green loading={isSubmitting} disabled={isSubmitting}>
+				<Button type="submit" green white loading={isSubmitting} disabled={isSubmitting}>
 					{#snippet icon()}
 						<svg
 							width="21"
@@ -247,6 +247,7 @@
 					type="button"
 					size="small"
 					red
+					white
 					loading={isSubmitting}
 					disabled={isSubmitting}
 					onclick={() => (showDeleteDialog = true)}>

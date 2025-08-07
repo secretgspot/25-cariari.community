@@ -144,7 +144,18 @@
 		&:active,
 		&:focus,
 		&.active {
-			background: var(--stone-2);
+			background: var(--stone-1);
+		}
+	}
+
+	.outline {
+		outline: 1px solid var(--blue-0);
+		&:hover,
+		&:active,
+		&:focus,
+		&.active {
+			background: var(--stone-1);
+			outline: 2px solid var(--blue-3);
 		}
 	}
 
@@ -278,6 +289,10 @@
 			box-shadow: none;
 			opacity: 0.6;
 		}
+	}
+
+	[white] {
+		background: white;
 	}
 
 	[green] {

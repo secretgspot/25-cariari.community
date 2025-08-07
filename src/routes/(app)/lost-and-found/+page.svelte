@@ -88,7 +88,7 @@
 		<input
 			type="search"
 			name="filter"
-			class="form-input"
+			class="form-input filter"
 			placeholder="Filter"
 			autocomplete="off"
 			bind:value={searchTerm} />
@@ -103,6 +103,7 @@
 			{#each filteredLostAndFound as post}
 				<a href="/lost-and-found/{post.id}" class="post-card-link">
 					<div class="post-card">
+						<span class="category">{post.category}</span>
 						{#if post.image_url}
 							<img src={post.image_url} alt={post.title} class="image" />
 						{/if}
@@ -119,7 +120,9 @@
 							<span
 								>Expires in: {timeFromLong(getExpirationDate(post.created_at, 14))}</span>
 						</div>
-						<h3 class="title">{post.title} ({post.category})</h3>
+
+						<h3 class="title">{post.title}</h3>
+
 						<div class="description">
 							{@html formatText(truncateText(stripMarkdown(post.description), 200))}
 						</div>
@@ -150,13 +153,6 @@
 		nav.options {
 			display: flex;
 			justify-content: space-between;
-
-			input[type='search'] {
-				max-width: 150px;
-				box-shadow: var(--shadow-1);
-				align-self: center;
-				padding: var(--size-2);
-			}
 		}
 
 		.no-records {
@@ -189,7 +185,17 @@
 	}
 
 	.post-card {
+		.category {
+			position: absolute;
+			padding: var(--size-1) var(--size-2);
+			background: #ffffff;
+			border-radius: var(--border-size-3);
+			border-bottom-left-radius: 0;
+			border-top-right-radius: 0;
+		}
+
 		.image {
+			display: block;
 			max-width: 100%;
 			width: 100%;
 			height: auto;
@@ -231,7 +237,8 @@
 	.post-card-link {
 		text-decoration: none;
 		color: inherit;
-		display: inline-block;
+		display: inline-flex;
+		flex-direction: column;
 		width: 100%;
 		margin-bottom: var(--size-7);
 		break-inside: avoid;

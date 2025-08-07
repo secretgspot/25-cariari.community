@@ -90,6 +90,7 @@
 
 			.date {
 				display: flex;
+				justify-content: space-between;
 				gap: var(--size-4);
 			}
 			strong {

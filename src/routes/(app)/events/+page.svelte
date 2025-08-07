@@ -20,6 +20,7 @@
 		return data.events.filter(
 			(event) =>
 				event.title.toLowerCase().includes(lowerCaseSearchTerm) ||
+				event.category.toLowerCase().includes(lowerCaseSearchTerm) ||
 				event.description.toLowerCase().includes(lowerCaseSearchTerm),
 		);
 	});
@@ -81,7 +82,7 @@
 		<input
 			type="search"
 			name="filter"
-			class="form-input"
+			class="form-input filter"
 			placeholder="Filter"
 			autocomplete="off"
 			bind:value={searchTerm} />
@@ -96,27 +97,10 @@
 			{#each filteredEvents as event}
 				<a href="/events/{event.id}" class="event-card-link">
 					<div class="event-card">
-						<h3>{event.title}</h3>
+						<div class="category">{event.category}</div>
 
-						<div class="meta">
-							<div class="date">
-								<span>
-									<strong>Starts:</strong>
-									{timeFrom(event.event_start_date)}
-								</span>
-								{#if event.event_end_date}
-									<span>
-										<strong>Ends:</strong>
-										{timeFrom(event.event_end_date)}
-									</span>
-								{/if}
-							</div>
-							{#if event.location}
-								<div class="location">
-									<strong>Location:</strong>
-									{event.location}
-								</div>
-							{/if}
+						<div class="start-date">
+							{timeFrom(event.event_start_date)}
 						</div>
 
 						{#if event.image_url}
@@ -127,17 +111,11 @@
 							</div>
 						{/if}
 
-						<p class="posted">
-							Posted: {timeFrom(event.created_at)}
-						</p>
+						<h3 class="title">{event.title}</h3>
 
 						<div class="description">
-							{@html formatText(truncateText(stripMarkdown(event.description), 200))}
+							{@html formatText(truncateText(stripMarkdown(event.description), 90))}
 						</div>
-
-						{#if event.category}
-							<span class="category">{event.category}</span>
-						{/if}
 					</div>
 				</a>
 			{/each}
@@ -157,13 +135,6 @@
 		nav.options {
 			display: flex;
 			justify-content: space-between;
-
-			input[type='search'] {
-				max-width: 150px;
-				box-shadow: var(--shadow-1);
-				align-self: center;
-				padding: var(--size-2);
-			}
 		}
 
 		.no-records {
@@ -196,48 +167,40 @@
 	}
 
 	.event-card {
-		h3 {
-			display: flex;
-			align-items: center;
-			gap: var(--size-3);
-			color: var(--stone-11);
-			margin: var(--size-3);
-			margin-block-start: var(--size-6);
-		}
-
-		.meta {
-			color: var(--stone-9);
-			margin: var(--size-3);
-
-			.date {
-				display: flex;
-				justify-content: space-between;
-				gap: var(--size-4);
-			}
-			strong {
-				font-size: small;
-			}
-		}
-
 		.category {
 			position: absolute;
 			top: 0;
 			right: 0;
 			font-size: small;
-			margin: var(--size-2);
+			padding: var(--size-1);
+			border-radius: var(--border-size-3);
+			color: var(--stone-0);
+			text-shadow: 1px 1px var(--stone-12);
 		}
 
-		.description {
-			margin: var(--size-3);
+		.start-date {
+			position: absolute;
+			top: var(--size-1);
+			left: var(--size-1);
+			background: #f8fafb0f;
+			padding: var(--size-2);
+			border-radius: var(--border-size-3);
+			aspect-ratio: 1;
+			width: min-content;
+			color: var(--blue-0);
+			font-weight: bold;
+			text-shadow: 1px 1px var(--stone-12);
 		}
 
 		.image {
+			display: block;
 			max-width: 100%;
 			width: 100%;
 			height: auto;
 			margin-bottom: 0;
 			aspect-ratio: 1;
 			object-fit: cover;
+			border-radius: var(--border-size-3);
 		}
 
 		.placeholder-image {
@@ -248,19 +211,29 @@
 			justify-content: center;
 			color: var(--gray-0);
 			aspect-ratio: 1;
+			border-radius: var(--border-size-3);
 		}
 
-		.posted {
-			font-size: small;
-			margin: 0 var(--size-1);
-			display: none; /* do we need it */
+		.title {
+			display: flex;
+			align-items: center;
+			gap: var(--size-3);
+			color: var(--stone-11);
+			margin-inline: var(--size-3);
+			margin-block-start: var(--size-3);
+			margin-block-end: var(--size-1);
+		}
+
+		.description {
+			margin: var(--size-3);
 		}
 	}
 
 	.event-card-link {
 		text-decoration: none;
 		color: inherit;
-		display: block;
+		display: inline-flex;
+		flex-direction: column;
 		width: 100%;
 		margin-bottom: var(--size-7);
 		break-inside: avoid;

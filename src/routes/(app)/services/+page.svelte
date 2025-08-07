@@ -79,7 +79,7 @@
 		<input
 			type="search"
 			name="filter"
-			class="form-input"
+			class="form-input filter"
 			placeholder="Filter"
 			autocomplete="off"
 			bind:value={searchTerm} />
@@ -94,23 +94,23 @@
 			{#each filteredServices as service}
 				<a href="/services/{service.id}" class="service-card-link">
 					<div class="service-card">
-						<h3>{service.title}</h3>
+						{#if service.category}
+							<span class="category">{service.category}</span>
+						{/if}
 
 						{#if service.image_url}
 							<img src={service.image_url} alt={service.title} class="image" />
 						{/if}
 
+						<h3 class="title">{service.title}</h3>
+
 						<div class="description">
-							{@html formatText(truncateText(stripMarkdown(service.description), 200))}
+							{@html formatText(truncateText(stripMarkdown(service.description), 90))}
 						</div>
 
-						{#if service.category}
-							<span class="category">{service.category}</span>
-						{/if}
-
-						<p class="posted">
+						<!-- <p class="posted">
 							Posted: {timeFrom(service.created_at)}
-						</p>
+						</p> -->
 					</div>
 				</a>
 			{/each}
@@ -130,13 +130,6 @@
 		nav.options {
 			display: flex;
 			justify-content: space-between;
-
-			input[type='search'] {
-				max-width: 150px;
-				box-shadow: var(--shadow-1);
-				align-self: center;
-				padding: var(--size-2);
-			}
 		}
 
 		.no-records {
@@ -169,14 +162,9 @@
 	}
 
 	.service-card {
-		padding: var(--size-3) var(--size-3) var(--size-6);
-
-		h3 {
-			display: flex;
-			align-items: center;
-			gap: var(--size-3);
-			color: var(--stone-11);
+		.title {
 			margin-block: var(--size-3);
+			margin-inline: var(--size-3);
 		}
 
 		.category {
@@ -184,10 +172,17 @@
 			top: 0;
 			right: 0;
 			font-size: small;
-			margin: var(--size-2);
+			border-radius: var(--border-size-3);
+			color: var(--stone-12);
+			text-shadow: 1px 1px var(--stone-0);
+			background: white;
+			padding: var(--size-1);
+			border-bottom-right-radius: 0;
+			border-top-left-radius: 0;
 		}
 
 		.image {
+			display: block;
 			max-width: 100%;
 			width: 100%;
 			height: auto;
@@ -196,24 +191,16 @@
 			aspect-ratio: 1;
 		}
 
-		.posted {
-			position: absolute;
-			bottom: 0;
-			left: 0;
-			font-size: small;
-			margin: var(--size-2);
-			color: var(--stone-6);
-		}
-
 		.description {
-			margin-block: var(--size-3);
+			margin-inline: var(--size-3);
 		}
 	}
 
 	.service-card-link {
 		text-decoration: none;
 		color: inherit;
-		display: block;
+		display: inline-flex;
+		flex-direction: column;
 		width: 100%;
 		margin-bottom: var(--size-7);
 		break-inside: avoid;

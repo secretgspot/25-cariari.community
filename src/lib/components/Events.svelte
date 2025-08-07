@@ -25,9 +25,9 @@
 						{/if}
 						<div class="event-info">
 							<h3>{event.title}</h3>
-							<p class="event-date">
+							<span class="event-date">
 								{timeFromShort(event.event_start_date)}
-							</p>
+							</span>
 						</div>
 					</a>
 				</div>
@@ -59,7 +59,6 @@
 		margin-block: var(--size-3);
 		/* Ensure container doesn't exceed parent width */
 		width: 100%;
-		box-sizing: border-box;
 
 		&::scrollbar {
 			height: 9px;
@@ -92,7 +91,23 @@
 		border: var(--border-size-1) solid var(--gray-1);
 		border-radius: var(--border-size-2);
 		overflow: hidden;
-		box-sizing: border-box;
+
+		/* Responsive adjustments - mobile first */
+		@media (min-width: 480px) {
+			flex: 0 0 calc(70% - var(--size-3));
+		}
+
+		@media (min-width: 768px) {
+			flex: 0 0 calc(50% - var(--size-3));
+		}
+
+		@media (min-width: 1024px) {
+			flex: 0 0 calc(33.333% - var(--size-3));
+		}
+
+		@media (min-width: 1200px) {
+			flex: 0 0 calc(25% - var(--size-3));
+		}
 
 		img {
 			width: 100%;
@@ -108,6 +123,7 @@
 		color: inherit;
 		/* Ensure link doesn't add extra space */
 		line-height: 0;
+		position: relative;
 	}
 
 	.placeholder-image {
@@ -132,41 +148,20 @@
 			font-size: 1.1em;
 			line-height: 1.3;
 		}
-
-		.event-date {
-			margin: 0;
-			color: var(--stone-9);
-			font-weight: 600;
-			/* white-space: nowrap; */
-		}
 	}
 
-	/* Responsive adjustments - mobile first */
-	@media (min-width: 480px) {
-		.slide {
-			/* Small tablets: show 1.5 events */
-			flex: 0 0 calc(70% - var(--size-3));
-		}
-	}
-
-	@media (min-width: 768px) {
-		.slide {
-			/* Tablets: show 2 events */
-			flex: 0 0 calc(50% - var(--size-3));
-		}
-	}
-
-	@media (min-width: 1024px) {
-		.slide {
-			/* Desktop: show 3 events */
-			flex: 0 0 calc(33.333% - var(--size-3));
-		}
-	}
-
-	@media (min-width: 1200px) {
-		.slide {
-			/* Large desktop: show 4 events */
-			flex: 0 0 calc(25% - var(--size-3));
-		}
+	.event-date {
+		position: absolute;
+		top: var(--size-1);
+		right: var(--size-1);
+		background: #f8fafb0f;
+		padding: var(--size-2);
+		border-radius: var(--border-size-3);
+		aspect-ratio: 1;
+		width: min-content;
+		color: var(--blue-0);
+		font-weight: bold;
+		text-shadow: 1px 1px var(--stone-12);
+		text-align: right;
 	}
 </style>

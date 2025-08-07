@@ -133,7 +133,7 @@
 		<p class="success-message">Notice added successfully!</p>
 	{/if}
 
-	<Button type="submit" {loading} disabled={loading}>
+	<Button type="submit" white {loading} disabled={loading}>
 		{#snippet icon()}
 			📌
 		{/snippet}

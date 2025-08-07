@@ -81,7 +81,7 @@
 		<input
 			type="search"
 			name="filter"
-			class="form-input"
+			class="form-input filter"
 			placeholder="Filter"
 			autocomplete="off"
 			bind:value={searchTerm} />
@@ -96,15 +96,15 @@
 			{#each filteredNotices as notice}
 				<a href="/notices/{notice.id}" class="notice-card-link">
 					<div class="notice-card">
-						<header class="notice-header">
+						<header class="header-wrap">
 							<div class="title-wrap">
-								<h3>
+								<div class="posted">
+									Posted: {timeFrom(notice.created_at)}
+								</div>
+								<h3 class="title">
 									<span class="urgency {notice.urgency.toLowerCase()}"></span>
 									{notice.title}
 								</h3>
-								<p class="notice-date">
-									Posted: {timeFrom(notice.created_at)}
-								</p>
 							</div>
 							<div class="details-wrap">
 								{#if notice.start_date}
@@ -146,7 +146,7 @@
 							</div>
 						</header>
 						<div class="description">
-							{@html formatText(truncateText(stripMarkdown(notice.description), 200))}
+							{@html formatText(truncateText(stripMarkdown(notice.description), 300))}
 						</div>
 					</div>
 				</a>
@@ -167,13 +167,6 @@
 		nav.options {
 			display: flex;
 			justify-content: space-between;
-
-			input[type='search'] {
-				max-width: 150px;
-				box-shadow: var(--shadow-1);
-				align-self: center;
-				padding: var(--size-2);
-			}
 		}
 
 		.no-records {
@@ -191,16 +184,52 @@
 	.notice-card {
 		padding: var(--size-3);
 
-		.notice-header {
+		.header-wrap {
 			display: flex;
-			justify-content: space-between;
+			flex-direction: column;
+			gap: var(--size-3);
+
+			.title-wrap {
+				display: flex;
+				flex-direction: column;
+				gap: var(--size-1);
+
+				.posted {
+					color: var(--stone-9);
+					border-bottom: var(--border-size-1) solid var(--gray-1);
+					padding-bottom: var(--size-1);
+					font-size: small;
+					align-self: end;
+				}
+
+				.title {
+					margin: 0;
+					display: flex;
+					align-items: center;
+					gap: var(--size-3);
+				}
+			}
+
+			.details-wrap {
+				display: flex;
+				justify-content: space-between;
+
+				.time-starts,
+				.time-expires {
+					display: flex;
+					align-items: center;
+					gap: var(--size-1);
+					font-size: smaller;
+					svg {
+						width: 12px;
+						height: 12px;
+					}
+				}
+			}
 		}
 
-		h3 {
-			margin: 0;
-			display: flex;
-			align-items: center;
-			gap: var(--size-3);
+		.description {
+			color: var(--gray-6);
 		}
 
 		.urgency {
@@ -222,38 +251,6 @@
 				background: var(--red-6);
 			}
 		}
-
-		.time-starts,
-		.time-expires {
-			display: flex;
-			align-items: center;
-			gap: var(--size-1);
-			font-size: smaller;
-			svg {
-				width: 12px;
-				height: 12px;
-			}
-		}
-
-		.description {
-			margin-bottom: 0.5em;
-			color: var(--gray-6);
-		}
-	}
-
-	.notice-image {
-		max-width: 100%;
-		height: auto;
-		border-radius: var(--radius-2);
-		margin-bottom: var(--size-6);
-	}
-
-	.notice-date {
-		font-size: 0.9em;
-		color: var(--stone-9);
-		margin-bottom: var(--size-3);
-		border-bottom: var(--border-size-1) solid var(--gray-1);
-		padding-bottom: var(--size-1);
 	}
 
 	.notice-card-link {
