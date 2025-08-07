@@ -2,6 +2,8 @@
 <script>
 	import { timeFrom } from '$lib/utils/time.js';
 	import { addToast } from '$lib/toasts';
+	import Dialog from '$lib/Dialog.svelte';
+	import { Button } from '$lib/buttons';
 
 	let {
 		comment,
@@ -13,17 +15,31 @@
 	} = $props();
 
 	let loading = $state(false);
+	let showEditDialog = $state(false);
+	let showDeleteDialog = $state(false);
+	let editedContent = $state(comment.content);
 
-	async function editComment() {
-		const updatedContent = prompt('Edit your comment:', comment.content);
-		if (!updatedContent || !updatedContent.trim()) return;
+	$effect(() => {
+		editedContent = comment.content;
+	});
 
+	async function handleEditConfirm() {
+		if (!editedContent || !editedContent.trim()) {
+			addToast({
+				message: 'Comment cannot be empty.',
+				type: 'error',
+				timeout: 3000,
+			});
+			return;
+		}
+
+		showEditDialog = false;
 		loading = true;
 
 		// Optimistic update
 		const originalContent = comment.content;
 		onOptimisticUpdate(comment.id, {
-			content: updatedContent,
+			content: editedContent,
 			isOptimistic: true,
 		});
 
@@ -33,7 +49,7 @@
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ content: updatedContent }),
+				body: JSON.stringify({ content: editedContent }),
 			});
 
 			if (!response.ok) {
@@ -67,9 +83,8 @@
 		}
 	}
 
-	async function deleteComment() {
-		if (!confirm('Are you sure you want to delete this comment?')) return;
-
+	async function handleDeleteConfirm() {
+		showDeleteDialog = false;
 		loading = true;
 
 		// Optimistic removal
@@ -130,12 +145,34 @@
 			{#if loading}
 				<span class="comment-loading">Processing...</span>
 			{:else}
-				<button onclick={editComment}>Edit</button>
-				<button onclick={deleteComment}>Delete</button>
+				<button onclick={() => (showEditDialog = true)}>Edit</button>
+				<button onclick={() => (showDeleteDialog = true)}>Delete</button>
 			{/if}
 		</div>
 	{/if}
 </div>
+
+<Dialog
+	open={showEditDialog}
+	title="Edit Comment"
+	type="confirm"
+	onConfirm={handleEditConfirm}
+	onCancel={() => (showEditDialog = false)}>
+	{#snippet children()}
+		<textarea bind:value={editedContent} rows="5" class="form-textarea"></textarea>
+	{/snippet}
+</Dialog>
+
+<Dialog
+	open={showDeleteDialog}
+	title="Delete Comment"
+	type="confirm"
+	onConfirm={handleDeleteConfirm}
+	onCancel={() => (showDeleteDialog = false)}>
+	{#snippet children()}
+		<p>Are you sure you want to delete this comment? This action cannot be undone.</p>
+	{/snippet}
+</Dialog>
 
 <style>
 	.comment-card {
@@ -202,5 +239,18 @@
 				}
 			}
 		}
+	}
+
+	.form-textarea {
+		width: 100%;
+		padding: var(--size-2);
+		border: var(--border-size-1) solid var(--gray-3);
+		border-radius: var(--radius-2);
+		font-family: inherit;
+		font-size: inherit;
+		line-height: inherit;
+		color: var(--text-color);
+		background-color: var(--surface-1);
+		resize: vertical;
 	}
 </style>
