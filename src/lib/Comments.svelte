@@ -146,7 +146,7 @@
 		<div class="new-comment-form">
 			<textarea bind:value={newCommentContent} placeholder="Add a comment..."></textarea>
 
-			<Button onclick={submitComment} {loading} disabled={loading}>
+			<Button right outline onclick={submitComment} {loading} disabled={loading}>
 				{#snippet icon()}
 					<svg
 						width="21"

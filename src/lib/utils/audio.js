@@ -1,3 +1,5 @@
+import { get } from 'svelte/store';
+
 /**
  * Audio chime utilities for consistent audio feedback across components
  * Uses Web Audio API to generate synthetic chimes and tones
@@ -154,8 +156,8 @@ export const chimePatterns = {
 	tick: { frequency: 30, duration: 90, volume: 0.11 },
 	longPress: { frequency: 400, duration: 150, volume: 0.2 },
 	swipe: [
-		{ frequency: 800, duration: 60, delay: 0, volume: 0.2 },
-		{ frequency: 1000, duration: 60, delay: 50, volume: 0.2 }
+		{ frequency: 30, duration: 300, delay: 0, volume: 0.03 },
+		{ frequency: 9, duration: 600, delay: 30, volume: 0.03 }
 	],
 	bell: { frequency: 30, duration: 800, volume: 0.2, waveType: 'triangle' },
 	click: { frequency: 1500, duration: 30, volume: 0.15 }
@@ -170,6 +172,7 @@ export const chimeBasic = () => playChime(
 	chimePatterns.basic.volume
 );
 
+export const chimeSwipe = () => playChimeSequence(chimePatterns.swipe);
 export const chimeSuccess = () => playChimeSequence(chimePatterns.successA);
 export const chimeFail = () => playChimeSequence(chimePatterns.failA);
 export const chimeNotification = () => playChimeSequence(chimePatterns.notification);

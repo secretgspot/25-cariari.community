@@ -6,6 +6,8 @@
 	import ContentItem from './ContentItem.svelte';
 	import { deleteItem, buildDeleteEndpoint, ApiError } from '$lib/utils/api_helpers.js';
 	import { addToast } from '$lib/toasts';
+	import Settings from '$lib/components/Settings.svelte';
+	import { timeFrom } from '$lib/utils/time.js';
 
 	let { data } = $props();
 
@@ -44,18 +46,22 @@
 </script>
 
 <div class="profile-container">
-	<h1>User Profile</h1>
-
 	{#if data.user}
 		<div class="user-info">
-			<p><strong>Email:</strong> {data.user.email}</p>
-			<p>
-				<strong>Member Since:</strong>
-				{new Date(data.user.created_at).toLocaleDateString()}
-			</p>
+			<div class="identity">
+				<h1>{data.user.email.split('@')[0]}</h1>
+				<div class="email"><strong>Email:</strong> {data.user.email}</div>
+			</div>
+
+			<div class="joined">
+				<strong>Joined:</strong>
+				{timeFrom(data.user.created_at)}
+			</div>
 		</div>
 
 		<ProfileForm userProfile={data.userProfile} onMessage={handleFormMessage} />
+
+		<Settings />
 
 		<UserContentList title="My Lost & Found Posts" items={data.lostandfound}>
 			{#snippet children(items)}
@@ -123,6 +129,10 @@
 
 <style>
 	.profile-container {
+		display: flex;
+		flex-direction: column;
+		gap: var(--size-9);
+
 		h1 {
 			color: var(--stone-11);
 			margin-bottom: var(--size-3);
@@ -137,7 +147,17 @@
 		}
 
 		.user-info {
-			font-size: small;
+			/* font-size: small; */
+
+			display: flex;
+			gap: var(--size-3);
+			justify-content: space-between;
+			align-items: flex-end;
+
+			.email,
+			.joined {
+				font-size: small;
+			}
 		}
 	}
 </style>

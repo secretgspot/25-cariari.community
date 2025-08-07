@@ -1,6 +1,7 @@
 <script>
 	import { playChime, playChimeSequence, chimePatterns } from '$lib/utils/audio.js';
 	import { vibrate, vibratePatterns } from '$lib/utils/vibrate.js';
+	import { button_sounds, button_buzz } from '$lib/stores/settings';
 
 	/** @type {{disabled?: boolean, isLink?: boolean, href?: any, external?: boolean, children?: import('svelte').Snippet, [key: string]: any}} */
 	let {
@@ -17,7 +18,7 @@
 	} = $props();
 
 	function handleClick(event) {
-		if (sound) {
+		if (sound && $button_sounds) {
 			const selectedPattern = chimePatterns[sound_pattern];
 			if (selectedPattern) {
 				if (Array.isArray(selectedPattern)) {
@@ -33,7 +34,7 @@
 			}
 		}
 
-		if (buzz) {
+		if (buzz && $button_buzz) {
 			vibrate(vibratePatterns.basic);
 		}
 

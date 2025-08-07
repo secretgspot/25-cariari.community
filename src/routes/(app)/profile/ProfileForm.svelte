@@ -3,6 +3,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import Button from '$lib/buttons/Button.svelte';
 	import { compressFile } from '$lib/utils/file.js';
+	import Divider from '$lib/Divider.svelte';
 
 	let { userProfile, onMessage } = $props();
 
@@ -102,7 +103,9 @@
 	}
 </script>
 
-<form onsubmit={handleSubmit}>
+<form class="user-form" onsubmit={handleSubmit}>
+	<Divider>Profile</Divider>
+
 	<div class="form-group">
 		<label for="username" class="form-label">Username</label>
 		<input
@@ -152,7 +155,7 @@
 			class="form-textarea"></textarea>
 	</div>
 
-	<Button type="submit" {loading} disabled={loading}>
+	<Button type="submit" right {loading} disabled={loading}>
 		{#snippet icon()}
 			<svg
 				width="21"
@@ -173,6 +176,11 @@
 </form>
 
 <style>
+	.user-form {
+		:global(.text-divider) {
+			margin-block: 0 var(--size-6);
+		}
+	}
 	.avatar-preview {
 		width: 100px;
 		height: 100px;

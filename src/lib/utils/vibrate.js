@@ -1,3 +1,6 @@
+import { get } from 'svelte/store';
+import { button_buzz } from '$lib/stores/settings';
+
 /**
  * Vibration API helper utilities for consistent haptic feedback across components
  * playground: https://svelte.dev/playground/51ad9d1ecf35449eb716cde2c153cb6d?version=5.36.17
@@ -9,6 +12,7 @@
  * @returns {boolean} - Returns true if vibration was triggered, false if not supported
  */
 export function vibrate(pattern) {
+	if (!get(button_buzz)) return false;
 	// Check if the Vibration API is supported by the browser
 	if ("vibrate" in navigator) {
 		// console.log("Vibration API is supported on this device.");

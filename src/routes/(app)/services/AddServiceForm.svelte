@@ -183,7 +183,7 @@
 	<input type="hidden" name="start_date" value={formData.start_date} />
 	<input type="hidden" name="end_date" value={formData.end_date} />
 
-	<Button type="submit" white {loading} disabled={loading}>
+	<Button type="submit" white outline right {loading} disabled={loading}>
 		{#snippet icon()}
 			📌
 		{/snippet}

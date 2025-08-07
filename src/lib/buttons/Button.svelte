@@ -3,6 +3,7 @@
 	import { Spinner } from '$lib/loaders';
 	import { playChime, playChimeSequence, chimePatterns } from '$lib/utils/audio.js';
 	import { vibrate, vibratePatterns } from '$lib/utils/vibrate.js';
+	import { button_sounds, button_buzz } from '$lib/stores/settings';
 
 	let {
 		size = 'medium', // icon, small, medium, block
@@ -24,7 +25,7 @@
 	} = $props();
 
 	function handleClick(event) {
-		if (sound) {
+		if (sound && $button_sounds) {
 			const selectedPattern = chimePatterns[sound_pattern];
 			if (selectedPattern) {
 				if (Array.isArray(selectedPattern)) {
@@ -40,7 +41,7 @@
 			}
 		}
 
-		if (buzz) {
+		if (buzz && $button_buzz) {
 			vibrate(vibratePatterns.basic);
 		}
 
@@ -270,6 +271,7 @@
 
 	.right {
 		flex-flow: row-reverse;
+		place-self: end;
 		.content_wrap {
 			border-left: 0;
 			border-right: var(--border-size-1) solid var(--stone-3);

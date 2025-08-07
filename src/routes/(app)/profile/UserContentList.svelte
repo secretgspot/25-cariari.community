@@ -1,10 +1,12 @@
 <!-- UserContentList.svelte -->
 <script>
+	import Divider from '$lib/Divider.svelte';
+
 	let { title, items, children } = $props();
 </script>
 
 <section class="content-section">
-	<h2>{title}</h2>
+	<Divider>{title}</Divider>
 	{#if items && items.length > 0}
 		<ul class="content-list">
 			{@render children(items)}
@@ -16,9 +18,9 @@
 
 <style>
 	.content-section {
-		margin-block: var(--size-9);
+		/* margin-block: var(--size-9); */
 
-		h2 {
+		:global(.text-divider) {
 			margin-bottom: var(--size-3);
 		}
 	}
@@ -31,5 +33,6 @@
 
 	.no-items {
 		font-style: italic;
+		text-align: center;
 	}
 </style>
