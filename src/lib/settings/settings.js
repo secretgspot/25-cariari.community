@@ -1,6 +1,8 @@
 // $lib/settings/settings.js
 import { writable, derived } from 'svelte/store';
 import { browser } from '$app/environment';
+import { chimePatterns } from '$lib/utils/audio.js';
+import { vibratePatterns } from '$lib/utils/vibrate.js';
 
 /**
  * Default settings configuration
@@ -29,42 +31,61 @@ const DEFAULT_SETTINGS = {
  * Load settings from localStorage or use defaults
  */
 function loadSettings() {
-	if (!browser) return DEFAULT_SETTINGS;
+	if (!browser) return { settings: DEFAULT_SETTINGS, audio: chimePatterns, vibration: vibratePatterns };
 
 	try {
-		const stored = localStorage.getItem('app_settings');
-		if (stored) {
-			const parsed = JSON.parse(stored);
-			// Merge with defaults to handle new settings added in updates
-			return { ...DEFAULT_SETTINGS, ...parsed };
-		}
+		const storedSettings = localStorage.getItem('app_settings');
+		const storedAudio = localStorage.getItem('app_audio_patterns');
+		const storedVibration = localStorage.getItem('app_vibration_patterns');
+
+		const settings = storedSettings ? { ...DEFAULT_SETTINGS, ...JSON.parse(storedSettings) } : DEFAULT_SETTINGS;
+		const audio = storedAudio ? JSON.parse(storedAudio) : chimePatterns;
+		const vibration = storedVibration ? JSON.parse(storedVibration) : vibratePatterns;
+
+		return { settings, audio, vibration };
 	} catch (error) {
 		console.warn('Failed to load settings from localStorage:', error);
 	}
 
-	return DEFAULT_SETTINGS;
+	return { settings: DEFAULT_SETTINGS, audio: chimePatterns, vibration: vibratePatterns };
 }
 
 /**
  * Save settings to localStorage
  */
-function saveSettings(settings) {
+function saveState(state) {
 	if (!browser) return;
 
 	try {
-		localStorage.setItem('app_settings', JSON.stringify(settings));
+		localStorage.setItem('app_settings', JSON.stringify(state.settings));
+		localStorage.setItem('app_audio_patterns', JSON.stringify(state.audio));
+		localStorage.setItem('app_vibration_patterns', JSON.stringify(state.vibration));
 	} catch (error) {
-		console.error('Failed to save settings to localStorage:', error);
+		console.error('Failed to save state to localStorage:', error);
 	}
 }
 
-// Create the main settings store
-const settingsStore = writable(loadSettings());
+// Create the main stores
+const { settings: initialSettings, audio: initialAudio, vibration: initialVibration } = loadSettings();
 
-// Subscribe to changes and save to localStorage
+const settingsStore = writable(initialSettings);
+export const audioPatterns = writable(initialAudio);
+export const vibrationPatterns = writable(initialVibration);
+
+// Combined state for saving
+const combinedState = derived(
+	[settingsStore, audioPatterns, vibrationPatterns],
+	([$settings, $audio, $vibration]) => ({
+		settings: $settings,
+		audio: $audio,
+		vibration: $vibration,
+	})
+);
+
 if (browser) {
-	settingsStore.subscribe(saveSettings);
+	combinedState.subscribe(saveState);
 }
+
 
 /**
  * Main settings object with helper methods
@@ -99,6 +120,8 @@ export const settings = {
 	// Reset to defaults
 	reset: () => {
 		settingsStore.set(DEFAULT_SETTINGS);
+		audioPatterns.set(chimePatterns);
+		vibrationPatterns.set(vibratePatterns);
 	},
 
 	// Reset a specific setting to default
@@ -138,3 +161,5 @@ export const button_buzz = derived(settingsStore, $settings => $settings.button_
 export const navigation_sound = derived(settingsStore, $settings => $settings.navigation_sound);
 export const navigation_buzz = derived(settingsStore, $settings => $settings.navigation_buzz);
 export const notification_sound = derived(settingsStore, $settings => $settings.notification_sound);
+
+export default settings;
