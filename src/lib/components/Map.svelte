@@ -1,10 +1,5 @@
 <script>
-	import {
-		MapLibre,
-		NavigationControl,
-		ScaleControl,
-		GlobeControl,
-	} from 'svelte-maplibre-gl';
+	import { MapLibre, NavigationControl, ScaleControl } from 'svelte-maplibre-gl';
 </script>
 
 <MapLibre
@@ -21,7 +16,6 @@
 	attributionControl={false}>
 	<NavigationControl />
 	<ScaleControl />
-	<GlobeControl />
 </MapLibre>
 
 <style>

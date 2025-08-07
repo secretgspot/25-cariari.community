@@ -17,7 +17,7 @@
 	</p>
 </header>
 
-<Map />
+<!-- <Map /> -->
 
 <!-- Notices Section -->
 {#if data.noticesPosts && data.noticesPosts.length > 0}
