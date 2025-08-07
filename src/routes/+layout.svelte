@@ -1,7 +1,6 @@
 <script>
-	import { navigating } from '$app/stores';
-	import { onNavigate } from '$app/navigation';
-	import { invalidate } from '$app/navigation';
+	import { navigating } from '$app/state';
+	import { onNavigate, invalidate } from '$app/navigation';
 	import Nav from '$lib/Nav.svelte';
 	import Footer from '$lib/Footer.svelte';
 	import FixedLine from '$lib/loaders/FixedLine.svelte';
