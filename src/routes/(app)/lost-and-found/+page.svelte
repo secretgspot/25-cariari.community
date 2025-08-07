@@ -116,7 +116,7 @@
 						{/if} -->
 
 						<div class="meta">
-							<span>Posted: {timeFrom(post.created_at)}</span>
+							<span>Posted: {timeFromLong(post.created_at)}</span>
 							<span
 								>Expires in: {timeFromLong(getExpirationDate(post.created_at, 14))}</span>
 						</div>

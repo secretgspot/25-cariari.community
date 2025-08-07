@@ -23,7 +23,7 @@
 		<h1>{data.post.title} ({data.post.category})</h1>
 
 		<div class="meta">
-			<span>Posted: {timeFrom(data.post.created_at)}</span>
+			<span>Posted: {timeFromLong(data.post.created_at)}</span>
 			<span>Expires in: {timeFromLong(getExpirationDate(data.post.created_at, 14))}</span>
 		</div>
 

@@ -100,7 +100,7 @@
 						<div class="category">{event.category}</div>
 
 						<div class="start-date">
-							{timeFrom(event.event_start_date, { short: false })}
+							<span>{timeFrom(event.event_start_date, { short: false })}</span>
 						</div>
 
 						{#if event.image_url}
@@ -171,7 +171,7 @@
 		.category {
 			position: absolute;
 			top: 0;
-			right: 0;
+			left: 0;
 			font-size: small;
 			padding: var(--size-1);
 			border-radius: var(--border-size-3);
@@ -179,7 +179,7 @@
 			text-shadow: 1px 1px var(--stone-12);
 		}
 
-		.start-date {
+		/* .start-date {
 			position: absolute;
 			top: var(--size-1);
 			left: var(--size-1);
@@ -189,6 +189,50 @@
 			color: var(--blue-0);
 			font-weight: bold;
 			text-shadow: 1px 1px var(--stone-12);
+		} */
+
+		.start-date {
+			position: absolute;
+			top: 0;
+			right: 0;
+			background: white;
+			padding: var(--size-2);
+			border-radius: var(--border-size-3);
+			border-top-right-radius: 0;
+			font-weight: bold;
+
+			span {
+				position: relative;
+				z-index: 1;
+			}
+
+			&::before {
+				position: absolute;
+				content: '';
+				top: 0;
+				right: 100%;
+				background: transparent;
+				width: calc(var(--border-size-3) * 2);
+				height: calc(var(--border-size-3) * 2);
+				border-bottom-right-radius: var(--border-size-3);
+				box-shadow: calc(var(--border-size-3) * 2) calc(var(--border-size-3) * 2) 0px
+					calc(var(--border-size-3) * 2) #ffffff;
+				transform: rotate(-90deg);
+			}
+
+			&::after {
+				position: absolute;
+				content: '';
+				top: 100%;
+				right: 0;
+				background: transparent;
+				width: calc(var(--border-size-3) * 2);
+				height: calc(var(--border-size-3) * 2);
+				border-bottom-right-radius: var(--border-size-3);
+				box-shadow: calc(var(--border-size-3) * 2) calc(var(--border-size-3) * 2) 0px
+					calc(var(--border-size-3) * 2) white;
+				transform: rotate(-90deg);
+			}
 		}
 
 		.image {

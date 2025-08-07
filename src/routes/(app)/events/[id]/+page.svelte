@@ -3,7 +3,7 @@
 	// import Comments from '$lib/Comments.svelte';
 	import ManageEvent from './ManageEvent.svelte';
 	import { formatText } from '$lib/utils/markdown.js';
-	import { timeFrom } from '$lib/utils/time.js';
+	import { timeFrom, timeFromLong } from '$lib/utils/time.js';
 
 	let { data } = $props();
 </script>
@@ -21,12 +21,12 @@
 			<div class="date">
 				<span>
 					<strong>Starts:</strong>
-					{timeFrom(data.event.event_start_date)}
+					{timeFromLong(data.event.event_start_date)}
 				</span>
 				{#if data.event.event_end_date}
 					<span>
 						<strong>Ends:</strong>
-						{timeFrom(data.event.event_end_date)}
+						{timeFromLong(data.event.event_end_date)}
 					</span>
 				{/if}
 			</div>

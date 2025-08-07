@@ -3,7 +3,7 @@
 	// import Comments from '$lib/Comments.svelte';
 	import ManageService from './ManageService.svelte';
 	import { formatText } from '$lib/utils/markdown.js';
-	import { timeFrom } from '$lib/utils/time.js';
+	import { timeFrom, timeFromLong } from '$lib/utils/time.js';
 
 	let { data } = $props();
 </script>
@@ -18,8 +18,8 @@
 		<h1>{data.service.title}</h1>
 
 		<div class="meta">
-			<span>Posted: {timeFrom(data.service.start_date)}</span>
-			<span>Expires: {timeFrom(data.service.end_date)}</span>
+			<span>Posted: {timeFromLong(data.service.start_date)}</span>
+			<span>Expires: {timeFromLong(data.service.end_date)}</span>
 		</div>
 		{#if data.service.image_url}
 			<img src={data.service.image_url} alt={data.service.title} class="image" />

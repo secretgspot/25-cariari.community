@@ -7,7 +7,7 @@
 	import { deleteItem, buildDeleteEndpoint, ApiError } from '$lib/utils/api_helpers.js';
 	import { addToast } from '$lib/toasts';
 	import Settings from '$lib/components/Settings.svelte';
-	import { timeFrom } from '$lib/utils/time.js';
+	import { timeFrom, timeFromLong } from '$lib/utils/time.js';
 
 	let { data } = $props();
 
@@ -55,7 +55,7 @@
 
 			<div class="joined">
 				<strong>Joined:</strong>
-				{timeFrom(data.user.created_at)}
+				{timeFromLong(data.user.created_at)}
 			</div>
 		</div>
 
@@ -158,6 +158,12 @@
 			.joined {
 				font-size: small;
 			}
+		}
+
+		:global(.text-divider) {
+			position: sticky;
+			top: var(--size-9);
+			background: white;
 		}
 	}
 </style>

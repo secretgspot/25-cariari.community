@@ -2,7 +2,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import AddNoticeForm from './AddNoticeForm.svelte';
 	import { Button } from '$lib/buttons';
-	import { timeFrom } from '$lib/utils/time.js';
+	import { timeFrom, timeFromLong } from '$lib/utils/time.js';
 	import { formatText, stripMarkdown, truncateText } from '$lib/utils/markdown.js';
 	import { addToast } from '$lib/toasts';
 
@@ -99,7 +99,7 @@
 						<header class="header-wrap">
 							<div class="title-wrap">
 								<div class="posted">
-									Posted: {timeFrom(notice.created_at)}
+									Posted: {timeFromLong(notice.created_at)}
 								</div>
 								<h3 class="title">
 									<span class="urgency {notice.urgency.toLowerCase()}"></span>

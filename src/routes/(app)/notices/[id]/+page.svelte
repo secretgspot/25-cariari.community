@@ -3,7 +3,7 @@
 	// import Comments from '$lib/Comments.svelte';
 	import ManageNotice from './ManageNotice.svelte';
 	import { formatText } from '$lib/utils/markdown.js';
-	import { timeFrom } from '$lib/utils/time.js';
+	import { timeFrom, timeFromLong } from '$lib/utils/time.js';
 
 	let { data } = $props();
 </script>
@@ -18,7 +18,7 @@
 		<header class="notice-header">
 			<div class="title-wrap">
 				<p class="posted">
-					Posted: {timeFrom(data.notice.created_at)}
+					Posted: {timeFromLong(data.notice.created_at)}
 				</p>
 				<h1>
 					<span class="urgency {data.notice.urgency.toLowerCase()}"></span>

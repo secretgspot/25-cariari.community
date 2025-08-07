@@ -1,7 +1,7 @@
 <script>
 	import { LinkButton } from '$lib/buttons';
 	import ExpirationIndicator from '$lib/ExpirationIndicator.svelte';
-	import { timeFromShort } from '$lib/utils/time.js';
+	import { timeFromLong } from '$lib/utils/time.js';
 	import { dragable } from '$lib/utils/dragable.js';
 
 	let { data } = $props();
@@ -26,9 +26,9 @@
 						{/if}
 						<div class="event-info">
 							<h3>{event.title}</h3>
-							<span class="event-date">
-								{timeFromShort(event.event_start_date)}
-							</span>
+							<div class="event-date">
+								<span>{timeFromLong(event.event_start_date)}</span>
+							</div>
 						</div>
 					</a>
 					<ExpirationIndicator
@@ -93,7 +93,7 @@
 		/* Mobile first: 1 event visible at a time with small gap visible */
 		flex: 0 0 calc(100% - var(--size-6));
 		border: var(--border-size-1) solid var(--gray-1);
-		border-radius: var(--border-size-2);
+		border-radius: var(--border-size-3);
 		overflow: hidden;
 		position: relative;
 
@@ -119,6 +119,7 @@
 			object-fit: cover;
 			aspect-ratio: 1;
 			display: block;
+			border-radius: var(--border-size-3);
 		}
 	}
 
@@ -139,6 +140,7 @@
 		justify-content: center;
 		color: var(--gray-0);
 		aspect-ratio: 1;
+		border-radius: var(--border-size-3);
 	}
 
 	.event-info {
@@ -157,16 +159,46 @@
 
 	.event-date {
 		position: absolute;
-		top: var(--size-1);
-		right: var(--size-1);
-		background: #f8fafb0f;
+		top: 0;
+		right: 0;
+		background: white;
 		padding: var(--size-2);
 		border-radius: var(--border-size-3);
-		aspect-ratio: 1;
-		width: min-content;
-		color: var(--blue-0);
+		border-top-right-radius: 0;
 		font-weight: bold;
-		text-shadow: 1px 1px var(--stone-12);
 		text-align: right;
+
+		span {
+			position: relative;
+			z-index: 1;
+		}
+
+		&::before {
+			position: absolute;
+			content: '';
+			top: 0;
+			right: 100%;
+			background: transparent;
+			width: calc(var(--border-size-3) * 2);
+			height: calc(var(--border-size-3) * 2);
+			border-bottom-right-radius: var(--border-size-3);
+			box-shadow: calc(var(--border-size-3) * 2) calc(var(--border-size-3) * 2) 0px
+				calc(var(--border-size-3) * 2) #ffffff;
+			transform: rotate(-90deg);
+		}
+
+		&::after {
+			position: absolute;
+			content: '';
+			top: 100%;
+			right: 0;
+			background: transparent;
+			width: calc(var(--border-size-3) * 2);
+			height: calc(var(--border-size-3) * 2);
+			border-bottom-right-radius: var(--border-size-3);
+			box-shadow: calc(var(--border-size-3) * 2) calc(var(--border-size-3) * 2) 0px
+				calc(var(--border-size-3) * 2) white;
+			transform: rotate(-90deg);
+		}
 	}
 </style>
