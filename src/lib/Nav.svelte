@@ -64,7 +64,7 @@
 			<form action="/logout" method="post" class="logout-form">
 				<LinkButton
 					sound={true}
-					sound_pattern="failA"
+					sound_pattern="logout"
 					underline={false}
 					class="logout-btn">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">

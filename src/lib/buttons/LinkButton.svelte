@@ -13,9 +13,9 @@
 		external = false,
 		underline = true,
 		sound = true,
-		sound_pattern = 'tick', // basic, successA, successB, successC, failA, failB, failC, notification, warning, tick, swipe, bell, click
+		sound_pattern = 'click',
 		buzz = true,
-		buzz_pattern = 'basic', // basic, successA, successB, successC, failA, failB, failC, notification, warning, tick, longPress, swipe
+		buzz_pattern = 'click',
 		children,
 		...rest
 	} = $props();

@@ -4,11 +4,7 @@
 	import { playChimeSequence } from '$lib/utils/audio.js';
 	import SoundPatternEditor from './SoundPatternEditor.svelte';
 
-	let {
-		enabled = false,
-		label = 'Audio Effects',
-		patternKey = 'basic'
-	} = $props();
+	let { enabled = false, label = 'Audio Effects', patternKey = 'basic' } = $props();
 
 	let currentSettings = $state($settings);
 
@@ -30,32 +26,11 @@
 		{/if}
 	</legend>
 	{#if enabled}
-		<SoundPatternEditor bind:pattern={currentSettings.audio_patterns[patternKey]} {label} />
+		<SoundPatternEditor
+			bind:pattern={currentSettings.audio_patterns[patternKey]}
+			{label} />
 	{/if}
 </fieldset>
 
 <style>
-	fieldset {
-		margin: 0;
-		display: flex;
-		flex-direction: column;
-		gap: var(--size-2);
-		padding: 0;
-		border: none;
-	}
-	legend {
-		font-weight: 600;
-		display: flex;
-		align-items: center;
-		gap: var(--size-2);
-	}
-	.test-button {
-		padding: var(--size-1) var(--size-2);
-		font-size: var(--font-size-0);
-		border: 1px solid var(--border-color);
-		border-radius: var(--radius-1);
-		background: var(--surface-2);
-		color: var(--text-color);
-		cursor: pointer;
-	}
 </style>

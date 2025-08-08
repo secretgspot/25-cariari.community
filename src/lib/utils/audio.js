@@ -1,5 +1,3 @@
-import { get } from 'svelte/store';
-
 /**
  * Audio chime utilities for consistent audio feedback across components
  * Uses Web Audio API to generate synthetic chimes and tones
@@ -117,86 +115,40 @@ export const chimePatterns = {
 	// Basic interaction - single pleasant tone
 	basic: { frequency: 900, duration: 100, volume: 0.1 },
 	tick: { frequency: 30, duration: 90, volume: 0.11 },
-	click: { frequency: 1500, duration: 30, volume: 0.15 },
+	click: { frequency: 60, duration: 60, volume: 0.1, waveType: 'triangle' },
 	longPress: { frequency: 400, duration: 150, volume: 0.2 },
 	swipe: [
 		{ frequency: 30, duration: 300, delay: 0, volume: 0.03 },
 		{ frequency: 9, duration: 600, delay: 30, volume: 0.03 }
 	],
 	navigate: [
-		{ frequency: 30, duration: 300, delay: 0, volume: 0.03 },
-		{ frequency: 9, duration: 600, delay: 30, volume: 0.03 }
+		{ frequency: 60, duration: 200, delay: 0, volume: 0.1 },
+		{ frequency: 30, duration: 300, delay: 0, volume: 0.1 }
 	],
 	bell: { frequency: 30, duration: 800, volume: 0.2, waveType: 'triangle' },
 
-	// Success patterns - ascending, positive tones
-	successA: [
-		{ frequency: 110, duration: 300, delay: 0, volume: 0.06, waveType: 'sine' },
-		{ frequency: 100, duration: 200, delay: 30, volume: 0.1, waveType: 'sine' },
-		{ frequency: 90, duration: 100, delay: 60, volume: 0.03, waveType: 'sine' }
+	// Success pattern
+	success: [
+		{ frequency: 120, duration: 100, delay: 0, volume: 0.1, waveType: 'sine' },
+		{ frequency: 180, duration: 100, delay: 90, volume: 0.2, waveType: 'sine' },
+		{ frequency: 360, duration: 100, delay: 30, volume: 0.1, waveType: 'sine' }
 	],
-	successB: [
-		{ frequency: 369, duration: 120, delay: 0, volume: 0.25 },
-		{ frequency: 963, duration: 180, delay: 90, volume: 0.3 }
+
+	// Fail pattern
+	fail: [
+		{ frequency: 90, duration: 100, delay: 0, volume: 0.1, waveType: 'square' },
+		{ frequency: 60, duration: 200, delay: 90, volume: 0.1, waveType: 'square' }
 	],
-	successC: { frequency: 666, duration: 300, volume: 0.25 },
 
-	// infoChord, deepDrone
-
-	// Fail patterns - descending, attention-getting tones
-	failA: [
+	// Additional useful patterns
+	notification: [
+		{ frequency: 120, duration: 60, delay: 0, volume: 0.1 },
+		{ frequency: 180, duration: 90, delay: 90, volume: 0.1 }
+	],
+	logout: [
 		{ frequency: 120, duration: 150, delay: 0, volume: 0.3 },
 		{ frequency: 60, duration: 150, delay: 90, volume: 0.3 },
 		{ frequency: 30, duration: 200, delay: 120, volume: 0.3 }
 	],
-	failB: [
-		{ frequency: 100, duration: 200, delay: 0, volume: 0.30, waveType: 'square' },
-		{ frequency: 50, duration: 300, delay: 150, volume: 0.30, waveType: 'square' }
-	],
-	failC: { frequency: 60, duration: 300, volume: 0.3, waveType: 'sawtooth' },
-
-	// Additional useful patterns
-	notification: [
-		{ frequency: 300, duration: 100, delay: 0, volume: 0.25 },
-		{ frequency: 600, duration: 100, delay: 150, volume: 0.25 }
-	],
-	warning: [
-		{ frequency: 600, duration: 80, delay: 0, volume: 0.3 },
-		{ frequency: 600, duration: 80, delay: 120, volume: 0.3 },
-		{ frequency: 600, duration: 120, delay: 240, volume: 0.35 }
-	],
-};
-
-/**
- * Play a musical chord (multiple frequencies simultaneously)
- * @param {number[]} frequencies - Array of frequencies to play together
- * @param {number} duration - Duration in milliseconds
- * @param {number} volume - Volume (0-1)
- * @param {string} waveType - Wave type for all oscillators
- */
-export async function playChord(frequencies, duration = 500, volume = 0.2, waveType = 'sine') {
-	const ctx = getAudioContext();
-	if (!ctx) return false;
-
-	const promises = frequencies.map(freq =>
-		playChime(freq, duration, volume / frequencies.length, waveType)
-	);
-
-	return Promise.all(promises);
-}
-
-/**
- * Common chord patterns
- */
-export const chords = {
-	major: [523, 659, 784], // C major
-	minor: [523, 622, 784], // C minor
-	success: [523, 659, 784, 1047], // C major with octave
-	error: [30, 40, 50], // Dissonant low frequencies
-
-	// Inversions for different textures
-	royal_bass: [130, 329, 392, 523], // C major with low bass - regal and powerful
-	crystal: [523, 659, 784, 1047, 1319], // C major high register - bright and crystalline
-	velour: [110, 220, 277, 330], // A minor low register - deep and plush
 };
 

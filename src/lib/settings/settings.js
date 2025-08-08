@@ -23,8 +23,8 @@ const DEFAULT_SETTINGS = {
 	button_sound_pattern: 'click',
 	navigation_sound_pattern: 'navigate',
 	notification_sound_pattern: 'notification',
-	notification_error_sound_pattern: 'failB',
-	notification_success_sound_pattern: 'successA',
+	notification_error_sound_pattern: 'fail',
+	notification_success_sound_pattern: 'success',
 
 	// Vibration Patterns
 	vibration_patterns: defaultVibratePatterns,
@@ -46,8 +46,8 @@ function loadSettings() {
 		if (storedSettings) {
 			const parsed = JSON.parse(storedSettings);
 			// Deep merge for nested objects like audio_patterns
-			const merged = { 
-				...DEFAULT_SETTINGS, 
+			const merged = {
+				...DEFAULT_SETTINGS,
 				...parsed,
 				audio_patterns: { ...DEFAULT_SETTINGS.audio_patterns, ...parsed.audio_patterns },
 				vibration_patterns: { ...DEFAULT_SETTINGS.vibration_patterns, ...parsed.vibration_patterns },
