@@ -1,22 +1,16 @@
 <!-- Settings.svelte -->
 <script>
-	import { settings } from './settings.js';
+	import { settings, resetSettings } from './settings.js';
 	import Divider from '$lib/Divider.svelte';
 	import AudioEffectsGroup from './AudioEffectsGroup.svelte';
 	import VibrationEffectsGroup from './VibrationEffectsGroup.svelte';
+	import NotificationSoundGroup from './NotificationSoundGroup.svelte';
 
-	// Reactive settings object
 	let currentSettings = $state($settings);
 
-	// Update local state when settings change
 	$effect(() => {
-		currentSettings = $settings;
+		$settings = currentSettings;
 	});
-
-	// Helper functions to update settings
-	function updateSetting(key, value) {
-		settings.set(key, value);
-	}
 </script>
 
 <div class="site-settings">
@@ -24,40 +18,36 @@
 	<div class="form-items-wrap">
 		<!-- Button Effects -->
 		<AudioEffectsGroup
-			enabled={currentSettings.button_sounds}
-			onEnabledChange={(value) => updateSetting('button_sounds', value)}
+			bind:enabled={currentSettings.button_sounds}
 			label="Button sound effects"
-			patternKey={currentSettings.button_sound_pattern || 'basic'} />
+			patternKey={currentSettings.button_sound_pattern}
+		/>
 
 		<VibrationEffectsGroup
-			enabled={currentSettings.button_buzz}
-			onEnabledChange={(value) => updateSetting('button_buzz', value)}
+			bind:enabled={currentSettings.button_buzz}
 			label="Button vibration effects"
-			patternKey={currentSettings.button_vibration_pattern || 'basic'} />
+			patternKey={currentSettings.button_vibration_pattern}
+		/>
 
 		<!-- Navigation Effects -->
 		<AudioEffectsGroup
-			enabled={currentSettings.navigation_sound}
-			onEnabledChange={(value) => updateSetting('navigation_sound', value)}
+			bind:enabled={currentSettings.navigation_sound}
 			label="Navigation sound effects"
-			patternKey={currentSettings.navigation_sound_pattern || 'notification'} />
+			patternKey={currentSettings.navigation_sound_pattern}
+		/>
 
 		<VibrationEffectsGroup
-			enabled={currentSettings.navigation_buzz}
-			onEnabledChange={(value) => updateSetting('navigation_buzz', value)}
+			bind:enabled={currentSettings.navigation_buzz}
 			label="Navigation vibration effects"
-			patternKey={currentSettings.navigation_vibration_pattern || 'tick'} />
+			patternKey={currentSettings.navigation_vibration_pattern}
+		/>
 
 		<!-- Notification Effects -->
-		<AudioEffectsGroup
-			enabled={currentSettings.notification_sound}
-			onEnabledChange={(value) => updateSetting('notification_sound', value)}
-			label="Notification sound effects"
-			patternKey={currentSettings.notification_sound_pattern || 'notification'} />
+		<NotificationSoundGroup />
 
 		<!-- Settings Actions -->
 		<div class="settings-actions">
-			<button type="button" class="reset-button" onclick={() => settings.reset()}>
+			<button type="button" class="reset-button" onclick={resetSettings}>
 				Reset All Settings
 			</button>
 		</div>

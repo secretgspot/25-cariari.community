@@ -11,16 +11,12 @@ const DEFAULT_SETTINGS = {
 	// Audio Effects
 	button_sounds: true,
 	navigation_sound: true,
-	notification_sound: true,
-	notification_error_sound: true,
-	notification_success_sound: true,
+	notification_sound: true, // Master toggle for all notification sounds
 
 	// Vibration Effects
 	button_buzz: true,
 	navigation_buzz: true,
 	notification_buzz: true,
-	notification_error_buzz: true,
-	notification_success_buzz: true,
 
 	// Audio Patterns
 	audio_patterns: defaultChimePatterns,
@@ -49,8 +45,14 @@ function loadSettings() {
 		const storedSettings = localStorage.getItem('app_settings');
 		if (storedSettings) {
 			const parsed = JSON.parse(storedSettings);
-			// Merge stored settings with defaults to ensure all keys are present
-			return { ...DEFAULT_SETTINGS, ...parsed };
+			// Deep merge for nested objects like audio_patterns
+			const merged = { 
+				...DEFAULT_SETTINGS, 
+				...parsed,
+				audio_patterns: { ...DEFAULT_SETTINGS.audio_patterns, ...parsed.audio_patterns },
+				vibration_patterns: { ...DEFAULT_SETTINGS.vibration_patterns, ...parsed.vibration_patterns },
+			};
+			return merged;
 		}
 	} catch (error) {
 		console.warn('Failed to load settings from localStorage:', error);
