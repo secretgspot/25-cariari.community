@@ -1,5 +1,5 @@
 <script>
-	import { vibrationPatterns } from './settings.js';
+	import { settings } from './settings.js';
 	import { vibrate } from '$lib/utils/vibrate.js';
 
 	// Props
@@ -10,16 +10,18 @@
 		patternKey = 'basic',
 	} = $props();
 
-	let selectedPattern = $state(patternKey);
+	let currentSettings = $state($settings);
 
-	const patternOptions = Object.keys($vibrationPatterns);
+	$effect(() => {
+		$settings = currentSettings;
+	});
 
-	// Use a derived state to get the settings for the currently selected pattern
-	const currentPatternSettings = $derived($vibrationPatterns[selectedPattern]);
+	// Get the settings for the specific pattern directly from the main store
+	const currentPatternSettings = $derived(currentSettings.vibration_patterns[patternKey]);
 
 	// Function to test the current pattern
 	function testPattern() {
-		vibrate($vibrationPatterns[selectedPattern], true); // Force enabled for testing
+		vibrate(currentSettings.vibration_patterns[patternKey], true); // Force enabled for testing
 	}
 
 	// Handle enabled change
@@ -42,15 +44,6 @@
 	</legend>
 	{#if enabled}
 		<div class="pattern-controls">
-			<div class="pattern-select-group">
-				<label for="pattern-select-{label}">Select a Pattern</label>
-				<select id="pattern-select-{label}" bind:value={selectedPattern}>
-					{#each patternOptions as pattern}
-						<option value={pattern}>{pattern}</option>
-					{/each}
-				</select>
-			</div>
-
 			{#if Array.isArray(currentPatternSettings)}
 				{#each currentPatternSettings as _, i}
 					{#if i % 2 === 0}
@@ -60,7 +53,7 @@
 								<input
 									type="number"
 									id="duration-{label}-{i}"
-									bind:value={$vibrationPatterns[selectedPattern][i]}
+									bind:value={currentSettings.vibration_patterns[patternKey][i]}
 									min={0}
 									max={500}
 									step={5} />
@@ -70,7 +63,7 @@
 								<input
 									type="number"
 									id="duration-{label}-{i + 1}"
-									bind:value={$vibrationPatterns[selectedPattern][i + 1]}
+									bind:value={currentSettings.vibration_patterns[patternKey][i + 1]}
 									min={0}
 									max={500}
 									step={5} />
@@ -85,7 +78,7 @@
 						<input
 							type="number"
 							id="duration-{label}-single"
-							bind:value={$vibrationPatterns[selectedPattern]}
+							bind:value={currentSettings.vibration_patterns[patternKey]}
 							min={5}
 							max={500}
 							step={5} />

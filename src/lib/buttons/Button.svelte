@@ -1,8 +1,8 @@
 <script>
 	import { navigating } from '$app/state';
 	import { Spinner } from '$lib/loaders';
-	import { playChime, playChimeSequence, chimePatterns } from '$lib/utils/audio.js';
-	import { vibrate, vibratePatterns } from '$lib/utils/vibrate.js';
+	import { playChime, playChimeSequence } from '$lib/utils/audio.js';
+	import { vibrate } from '$lib/utils/vibrate.js';
 	import { settings } from '$lib/settings/settings.js';
 
 	let {
@@ -25,10 +25,8 @@
 		...rest
 	} = $props();
 
-	// Get current settings reactively
 	let currentSettings = $state($settings);
 
-	// Update when settings change
 	$effect(() => {
 		currentSettings = $settings;
 	});
@@ -36,16 +34,17 @@
 	function handleClick(event) {
 		// Play sound if enabled both globally and on this button
 		if (sound && currentSettings.button_sounds) {
-			const selectedPattern = chimePatterns[sound_pattern];
-			if (selectedPattern) {
-				if (Array.isArray(selectedPattern)) {
-					playChimeSequence(selectedPattern);
+			const pattern =
+				currentSettings.audio_patterns[currentSettings.button_sound_pattern];
+			if (pattern) {
+				if (Array.isArray(pattern)) {
+					playChimeSequence(pattern);
 				} else {
 					playChime(
-						selectedPattern.frequency,
-						selectedPattern.duration,
-						selectedPattern.volume,
-						selectedPattern.waveType,
+						pattern.frequency,
+						pattern.duration,
+						pattern.volume,
+						pattern.waveType,
 					);
 				}
 			}
@@ -53,9 +52,10 @@
 
 		// Trigger vibration if enabled both globally and on this button
 		if (buzz && currentSettings.button_buzz) {
-			const selectedVibratePattern = vibratePatterns[buzz_pattern];
-			if (selectedVibratePattern) {
-				vibrate(selectedVibratePattern);
+			const pattern =
+				currentSettings.vibration_patterns[currentSettings.button_vibration_pattern];
+			if (pattern) {
+				vibrate(pattern);
 			}
 		}
 

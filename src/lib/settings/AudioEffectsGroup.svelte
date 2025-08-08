@@ -1,6 +1,6 @@
 <!-- AudioEffectsGroup.svelte -->
 <script>
-	import { audioPatterns } from './settings.js';
+	import { settings } from './settings.js';
 	import { playChimeSequence } from '$lib/utils/audio.js';
 
 	// Props
@@ -11,17 +11,20 @@
 		patternKey = 'basic',
 	} = $props();
 
-	let selectedPattern = $state(patternKey);
+	let currentSettings = $state($settings);
+
+	$effect(() => {
+		$settings = currentSettings;
+	});
 
 	const waveTypes = ['sine', 'square', 'sawtooth', 'triangle'];
-	const patternOptions = Object.keys($audioPatterns);
 
-	// Use a derived state to get the settings for the currently selected pattern
-	const currentPatternSettings = $derived($audioPatterns[selectedPattern]);
+	// Get the settings for the specific pattern directly from the main store
+	const currentPatternSettings = $derived(currentSettings.audio_patterns[patternKey]);
 
 	// Function to test the current pattern
 	function testPattern() {
-		playChimeSequence($audioPatterns[selectedPattern]);
+		playChimeSequence(currentSettings.audio_patterns[patternKey]);
 	}
 
 	// Handle enabled change
@@ -44,13 +47,6 @@
 	</legend>
 	{#if enabled}
 		<div class="pattern-controls">
-			<label for="pattern-select-{label}">Select a Pattern</label>
-			<select id="pattern-select-{label}" bind:value={selectedPattern}>
-				{#each patternOptions as pattern}
-					<option value={pattern}>{pattern}</option>
-				{/each}
-			</select>
-
 			{#if Array.isArray(currentPatternSettings)}
 				{#each currentPatternSettings as object, i}
 					<div class="sound-object-group">
@@ -59,7 +55,7 @@
 							<input
 								type="number"
 								id="freq-{label}-{i}"
-								bind:value={$audioPatterns[selectedPattern][i].frequency}
+								bind:value={currentSettings.audio_patterns[patternKey][i].frequency}
 								min={10}
 								max={2000}
 								step={1} />
@@ -69,7 +65,7 @@
 							<input
 								type="number"
 								id="dur-{label}-{i}"
-								bind:value={$audioPatterns[selectedPattern][i].duration}
+								bind:value={currentSettings.audio_patterns[patternKey][i].duration}
 								min={10}
 								max={1000}
 								step={1} />
@@ -79,7 +75,7 @@
 							<input
 								type="number"
 								id="delay-{label}-{i}"
-								bind:value={$audioPatterns[selectedPattern][i].delay}
+								bind:value={currentSettings.audio_patterns[patternKey][i].delay}
 								min={0}
 								max={1000}
 								step={1} />
@@ -89,7 +85,7 @@
 							<input
 								type="number"
 								id="vol-{label}-{i}"
-								bind:value={$audioPatterns[selectedPattern][i].volume}
+								bind:value={currentSettings.audio_patterns[patternKey][i].volume}
 								min={0}
 								max={1}
 								step={0.01} />
@@ -98,7 +94,7 @@
 							<label for="wave-{label}-{i}">Wave Type</label>
 							<select
 								id="wave-{label}-{i}"
-								bind:value={$audioPatterns[selectedPattern][i].waveType}>
+								bind:value={currentSettings.audio_patterns[patternKey][i].waveType}>
 								{#each waveTypes as type}
 									<option value={type}>{type}</option>
 								{/each}
@@ -113,7 +109,7 @@
 						<input
 							type="number"
 							id="freq-{label}-single"
-							bind:value={$audioPatterns[selectedPattern].frequency}
+							bind:value={currentSettings.audio_patterns[patternKey].frequency}
 							min={20}
 							max={2000}
 							step={1} />
@@ -123,7 +119,7 @@
 						<input
 							type="number"
 							id="dur-{label}-single"
-							bind:value={$audioPatterns[selectedPattern].duration}
+							bind:value={currentSettings.audio_patterns[patternKey].duration}
 							min={10}
 							max={1000}
 							step={1} />
@@ -134,7 +130,7 @@
 							<input
 								type="number"
 								id="delay-{label}-single"
-								bind:value={$audioPatterns[selectedPattern].delay}
+								bind:value={currentSettings.audio_patterns[patternKey].delay}
 								min={0}
 								max={1000}
 								step={1} />
@@ -145,7 +141,7 @@
 						<input
 							type="number"
 							id="vol-{label}-single"
-							bind:value={$audioPatterns[selectedPattern].volume}
+							bind:value={currentSettings.audio_patterns[patternKey].volume}
 							min={0}
 							max={1}
 							step={0.01} />
@@ -155,7 +151,7 @@
 							<label for="wave-{label}-single">Wave Type</label>
 							<select
 								id="wave-{label}-single"
-								bind:value={$audioPatterns[selectedPattern].waveType}>
+								bind:value={currentSettings.audio_patterns[patternKey].waveType}>
 								{#each waveTypes as type}
 									<option value={type}>{type}</option>
 								{/each}

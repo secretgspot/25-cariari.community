@@ -1,11 +1,50 @@
 <script>
 	import { fade } from 'svelte/transition';
+	import { settings } from '$lib/settings/settings.js';
+	import { playChimeSequence } from '$lib/utils/audio.js';
+	import { vibrate } from '$lib/utils/vibrate.js';
 
 	/** @type {{type?: string, dismissible?: boolean, children?: import('svelte').Snippet, ondismiss?: () => void}} */
 	let { type = '', dismissible = true, children, ondismiss } = $props();
 
+	let currentSettings = $state($settings);
+
+	$effect(() => {
+		currentSettings = $settings;
+	});
+
+	$effect(() => {
+		const playSound = (patternKey) => {
+			const pattern = currentSettings.audio_patterns[patternKey];
+			if (pattern) {
+				playChimeSequence(pattern);
+			}
+		};
+
+		const playVibration = (patternKey) => {
+			const pattern = currentSettings.vibration_patterns[patternKey];
+			if (pattern) {
+				vibrate(pattern);
+			}
+		};
+
+		switch (type) {
+			case 'success':
+				if (currentSettings.notification_success_sound) playSound(currentSettings.notification_success_sound_pattern);
+				if (currentSettings.notification_success_buzz) playVibration(currentSettings.notification_success_vibration_pattern);
+				break;
+			case 'error':
+				if (currentSettings.notification_error_sound) playSound(currentSettings.notification_error_sound_pattern);
+				if (currentSettings.notification_error_buzz) playVibration(currentSettings.notification_error_vibration_pattern);
+				break;
+			default:
+				if (currentSettings.notification_sound) playSound(currentSettings.notification_sound_pattern);
+				if (currentSettings.notification_buzz) playVibration(currentSettings.notification_vibration_pattern);
+				break;
+		}
+	});
+
 	function handleDismiss() {
-		// console.log('Toast dismiss clicked'); // Debug log
 		ondismiss?.();
 	}
 </script>

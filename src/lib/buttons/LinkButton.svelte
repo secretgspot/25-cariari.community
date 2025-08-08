@@ -1,6 +1,8 @@
 <script>
-	import { playChime, playChimeSequence, chimePatterns } from '$lib/utils/audio.js';
-	import { vibrate, vibratePatterns } from '$lib/utils/vibrate.js';
+	import { navigating } from '$app/state';
+	import { Spinner } from '$lib/loaders';
+	import { playChime, playChimeSequence } from '$lib/utils/audio.js';
+	import { vibrate } from '$lib/utils/vibrate.js';
 	import { settings } from '$lib/settings/settings.js';
 
 	/** @type {{disabled?: boolean, isLink?: boolean, href?: any, external?: boolean, children?: import('svelte').Snippet, [key: string]: any}} */
@@ -27,26 +29,34 @@
 	});
 
 	function handleClick(event) {
+		// Play sound if enabled both globally and on this button
 		if (sound && currentSettings.button_sounds) {
-			const selectedPattern = chimePatterns[sound_pattern];
-			if (selectedPattern) {
-				if (Array.isArray(selectedPattern)) {
-					playChimeSequence(selectedPattern);
+			const pattern =
+				currentSettings.audio_patterns[currentSettings.button_sound_pattern];
+			if (pattern) {
+				if (Array.isArray(pattern)) {
+					playChimeSequence(pattern);
 				} else {
 					playChime(
-						selectedPattern.frequency,
-						selectedPattern.duration,
-						selectedPattern.volume,
-						selectedPattern.waveType,
+						pattern.frequency,
+						pattern.duration,
+						pattern.volume,
+						pattern.waveType,
 					);
 				}
 			}
 		}
 
+		// Trigger vibration if enabled both globally and on this button
 		if (buzz && currentSettings.button_buzz) {
-			vibrate(vibratePatterns.basic);
+			const pattern =
+				currentSettings.vibration_patterns[currentSettings.button_vibration_pattern];
+			if (pattern) {
+				vibrate(pattern);
+			}
 		}
 
+		// Call the original onclick handler
 		if (rest.onclick) {
 			rest.onclick(event);
 		}
