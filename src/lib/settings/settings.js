@@ -45,12 +45,18 @@ function loadSettings() {
 		const storedSettings = localStorage.getItem('app_settings');
 		if (storedSettings) {
 			const parsed = JSON.parse(storedSettings);
-			// Deep merge for nested objects like audio_patterns
+			// Deep merge to ensure new settings keys are added to existing user profiles
 			const merged = {
 				...DEFAULT_SETTINGS,
 				...parsed,
-				audio_patterns: { ...DEFAULT_SETTINGS.audio_patterns, ...parsed.audio_patterns },
-				vibration_patterns: { ...DEFAULT_SETTINGS.vibration_patterns, ...parsed.vibration_patterns },
+				audio_patterns: {
+					...DEFAULT_SETTINGS.audio_patterns,
+					...(parsed.audio_patterns || {}),
+				},
+				vibration_patterns: {
+					...DEFAULT_SETTINGS.vibration_patterns,
+					...(parsed.vibration_patterns || {}),
+				},
 			};
 			return merged;
 		}
