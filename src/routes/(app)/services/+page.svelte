@@ -177,7 +177,7 @@
 			border-radius: var(--border-size-3);
 			color: var(--stone-12);
 			text-shadow: 1px 1px var(--stone-0);
-			background: white;
+			background: var(--stone-3);
 			padding: var(--size-1);
 			border-bottom-right-radius: 0;
 			border-top-left-radius: 0;
@@ -195,6 +195,7 @@
 
 		.description {
 			margin-inline: var(--size-3);
+			margin-block-end: var(--size-3);
 		}
 	}
 
@@ -206,7 +207,8 @@
 		width: 100%;
 		break-inside: avoid;
 		border-radius: var(--border-size-3);
-		border: var(--border-size-1) solid var(--gray-1);
+		/* border: var(--border-size-1) solid var(--gray-1); */
+		outline: var(--border-size-2) solid var(--stone-3);
 		position: relative;
 		transition: transform 0.2s ease;
 

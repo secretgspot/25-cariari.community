@@ -260,7 +260,8 @@
 		width: 100%;
 		margin-bottom: var(--size-4);
 		border-radius: var(--border-size-3);
-		border: var(--border-size-1) solid var(--gray-1);
+		/* border: var(--border-size-1) solid var(--gray-1); */
+		outline: var(--border-size-2) solid var(--stone-3);
 		position: relative;
 		transition: transform 0.2s ease;
 

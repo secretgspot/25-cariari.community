@@ -100,7 +100,7 @@
 						<div class="category">{event.category}</div>
 
 						<div class="start-date">
-							<span>{timeFrom(event.event_start_date, { short: false })}</span>
+							{timeFrom(event.event_start_date, { short: false })}
 						</div>
 
 						{#if event.image_url}
@@ -146,6 +146,7 @@
 	.events-list {
 		margin-block: var(--size-6);
 		display: grid;
+		gap: var(--size-3);
 		grid-template-columns: repeat(1, 1fr);
 		/* Small tablets and larger mobile devices (481px - 768px) */
 		@media (min-width: 481px) {
@@ -195,44 +196,12 @@
 			position: absolute;
 			top: 0;
 			right: 0;
-			background: white;
 			padding: var(--size-2);
 			border-radius: var(--border-size-3);
-			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
+			border-top-left-radius: 0;
 			font-weight: bold;
-
-			span {
-				position: relative;
-				z-index: 1;
-			}
-
-			&::before {
-				position: absolute;
-				content: '';
-				top: 0;
-				right: 100%;
-				background: transparent;
-				width: calc(var(--border-size-3) * 2);
-				height: calc(var(--border-size-3) * 2);
-				border-bottom-right-radius: var(--border-size-3);
-				box-shadow: calc(var(--border-size-3) * 2) calc(var(--border-size-3) * 2) 0px
-					calc(var(--border-size-3) * 2) #ffffff;
-				transform: rotate(-90deg);
-			}
-
-			&::after {
-				position: absolute;
-				content: '';
-				top: 100%;
-				right: 0;
-				background: transparent;
-				width: calc(var(--border-size-3) * 2);
-				height: calc(var(--border-size-3) * 2);
-				border-bottom-right-radius: var(--border-size-3);
-				box-shadow: calc(var(--border-size-3) * 2) calc(var(--border-size-3) * 2) 0px
-					calc(var(--border-size-3) * 2) white;
-				transform: rotate(-90deg);
-			}
+			background: white;
 		}
 
 		.image {
@@ -280,7 +249,8 @@
 		width: 100%;
 		break-inside: avoid;
 		border-radius: var(--border-size-3);
-		border: var(--border-size-1) solid var(--gray-1);
+		/* border: var(--border-size-1) solid var(--gray-1); */
+		outline: var(--border-size-2) solid var(--stone-3);
 		position: relative;
 		transition: transform 0.2s ease;
 

@@ -104,16 +104,16 @@
 				<a href="/lost-and-found/{post.id}" class="post-card-link">
 					<div class="post-card">
 						<span class="category">{post.category}</span>
-						{#if post.image_url}
-							<img src={post.image_url} alt={post.title} class="image" />
-						{/if}
 						<!-- {#if post.image_url}
+							<img src={post.image_url} alt={post.title} class="image" />
+						{/if} -->
+						{#if post.image_url}
 							<img src={post.image_url} alt={post.title} class="image" />
 						{:else}
 							<div class="placeholder-image">
 								<span>No Image</span>
 							</div>
-						{/if} -->
+						{/if}
 
 						<div class="meta">
 							<span>Posted: {timeFromLong(post.created_at)}</span>
@@ -190,7 +190,7 @@
 		.category {
 			position: absolute;
 			padding: var(--size-1) var(--size-2);
-			background: #ffffff;
+			background: var(--stone-3);
 			border-radius: var(--border-size-3);
 			border-bottom-left-radius: 0;
 			border-top-right-radius: 0;
@@ -206,7 +206,7 @@
 			border-radius: var(--radius-2);
 		}
 
-		/* .placeholder-image {
+		.placeholder-image {
 			width: 100%;
 			background: var(--gradient-23);
 			display: flex;
@@ -215,7 +215,7 @@
 			color: var(--gray-0);
 			aspect-ratio: 1;
 			border-radius: var(--radius-2);
-		} */
+		}
 
 		.meta {
 			display: flex;
@@ -233,6 +233,7 @@
 
 		.description {
 			margin-inline: var(--size-3);
+			margin-block-end: var(--size-3);
 		}
 	}
 
@@ -244,7 +245,8 @@
 		width: 100%;
 		break-inside: avoid;
 		border-radius: var(--border-size-3);
-		border: var(--border-size-1) solid var(--gray-1);
+		/* border: var(--border-size-1) solid var(--gray-1); */
+		outline: var(--border-size-2) solid var(--stone-3);
 		position: relative;
 		transition: transform 0.2s ease;
 

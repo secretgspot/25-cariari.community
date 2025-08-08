@@ -16,14 +16,12 @@
 	<div class="site-buttons-group">
 		<div class="group">
 			<Toggle bind:checked={currentSettings.button_sounds} label="Button sounds" />
-			<Toggle bind:checked={currentSettings.button_buzz} label="Button vibrations" />
+			<Toggle bind:checked={currentSettings.button_buzz} label="Button buzz" />
 		</div>
 
 		<div class="group">
 			<Toggle bind:checked={currentSettings.navigation_sound} label="Navigation sounds" />
-			<Toggle
-				bind:checked={currentSettings.navigation_buzz}
-				label="Navigation vibrations" />
+			<Toggle bind:checked={currentSettings.navigation_buzz} label="Navigation buzz" />
 		</div>
 
 		<div class="group">
@@ -32,7 +30,7 @@
 				label="Notification sounds" />
 			<Toggle
 				bind:checked={currentSettings.notification_buzz}
-				label="Notification vibrations" />
+				label="Notification buzz" />
 		</div>
 	</div>
 </div>
@@ -41,12 +39,14 @@
 	.site-settings {
 		:global(.text-divider) {
 			margin-block: 0 var(--size-6);
+			z-index: 1;
 		}
 		.site-buttons-group {
 			font-size: small;
 			display: grid;
 			gap: var(--size-3);
-			grid-template-columns: 1fr;
+			grid-template-columns: 1fr 1fr;
+			margin: var(--size-1);
 			/* Small tablets and larger mobile devices (481px - 768px) */
 			@media (min-width: 481px) {
 				grid-template-columns: 1fr 1fr 1fr;

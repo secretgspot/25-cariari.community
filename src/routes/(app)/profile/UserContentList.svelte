@@ -6,7 +6,7 @@
 </script>
 
 <section class="content-section">
-	<Divider>{title}</Divider>
+	<Divider>{title} - ({items.length})</Divider>
 	{#if items && items.length > 0}
 		<ul class="content-list">
 			{@render children(items)}
