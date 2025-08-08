@@ -1,9 +1,8 @@
 <script>
 	import { navigating } from '$app/state';
 	import { Spinner } from '$lib/loaders';
-	import { playChime, playChimeSequence } from '$lib/utils/audio.js';
-	import { vibrate } from '$lib/utils/vibrate.js';
-	import { settings } from '$lib/settings/settings.js';
+	import { playButtonSound } from '$lib/utils/audio.js';
+	import { vibrateButton } from '$lib/utils/vibrate.js';
 
 	let {
 		size = 'medium', // icon, small, medium, block
@@ -25,39 +24,9 @@
 		...rest
 	} = $props();
 
-	let currentSettings = $state($settings);
-
-	$effect(() => {
-		currentSettings = $settings;
-	});
-
 	function handleClick(event) {
-		// Play sound if enabled both globally and on this button
-		if (sound && currentSettings.button_sounds) {
-			const pattern =
-				currentSettings.audio_patterns[currentSettings.button_sound_pattern];
-			if (pattern) {
-				if (Array.isArray(pattern)) {
-					playChimeSequence(pattern);
-				} else {
-					playChime(
-						pattern.frequency,
-						pattern.duration,
-						pattern.volume,
-						pattern.waveType,
-					);
-				}
-			}
-		}
-
-		// Trigger vibration if enabled both globally and on this button
-		if (buzz && currentSettings.button_buzz) {
-			const pattern =
-				currentSettings.vibration_patterns[currentSettings.button_vibration_pattern];
-			if (pattern) {
-				vibrate(pattern);
-			}
-		}
+		playButtonSound();
+		vibrateButton();
 
 		// Call the original onclick handler
 		if (rest.onclick) {

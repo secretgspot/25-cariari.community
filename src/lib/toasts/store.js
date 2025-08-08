@@ -1,7 +1,6 @@
-import { writable, get } from 'svelte/store';
-import { settings } from '$lib/settings/settings.js';
-import { playChimeSequence } from '$lib/utils/audio.js';
-import { vibrate } from '$lib/utils/vibrate.js';
+import { writable } from 'svelte/store';
+import { playNotificationSound } from '$lib/utils/audio.js';
+import { vibrateNotification } from '$lib/utils/vibrate.js';
 
 // Create the writable store for toasts
 export const toasts = writable([]);
@@ -32,52 +31,20 @@ export const addToast = (toast) => {
 	// Add toast to the store
 	toasts.update(currentToasts => [newToast, ...currentToasts]);
 
-	// Get the latest settings
-	const currentSettings = get(settings);
-
-	// Only play sounds if the master switch is on
-	if (currentSettings.notification_sound) {
-		const playSound = (patternKey) => {
-			const pattern = currentSettings.audio_patterns[patternKey];
-			if (pattern) {
-				playChimeSequence(pattern);
-			}
-		};
-
-		switch (newToast.type) {
+	    switch (newToast.type) {
 			case 'success':
-				playSound(currentSettings.notification_success_sound_pattern);
+				playNotificationSound('success');
+				vibrateNotification('success');
 				break;
 			case 'error':
-				playSound(currentSettings.notification_error_sound_pattern);
+				playNotificationSound('fail');
+				vibrateNotification('fail');
 				break;
 			default:
-				playSound(currentSettings.notification_sound_pattern);
+				playNotificationSound('notification');
+				vibrateNotification('notification');
 				break;
 		}
-	}
-
-	// Only play vibration if the master switch is on
-	if (currentSettings.notification_buzz) {
-		const playVibration = (patternKey) => {
-			const pattern = currentSettings.vibration_patterns[patternKey];
-			if (pattern) {
-				vibrate(pattern);
-			}
-		};
-
-		switch (newToast.type) {
-			case 'success':
-				playVibration(currentSettings.notification_success_vibration_pattern);
-				break;
-			case 'error':
-				playVibration(currentSettings.notification_error_vibration_pattern);
-				break;
-			default:
-				playVibration(currentSettings.notification_vibration_pattern);
-				break;
-		}
-	}
 
 	// Auto-dismiss after timeout
 	if (newToast.timeout) {

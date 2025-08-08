@@ -7,9 +7,8 @@
 	import Splash from '$lib/loaders/Splash.svelte';
 	import { Toasts } from '$lib/toasts';
 	import 'open-props/style';
-	import { playChimeSequence } from '$lib/utils/audio.js';
-	import { vibrate } from '$lib/utils/vibrate.js';
-	import { settings } from '$lib/settings/settings.js';
+	import { playNavigationSound } from '$lib/utils/audio.js';
+	import { vibrateNavigation } from '$lib/utils/vibrate.js';
 
 	let { children, data } = $props();
 
@@ -34,17 +33,8 @@
 	});
 
 	onNavigate((navigation) => {
-		// Play navigation sound if enabled, using the LATEST settings from the store
-		if ($settings.navigation_sound) {
-			const pattern = $settings.audio_patterns[$settings.navigation_sound_pattern];
-			if(pattern) playChimeSequence(pattern);
-		}
-
-		// Trigger navigation vibration if enabled, using the LATEST settings from the store
-		if ($settings.navigation_buzz) {
-			const pattern = $settings.vibration_patterns[$settings.navigation_vibration_pattern];
-			if(pattern) vibrate(pattern);
-		}
+		playNavigationSound();
+		vibrateNavigation();
 	});
 </script>
 

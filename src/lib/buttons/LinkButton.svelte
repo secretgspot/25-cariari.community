@@ -1,9 +1,8 @@
 <script>
 	import { navigating } from '$app/state';
 	import { Spinner } from '$lib/loaders';
-	import { playChime, playChimeSequence } from '$lib/utils/audio.js';
-	import { vibrate } from '$lib/utils/vibrate.js';
-	import { settings } from '$lib/settings/settings.js';
+	import { playButtonSound } from '$lib/utils/audio.js';
+	import { vibrateButton } from '$lib/utils/vibrate.js';
 
 	/** @type {{disabled?: boolean, isLink?: boolean, href?: any, external?: boolean, children?: import('svelte').Snippet, [key: string]: any}} */
 	let {
@@ -20,41 +19,10 @@
 		...rest
 	} = $props();
 
-	// Get current settings reactively
-	let currentSettings = $state($settings);
-
-	// Update when settings change
-	$effect(() => {
-		currentSettings = $settings;
-	});
-
 	function handleClick(event) {
-		// Play sound if enabled both globally and on this button
-		if (sound && currentSettings.button_sounds) {
-			const patternToUse = sound_pattern || currentSettings.button_sound_pattern;
-			const pattern = currentSettings.audio_patterns[patternToUse];
-			if (pattern) {
-				if (Array.isArray(pattern)) {
-					playChimeSequence(pattern);
-				} else {
-					playChime(
-						pattern.frequency,
-						pattern.duration,
-						pattern.volume,
-						pattern.waveType,
-					);
-				}
-			}
-		}
-
-		// Trigger vibration if enabled both globally and on this button
-		if (buzz && currentSettings.button_buzz) {
-			const patternToUse = buzz_pattern || currentSettings.button_vibration_pattern;
-			const pattern = currentSettings.vibration_patterns[patternToUse];
-			if (pattern) {
-				vibrate(pattern);
-			}
-		}
+		// Play sound and vibrate if enabled in settings
+		playButtonSound();
+		vibrateButton();
 
 		// Call the original onclick handler
 		if (rest.onclick) {

@@ -1,51 +1,10 @@
-// vibrate.js
+import { settings } from '$lib/settings/settings.js';
 import { get } from 'svelte/store';
 
 /**
  * Vibration API helper utilities for consistent haptic feedback across components
  * playground: https://svelte.dev/playground/51ad9d1ecf35449eb716cde2c153cb6d?version=5.36.17
  */
-
-/**
- * Trigger device vibration if supported
- * @param {number|number[]} pattern - Vibration pattern (single duration or array of on/off durations)
- * @param {boolean} forceEnabled - Override store check (for testing purposes)
- * @returns {boolean} - Returns true if vibration was triggered, false if not supported
- */
-export function vibrate(pattern, forceEnabled = false) {
-	// Allow bypassing store check for testing/preview purposes
-	if (!forceEnabled) {
-		// Note: This would need to be made more flexible to work with different stores
-		// For now, we'll always allow vibration in the components and let them handle the store logic
-	}
-
-	// Check if the Vibration API is supported by the browser
-	if ("vibrate" in navigator) {
-		// console.log("Vibration API is supported on this device.");
-		navigator.vibrate(pattern);
-		return true;
-	} else {
-		console.log("Vibration API is NOT supported on this device/browser.");
-		return false;
-	}
-}
-
-/**
- * Check if vibration is supported on current device/browser
- * @returns {boolean} - True if vibration API is available
- */
-export function isVibrationSupported() {
-	return "vibrate" in navigator;
-}
-
-/**
- * Stop any ongoing vibration
- */
-export function stopVibration() {
-	if ("vibrate" in navigator) {
-		navigator.vibrate(0);
-	}
-}
 
 /**
  * Predefined vibration patterns for different UI feedback types
@@ -73,6 +32,79 @@ export const vibratePatterns = {
 	notification: [100, 50, 100], // Two medium buzzes
 	warning: [150, 100, 150, 100, 150], // Three strong buzzes
 };
+
+/**
+ * Trigger device vibration if supported
+ * @param {string} patternName - The name of the vibration pattern to trigger.
+ * @param {boolean} isNotification - True if this is a notification vibration, to check notification_buzz setting.
+ */
+export function triggerVibration(patternName, isNotification = false) {
+    const currentSettings = get(settings);
+
+    if (isNotification) {
+        if (!currentSettings.notification_buzz) return;
+    } else if (patternName === currentSettings.button_vibration_pattern) {
+        if (!currentSettings.button_buzz) return;
+    } else if (patternName === currentSettings.navigation_vibration_pattern) {
+        if (!currentSettings.navigation_buzz) return;
+    }
+
+    const pattern = vibratePatterns[patternName];
+
+    if ("vibrate" in navigator && pattern) {
+        navigator.vibrate(pattern);
+    } else if (!pattern) {
+        console.warn(`Vibration pattern '${patternName}' not found.`);
+    }
+}
+
+/**
+ * Triggers a button click vibration.
+ */
+export function vibrateButton() {
+	triggerVibration(get(settings).button_vibration_pattern);
+}
+
+/**
+ * Triggers a navigation vibration.
+ */
+export function vibrateNavigation() {
+	triggerVibration(get(settings).navigation_vibration_pattern);
+}
+
+/**
+ * Triggers a notification vibration.
+ * @param {'success'|'fail'|'notification'} type - The type of notification.
+ */
+export function vibrateNotification(type = 'notification') {
+	const currentSettings = get(settings);
+	let patternName;
+	if (type === 'success') {
+		patternName = currentSettings.notification_success_vibration_pattern;
+	} else if (type === 'fail') {
+		patternName = currentSettings.notification_error_vibration_pattern;
+	} else {
+		patternName = currentSettings.notification_vibration_pattern;
+	}
+	triggerVibration(patternName, true);
+}
+
+/**
+ * Check if vibration is supported on current device/browser
+ * @returns {boolean} - True if vibration API is available
+ */
+export function isVibrationSupported() {
+	return "vibrate" in navigator;
+}
+
+/**
+ * Stop any ongoing vibration
+ */
+export function stopVibration() {
+	if ("vibrate" in navigator) {
+		navigator.vibrate(0);
+	}
+}
 
 /**
  * Create a custom vibration pattern

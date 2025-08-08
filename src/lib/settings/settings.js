@@ -1,8 +1,6 @@
 // $lib/settings/settings.js
 import { writable } from 'svelte/store';
 import { browser } from '$app/environment';
-import { chimePatterns as defaultChimePatterns } from '$lib/utils/audio.js';
-import { vibratePatterns as defaultVibratePatterns } from '$lib/utils/vibrate.js';
 
 /**
  * Default settings configuration
@@ -19,7 +17,6 @@ const DEFAULT_SETTINGS = {
 	notification_buzz: true,
 
 	// Audio Patterns
-	audio_patterns: defaultChimePatterns,
 	button_sound_pattern: 'click',
 	navigation_sound_pattern: 'navigate',
 	notification_sound_pattern: 'notification',
@@ -27,7 +24,6 @@ const DEFAULT_SETTINGS = {
 	notification_success_sound_pattern: 'success',
 
 	// Vibration Patterns
-	vibration_patterns: defaultVibratePatterns,
 	button_vibration_pattern: 'click',
 	navigation_vibration_pattern: 'navigate',
 	notification_vibration_pattern: 'notification',
@@ -49,14 +45,6 @@ function loadSettings() {
 			const merged = {
 				...DEFAULT_SETTINGS,
 				...parsed,
-				audio_patterns: {
-					...DEFAULT_SETTINGS.audio_patterns,
-					...(parsed.audio_patterns || {}),
-				},
-				vibration_patterns: {
-					...DEFAULT_SETTINGS.vibration_patterns,
-					...(parsed.vibration_patterns || {}),
-				},
 			};
 			return merged;
 		}

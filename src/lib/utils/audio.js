@@ -1,8 +1,5 @@
-/**
- * Audio chime utilities for consistent audio feedback across components
- * Uses Web Audio API to generate synthetic chimes and tones
- * playground: https://svelte.dev/playground/8a6890077f664c05ae4eaa90838f91ef?version=5.36.17
- */
+import { settings } from '$lib/settings/settings.js';
+import { get } from 'svelte/store';
 
 // Global audio context - created lazily to avoid autoplay restrictions
 let audioContext = null;
@@ -37,7 +34,7 @@ function getAudioContext() {
  * @param {string} waveType - Wave type: 'sine', 'square', 'sawtooth', 'triangle'
  * @returns {Promise<boolean>} - Returns true if chime was played, false if not supported
  */
-export async function playChime(frequency = 800, duration = 200, volume = 0.3, waveType = 'sine') {
+async function playChime(frequency = 800, duration = 200, volume = 0.3, waveType = 'sine') {
 	const ctx = getAudioContext();
 	if (!ctx) return false;
 
@@ -76,7 +73,7 @@ export async function playChime(frequency = 800, duration = 200, volume = 0.3, w
  * @param {Array} sequence - Array of {frequency, duration, delay, volume, waveType} objects
  * @returns {Promise<boolean>} - Returns true if sequence was started
  */
-export async function playChimeSequence(sequence) {
+async function playChimeSequence(sequence) {
 	const ctx = getAudioContext();
 	if (!ctx) return false;
 
@@ -97,6 +94,65 @@ export async function playChimeSequence(sequence) {
 	}
 
 	return true;
+}
+
+/**
+ * Plays a sound based on the given pattern name and checks if sounds are enabled in settings.
+ * @param {string} patternName - The name of the audio pattern to play (e.g., 'click', 'navigate', 'success').
+ * @param {boolean} isNotification - True if this is a notification sound, to check notification_sound setting.
+ */
+export function playSound(patternName, isNotification = false) {
+    const currentSettings = get(settings);
+
+    if (isNotification) {
+        if (!currentSettings.notification_sound) return;
+    } else if (patternName === currentSettings.button_sound_pattern) {
+        if (!currentSettings.button_sounds) return;
+    } else if (patternName === currentSettings.navigation_sound_pattern) {
+        if (!currentSettings.navigation_sound) return;
+    }
+
+    const pattern = chimePatterns[patternName];
+    if (pattern) {
+        if (Array.isArray(pattern)) {
+            playChimeSequence(pattern);
+        } else {
+            playChime(pattern.frequency, pattern.duration, pattern.volume, pattern.waveType);
+        }
+    } else {
+        console.warn(`Audio pattern '${patternName}' not found.`);
+    }
+}
+
+/**
+ * Plays a button click sound.
+ */
+export function playButtonSound() {
+    playSound(get(settings).button_sound_pattern);
+}
+
+/**
+ * Plays a navigation sound.
+ */
+export function playNavigationSound() {
+    playSound(get(settings).navigation_sound_pattern);
+}
+
+/**
+ * Plays a notification sound.
+ * @param {'success'|'fail'|'notification'} type - The type of notification.
+ */
+export function playNotificationSound(type = 'notification') {
+    const currentSettings = get(settings);
+    let patternName;
+    if (type === 'success') {
+        patternName = currentSettings.notification_success_sound_pattern;
+    } else if (type === 'fail') {
+        patternName = currentSettings.notification_error_sound_pattern;
+    } else {
+        patternName = currentSettings.notification_sound_pattern;
+    }
+    playSound(patternName, true);
 }
 
 /**
@@ -151,4 +207,3 @@ export const chimePatterns = {
 		{ frequency: 30, duration: 200, delay: 120, volume: 0.3 }
 	],
 };
-
