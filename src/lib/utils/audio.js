@@ -171,7 +171,7 @@ export function isAudioSupported() {
 export const chimePatterns = {
 	// Basic interaction - single pleasant tone
 	basic: { frequency: 900, duration: 100, volume: 0.1 },
-	tick: { frequency: 30, duration: 90, volume: 0.11 },
+	tick: { frequency: 90, duration: 60, volume: 0.1 },
 	click: { frequency: 60, duration: 60, volume: 0.1, waveType: 'triangle' },
 	longPress: { frequency: 400, duration: 150, volume: 0.2 },
 	swipe: [

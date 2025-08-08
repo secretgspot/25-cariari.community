@@ -1,10 +1,47 @@
 <!-- Toggle.svelte -->
 <script>
-	let { checked = $bindable(false), label } = $props();
+	import { playChime, playChimeSequence, chimePatterns } from '$lib/utils/audio.js';
+	import { vibrate, vibratePatterns } from '$lib/utils/vibrate.js';
+
+	let {
+		checked = $bindable(false),
+		label,
+		sound = true,
+		sound_pattern = 'tick',
+		buzz = true,
+		buzz_pattern = 'tick',
+	} = $props();
+
+	function handleChange() {
+		// Play sound if enabled locally
+		if (sound) {
+			const pattern = chimePatterns[sound_pattern];
+			if (pattern) {
+				if (Array.isArray(pattern)) {
+					playChimeSequence(pattern);
+				} else {
+					playChime(
+						pattern.frequency,
+						pattern.duration,
+						pattern.volume,
+						pattern.waveType,
+					);
+				}
+			}
+		}
+
+		// Trigger vibration if enabled locally
+		if (buzz) {
+			const pattern = vibratePatterns[buzz_pattern];
+			if (pattern) {
+				vibrate(pattern);
+			}
+		}
+	}
 </script>
 
 <label class="toggle-container">
-	<input type="checkbox" bind:checked />
+	<input type="checkbox" bind:checked onchange={handleChange} />
 	<div class="toggle-switch"></div>
 	<span class="toggle-label">{label}</span>
 </label>
