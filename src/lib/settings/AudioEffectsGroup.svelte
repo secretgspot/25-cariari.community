@@ -4,7 +4,7 @@
 	import { playChimeSequence } from '$lib/utils/audio.js';
 	import SoundPatternEditor from './SoundPatternEditor.svelte';
 
-	let { enabled = false, label = 'Audio Effects', patternKey = 'basic' } = $props();
+	let { enabled = $bindable(), label = 'Audio Effects', patternKey = 'basic' } = $props();
 
 	let currentSettings = $state($settings);
 

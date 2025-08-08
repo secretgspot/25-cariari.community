@@ -3,12 +3,7 @@
 	import { vibrate } from '$lib/utils/vibrate.js';
 
 	// Props
-	let {
-		enabled = false,
-		onEnabledChange = () => {},
-		label = 'Vibration Effects',
-		patternKey = 'basic',
-	} = $props();
+	let { enabled = $bindable(), label = 'Vibration Effects', patternKey = 'basic' } = $props();
 
 	let currentSettings = $state($settings);
 
@@ -23,20 +18,11 @@
 	function testPattern() {
 		vibrate(currentSettings.vibration_patterns[patternKey], true); // Force enabled for testing
 	}
-
-	// Handle enabled change
-	function handleEnabledChange(event) {
-		onEnabledChange(event.target.checked);
-	}
 </script>
 
 <fieldset>
 	<legend>
-		<input
-			type="checkbox"
-			id="enable-{label}"
-			checked={enabled}
-			onchange={handleEnabledChange} />
+		<input type="checkbox" id="enable-{label}" bind:checked={enabled} />
 		<label for="enable-{label}">{label}</label>
 		{#if enabled}
 			<button type="button" class="test-button" onclick={testPattern}>Test</button>
