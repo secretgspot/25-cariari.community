@@ -3,7 +3,11 @@
 	import { vibrate } from '$lib/utils/vibrate.js';
 
 	// Props
-	let { enabled = $bindable(), label = 'Vibration Effects', patternKey = 'basic' } = $props();
+	let {
+		enabled = $bindable(),
+		label = 'Vibration Effects',
+		patternKey = 'basic',
+	} = $props();
 
 	let currentSettings = $state($settings);
 
@@ -78,9 +82,9 @@
 <style>
 	.pattern-editor {
 		display: flex;
-		flex-direction: column;
 		gap: var(--size-2);
 		width: 100%;
+		flex-wrap: wrap;
 	}
 
 	.segment-group {

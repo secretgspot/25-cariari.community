@@ -2,9 +2,10 @@
 <script>
 	import { settings, resetSettings } from './settings.js';
 	import Divider from '$lib/Divider.svelte';
-	import AudioEffectsGroup from './AudioEffectsGroup.svelte';
+	import SoundEffectsGroup from './SoundEffectsGroup.svelte';
 	import VibrationEffectsGroup from './VibrationEffectsGroup.svelte';
 	import NotificationSoundGroup from './NotificationSoundGroup.svelte';
+	import NotificationVibrationGroup from './NotificationVibrationGroup.svelte';
 
 	let currentSettings = $state($settings);
 
@@ -17,33 +18,30 @@
 	<Divider>Site Settings</Divider>
 	<div class="form-items-wrap">
 		<!-- Button Effects -->
-		<AudioEffectsGroup
+		<SoundEffectsGroup
 			bind:enabled={currentSettings.button_sounds}
 			label="Button sound effects"
-			patternKey={currentSettings.button_sound_pattern}
-		/>
+			patternKey={currentSettings.button_sound_pattern} />
 
 		<VibrationEffectsGroup
 			bind:enabled={currentSettings.button_buzz}
 			label="Button vibration effects"
-			patternKey={currentSettings.button_vibration_pattern}
-		/>
+			patternKey={currentSettings.button_vibration_pattern} />
 
 		<!-- Navigation Effects -->
-		<AudioEffectsGroup
+		<SoundEffectsGroup
 			bind:enabled={currentSettings.navigation_sound}
 			label="Navigation sound effects"
-			patternKey={currentSettings.navigation_sound_pattern}
-		/>
+			patternKey={currentSettings.navigation_sound_pattern} />
 
 		<VibrationEffectsGroup
 			bind:enabled={currentSettings.navigation_buzz}
 			label="Navigation vibration effects"
-			patternKey={currentSettings.navigation_vibration_pattern}
-		/>
+			patternKey={currentSettings.navigation_vibration_pattern} />
 
 		<!-- Notification Effects -->
 		<NotificationSoundGroup />
+		<NotificationVibrationGroup />
 
 		<!-- Settings Actions -->
 		<div class="settings-actions">

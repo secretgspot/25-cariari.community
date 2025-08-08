@@ -1,4 +1,4 @@
-<!-- src/lib/settings/AudioEffectsGroup.svelte -->
+<!-- src/lib/settings/SoundEffectsGroup.svelte -->
 <script>
 	import { settings } from './settings.js';
 	import { playChimeSequence } from '$lib/utils/audio.js';
