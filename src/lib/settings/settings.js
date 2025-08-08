@@ -74,7 +74,15 @@ function saveState(state) {
 	if (!browser) return;
 
 	try {
-		localStorage.setItem('app_settings', JSON.stringify(state));
+		const settingsToSave = {
+			button_sounds: state.button_sounds,
+			navigation_sound: state.navigation_sound,
+			notification_sound: state.notification_sound,
+			button_buzz: state.button_buzz,
+			navigation_buzz: state.navigation_buzz,
+			notification_buzz: state.notification_buzz,
+		};
+		localStorage.setItem('app_settings', JSON.stringify(settingsToSave));
 	} catch (error) {
 		console.error('Failed to save state to localStorage:', error);
 	}
