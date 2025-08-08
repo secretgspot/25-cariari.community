@@ -31,8 +31,8 @@ const DEFAULT_SETTINGS = {
 	button_vibration_pattern: 'click',
 	navigation_vibration_pattern: 'navigate',
 	notification_vibration_pattern: 'notification',
-	notification_error_vibration_pattern: 'failB',
-	notification_success_vibration_pattern: 'successB',
+	notification_error_vibration_pattern: 'fail',
+	notification_success_vibration_pattern: 'success',
 };
 
 /**
@@ -85,8 +85,11 @@ if (browser) {
 }
 
 /**
- * Resets all settings to their default values.
+ * Resets all settings to their default values and clears localStorage.
  */
 export function resetSettings() {
+	if (browser) {
+		localStorage.removeItem('app_settings');
+	}
 	settings.set(DEFAULT_SETTINGS);
 }

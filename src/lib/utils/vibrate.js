@@ -57,21 +57,21 @@ export function stopVibration() {
 export const vibratePatterns = {
 	// Quick, subtle feedback for basic interactions
 	basic: 20,
-	tick: 10, // Very subtle tick for selections
-	click: 25,
-	longPress: 30, // Medium buzz for long press feedback
-	swipe: [20, 10, 20], // Quick double tap for swipe actions
-	navigate: [20, 10, 20], // Quick double tap for swipe actions
+	tick: 10,
+	click: 30,
+	longPress: 30,
+	swipe: [20, 10, 20],
+	navigate: 60,
 
-	// Success patterns - gentle, positive feeling
+	// Success pattern
+	success: [40, 20, 40, 20, 80], // Two quick, then longer
 	successA: [50, 30, 100], // Quick buzz, pause, longer buzz
-	successB: [40, 20, 40, 20, 80], // Two quick, then longer
-	successC: 80, // Single medium buzz
+	successB: 80, // Single medium buzz
 
-	// Fail patterns - more abrupt, attention-grabbing
+	// Fail pattern
+	fail: [30, 10, 60], // Two strong buzzes
 	failA: [100, 50, 100, 50, 100], // Three equal buzzes
-	failB: [200, 100, 200], // Two strong buzzes
-	failC: [50, 30, 50, 30, 150], // Quick-quick-long pattern
+	failB: [50, 30, 50, 30, 150], // Quick-quick-long pattern
 
 	// Additional useful patterns
 	notification: [100, 50, 100], // Two medium buzzes
