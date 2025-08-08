@@ -34,7 +34,9 @@ function getAudioContext() {
  * @param {string} waveType - Wave type: 'sine', 'square', 'sawtooth', 'triangle'
  * @returns {Promise<boolean>} - Returns true if chime was played, false if not supported
  */
-async function playChime(frequency = 800, duration = 200, volume = 0.3, waveType = 'sine') {
+export async function playChime(frequency = 800, duration = 200, volume = 0.3, waveType = 'sine') {
+	const currentSettings = get(settings);
+	if (!currentSettings.button_sounds) return;
 	const ctx = getAudioContext();
 	if (!ctx) return false;
 
@@ -73,7 +75,9 @@ async function playChime(frequency = 800, duration = 200, volume = 0.3, waveType
  * @param {Array} sequence - Array of {frequency, duration, delay, volume, waveType} objects
  * @returns {Promise<boolean>} - Returns true if sequence was started
  */
-async function playChimeSequence(sequence) {
+export async function playChimeSequence(sequence) {
+	const currentSettings = get(settings);
+	if (!currentSettings.button_sounds) return;
 	const ctx = getAudioContext();
 	if (!ctx) return false;
 
@@ -101,41 +105,36 @@ async function playChimeSequence(sequence) {
  * @param {string} patternName - The name of the audio pattern to play (e.g., 'click', 'navigate', 'success').
  * @param {boolean} isNotification - True if this is a notification sound, to check notification_sound setting.
  */
-export function playSound(patternName, isNotification = false) {
-    const currentSettings = get(settings);
-
-    if (isNotification) {
-        if (!currentSettings.notification_sound) return;
-    } else if (patternName === currentSettings.button_sound_pattern) {
-        if (!currentSettings.button_sounds) return;
-    } else if (patternName === currentSettings.navigation_sound_pattern) {
-        if (!currentSettings.navigation_sound) return;
-    }
-
-    const pattern = chimePatterns[patternName];
-    if (pattern) {
-        if (Array.isArray(pattern)) {
-            playChimeSequence(pattern);
-        } else {
-            playChime(pattern.frequency, pattern.duration, pattern.volume, pattern.waveType);
-        }
-    } else {
-        console.warn(`Audio pattern '${patternName}' not found.`);
-    }
+export function playSound(pattern) {
+	if (!pattern) {
+		console.warn(`Audio pattern not found.`);
+		return;
+	}
+	if (Array.isArray(pattern)) {
+		playChimeSequence(pattern);
+	} else {
+		playChime(pattern.frequency, pattern.duration, pattern.volume, pattern.waveType);
+	}
 }
 
 /**
  * Plays a button click sound.
  */
 export function playButtonSound() {
-    playSound(get(settings).button_sound_pattern);
+	const currentSettings = get(settings);
+	if (!currentSettings.button_sounds) return;
+	const pattern = chimePatterns[currentSettings.button_sound_pattern];
+	playSound(pattern);
 }
 
 /**
  * Plays a navigation sound.
  */
 export function playNavigationSound() {
-    playSound(get(settings).navigation_sound_pattern);
+	const currentSettings = get(settings);
+	if (!currentSettings.navigation_sound) return;
+	const pattern = chimePatterns[currentSettings.navigation_sound_pattern];
+	playSound(pattern);
 }
 
 /**
@@ -143,16 +142,18 @@ export function playNavigationSound() {
  * @param {'success'|'fail'|'notification'} type - The type of notification.
  */
 export function playNotificationSound(type = 'notification') {
-    const currentSettings = get(settings);
-    let patternName;
-    if (type === 'success') {
-        patternName = currentSettings.notification_success_sound_pattern;
-    } else if (type === 'fail') {
-        patternName = currentSettings.notification_error_sound_pattern;
-    } else {
-        patternName = currentSettings.notification_sound_pattern;
-    }
-    playSound(patternName, true);
+	const currentSettings = get(settings);
+	if (!currentSettings.notification_sound) return;
+	let patternName;
+	if (type === 'success') {
+		patternName = currentSettings.notification_success_sound_pattern;
+	} else if (type === 'fail') {
+		patternName = currentSettings.notification_error_sound_pattern;
+	} else {
+		patternName = currentSettings.notification_sound_pattern;
+	}
+	const pattern = chimePatterns[patternName];
+	playSound(pattern);
 }
 
 /**

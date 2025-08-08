@@ -2,11 +2,6 @@ import { settings } from '$lib/settings/settings.js';
 import { get } from 'svelte/store';
 
 /**
- * Vibration API helper utilities for consistent haptic feedback across components
- * playground: https://svelte.dev/playground/51ad9d1ecf35449eb716cde2c153cb6d?version=5.36.17
- */
-
-/**
  * Predefined vibration patterns for different UI feedback types
  * Patterns follow mobile UX best practices:
  * - Basic: Subtle for frequent interactions
@@ -38,38 +33,41 @@ export const vibratePatterns = {
  * @param {string} patternName - The name of the vibration pattern to trigger.
  * @param {boolean} isNotification - True if this is a notification vibration, to check notification_buzz setting.
  */
-export function triggerVibration(patternName, isNotification = false) {
-    const currentSettings = get(settings);
-
-    if (isNotification) {
-        if (!currentSettings.notification_buzz) return;
-    } else if (patternName === currentSettings.button_vibration_pattern) {
-        if (!currentSettings.button_buzz) return;
-    } else if (patternName === currentSettings.navigation_vibration_pattern) {
-        if (!currentSettings.navigation_buzz) return;
-    }
-
-    const pattern = vibratePatterns[patternName];
-
-    if ("vibrate" in navigator && pattern) {
-        navigator.vibrate(pattern);
-    } else if (!pattern) {
-        console.warn(`Vibration pattern '${patternName}' not found.`);
-    }
+export function vibrate(pattern) {
+	const currentSettings = get(settings);
+	if (!currentSettings.navigation_buzz) return;
+	if (!pattern) {
+		console.warn(`Vibration pattern not found.`);
+		return;
+	}
+	// Check if the Vibration API is supported by the browser
+	if ("vibrate" in navigator) {
+		navigator.vibrate(pattern);
+		return true;
+	} else {
+		console.log("Vibration API is NOT supported on this device/browser.");
+		return false;
+	}
 }
 
 /**
  * Triggers a button click vibration.
  */
 export function vibrateButton() {
-	triggerVibration(get(settings).button_vibration_pattern);
+	const currentSettings = get(settings);
+	if (!currentSettings.button_buzz) return;
+	const pattern = vibratePatterns[currentSettings.button_vibration_pattern];
+	vibrate(pattern);
 }
 
 /**
  * Triggers a navigation vibration.
  */
 export function vibrateNavigation() {
-	triggerVibration(get(settings).navigation_vibration_pattern);
+	const currentSettings = get(settings);
+	if (!currentSettings.navigation_buzz) return;
+	const pattern = vibratePatterns[currentSettings.navigation_vibration_pattern];
+	vibrate(pattern);
 }
 
 /**
@@ -78,6 +76,7 @@ export function vibrateNavigation() {
  */
 export function vibrateNotification(type = 'notification') {
 	const currentSettings = get(settings);
+	if (!currentSettings.notification_buzz) return;
 	let patternName;
 	if (type === 'success') {
 		patternName = currentSettings.notification_success_vibration_pattern;
@@ -86,7 +85,8 @@ export function vibrateNotification(type = 'notification') {
 	} else {
 		patternName = currentSettings.notification_vibration_pattern;
 	}
-	triggerVibration(patternName, true);
+	const pattern = vibratePatterns[patternName];
+	vibrate(pattern);
 }
 
 /**
@@ -104,13 +104,4 @@ export function stopVibration() {
 	if ("vibrate" in navigator) {
 		navigator.vibrate(0);
 	}
-}
-
-/**
- * Create a custom vibration pattern
- * @param {...number} durations - Alternating vibrate/pause durations in milliseconds
- * @returns {number[]} - Vibration pattern array
- */
-export function createPattern(...durations) {
-	return durations;
 }

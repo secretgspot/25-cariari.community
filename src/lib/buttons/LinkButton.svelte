@@ -1,8 +1,8 @@
 <script>
 	import { navigating } from '$app/state';
 	import { Spinner } from '$lib/loaders';
-	import { playButtonSound } from '$lib/utils/audio.js';
-	import { vibrateButton } from '$lib/utils/vibrate.js';
+	import { playChime, playChimeSequence, chimePatterns } from '$lib/utils/audio.js';
+	import { vibrate, vibratePatterns } from '$lib/utils/vibrate.js';
 
 	/** @type {{disabled?: boolean, isLink?: boolean, href?: any, external?: boolean, children?: import('svelte').Snippet, [key: string]: any}} */
 	let {
@@ -20,9 +20,30 @@
 	} = $props();
 
 	function handleClick(event) {
-		// Play sound and vibrate if enabled in settings
-		playButtonSound();
-		vibrateButton();
+		// Play sound if enabled locally
+		if (sound) {
+			const pattern = chimePatterns[sound_pattern];
+			if (pattern) {
+				if (Array.isArray(pattern)) {
+					playChimeSequence(pattern);
+				} else {
+					playChime(
+						pattern.frequency,
+						pattern.duration,
+						pattern.volume,
+						pattern.waveType,
+					);
+				}
+			}
+		}
+
+		// Trigger vibration if enabled locally
+		if (buzz) {
+			const pattern = vibratePatterns[buzz_pattern];
+			if (pattern) {
+				vibrate(pattern);
+			}
+		}
 
 		// Call the original onclick handler
 		if (rest.onclick) {
