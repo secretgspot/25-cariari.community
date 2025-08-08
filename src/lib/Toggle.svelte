@@ -1,41 +1,19 @@
 <!-- Toggle.svelte -->
 <script>
-	import { playChime, playChimeSequence, chimePatterns } from '$lib/utils/audio.js';
-	import { vibrate, vibratePatterns } from '$lib/utils/vibrate.js';
+	import { playButtonSound } from '$lib/utils/audio.js';
+	import { vibrateButton } from '$lib/utils/vibrate.js';
 
-	let {
-		checked = $bindable(false),
-		label,
-		sound = true,
-		sound_pattern = 'tick',
-		buzz = true,
-		buzz_pattern = 'tick',
-	} = $props();
+	let { checked = $bindable(false), label, sound = true, sound_pattern = 'click', buzz = true, buzz_pattern = 'click' } = $props();
 
 	function handleChange() {
 		// Play sound if enabled locally
 		if (sound) {
-			const pattern = chimePatterns[sound_pattern];
-			if (pattern) {
-				if (Array.isArray(pattern)) {
-					playChimeSequence(pattern);
-				} else {
-					playChime(
-						pattern.frequency,
-						pattern.duration,
-						pattern.volume,
-						pattern.waveType,
-					);
-				}
-			}
+			playButtonSound(sound_pattern);
 		}
 
 		// Trigger vibration if enabled locally
 		if (buzz) {
-			const pattern = vibratePatterns[buzz_pattern];
-			if (pattern) {
-				vibrate(pattern);
-			}
+			vibrateButton(buzz_pattern);
 		}
 	}
 </script>

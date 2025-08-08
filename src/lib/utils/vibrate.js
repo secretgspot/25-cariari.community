@@ -34,8 +34,6 @@ export const vibratePatterns = {
  * @param {boolean} isNotification - True if this is a notification vibration, to check notification_buzz setting.
  */
 export function vibrate(pattern) {
-	const currentSettings = get(settings);
-	if (!currentSettings.navigation_buzz) return;
 	if (!pattern) {
 		console.warn(`Vibration pattern not found.`);
 		return;
@@ -53,20 +51,20 @@ export function vibrate(pattern) {
 /**
  * Triggers a button click vibration.
  */
-export function vibrateButton() {
+export function vibrateButton(patternName) {
 	const currentSettings = get(settings);
 	if (!currentSettings.button_buzz) return;
-	const pattern = vibratePatterns[currentSettings.button_vibration_pattern];
+	const pattern = patternName ? vibratePatterns[patternName] : vibratePatterns[currentSettings.button_vibration_pattern];
 	vibrate(pattern);
 }
 
 /**
  * Triggers a navigation vibration.
  */
-export function vibrateNavigation() {
+export function vibrateNavigation(patternName) {
 	const currentSettings = get(settings);
 	if (!currentSettings.navigation_buzz) return;
-	const pattern = vibratePatterns[currentSettings.navigation_vibration_pattern];
+	const pattern = patternName ? vibratePatterns[patternName] : vibratePatterns[currentSettings.navigation_vibration_pattern];
 	vibrate(pattern);
 }
 
