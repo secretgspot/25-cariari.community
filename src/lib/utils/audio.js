@@ -116,6 +116,14 @@ export function isAudioSupported() {
 export const chimePatterns = {
 	// Basic interaction - single pleasant tone
 	basic: { frequency: 900, duration: 100, volume: 0.1 },
+	tick: { frequency: 30, duration: 90, volume: 0.11 },
+	click: { frequency: 1500, duration: 30, volume: 0.15 },
+	longPress: { frequency: 400, duration: 150, volume: 0.2 },
+	swipe: [
+		{ frequency: 30, duration: 300, delay: 0, volume: 0.03 },
+		{ frequency: 9, duration: 600, delay: 30, volume: 0.03 }
+	],
+	bell: { frequency: 30, duration: 800, volume: 0.2, waveType: 'triangle' },
 
 	// Success patterns - ascending, positive tones
 	successA: [
@@ -153,14 +161,6 @@ export const chimePatterns = {
 		{ frequency: 600, duration: 80, delay: 120, volume: 0.3 },
 		{ frequency: 600, duration: 120, delay: 240, volume: 0.35 }
 	],
-	tick: { frequency: 30, duration: 90, volume: 0.11 },
-	longPress: { frequency: 400, duration: 150, volume: 0.2 },
-	swipe: [
-		{ frequency: 30, duration: 300, delay: 0, volume: 0.03 },
-		{ frequency: 9, duration: 600, delay: 30, volume: 0.03 }
-	],
-	bell: { frequency: 30, duration: 800, volume: 0.2, waveType: 'triangle' },
-	click: { frequency: 1500, duration: 30, volume: 0.15 }
 };
 
 /**
