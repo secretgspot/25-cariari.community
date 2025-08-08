@@ -1,4 +1,3 @@
-<!-- VibrationEffectsGroup.svelte -->
 <script>
 	import { vibrationPatterns } from './settings.js';
 	import { vibrate } from '$lib/utils/vibrate.js';
@@ -43,29 +42,41 @@
 	</legend>
 	{#if enabled}
 		<div class="pattern-controls">
-			<label for="pattern-select-{label}">Select a Pattern</label>
-			<select id="pattern-select-{label}" bind:value={selectedPattern}>
-				{#each patternOptions as pattern}
-					<option value={pattern}>{pattern}</option>
-				{/each}
-			</select>
+			<div class="pattern-select-group">
+				<label for="pattern-select-{label}">Select a Pattern</label>
+				<select id="pattern-select-{label}" bind:value={selectedPattern}>
+					{#each patternOptions as pattern}
+						<option value={pattern}>{pattern}</option>
+					{/each}
+				</select>
+			</div>
 
 			{#if Array.isArray(currentPatternSettings)}
-				{#each currentPatternSettings as duration, i}
-					<div class="vibration-segment-group">
-						<div class="input-group">
-							<label for="duration-{label}-{i}">
-								{i % 2 === 0 ? 'Vibration' : 'Pause'} Duration (ms)
-							</label>
-							<input
-								type="number"
-								id="duration-{label}-{i}"
-								bind:value={$vibrationPatterns[selectedPattern][i]}
-								min={0}
-								max={500}
-								step={5} />
+				{#each currentPatternSettings as _, i}
+					{#if i % 2 === 0}
+						<div class="vibration-segment-group">
+							<div class="input-group">
+								<label for="duration-{label}-{i}">Vibration Duration (ms)</label>
+								<input
+									type="number"
+									id="duration-{label}-{i}"
+									bind:value={$vibrationPatterns[selectedPattern][i]}
+									min={0}
+									max={500}
+									step={5} />
+							</div>
+							<div class="input-group">
+								<label for="duration-{label}-{i + 1}">Pause Duration (ms)</label>
+								<input
+									type="number"
+									id="duration-{label}-{i + 1}"
+									bind:value={$vibrationPatterns[selectedPattern][i + 1]}
+									min={0}
+									max={500}
+									step={5} />
+							</div>
 						</div>
-					</div>
+					{/if}
 				{/each}
 			{:else}
 				<div class="vibration-segment-group">
@@ -131,9 +142,15 @@
 
 	.pattern-controls {
 		display: flex;
+		flex-direction: column; /* Use column to stack the pattern selector and the input groups */
 		gap: var(--size-3);
-		flex-wrap: wrap;
 		font-size: small;
+	}
+
+	.pattern-select-group {
+		display: flex;
+		align-items: center;
+		gap: var(--size-1);
 	}
 
 	.input-group {
