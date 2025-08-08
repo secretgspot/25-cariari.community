@@ -69,7 +69,7 @@ export const vibratePatterns = {
 	successB: 80, // Single medium buzz
 
 	// Fail pattern
-	fail: [30, 10, 60], // Two strong buzzes
+	fail: 1000, // Two strong buzzes
 	failA: [100, 50, 100, 50, 100], // Three equal buzzes
 	failB: [50, 30, 50, 30, 150], // Quick-quick-long pattern
 

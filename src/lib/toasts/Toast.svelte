@@ -1,45 +1,8 @@
 <script>
 	import { fade } from 'svelte/transition';
-	import { settings } from '$lib/settings/settings.js';
-	import { playChimeSequence } from '$lib/utils/audio.js';
-	import { vibrate } from '$lib/utils/vibrate.js';
 
 	/** @type {{type?: string, dismissible?: boolean, children?: import('svelte').Snippet, ondismiss?: () => void}} */
 	let { type = '', dismissible = true, children, ondismiss } = $props();
-
-	$effect(() => {
-		// Only play sounds if the master switch is on
-		if (!$settings.notification_sound) return;
-
-		const playSound = (patternKey) => {
-			const pattern = $settings.audio_patterns[patternKey];
-			if (pattern) {
-				playChimeSequence(pattern);
-			}
-		};
-
-		const playVibration = (patternKey) => {
-			const pattern = $settings.vibration_patterns[patternKey];
-			if (pattern) {
-				vibrate(pattern);
-			}
-		};
-
-		switch (type) {
-			case 'success':
-				playSound($settings.notification_success_sound_pattern);
-				if ($settings.notification_buzz) playVibration($settings.notification_success_vibration_pattern);
-				break;
-			case 'error':
-				playSound($settings.notification_error_sound_pattern);
-				if ($settings.notification_buzz) playVibration($settings.notification_error_vibration_pattern);
-				break;
-			default:
-				playSound($settings.notification_sound_pattern);
-				if ($settings.notification_buzz) playVibration($settings.notification_vibration_pattern);
-				break;
-		}
-	});
 
 	function handleDismiss() {
 		ondismiss?.();
