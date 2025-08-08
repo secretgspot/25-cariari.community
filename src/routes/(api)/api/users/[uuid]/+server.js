@@ -13,80 +13,22 @@ export async function GET({ params, locals: { supabase, getSession } }) {
 
 	try {
 		// Execute all database queries in parallel for better performance
-		const [
-			profileQuery,
-			noticesQuery,
-			eventsQuery,
-			lostAndFoundQuery,
-			servicesQuery,
-			commentsQuery
-		] = await Promise.all([
-			supabase
+		const profileQuery = await supabase
 				.from('profiles')
-				.select('*')
+				.select('username, full_name, bio, avatar_url')
 				.eq('user_id', uuid)
-				.single(),
-			supabase
-				.from('notices')
-				.select('id', { count: 'exact' })
-				.eq('user_id', uuid),
-			supabase
-				.from('events')
-				.select('id', { count: 'exact' })
-				.eq('user_id', uuid),
-			supabase
-				.from('lost_and_found')
-				.select('id', { count: 'exact' })
-				.eq('user_id', uuid),
-			supabase
-				.from('services')
-				.select('id', { count: 'exact' })
-				.eq('user_id', uuid),
-			supabase
-				.from('comments')
-				.select('id', { count: 'exact' })
-				.eq('user_id', uuid)
-		]);
+				.single();
 
 		const { data: profile, error: profileError } = profileQuery;
-		const { count: noticesCount, error: noticesError } = noticesQuery;
-		const { count: eventsCount, error: eventsError } = eventsQuery;
-		const { count: lostAndFoundCount, error: lostAndFoundError } = lostAndFoundQuery;
-		const { count: servicesCount, error: servicesError } = servicesQuery;
-		const { count: commentsCount, error: commentsError } = commentsQuery;
 
 		if (profileError || !profile) {
 			console.error('Error fetching user profile:', profileError);
 			return json({ message: 'User not found.' }, { status: 404 });
 		}
 
-		// Log count errors but don't fail the request
-		if (noticesError) {
-			console.error('Error counting notices:', noticesError);
-		}
-		if (eventsError) {
-			console.error('Error counting events:', eventsError);
-		}
-		if (lostAndFoundError) {
-			console.error('Error counting lost and found posts:', lostAndFoundError);
-		}
-		if (servicesError) {
-			console.error('Error counting services:', servicesError);
-		}
-		if (commentsError) {
-			console.error('Error counting comments:', commentsError);
-		}
-
 		return json(
 			{
 				profile,
-				counts: {
-					notices: noticesCount || 0,
-					events: eventsCount || 0,
-					lostAndFound: lostAndFoundCount || 0,
-					services: servicesCount || 0,
-					comments: commentsCount || 0,
-				},
 			},
 			{ status: 200 }
 		);

@@ -14,7 +14,7 @@ export async function GET({ params, locals: { supabase, getSession } }) {
 	try {
 		const { data: comments, error: commentsError } = await supabase
 			.from('comments')
-			.select('*')
+			.select('id, content, created_at')
 			.eq('user_id', uuid)
 			.order('created_at', { ascending: false })
 			.limit(100); // Limit to 100 most recent comments for better performance

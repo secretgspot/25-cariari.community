@@ -14,7 +14,7 @@ export async function GET({ params, locals: { supabase, getSession } }) {
 	try {
 		const { data: notices, error: noticesError } = await supabase
 			.from('notices')
-			.select('*')
+			.select('id, title, created_at')
 			.eq('user_id', uuid)
 			.order('created_at', { ascending: false })
 			.limit(50); // Limit to 50 most recent notices for better performance
