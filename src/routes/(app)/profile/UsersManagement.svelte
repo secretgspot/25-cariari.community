@@ -2,6 +2,7 @@
 	import Divider from '$lib/Divider.svelte';
 	import Dialog from '$lib/Dialog.svelte';
 	import Button from '$lib/buttons/Button.svelte';
+	import { addToast } from '$lib/toasts';
 
 	let users = $state([]);
 	let userToDelete = $state(null);
@@ -42,10 +43,21 @@
 				if (!response.ok) {
 					throw new Error(`HTTP error! status: ${response.status}`);
 				}
+				addToast({
+					message: `${userToDelete.user_id} deleted successfully!`,
+					type: 'success',
+					timeout: 1200,
+				});
 				users = users.filter((user) => user.user_id !== userToDelete.user_id);
 				userToDelete = null;
-				showDialog = false;
+				showDeleteDialog = false;
 			} catch (error) {
+				addToast({
+					message: `Failed to delete user, ${error}`,
+					type: 'error',
+					dismissible: true,
+					timeout: 0,
+				});
 				console.error('Error deleting user:', error);
 			}
 		}

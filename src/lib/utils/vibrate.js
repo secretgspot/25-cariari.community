@@ -12,7 +12,7 @@ export const vibratePatterns = {
 	// Quick, subtle feedback for basic interactions
 	basic: 20,
 	tick: 10,
-	click: 30,
+	click: 10,
 	longPress: 30,
 	swipe: [20, 10, 20],
 	navigate: 60,
