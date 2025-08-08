@@ -7,19 +7,11 @@
 	import Splash from '$lib/loaders/Splash.svelte';
 	import { Toasts } from '$lib/toasts';
 	import 'open-props/style';
-	import { playChimeSequence, chimePatterns } from '$lib/utils/audio.js';
-	import { vibrate, vibratePatterns } from '$lib/utils/vibrate.js';
+	import { playChimeSequence } from '$lib/utils/audio.js';
+	import { vibrate } from '$lib/utils/vibrate.js';
 	import { settings } from '$lib/settings/settings.js';
 
 	let { children, data } = $props();
-
-	// Get current settings reactively
-	let currentSettings = $state($settings);
-
-	// Update when settings change
-	$effect(() => {
-		currentSettings = $settings;
-	});
 
 	// Set up auth state listener with proper cleanup
 	$effect(() => {
@@ -42,16 +34,16 @@
 	});
 
 	onNavigate((navigation) => {
-		// Play navigation sound if enabled
-		if (currentSettings.navigation_sound) {
-			const pattern = currentSettings.navigation_sound_pattern || 'swipe';
-			playChimeSequence(chimePatterns[pattern]);
+		// Play navigation sound if enabled, using the LATEST settings from the store
+		if ($settings.navigation_sound) {
+			const pattern = $settings.audio_patterns[$settings.navigation_sound_pattern];
+			if(pattern) playChimeSequence(pattern);
 		}
 
-		// Trigger navigation vibration if enabled
-		if (currentSettings.navigation_buzz) {
-			const pattern = currentSettings.navigation_vibration_pattern || 'tick';
-			vibrate(vibratePatterns[pattern]);
+		// Trigger navigation vibration if enabled, using the LATEST settings from the store
+		if ($settings.navigation_buzz) {
+			const pattern = $settings.vibration_patterns[$settings.navigation_vibration_pattern];
+			if(pattern) vibrate(pattern);
 		}
 	});
 </script>
