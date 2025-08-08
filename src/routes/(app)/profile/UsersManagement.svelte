@@ -65,7 +65,7 @@
 </script>
 
 <div class="users-management">
-	<Divider>Users Management</Divider>
+	<Divider>Users Management - ({users.length})</Divider>
 	{#if users.length > 0}
 		<ul>
 			{#each users as user (user.user_id)}

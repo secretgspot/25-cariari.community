@@ -191,6 +191,8 @@
 			border-radius: var(--radius-2);
 			object-fit: cover;
 			aspect-ratio: 1;
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
 		}
 
 		.description {

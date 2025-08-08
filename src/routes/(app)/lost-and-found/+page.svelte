@@ -204,6 +204,8 @@
 			object-fit: cover;
 			aspect-ratio: 1;
 			border-radius: var(--radius-2);
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
 		}
 
 		.placeholder-image {
@@ -215,6 +217,8 @@
 			color: var(--gray-0);
 			aspect-ratio: 1;
 			border-radius: var(--radius-2);
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
 		}
 
 		.meta {
