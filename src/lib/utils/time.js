@@ -188,3 +188,29 @@ export function isExpired(createdAt, expirationDays) {
 
 	return expirationDate <= now;
 }
+
+/**
+ * Returns the current date in YYYY-MM-DD format.
+ * @returns {string} The current date as a string in YYYY-MM-DD format.
+ */
+export function getTodayDateOnlyString() {
+	const today = new Date();
+	const year = today.getFullYear();
+	const month = (today.getMonth() + 1).toString().padStart(2, '0');
+	const day = today.getDate().toString().padStart(2, '0');
+	return `${year}-${month}-${day}`;
+}
+
+/**
+ * Returns the current date and time in YYYY-MM-DDTHH:mm format.
+ * @returns {string} The current date and time as a string in YYYY-MM-DDTHH:mm format.
+ */
+export function getTodayDateTimeString() {
+	const today = new Date();
+	const year = today.getFullYear();
+	const month = (today.getMonth() + 1).toString().padStart(2, '0');
+	const day = today.getDate().toString().padStart(2, '0');
+	const hours = today.getHours().toString().padStart(2, '0');
+	const minutes = today.getMinutes().toString().padStart(2, '0');
+	return `${year}-${month}-${day}T${hours}:${minutes}`;
+}

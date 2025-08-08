@@ -2,6 +2,7 @@
 	import { enhance } from '$app/forms';
 	import Button from '$lib/buttons/Button.svelte';
 	import { compressFile } from '$lib/utils/file.js';
+	import { getTodayDateTimeString } from '$lib/utils/time.js';
 
 	let { onEventAdded } = $props();
 
@@ -22,6 +23,8 @@
 	let compressedFile = $state(null);
 	let previewUrl = $state(null);
 	let fileInput = $state();
+
+	const todayDateTimeString = getTodayDateTimeString();
 
 	const categoryOptions = [
 		'Cultural',
@@ -177,6 +180,7 @@
 			name="event_start_date"
 			bind:value={formData.startDate}
 			required
+			min={todayDateTimeString}
 			class="form-input" />
 	</div>
 
@@ -188,6 +192,7 @@
 			id="endDate"
 			name="event_end_date"
 			bind:value={formData.endDate}
+			min={todayDateTimeString}
 			class="form-input" />
 	</div>
 
