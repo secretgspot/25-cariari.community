@@ -7,9 +7,11 @@
 	import { deleteItem, buildDeleteEndpoint, ApiError } from '$lib/utils/api_helpers.js';
 	import { addToast } from '$lib/toasts';
 	import Settings from '$lib/settings/Settings.svelte';
+	import UsersManagement from './UsersManagement.svelte';
 	import { timeFrom, timeFromLong } from '$lib/utils/time.js';
 
 	let { data } = $props();
+	const isAdmin = data.is_admin;
 
 	const handleDelete = async (id, type) => {
 		const endpoint = buildDeleteEndpoint(type, id);
@@ -62,6 +64,10 @@
 		<ProfileForm userProfile={data.userProfile} onMessage={handleFormMessage} />
 
 		<Settings />
+
+		{#if isAdmin}
+			<UsersManagement />
+		{/if}
 
 		<UserContentList title="My Lost & Found Posts" items={data.lostandfound}>
 			{#snippet children(items)}
