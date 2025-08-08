@@ -31,8 +31,8 @@
 	function handleClick(event) {
 		// Play sound if enabled both globally and on this button
 		if (sound && currentSettings.button_sounds) {
-			const pattern =
-				currentSettings.audio_patterns[currentSettings.button_sound_pattern];
+			const patternToUse = sound_pattern || currentSettings.button_sound_pattern;
+			const pattern = currentSettings.audio_patterns[patternToUse];
 			if (pattern) {
 				if (Array.isArray(pattern)) {
 					playChimeSequence(pattern);
@@ -49,8 +49,8 @@
 
 		// Trigger vibration if enabled both globally and on this button
 		if (buzz && currentSettings.button_buzz) {
-			const pattern =
-				currentSettings.vibration_patterns[currentSettings.button_vibration_pattern];
+			const patternToUse = buzz_pattern || currentSettings.button_vibration_pattern;
+			const pattern = currentSettings.vibration_patterns[patternToUse];
 			if (pattern) {
 				vibrate(pattern);
 			}
