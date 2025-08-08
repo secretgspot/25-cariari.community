@@ -61,6 +61,7 @@ export const vibratePatterns = {
 	click: 25,
 	longPress: 30, // Medium buzz for long press feedback
 	swipe: [20, 10, 20], // Quick double tap for swipe actions
+	navigate: [20, 10, 20], // Quick double tap for swipe actions
 
 	// Success patterns - gentle, positive feeling
 	successA: [50, 30, 100], // Quick buzz, pause, longer buzz

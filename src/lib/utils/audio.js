@@ -123,6 +123,10 @@ export const chimePatterns = {
 		{ frequency: 30, duration: 300, delay: 0, volume: 0.03 },
 		{ frequency: 9, duration: 600, delay: 30, volume: 0.03 }
 	],
+	navigate: [
+		{ frequency: 30, duration: 300, delay: 0, volume: 0.03 },
+		{ frequency: 9, duration: 600, delay: 30, volume: 0.03 }
+	],
 	bell: { frequency: 30, duration: 800, volume: 0.2, waveType: 'triangle' },
 
 	// Success patterns - ascending, positive tones
