@@ -96,6 +96,20 @@
 	}) => {
 		isSubmitting = true;
 
+		// Convert datetime-local values to ISO strings for consistent handling
+		if (formData.event_start_date) {
+			enhanceFormData.set(
+				'event_start_date',
+				new Date(formData.event_start_date).toISOString(),
+			);
+		}
+		if (formData.event_end_date) {
+			enhanceFormData.set(
+				'event_end_date',
+				new Date(formData.event_end_date).toISOString(),
+			);
+		}
+
 		// Add compressed file to form data if available
 		if (compressedFile) {
 			enhanceFormData.append('image_file', compressedFile);
