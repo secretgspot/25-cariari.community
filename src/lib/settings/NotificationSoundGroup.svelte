@@ -21,7 +21,7 @@
 			type="checkbox"
 			id="enable-notifications"
 			bind:checked={currentSettings.notification_sound} />
-		<label for="enable-notifications">Notification sound effects</label>
+		<label for="enable-notifications">Notification sounds</label>
 	</legend>
 
 	{#if currentSettings.notification_sound}

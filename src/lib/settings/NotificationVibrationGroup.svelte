@@ -21,7 +21,7 @@
 			type="checkbox"
 			id="enable-vibration-notifications"
 			bind:checked={currentSettings.notification_buzz} />
-		<label for="enable-vibration-notifications">Notification vibration effects</label>
+		<label for="enable-vibration-notifications">Notification vibration</label>
 	</legend>
 
 	{#if currentSettings.notification_buzz}

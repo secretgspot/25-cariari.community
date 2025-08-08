@@ -18,30 +18,36 @@
 	<Divider>Site Settings</Divider>
 	<div class="form-items-wrap">
 		<!-- Button Effects -->
-		<SoundEffectsGroup
-			bind:enabled={currentSettings.button_sounds}
-			label="Button sound effects"
-			patternKey={currentSettings.button_sound_pattern} />
+		<div class="parent-group">
+			<SoundEffectsGroup
+				bind:enabled={currentSettings.button_sounds}
+				label="Button sounds"
+				patternKey={currentSettings.button_sound_pattern} />
 
-		<VibrationEffectsGroup
-			bind:enabled={currentSettings.button_buzz}
-			label="Button vibration effects"
-			patternKey={currentSettings.button_vibration_pattern} />
+			<VibrationEffectsGroup
+				bind:enabled={currentSettings.button_buzz}
+				label="Button vibration"
+				patternKey={currentSettings.button_vibration_pattern} />
+		</div>
 
 		<!-- Navigation Effects -->
-		<SoundEffectsGroup
-			bind:enabled={currentSettings.navigation_sound}
-			label="Navigation sound effects"
-			patternKey={currentSettings.navigation_sound_pattern} />
+		<div class="parent-group">
+			<SoundEffectsGroup
+				bind:enabled={currentSettings.navigation_sound}
+				label="Navigation sounds"
+				patternKey={currentSettings.navigation_sound_pattern} />
 
-		<VibrationEffectsGroup
-			bind:enabled={currentSettings.navigation_buzz}
-			label="Navigation vibration effects"
-			patternKey={currentSettings.navigation_vibration_pattern} />
+			<VibrationEffectsGroup
+				bind:enabled={currentSettings.navigation_buzz}
+				label="Navigation vibration"
+				patternKey={currentSettings.navigation_vibration_pattern} />
+		</div>
 
 		<!-- Notification Effects -->
-		<NotificationSoundGroup />
-		<NotificationVibrationGroup />
+		<div class="parent-group">
+			<NotificationSoundGroup />
+			<NotificationVibrationGroup />
+		</div>
 
 		<!-- Settings Actions -->
 		<div class="settings-actions">
@@ -71,19 +77,14 @@
 		border-top: 1px solid var(--border-color);
 	}
 
-	.reset-button {
-		padding: var(--size-2) var(--size-4);
-		font-size: var(--font-size-1);
-		border: 1px solid var(--red-6);
-		border-radius: var(--radius-2);
-		background: var(--red-2);
-		color: var(--red-9);
-		cursor: pointer;
-		transition: all 0.2s ease;
-	}
-
-	.reset-button:hover {
-		background: var(--red-3);
-		border-color: var(--red-7);
+	.parent-group {
+		display: grid;
+		gap: var(--size-2);
+		grid-template-columns: 1fr;
+		margin-bottom: var(--size-3);
+		/* Small tablets and larger mobile devices (481px - 768px) */
+		@media (min-width: 481px) {
+			grid-template-columns: 1fr 1fr;
+		}
 	}
 </style>
