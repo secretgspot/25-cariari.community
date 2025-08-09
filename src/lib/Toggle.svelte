@@ -38,10 +38,18 @@
 		cursor: pointer;
 		user-select: none;
 		gap: var(--size-3); /* Adjust as needed */
-	}
+		input {
+			display: none;
+			&:checked + .toggle-switch {
+				outline-color: var(--stone-3); /* On state background */
 
-	.toggle-container input {
-		display: none;
+				&::before {
+					transform: translateX(20px); /* Move knob to the right */
+					background-color: var(--green-4); /* Knob color */
+					/* outline: 2px solid var(--green-6); */
+				}
+			}
+		}
 	}
 
 	.toggle-switch {
@@ -50,27 +58,18 @@
 		height: 20px; /* Height of the switch track */
 		outline: 1px solid var(--gray-3);
 		border-radius: var(--border-size-3); /* Half of height for pill shape */
-	}
-
-	.toggle-switch::before {
-		content: '';
-		position: absolute;
-		top: 2px;
-		left: 2px;
-		width: 16px; /* Size of the toggle knob */
-		height: 16px; /* Size of the toggle knob */
-		background-color: var(--stone-12); /* Knob color */
-		border-radius: var(--border-size-3);
-		transition: transform 0.1s ease-in-out;
-	}
-
-	.toggle-container input:checked + .toggle-switch {
-		outline-color: var(--stone-3); /* On state background */
-	}
-
-	.toggle-container input:checked + .toggle-switch::before {
-		transform: translateX(20px); /* Move knob to the right */
-		background-color: var(--green-6); /* Knob color */
+		&::before {
+			content: '';
+			position: absolute;
+			top: 2px;
+			left: 2px;
+			width: 16px; /* Size of the toggle knob */
+			height: 16px; /* Size of the toggle knob */
+			background-color: var(--stone-4); /* Knob color */
+			/* outline: 2px solid var(--stone-12); */
+			border-radius: inherit;
+			transition: transform 0.1s ease-in-out;
+		}
 	}
 
 	.toggle-label {

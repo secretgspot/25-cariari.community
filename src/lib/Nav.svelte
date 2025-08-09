@@ -99,7 +99,6 @@
 		top: 0;
 		padding: var(--size-3);
 		background-color: white;
-		/* backdrop-filter: blur(10px); */
 		z-index: 3;
 		/* Small tablets and larger mobile devices (481px - 768px) */
 		@media (min-width: 481px) {
@@ -112,7 +111,6 @@
 		/* Large desktops and high-resolution screens (1025px and up) */
 		@media (min-width: 1025px) {
 			border-radius: var(--border-size-3);
-			/* box-shadow: var(--shadow-1); */
 		}
 
 		/* Extra-large screens (1440px and up) */

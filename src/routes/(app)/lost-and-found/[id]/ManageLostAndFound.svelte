@@ -224,7 +224,13 @@
 			</div>
 
 			<div class="form-actions">
-				<Button type="submit" green white loading={isSubmitting} disabled={isSubmitting}>
+				<Button
+					type="submit"
+					right
+					green
+					white
+					loading={isSubmitting}
+					disabled={isSubmitting}>
 					{#snippet icon()}
 						<svg
 							width="21"
@@ -233,9 +239,6 @@
 							fill="none"
 							viewBox="0 0 719 724">
 							<path
-								stroke="currentColor"
-								stroke-width="50"
-								d="M25 358c0-156.978 0-235.467 48.767-284.233C122.533 25 201.022 25 358 25c156.976 0 235.468 0 284.232 48.767C691 122.533 691 201.022 691 358c0 156.976 0 235.468-48.768 284.232C593.468 691 514.976 691 358 691c-156.978 0-235.467 0-284.233-48.768C25 593.468 25 514.976 25 358Z" /><path
 								stroke="currentColor"
 								stroke-linecap="round"
 								stroke-width="50"
