@@ -9,7 +9,7 @@ const DEFAULT_SETTINGS = {
 	// Audio Effects
 	button_sounds: true,
 	navigation_sound: false,
-	notification_sound: true, // Master toggle for all notification sounds
+	notification_sound: true,
 
 	// Vibration Effects
 	button_buzz: true,

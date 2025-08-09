@@ -87,7 +87,7 @@
 		width: 100%;
 		overflow: hidden;
 		height: 1px;
-		background-color: var(--gray-1);
+		/* background-color: var(--gray-1); */
 		border-radius: var(--border-size-3);
 		position: absolute;
 		bottom: 0;
