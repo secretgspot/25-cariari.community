@@ -8,7 +8,7 @@ import { browser } from '$app/environment';
 const DEFAULT_SETTINGS = {
 	// Audio Effects
 	button_sounds: true,
-	navigation_sound: true,
+	navigation_sound: false,
 	notification_sound: true, // Master toggle for all notification sounds
 
 	// Vibration Effects

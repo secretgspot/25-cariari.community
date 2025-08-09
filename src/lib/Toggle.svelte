@@ -3,7 +3,14 @@
 	import { playButtonSound } from '$lib/utils/audio.js';
 	import { vibrateButton } from '$lib/utils/vibrate.js';
 
-	let { checked = $bindable(false), label, sound = true, sound_pattern = 'click', buzz = true, buzz_pattern = 'click' } = $props();
+	let {
+		checked = $bindable(false),
+		label,
+		sound = true,
+		sound_pattern = 'click',
+		buzz = true,
+		buzz_pattern = 'click',
+	} = $props();
 
 	function handleChange() {
 		// Play sound if enabled locally
@@ -41,7 +48,7 @@
 		position: relative;
 		width: 40px; /* Width of the switch track */
 		height: 20px; /* Height of the switch track */
-		outline: 1px solid var(--gray-1);
+		outline: 1px solid var(--gray-3);
 		border-radius: var(--border-size-3); /* Half of height for pill shape */
 	}
 
@@ -58,11 +65,12 @@
 	}
 
 	.toggle-container input:checked + .toggle-switch {
-		outline-color: var(--green-6); /* On state background */
+		outline-color: var(--stone-3); /* On state background */
 	}
 
 	.toggle-container input:checked + .toggle-switch::before {
 		transform: translateX(20px); /* Move knob to the right */
+		background-color: var(--green-6); /* Knob color */
 	}
 
 	.toggle-label {

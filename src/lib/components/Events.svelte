@@ -92,8 +92,8 @@
 	.slide {
 		/* Mobile first: 1 event visible at a time with small gap visible */
 		flex: 0 0 calc(100% - var(--size-6));
-		border: var(--border-size-1) solid var(--gray-1);
-		border-radius: var(--border-size-3);
+		/* border: var(--border-size-1) solid var(--gray-1); */
+		/* border-radius: var(--border-size-3); */
 		overflow: hidden;
 		position: relative;
 

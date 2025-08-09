@@ -85,9 +85,10 @@
 		position: relative;
 		border-radius: var(--border-size-3);
 		overflow: hidden;
-		border: var(--border-size-1) solid var(--gray-1);
+		/* border: var(--border-size-1) solid var(--gray-1); */
+		outline: var(--border-size-3) solid var(--gray-1);
 		&:hover {
-			box-shadow: var(--shadow-1);
+			outline-color: var(--gray-3);
 		}
 		&.expired {
 			opacity: 0.6;
@@ -103,6 +104,8 @@
 				margin: 0 0 var(--size-1) 0;
 				padding: var(--size-1) var(--size-2);
 				border-radius: var(--border-size-3);
+				border-bottom-left-radius: 0;
+				border-top-right-radius: 0;
 				font-weight: bold;
 				text-transform: uppercase;
 				display: inline-block;
@@ -133,12 +136,13 @@
 
 		.placeholder-image {
 			width: 100%;
-			height: 120px;
+			height: 100%;
 			background: var(--gradient-23);
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			font-size: 2em;
+			aspect-ratio: 1;
 		}
 	}
 </style>
