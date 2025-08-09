@@ -71,6 +71,7 @@
 			background: white;
 			padding: var(--size-3);
 			border-radius: var(--border-size-3);
+			margin-inline: 0;
 		}
 
 		/* Extra-large screens (1440px and up) */
