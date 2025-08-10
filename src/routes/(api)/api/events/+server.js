@@ -3,8 +3,6 @@ import { json } from '@sveltejs/kit';
 export async function GET({ url, request, locals: { supabase, getSession } }) {
 	let session = await getSession();
 
-	
-
 	if (!session) {
 		return json({ message: 'Unauthorized' }, { status: 401 });
 	}
@@ -15,7 +13,7 @@ export async function GET({ url, request, locals: { supabase, getSession } }) {
 
 		let query = supabase
 			.from('events')
-			.select('*', { count: 'exact' })
+			.select('*')
 			.order('event_start_date', { ascending: true });
 
 		// Apply limit if provided
@@ -23,14 +21,14 @@ export async function GET({ url, request, locals: { supabase, getSession } }) {
 			query.limit(parseInt(limit));
 		}
 
-		const { data: events, count, error: eventsError } = await query;
+		const { data: events, error: eventsError } = await query;
 
 		if (eventsError) {
 			console.error('Error fetching events:', eventsError);
 			return json({ message: 'Failed to fetch events: ' + eventsError.message }, { status: 500 });
 		}
 
-		return json({ events, total: count }, { status: 200 });
+		return json(events, { status: 200 });
 	} catch (err) {
 		console.error('Unexpected error fetching events:', err);
 		return json({ message: 'An unexpected error occurred while fetching events.' }, { status: 500 });

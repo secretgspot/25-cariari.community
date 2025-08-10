@@ -3,8 +3,6 @@ import { json } from '@sveltejs/kit';
 export async function GET({ url, locals: { supabase, getSession } }) {
 	let session = await getSession();
 
-	
-
 	if (!session) {
 		return json({ message: 'Unauthorized' }, { status: 401 });
 	}
@@ -15,7 +13,7 @@ export async function GET({ url, locals: { supabase, getSession } }) {
 
 		const query = supabase
 			.from('notices')
-			.select('*', { count: 'exact' })
+			.select('*')
 			.order('created_at', { ascending: false });
 
 		// Apply limit if provided
@@ -23,14 +21,14 @@ export async function GET({ url, locals: { supabase, getSession } }) {
 			query.limit(parseInt(limit));
 		}
 
-		const { data: notices, count, error: noticesError } = await query;
+		const { data: notices, error: noticesError } = await query;
 
 		if (noticesError) {
 			console.error('Error fetching notices:', noticesError);
 			return json({ message: 'Failed to fetch notices: ' + noticesError.message }, { status: 500 });
 		}
 
-		return json({ notices, total: count }, { status: 200 });
+		return json(notices, { status: 200 });
 	} catch (err) {
 		console.error('Unexpected error fetching notices:', err);
 		return json({ message: 'An unexpected error occurred while fetching notices.' }, { status: 500 });

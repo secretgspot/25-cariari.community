@@ -3,8 +3,6 @@ import { json } from '@sveltejs/kit';
 export async function GET({ url, locals: { supabase, getSession } }) {
 	let session = await getSession();
 
-	
-
 	if (!session) {
 		return json({ message: 'Unauthorized' }, { status: 401 });
 	}
@@ -15,7 +13,7 @@ export async function GET({ url, locals: { supabase, getSession } }) {
 
 		const query = supabase
 			.from('lost_and_found')
-			.select('*', { count: 'exact' })
+			.select('*')
 			.order('created_at', { ascending: false });
 
 		// Apply limit if provided
@@ -23,14 +21,14 @@ export async function GET({ url, locals: { supabase, getSession } }) {
 			query.limit(parseInt(limit));
 		}
 
-		const { data: lostandfound, count, error: postsError } = await query;
+		const { data: lostandfound, error: postsError } = await query;
 
 		if (postsError) {
 			console.error('Error fetching lost and found posts:', postsError);
 			return json({ message: 'Failed to fetch lost and found posts: ' + postsError.message }, { status: 500 });
 		}
 
-		return json({ lostandfound, total: count }, { status: 200 });
+		return json(lostandfound, { status: 200 });
 	} catch (err) {
 		console.error('Unexpected error fetching lost and found posts:', err);
 		return json({ message: 'An unexpected error occurred while fetching lost and found posts.' }, { status: 500 });
