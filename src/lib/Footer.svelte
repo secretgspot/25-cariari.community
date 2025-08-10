@@ -3,16 +3,29 @@
 	import Logo from './Logo.svelte';
 	import Ad from '$lib/Ad.svelte';
 
-	// let { data } = $props();
+	const ads = [
+		{
+			file: 'cariari.agency-300x100.webp',
+			title: 'Cariari Agency - Real Estate Listings',
+			href: 'https://cariari.agency',
+			width: 320,
+			height: 100,
+		},
+		{
+			file: 'pintar.cariari-300x100.webp',
+			title: 'Pintar Cariari - Professional Painting Services',
+			href: 'https://25-cariaripintor.vercel.app',
+			width: 320,
+			height: 100,
+		},
+	];
+
+	const randomAd = ads[Math.floor(Math.random() * ads.length)];
 </script>
 
-<Ad width="320" height="100">
-	<a
-		href="//cariari.agency"
-		target="_blank"
-		rel="noreferrer"
-		title="Cariari Agency Real Estate">
-		<img src="/ads/cariari.agency-300x100.webp" alt="Cariari Agency" loading="lazy" />
+<Ad width={randomAd.width} height={randomAd.height}>
+	<a href={randomAd.href} target="_blank" rel="noreferrer" title={randomAd.title}>
+		<img src={`/ads/${randomAd.file}`} alt={randomAd.title} loading="lazy" />
 	</a>
 </Ad>
 
