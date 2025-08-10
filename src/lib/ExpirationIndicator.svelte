@@ -100,11 +100,11 @@
 		background-color: var(--surface-4);
 		transition: width 0.3s ease-out;
 		&.expired {
-			background-color: var(--red-3);
+			background-color: var(--color-red);
 		}
 
 		&.full {
-			background-color: var(--green-3);
+			background-color: var(--color-green);
 		}
 	}
 </style>

@@ -12,6 +12,8 @@
 	--surface-4: var(--surface-4-light);
 	--surface-shadow: var(--surface-shadow-light);
 	--shadow-strength: var(--shadow-strength-light);
+	--color-green: var(--green-3);
+	--color-red: var(--red-3);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,6 +29,8 @@
 		--surface-4: var(--surface-4-dark);
 		--surface-shadow: var(--surface-shadow-dark);
 		--shadow-strength: var(--shadow-strength-dark);
+		--color-green: var(--green-12);
+		--color-red: var(--red-12);
 	}
 }
 
@@ -42,6 +46,8 @@
 	--surface-4: var(--surface-4-light);
 	--surface-shadow: var(--surface-shadow-light);
 	--shadow-strength: var(--shadow-strength-light);
+	--color-green: var(--green-3);
+	--color-red: var(--red-3);
 }
 
 [color-scheme="dark"] {
@@ -56,6 +62,8 @@
 	--surface-4: var(--surface-4-dark);
 	--surface-shadow: var(--surface-shadow-dark);
 	--shadow-strength: var(--shadow-strength-dark);
+	--color-green: var(--green-12);
+	--color-red: var(--red-12);
 }
 
 /* Additional global styles if needed */
@@ -138,7 +146,7 @@ blockquote {
 
 code {
 	background-color: var(--surface-2);
-	color: var(--purple-9);
+	color: var(--text-2);
 	padding: var(--size-1) var(--size-2);
 	border-radius: var(--border-size-3);
 	font-family: monospace;
@@ -166,8 +174,8 @@ code {
 
 /* Common MANAGE ACTIONS styling */
 [readonly] {
-	background: var(--gray-0);
-	color: var(--gray-6);
+	background: var(--surface-3);
+	color: var(--text-2);
 	cursor: not-allowed;
 }
 
