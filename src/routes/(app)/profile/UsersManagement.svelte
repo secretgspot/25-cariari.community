@@ -173,7 +173,7 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: var(--size-2) 0;
-		border-bottom: var(--border-size-1) solid var(--gray-1);
+		border-bottom: var(--border-size-1) solid var(--surface-2);
 	}
 
 	li:last-child {

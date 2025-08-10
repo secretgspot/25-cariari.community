@@ -48,6 +48,7 @@
 
 		legend span {
 			font-weight: 600;
+			color: var(--text-2);
 		}
 	}
 
@@ -56,30 +57,13 @@
 		overflow-y: hidden;
 		-webkit-overflow-scrolling: touch;
 		scrollbar-width: thin;
-		scrollbar-color: var(--blue-6) var(--gray-3);
+		scrollbar-color: var(--surface-4) var(--surface-1);
 		margin-block: var(--size-3);
+		padding-bottom: var(--size-2);
 		width: 100%;
 		cursor: grab;
 		&:active {
 			cursor: grabbing;
-		}
-		/* Webkit scrollbar styling */
-		&::scrollbar {
-			height: 9px;
-		}
-
-		&::scrollbar-track {
-			background: transparent;
-			border-radius: var(--border-size-3);
-		}
-
-		&::scrollbar-thumb {
-			background: var(--blue-6);
-			border-radius: var(--border-size-3);
-		}
-
-		&::scrollbar-thumb:hover {
-			background: var(--blue-9);
 		}
 	}
 
@@ -112,9 +96,10 @@
 		}
 
 		.event-date {
-			background: white;
+			background: var(--surface-1);
 			padding: var(--size-3);
 			border-radius: var(--border-size-4);
+			color: var(--text-2);
 			font-size: smaller;
 			white-space: nowrap;
 			position: absolute;
@@ -138,7 +123,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			color: var(--gray-0);
+			color: var(--text-2);
 			aspect-ratio: 1;
 		}
 
@@ -154,7 +139,7 @@
 			left: 0;
 			right: 0;
 			z-index: 1;
-			color: white;
+			color: var(--text-1);
 
 			.title {
 				margin: 0;

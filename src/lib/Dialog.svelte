@@ -116,19 +116,20 @@
 <style>
 	/* Your styles here */
 	dialog {
-		--transition: 0.3s;
+		--transition: 0.1s;
 		display: grid;
 		grid-template-rows: min-content 1fr min-content;
 		align-items: center;
 		min-width: 369px;
 		width: min-content;
 		height: min-content;
-		border: var(--border-size-1) solid var(--gray-1);
+		border: var(--border-size-1) solid var(--surface-3);
 		border-radius: var(--border-size-3);
 		pointer-events: none;
 		z-index: 6;
 		position: fixed;
 		align-self: anchor-center;
+		background: var(--surface-1);
 
 		&,
 		&::backdrop {
@@ -169,6 +170,7 @@
 				margin: 0;
 				flex: 1;
 				text-align: left;
+				color: var(--text-2);
 			}
 		}
 

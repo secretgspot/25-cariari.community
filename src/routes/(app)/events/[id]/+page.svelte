@@ -1,6 +1,5 @@
 <script>
 	import CommentsSection from '$lib/comments/CommentsSection.svelte';
-	// import Comments from '$lib/Comments.svelte';
 	import ManageEvent from './ManageEvent.svelte';
 	import { formatText } from '$lib/utils/markdown.js';
 	import { timeFrom, timeFromLong } from '$lib/utils/time.js';
@@ -82,12 +81,12 @@
 		}
 
 		h1 {
-			color: var(--stone-11);
+			color: var(--text-1);
 			margin-bottom: var(--size-1);
 		}
 
 		.meta {
-			color: var(--stone-9);
+			color: var(--text-2);
 			margin-block: 0 var(--size-2);
 
 			.date {
@@ -120,17 +119,18 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			color: var(--gray-0);
+			color: var(--text-2);
 			aspect-ratio: 1;
 		}
 
 		.posted {
 			font-size: small;
 			margin-top: 0;
-			color: var(--stone-6);
+			color: var(--text-2);
 		}
 
 		.description {
+			margin-inline: var(--size-3);
 			margin-block: var(--size-6);
 		}
 	}

@@ -6,6 +6,9 @@ import { browser } from '$app/environment';
  * Default settings configuration
  */
 const DEFAULT_SETTINGS = {
+	// Color Theme
+	dark_theme: false,
+
 	// Audio Effects
 	button_sounds: true,
 	navigation_sound: false,
@@ -63,6 +66,7 @@ function saveState(state) {
 
 	try {
 		const settingsToSave = {
+			dark_theme: state.dark_theme,
 			button_sounds: state.button_sounds,
 			navigation_sound: state.navigation_sound,
 			notification_sound: state.notification_sound,

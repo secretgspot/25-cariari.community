@@ -3,7 +3,6 @@
 	import Events from '$lib/components/Events.svelte';
 	import LostAndFound from '$lib/components/LostAndFound.svelte';
 	import Services from '$lib/components/Services.svelte';
-	import Map from '$lib/components/Map.svelte';
 
 	let { data } = $props();
 
@@ -16,8 +15,6 @@
 		Stay connected with your community through events, notices, lost & found and services.
 	</p>
 </header>
-
-<!-- <Map /> -->
 
 <!-- Notices Section -->
 {#if data.noticesPosts && data.noticesPosts.length > 0}

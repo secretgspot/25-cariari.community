@@ -115,7 +115,7 @@
 	.contact-form {
 		display: grid;
 		gap: 2ch;
-		background: white;
+		background: var(--surface-1);
 		padding: var(--size-3);
 		border-radius: var(--border-size-3);
 		/* Small tablets and larger mobile devices (481px - 768px) */
@@ -166,7 +166,7 @@
 		&::after {
 			content: '';
 			position: absolute;
-			background: white;
+			background: var(--surface-1);
 			inset: 1px;
 			border-radius: var(--border-size-3);
 		}

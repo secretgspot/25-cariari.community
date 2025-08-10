@@ -54,6 +54,7 @@
 		legend {
 			span {
 				font-weight: 600;
+				color: var(--text-2);
 			}
 		}
 	}
@@ -85,10 +86,9 @@
 		position: relative;
 		border-radius: var(--border-size-3);
 		overflow: hidden;
-		/* border: var(--border-size-1) solid var(--gray-1); */
-		outline: var(--border-size-3) solid var(--gray-1);
+		outline: var(--border-size-3) solid var(--surface-3);
 		&:hover {
-			outline-color: var(--gray-3);
+			outline-color: var(--surface-4);
 		}
 		&.expired {
 			opacity: 0.6;
@@ -101,24 +101,22 @@
 			position: relative;
 
 			.category {
-				margin: 0 0 var(--size-1) 0;
 				padding: var(--size-1) var(--size-2);
 				border-radius: var(--border-size-3);
 				border-bottom-left-radius: 0;
 				border-top-right-radius: 0;
-				font-weight: bold;
-				text-transform: uppercase;
 				display: inline-block;
 				position: absolute;
 				font-size: small;
-				&.lost {
+				background: var(--surface-3);
+				/* &.lost {
 					background-color: var(--red-1);
 					color: var(--red-6);
-				}
-				&.found {
+				} */
+				/* &.found {
 					background-color: var(--green-1);
 					color: var(--green-6);
-				}
+				} */
 			}
 
 			.image {
@@ -131,6 +129,8 @@
 				margin-block: var(--size-3);
 				margin-inline: var(--size-2);
 				font-size: smaller;
+				color: var(--text-1);
+				font-weight: 500;
 			}
 		}
 

@@ -177,13 +177,13 @@
 <style>
 	.comment-card {
 		position: relative;
-		border: var(--border-size-1) solid var(--gray-1);
+		border: var(--border-size-1) solid var(--surface-3);
 		border-radius: var(--border-size-3);
 		padding: var(--size-2);
 		transition: opacity 0.2s ease;
 
 		&.optimistic {
-			border-color: var(--stone-3);
+			border-color: var(--surface-4);
 		}
 
 		.comment-header {
@@ -203,17 +203,17 @@
 
 			.comment-author {
 				font-weight: bold;
-				color: var(--stone-7);
+				color: var(--text-2);
 			}
 
 			.comment-date {
-				color: var(--stone-6);
+				color: var(--text-2);
 			}
 		}
 
 		.comment-content {
 			margin-block: var(--size-1);
-			color: var(--stone-11);
+			color: var(--text-1);
 			font-size: smaller;
 		}
 
@@ -224,7 +224,7 @@
 
 			.comment-loading {
 				font-size: x-small;
-				color: var(--stone-6);
+				color: var(--text-1);
 				font-style: italic;
 			}
 
@@ -239,18 +239,5 @@
 				}
 			}
 		}
-	}
-
-	.form-textarea {
-		width: 100%;
-		padding: var(--size-2);
-		border: var(--border-size-1) solid var(--gray-3);
-		border-radius: var(--radius-2);
-		font-family: inherit;
-		font-size: inherit;
-		line-height: inherit;
-		color: var(--text-color);
-		background-color: var(--surface-1);
-		resize: vertical;
 	}
 </style>

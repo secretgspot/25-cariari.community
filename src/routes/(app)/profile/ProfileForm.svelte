@@ -112,6 +112,7 @@
 			type="text"
 			id="username"
 			name="username"
+			autocomplete="off"
 			bind:value={formData.username}
 			required
 			disabled={loading}

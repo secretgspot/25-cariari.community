@@ -34,7 +34,7 @@
 		}
 	}
 
-		const handleCommentAdded = (newComment) => {
+	const handleCommentAdded = (newComment) => {
 		const enrichedComment = {
 			...newComment,
 			profiles: userData?.userProfile, // Add the current user's profile, safely access
@@ -92,7 +92,7 @@
 	.comments-section {
 		margin-block-start: var(--size-9);
 		h2 {
-			color: var(--stone-11);
+			color: var(--text-2);
 			margin-bottom: var(--size-3);
 		}
 	}

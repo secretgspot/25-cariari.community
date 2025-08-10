@@ -82,6 +82,7 @@
 	legend {
 		span {
 			font-weight: 600;
+			color: var(--text-2);
 		}
 	}
 
@@ -100,9 +101,9 @@
 			align-items: center;
 			padding: var(--size-3);
 			gap: var(--size-3);
-			border: var(--border-size-1) solid var(--gray-1);
+			border: var(--border-size-1) solid var(--surface-3);
 			border-radius: var(--border-size-3);
-			color: var(--blue-6);
+			color: var(--text-1);
 			&:hover {
 				color: var(--blue-9);
 				box-shadow: var(--shadow-1);
@@ -118,7 +119,7 @@
 		width: 12px;
 		border-radius: var(--radius-round);
 		&.default {
-			background: var(--stone-3);
+			background: var(--stone-6);
 		}
 		&.low {
 			background: var(--yellow-6);
@@ -144,6 +145,10 @@
 		&:hover {
 			text-decoration: underline;
 		}
+	}
+
+	.time-wrap {
+		color: var(--text-2);
 	}
 
 	.time-starts,

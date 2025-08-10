@@ -1,6 +1,5 @@
 <script>
 	import CommentsSection from '$lib/comments/CommentsSection.svelte';
-	// import Comments from '$lib/Comments.svelte';
 	import ManageService from './ManageService.svelte';
 	import { formatText } from '$lib/utils/markdown.js';
 	import { timeFrom, timeFromLong } from '$lib/utils/time.js';
@@ -58,6 +57,7 @@
 
 		h1 {
 			margin-bottom: var(--size-3);
+			color: var(--text-1);
 		}
 
 		.category {
@@ -70,7 +70,7 @@
 			display: flex;
 			justify-content: space-between;
 			font-size: small;
-			color: var(--stone-9);
+			color: var(--text-2);
 			margin-inline: var(--size-3);
 			margin-block: var(--size-1);
 		}
@@ -84,7 +84,8 @@
 		}
 
 		.description {
-			margin-block: var(--size-3);
+			margin-inline: var(--size-3);
+			margin-block: var(--size-6);
 		}
 	}
 </style>

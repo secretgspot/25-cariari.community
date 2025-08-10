@@ -47,7 +47,7 @@
 			const newComment = await response.json();
 
 			// Trigger a refresh of the comments list instead of adding directly
-												onCommentAdded(newComment);
+			onCommentAdded(newComment);
 
 			addToast({
 				message: 'Comment added!',
@@ -72,6 +72,8 @@
 
 <div class="comment-form">
 	<textarea
+		id="comment-input"
+		class="form-textarea"
 		bind:value={newCommentContent}
 		placeholder="Add a comment..."
 		disabled={submitting}></textarea>
@@ -103,23 +105,5 @@
 		flex-direction: column;
 		gap: var(--size-3);
 		margin-bottom: var(--size-8);
-
-		textarea {
-			width: auto;
-			min-height: 90px;
-			padding: var(--size-2);
-			border: var(--border-size-1) solid var(--gray-1);
-			border-radius: var(--border-size-3);
-			resize: vertical;
-		}
-
-		textarea:disabled {
-			opacity: 0.6;
-			cursor: not-allowed;
-		}
-
-		:global(button) {
-			align-self: end;
-		}
 	}
 </style>

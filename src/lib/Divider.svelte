@@ -18,7 +18,7 @@
 		&::after {
 			content: '';
 			height: 1px;
-			background-color: var(--gray-3);
+			background-color: var(--surface-4);
 			flex-grow: 1;
 		}
 

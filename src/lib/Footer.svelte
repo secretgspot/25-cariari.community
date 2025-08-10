@@ -29,10 +29,11 @@
 
 		.info-wrapper {
 			font-size: small;
+			color: var(--text-2);
 		}
 
 		:global(.logo-link) {
-			color: var(--stone-12);
+			color: var(--text-1);
 		}
 	}
 </style>

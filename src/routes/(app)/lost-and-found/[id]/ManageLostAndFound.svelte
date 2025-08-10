@@ -114,7 +114,12 @@
 
 {#if isOwner || is_admin}
 	<details class="manage-actions">
-		<summary>Manage Lost/Found</summary>
+		<summary>
+			<svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16">
+				<path d="M5 2 L12 8 L5 14"></path>
+			</svg>
+			Manage Lost/Found
+		</summary>
 
 		<form
 			method="POST"

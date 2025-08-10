@@ -144,16 +144,16 @@
 <style>
 	.add-form {
 		&.default {
-			background: var(--stone-0);
+			border-color: var(--stone-3);
 		}
 		&.low {
-			background: var(--yellow-0);
+			border-color: var(--yellow-3);
 		}
 		&.medium {
-			background: var(--orange-0);
+			border-color: var(--orange-3);
 		}
 		&.high {
-			background: var(--red-0);
+			border-color: var(--red-3);
 		}
 	}
 </style>

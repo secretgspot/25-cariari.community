@@ -29,6 +29,6 @@
 		left: 0;
 		right: 0;
 		backdrop-filter: blur(30px);
-		background: rgba(255, 255, 255, 0.888);
+		background: var(--surface-1);
 	}
 </style>

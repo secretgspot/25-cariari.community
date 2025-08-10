@@ -122,7 +122,7 @@
 		display: flex;
 		width: auto;
 		height: min-content;
-		border: var(--border-size-1) solid var(--gray-1);
+		border: var(--border-size-1) solid var(--surface-3);
 		border-radius: var(--border-size-3);
 		background: transparent;
 		text-decoration: none;
@@ -136,7 +136,7 @@
 		&:active,
 		&:focus,
 		&.active {
-			background: var(--stone-1);
+			background: var(--surface-2);
 		}
 	}
 
@@ -146,7 +146,6 @@
 		&:active,
 		&:focus,
 		&.active {
-			background: var(--stone-1);
 			outline: 2px solid var(--blue-3);
 		}
 	}
@@ -180,7 +179,7 @@
 		&:hover {
 			background: transparent;
 			/* color: var(--primary-content); */
-			outline: solid 3px var(--stone-1);
+			outline: solid 3px var(--surface-3);
 		}
 
 		.icon_wrap {
@@ -204,7 +203,7 @@
 
 		.content_wrap {
 			padding: 0 calc(var(--size-2) * 2);
-			border-left: var(--border-size-1) solid var(--stone-3);
+			border-left: var(--border-size-1) solid var(--surface-3);
 		}
 	}
 
@@ -233,7 +232,7 @@
 			align-items: flex-start;
 			flex: 1 0 auto;
 			padding: var(--size-3);
-			border-left: var(--border-size-1) solid var(--stone-3);
+			border-left: var(--border-size-1) solid var(--surface-3);
 		}
 	}
 
@@ -265,7 +264,7 @@
 		place-self: end;
 		.content_wrap {
 			border-left: 0;
-			border-right: var(--border-size-1) solid var(--stone-3);
+			border-right: var(--border-size-1) solid var(--surface-3);
 		}
 	}
 
@@ -285,7 +284,7 @@
 	}
 
 	[white] {
-		background: white;
+		background: var(--surface-1);
 	}
 
 	[green] {

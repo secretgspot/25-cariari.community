@@ -23,10 +23,18 @@
 			vibrateButton(buzz_pattern);
 		}
 	}
+
+	function toKebabCase(label) {
+		return label.toLowerCase().replace(/\s/g, '-');
+	}
 </script>
 
 <label class="toggle-container">
-	<input type="checkbox" bind:checked onchange={handleChange} />
+	<input
+		type="checkbox"
+		id={'toggle_' + toKebabCase(label)}
+		bind:checked
+		onchange={handleChange} />
 	<div class="toggle-switch"></div>
 	<span class="toggle-label">{label}</span>
 </label>
@@ -41,7 +49,7 @@
 		input {
 			display: none;
 			&:checked + .toggle-switch {
-				outline-color: var(--stone-3); /* On state background */
+				outline-color: var(--surface-3); /* On state background */
 
 				&::before {
 					transform: translateX(20px); /* Move knob to the right */
@@ -56,7 +64,7 @@
 		position: relative;
 		width: 40px; /* Width of the switch track */
 		height: 20px; /* Height of the switch track */
-		outline: 1px solid var(--gray-3);
+		outline: 1px solid var(--surface-2);
 		border-radius: var(--border-size-3); /* Half of height for pill shape */
 		&::before {
 			content: '';
@@ -65,7 +73,7 @@
 			left: 2px;
 			width: 16px; /* Size of the toggle knob */
 			height: 16px; /* Size of the toggle knob */
-			background-color: var(--stone-4); /* Knob color */
+			background-color: var(--surface-4); /* Knob color */
 			/* outline: 2px solid var(--stone-12); */
 			border-radius: inherit;
 			transition: transform 0.1s ease-in-out;

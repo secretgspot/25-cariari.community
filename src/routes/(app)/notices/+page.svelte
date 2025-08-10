@@ -78,13 +78,20 @@
 			{showForm ? 'Hide Form' : 'Add New Notice'}
 		</Button>
 
-		<input
-			type="search"
-			name="filter"
-			class="form-input filter"
-			placeholder="Filter"
-			autocomplete="off"
-			bind:value={searchTerm} />
+		<div class="search-input">
+			<svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+				<path
+					d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16a6.471 6.471 0 0 0 3.73-1.09l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+					fill="currentColor" />
+			</svg>
+			<input
+				type="search"
+				name="filter"
+				class="form-input filter"
+				placeholder="Filter"
+				autocomplete="off"
+				bind:value={searchTerm} />
+		</div>
 	</nav>
 
 	{#if showForm}
@@ -195,8 +202,8 @@
 				gap: var(--size-1);
 
 				.posted {
-					color: var(--stone-9);
-					border-bottom: var(--border-size-1) solid var(--gray-1);
+					color: var(--text-2);
+					border-bottom: var(--border-size-1) solid var(--surface-3);
 					padding-bottom: var(--size-1);
 					font-size: small;
 					align-self: end;
@@ -207,6 +214,7 @@
 					display: flex;
 					align-items: center;
 					gap: var(--size-3);
+					color: var(--text-1);
 				}
 			}
 
@@ -229,7 +237,7 @@
 		}
 
 		.description {
-			color: var(--gray-6);
+			color: var(--text-2);
 		}
 
 		.urgency {
@@ -239,7 +247,7 @@
 			aspect-ratio: 1;
 			border-radius: var(--radius-round);
 			&.default {
-				background: var(--stone-3);
+				background: var(--stone-6);
 			}
 			&.low {
 				background: var(--yellow-6);
@@ -260,8 +268,8 @@
 		width: 100%;
 		margin-bottom: var(--size-4);
 		border-radius: var(--border-size-3);
-		/* border: var(--border-size-1) solid var(--gray-1); */
-		outline: var(--border-size-2) solid var(--stone-3);
+		/* border: var(--border-size-1) solid var(--surface-3); */
+		outline: var(--border-size-2) solid var(--surface-3);
 		position: relative;
 		transition: transform 0.2s ease;
 

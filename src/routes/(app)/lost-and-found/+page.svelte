@@ -85,13 +85,20 @@
 			{showForm ? 'Hide Form' : 'Add New Lost/Found'}
 		</Button>
 
-		<input
-			type="search"
-			name="filter"
-			class="form-input filter"
-			placeholder="Filter"
-			autocomplete="off"
-			bind:value={searchTerm} />
+		<div class="search-input">
+			<svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+				<path
+					d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16a6.471 6.471 0 0 0 3.73-1.09l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+					fill="currentColor" />
+			</svg>
+			<input
+				type="search"
+				name="filter"
+				class="form-input filter"
+				placeholder="Filter"
+				autocomplete="off"
+				bind:value={searchTerm} />
+		</div>
 	</nav>
 
 	{#if showForm}
@@ -190,7 +197,7 @@
 		.category {
 			position: absolute;
 			padding: var(--size-1) var(--size-2);
-			background: var(--stone-3);
+			background: var(--surface-3);
 			border-radius: var(--border-size-3);
 			border-bottom-left-radius: 0;
 			border-top-right-radius: 0;
@@ -214,7 +221,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			color: var(--gray-0);
+			color: var(--text-2);
 			aspect-ratio: 1;
 			border-radius: var(--radius-2);
 			border-bottom-left-radius: 0;
@@ -225,7 +232,7 @@
 			display: flex;
 			justify-content: space-between;
 			font-size: small;
-			color: var(--stone-9);
+			color: var(--text-2);
 			margin-inline: var(--size-3);
 			margin-block: var(--size-1);
 		}
@@ -238,6 +245,7 @@
 		.description {
 			margin-inline: var(--size-3);
 			margin-block-end: var(--size-3);
+			color: var(--text-2);
 		}
 	}
 
@@ -250,7 +258,7 @@
 		break-inside: avoid;
 		border-radius: var(--border-size-3);
 		/* border: var(--border-size-1) solid var(--gray-1); */
-		outline: var(--border-size-2) solid var(--stone-3);
+		outline: var(--border-size-2) solid var(--surface-3);
 		position: relative;
 		transition: transform 0.2s ease;
 

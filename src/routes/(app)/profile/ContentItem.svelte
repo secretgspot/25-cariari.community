@@ -79,7 +79,7 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: var(--size-2);
-		border-bottom: var(--border-size-1) solid var(--stone-3);
+		border-bottom: var(--border-size-1) solid var(--surface-3);
 	}
 
 	.content-item:last-child {

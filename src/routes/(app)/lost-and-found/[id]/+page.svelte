@@ -1,6 +1,5 @@
 <script>
 	import CommentsSection from '$lib/comments/CommentsSection.svelte';
-	// import Comments from '$lib/Comments.svelte';
 	import ManageLostAndFound from './ManageLostAndFound.svelte';
 	import { formatText } from '$lib/utils/markdown.js';
 	import {
@@ -81,7 +80,7 @@
 			display: flex;
 			justify-content: space-between;
 			font-size: small;
-			color: var(--stone-9);
+			color: var(--text-2);
 			margin-inline: var(--size-3);
 			margin-block: var(--size-1);
 		}
@@ -96,18 +95,24 @@
 
 		.description {
 			margin-inline: var(--size-3);
+			margin-block: var(--size-6);
 		}
 
 		.details {
 			margin-block-start: var(--size-6);
 			border-radius: var(--border-size-3);
+			border: 1px solid var(--surface-2);
 			display: flex;
 			flex-direction: column;
 			gap: var(--size-1);
+			legend {
+				color: var(--text-2);
+			}
 			p {
 				margin-block: var(--size-1);
 				strong {
 					font-size: smaller;
+					color: var(--text-2);
 				}
 			}
 		}

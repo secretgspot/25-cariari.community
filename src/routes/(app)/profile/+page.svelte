@@ -140,16 +140,14 @@
 		gap: var(--size-9);
 
 		h1 {
-			color: var(--stone-11);
 			margin-bottom: var(--size-3);
 		}
 		p {
 			margin-bottom: var(--size-2);
-			color: var(--stone-11);
 		}
 
 		strong {
-			color: var(--stone-6);
+			color: var(--text-2);
 		}
 
 		.user-info {
@@ -169,7 +167,7 @@
 		:global(.text-divider) {
 			position: sticky;
 			top: var(--size-9);
-			background: white;
+			background: var(--surface-1);
 		}
 	}
 </style>

@@ -14,6 +14,7 @@
 <div class="site-settings">
 	<Divider>Site Settings</Divider>
 	<div class="site-buttons-group">
+		<Toggle bind:checked={currentSettings.dark_theme} label="Dark Theme" />
 		<div class="group">
 			<Toggle bind:checked={currentSettings.button_sounds} label="Button sounds" />
 			<Toggle bind:checked={currentSettings.button_buzz} label="Button buzz" />

@@ -51,7 +51,7 @@
 					👤
 				{/if}
 
-				<span class="profile-name">
+				<span class="nav-text profile-name">
 					{#if data.userProfile?.username}
 						{data.userProfile.username}
 					{:else if data.user?.email}
@@ -98,7 +98,7 @@
 		position: sticky;
 		top: 0;
 		padding: var(--size-3);
-		background-color: white;
+		background-color: var(--surface-1);
 		z-index: 3;
 		/* Small tablets and larger mobile devices (481px - 768px) */
 		@media (min-width: 481px) {
@@ -118,7 +118,7 @@
 		}
 
 		:global(.logo-link) {
-			color: var(--stone-12);
+			color: var(--text-1);
 		}
 	}
 
@@ -129,6 +129,7 @@
 		align-items: center;
 		.nav-text {
 			display: none;
+			color: var(--text-2);
 			@media (min-width: 481px) {
 				display: block;
 			}
@@ -138,6 +139,7 @@
 			align-items: center;
 			text-decoration: none;
 			gap: var(--size-2);
+			color: var(--text-1);
 		}
 		:global(.profile-link) {
 			position: relative;
@@ -156,17 +158,11 @@
 				max-height: 27px;
 				object-fit: cover;
 			}
-			.profile-name {
-				display: none;
-				@media (min-width: 481px) {
-					display: block;
-				}
-			}
 		}
 		:global(.logout-btn) {
 			padding: 0;
-			color: var(--stone-12);
 			svg {
+				color: var(--text-1);
 				height: 27px;
 				vertical-align: middle;
 			}
