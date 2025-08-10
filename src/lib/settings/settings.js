@@ -55,6 +55,12 @@ function loadSettings() {
 		console.warn('Failed to load settings from localStorage:', error);
 	}
 
+	// If no settings are stored, check for system preference
+	const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+	if (prefersDarkMode) {
+		return { ...DEFAULT_SETTINGS, dark_theme: true };
+	}
+
 	return DEFAULT_SETTINGS;
 }
 

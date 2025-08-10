@@ -9,6 +9,15 @@
 	$effect(() => {
 		$settings = currentSettings;
 	});
+
+	$effect(() => {
+		if (currentSettings.dark_theme) {
+			document.documentElement.setAttribute('color-scheme', 'dark');
+		} else {
+			document.documentElement.setAttribute('color-scheme', 'light');
+			// document.documentElement.removeAttribute('color-scheme');
+		}
+	});
 </script>
 
 <div class="site-settings">
