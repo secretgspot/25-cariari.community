@@ -9,60 +9,106 @@ export function formatText(text) {
 		return '';
 	}
 
-	// Apply markdown formatting in order of precedence
-	return text
-		// Headers (must be at start of line)
-		.replace(/^### (.*$)/gm, '<h3>$1</h3>')
-		.replace(/^## (.*$)/gm, '<h2>$1</h2>')
-		.replace(/^# (.*$)/gm, '<h1>$1</h1>')
+	text = text.replace(/\r\n/g, '\n');
 
-		// Code blocks (before inline code)
-		.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+	// Inline-level rules
+	const inlineRules = [
+		{ regex: /\*\*(.*?)\*\*/g, replacement: '<strong>$1</strong>' },
+		{ regex: /__(.*?)__/g, replacement: '<strong>$1</strong>' },
+		{ regex: /\*(.*?)\*/g, replacement: '<em>$1</em>' },
+		{ regex: /_(.*?)_/g, replacement: '<em>$1</em>' },
+		{ regex: /~~(.*?)~~/g, replacement: '<del>$1</del>' },
+		{ regex: /`([^`]+)`/g, replacement: '<code>$1</code>' },
+		{ regex: /\[([^\]]+)\]\(([^)]+)\)/g, replacement: '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>' },
+	];
 
-		// Inline code
-		.replace(/`([^`]+)`/g, '<code>$1</code>')
+	const applyInlineRules = (line) => {
+		return inlineRules.reduce((acc, rule) => acc.replace(rule.regex, rule.replacement), line);
+	};
 
-		// Bold (before italic to handle overlap)
-		.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-		.replace(/__(.*?)__/g, '<strong>$1</strong>')
+	const blocks = text.split(/\n{2,}/);
+	const htmlBlocks = blocks.map(block => {
+		// Code blocks
+		if (block.startsWith('```') && block.endsWith('```')) {
+			const language = block.match(/^```(\w*)/)[1];
+			const code = block.slice(block.indexOf('\n') + 1, -3).trim();
+			return `<pre><code class="language-${language}">${escapeHtml(code)}</code></pre>`;
+		}
 
-		// Italic
-		.replace(/\*(.*?)\*/g, '<em>$1</em>')
-		.replace(/_(.*?)_/g, '<em>$1</em>')
+		const lines = block.split('\n');
+		let listType = null;
+		let listItems = '';
 
-		// Strikethrough
-		.replace(/~~(.*?)~~/g, '<del>$1</del>')
+		// Block-level rules
+		const processedLines = lines.map(line => {
+			if (line.startsWith('# ')) return `<h1>${applyInlineRules(line.substring(2))}</h1>`;
+			if (line.startsWith('## ')) return `<h2>${applyInlineRules(line.substring(3))}</h2>`;
+			if (line.startsWith('### ')) return `<h3>${applyInlineRules(line.substring(4))}</h3>`;
+			if (line.match(/^([-*_])\1{2,}$/)) return '<hr>';
+			if (line.startsWith('> ')) return `<blockquote>${applyInlineRules(line.substring(2))}</blockquote>`;
 
-		// Links
-		.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+			const unorderedMatch = line.match(/^[-*+] (.*)/);
+			if (unorderedMatch) {
+				if (listType !== 'ul') {
+					listItems += (listType ? `</${listType}>` : '') + '<ul>';
+					listType = 'ul';
+				}
+				listItems += `<li>${applyInlineRules(unorderedMatch[1])}</li>`;
+				return null; // Handled in list logic
+			}
 
-		// Blockquotes (must be at start of line)
-		.replace(/^> (.*$)/gm, '<blockquote>$1</blockquote>')
+			const orderedMatch = line.match(/^\d+\. (.*)/);
+			if (orderedMatch) {
+				if (listType !== 'ol') {
+					listItems += (listType ? `</${listType}>` : '') + '<ol>';
+					listType = 'ol';
+				}
+				listItems += `<li>${applyInlineRules(orderedMatch[1])}</li>`;
+				return null; // Handled in list logic
+			}
 
-		// Unordered lists (simple single-level)
-		.replace(/^[-*+] (.*$)/gm, '<li>$1</li>')
+			if (listType) {
+				listItems += `</${listType}>`;
+				const result = listItems;
+				listType = null;
+				listItems = '';
+				return result + `<p>${applyInlineRules(line)}</p>`;
+			}
 
-		// Ordered lists (simple single-level)
-		.replace(/^\d+\. (.*$)/gm, '<li>$1</li>')
+			return applyInlineRules(line);
+		}).filter(line => line !== null);
 
-		// Wrap consecutive <li> elements in <ul> or <ol>
-		.replace(/(<li>.*<\/li>)(?:\n<li>.*<\/li>)*/g, (match) => {
-			// Check if this comes from ordered list (contains numbers)
-			const isOrdered = /^\d+\./.test(text.split('\n').find(line =>
-				line.match(/^\d+\./) && match.includes(line.replace(/^\d+\. (.*$)/, '<li>$1</li>'))
-			));
-			const tag = isOrdered ? 'ol' : 'ul';
-			return `<${tag}>${match}</${tag}>`;
-		})
+		if (listType) {
+			listItems += `</${listType}>`;
+			processedLines.push(listItems);
+		}
 
-		// Horizontal rule
-		.replace(/^---$/gm, '<hr>')
-		.replace(/^\*\*\*$/gm, '<hr>')
+		// Join lines that are not block elements into paragraphs
+		let paragraph = '';
+		const result = [];
+		processedLines.forEach(line => {
+			if (line.match(/^<(h[1-3]|ul|ol|li|hr|blockquote|pre)/)) {
+				if (paragraph) {
+					result.push(`<p>${paragraph}</p>`);
+					paragraph = '';
+				}
+				result.push(line);
+			} else {
+				paragraph += (paragraph ? '<br>' : '') + line;
+			}
+		});
+		if (paragraph) {
+			result.push(`<p>${paragraph}</p>`);
+		}
 
-		// Line breaks (convert double newlines to paragraphs, single to <br>)
-		.replace(/\n\n/g, '<p>')
-		.replace(/\n/g, '<br>');
+		return result.join('');
+	});
+
+	return htmlBlocks.join('\n\n');
 }
+
+
+
 
 /**
  * Strip markdown and return plain text
