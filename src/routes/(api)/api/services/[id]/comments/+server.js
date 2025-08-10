@@ -13,16 +13,16 @@ export async function GET({ params, locals: { supabase, getSession } }) {
 	try {
 		const { data: comments, error } = await supabase
 			.from('comments')
-			.select('*')
+			.select('id, content, created_at, user_id, user_data:profiles(username, full_name, avatar_url)')
 			.eq('service_id', id)
-			.order('created_at', { ascending: false });
+			.order('created_at', { ascending: true });
 
 		if (error) {
 			console.error('Error fetching comments:', error);
 			return json({ message: 'Failed to fetch comments: ' + error.message }, { status: 500 });
 		}
 
-		return json({ comments }, { status: 200 });
+		return json(comments || [], { status: 200 });
 	} catch (err) {
 		console.error('Unexpected error fetching comments:', err);
 		return json({ message: 'An unexpected error occurred while fetching comments.' }, { status: 500 });
