@@ -1,5 +1,6 @@
 <!-- AddNoticeForm.svelte -->
 <script>
+	import { enhance } from '$app/forms';
 	import Button from '$lib/buttons/Button.svelte';
 
 	let { onNoticeAdded } = $props();
@@ -8,8 +9,8 @@
 		title: '',
 		description: '',
 		urgency: 'Default',
-		startDate: '',
-		endDate: '',
+		start_date: '',
+		end_date: '',
 	});
 
 	let loading = $state(false);
@@ -18,59 +19,45 @@
 
 	const urgencyOptions = ['Default', 'Low', 'Medium', 'High'];
 
-	async function handleSubmit() {
+	function clearForm() {
+		formData = {
+			title: '',
+			description: '',
+			urgency: 'Default',
+			start_date: '',
+			end_date: '',
+		};
+	}
+</script>
+
+<form
+	method="POST"
+	action="?/createNotice"
+	use:enhance={() => {
 		loading = true;
 		error = null;
 		success = false;
 
-		const newNotice = {
-			title: formData.title,
-			description: formData.description,
-			urgency: formData.urgency,
-			start_date: formData.startDate || null,
-			end_date: formData.endDate || null,
-		};
-
-		try {
-			const response = await fetch('/api/notices', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(newNotice),
-			});
-
-			if (!response.ok) {
-				const errData = await response.json();
-				throw new Error(errData.message || 'Failed to add notice.');
-			}
-
-			const result = await response.json();
-			success = true;
-
-			// Call the callback function instead of dispatching
-			if (onNoticeAdded) {
-				onNoticeAdded(result.notice);
-			}
-
-			// Clear form
-			formData = {
-				title: '',
-				description: '',
-				urgency: 'Default',
-				startDate: '',
-				endDate: '',
-			};
-		} catch (e) {
-			error = e.message;
-			console.error('Error adding notice:', e);
-		} finally {
+		return async ({ result, update }) => {
 			loading = false;
-		}
-	}
-</script>
 
-<form onsubmit={handleSubmit} class="add-form {formData.urgency.toLocaleLowerCase()}">
+			if (result.type === 'success') {
+				success = true;
+				clearForm();
+
+				if (onNoticeAdded && result.data?.notice) {
+					onNoticeAdded(result.data.notice);
+				}
+			} else if (result.type === 'failure') {
+				error = result.data?.message || 'Failed to add notice';
+			} else if (result.type === 'error') {
+				error = 'An unexpected error occurred';
+			}
+
+			await update();
+		};
+	}}
+	class="add-form {formData.urgency.toLocaleLowerCase()}">
 	<div class="form-title">
 		<h2>Add New Notice</h2>
 		<p>
@@ -85,6 +72,7 @@
 		<input
 			type="text"
 			id="title"
+			name="title"
 			bind:value={formData.title}
 			required
 			class="form-input" />
@@ -95,6 +83,7 @@
 			>Description <span class="required">*</span></label>
 		<textarea
 			id="description"
+			name="description"
 			bind:value={formData.description}
 			required
 			placeholder="Use **bold**, *italic*, and [links](url) for formatting"
@@ -104,7 +93,11 @@
 	<div class="form-group">
 		<label for="urgency" class="form-label"
 			>Urgency <span class="required">*</span></label>
-		<select id="urgency" bind:value={formData.urgency} class="form-select">
+		<select
+			id="urgency"
+			name="urgency"
+			bind:value={formData.urgency}
+			class="form-select">
 			{#each urgencyOptions as option}
 				<option value={option}>{option}</option>
 			{/each}
@@ -112,17 +105,23 @@
 	</div>
 
 	<div class="form-group">
-		<label for="startDate" class="form-label">Start Date</label>
+		<label for="start_date" class="form-label">Start Date</label>
 		<input
 			type="date"
-			id="startDate"
-			bind:value={formData.startDate}
+			id="start_date"
+			name="start_date"
+			bind:value={formData.start_date}
 			class="form-input" />
 	</div>
 
 	<div class="form-group">
-		<label for="endDate" class="form-label">End Date</label>
-		<input type="date" id="endDate" bind:value={formData.endDate} class="form-input" />
+		<label for="end_date" class="form-label">End Date</label>
+		<input
+			type="date"
+			id="end_date"
+			name="end_date"
+			bind:value={formData.end_date}
+			class="form-input" />
 	</div>
 
 	{#if error}

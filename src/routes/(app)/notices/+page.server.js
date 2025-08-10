@@ -38,10 +38,14 @@ export const actions = {
 
 		try {
 			const formData = await request.formData();
+			const data = Object.fromEntries(formData.entries());
 
 			const response = await fetch('/api/notices', {
 				method: 'POST',
-				body: formData,
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data),
 			});
 
 			const result = await response.json();
