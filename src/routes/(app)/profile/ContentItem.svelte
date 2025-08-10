@@ -91,12 +91,13 @@
 	}
 
 	.item-link {
-		color: var(--blue-6);
+		color: var(--text-1);
 		text-decoration: none;
 		font-weight: 500;
 	}
 
 	.item-link:hover {
+		color: var(--blue-9);
 		text-decoration: underline;
 	}
 

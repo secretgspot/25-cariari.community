@@ -1,9 +1,20 @@
 <script>
 	import { LinkButton } from './buttons';
 	import Logo from './Logo.svelte';
+	import Ad from '$lib/Ad.svelte';
 
 	// let { data } = $props();
 </script>
+
+<Ad width="320" height="100">
+	<a
+		href="//cariari.agency"
+		target="_blank"
+		rel="noreferrer"
+		title="Cariari Agency Real Estate">
+		<img src="/ads/cariari.agency-300x100.webp" alt="Cariari Agency" loading="lazy" />
+	</a>
+</Ad>
 
 <footer class="site-footer">
 	<!-- Footer info -->
@@ -35,5 +46,9 @@
 		:global(.logo-link) {
 			color: var(--text-1);
 		}
+	}
+
+	:global(.advertising) {
+		place-self: center;
 	}
 </style>

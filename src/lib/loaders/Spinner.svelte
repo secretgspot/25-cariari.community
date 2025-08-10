@@ -16,7 +16,7 @@
 		cx="16"
 		cy="16"
 		r={radius}
-		stroke="var(--stone-9)"
+		stroke="var(--blue-6)"
 		fill="none"
 		stroke-width={thickness}
 		stroke-dasharray="{dash},100"

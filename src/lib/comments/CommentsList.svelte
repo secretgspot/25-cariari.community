@@ -52,9 +52,10 @@
 	.loading-comments {
 		border: var(--border-size-1) solid var(--surface-3);
 		padding: var(--size-3);
-		border-radius: var(--radius-2);
 		margin-block: var(--size-6);
 		text-align: center;
 		color: var(--text-2);
+		border-left: 0;
+		border-right: 0;
 	}
 </style>

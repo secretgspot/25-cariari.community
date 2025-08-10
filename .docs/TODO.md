@@ -1,6 +1,4 @@
 # TODO
 
 - [-] Larger than mobile styling
-- [x] dark theme
-- [x] Add Notice form not like the other, should have use:enhance
-- [x] in notices/[id]/ {@html formatText(data.notice.description)} causes hydration mismatch
+- [ ] Avoid using `history.pushState(...)` and `history.replaceState(...)` as these will conflict with SvelteKit's router. Use the `pushState` and `replaceState` imports from `$app/navigation` instead.

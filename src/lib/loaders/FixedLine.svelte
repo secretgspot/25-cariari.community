@@ -30,12 +30,12 @@
 		}
 
 		&:before {
-			background-color: var(--stone-6);
+			background-color: var(--blue-6);
 			animation: loading 3300ms cubic-bezier(0.23, 1, 0.32, 1) infinite;
 		}
 
 		&:after {
-			background-color: var(--stone-3);
+			background-color: var(--blue-3);
 			animation: loading 3300ms 300ms cubic-bezier(0.23, 1, 0.32, 1) infinite;
 		}
 	}
@@ -51,7 +51,7 @@
 
 	/* 2. Wave Effect */
 	.wave {
-		background: linear-gradient(90deg, transparent, var(--stone-9), transparent);
+		background: linear-gradient(90deg, transparent, var(--blue-6), transparent);
 		animation: wave 1s ease-in-out infinite;
 	}
 
@@ -76,8 +76,8 @@
 			background: linear-gradient(
 				90deg,
 				transparent,
-				var(--stone-6),
-				var(--stone-9),
+				var(--blue-3),
+				var(--blue-6),
 				transparent
 			);
 			animation: pulse-move 1s ease-in-out infinite;
@@ -103,7 +103,7 @@
 
 	/* 4. Breathing Line */
 	.breathing {
-		background: var(--stone-9);
+		background: var(--blue-6);
 		animation: breathing 1s ease-in-out infinite;
 		transform-origin: center;
 	}
@@ -129,7 +129,7 @@
 			left: 0;
 			width: 0%;
 			height: 100%;
-			background: var(--stone-9);
+			background: var(--blue-6);
 			animation: elastic 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
 		}
 	}
@@ -158,7 +158,7 @@
 			top: 0;
 			width: 20px;
 			height: var(--loader-height);
-			background: var(--stone-9);
+			background: var(--blue-6);
 		}
 		&:before {
 			animation: dot1 1.2s ease-in-out infinite;
@@ -221,7 +221,7 @@
 			top: 0;
 			width: 60px;
 			height: var(--loader-height);
-			background: var(--stone-9);
+			background: var(--blue-6);
 			animation: bounce-move 1s ease-in-out infinite;
 		}
 	}
@@ -247,7 +247,7 @@
 			left: 0;
 			width: 100%;
 			height: var(--loader-height);
-			background: linear-gradient(90deg, transparent, var(--stone-9), transparent);
+			background: linear-gradient(90deg, transparent, var(--blue-6), transparent);
 			animation: spiral 1s linear infinite;
 			transform-origin: center;
 		}
@@ -270,7 +270,7 @@
 
 	/* 10. Triple Wave */
 	.triple {
-		background: linear-gradient(90deg, transparent, var(--stone-9), transparent);
+		background: linear-gradient(90deg, transparent, var(--blue-6), transparent);
 		background-size: 30% 100%;
 		animation: triple3 1s ease-in-out infinite 0.6s;
 
@@ -281,7 +281,7 @@
 			top: 0;
 			width: 30%;
 			height: var(--loader-height);
-			background: var(--stone-9);
+			background: var(--blue-6);
 		}
 		&:before {
 			animation: triple1 1s ease-in-out infinite;

@@ -12,13 +12,13 @@
 <style>
 	.advertising {
 		position: relative;
-		background: var(--neutral);
-		color: var(--neutral-content);
+		background: var(--surface-2);
+		color: var(--text-1);
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		box-shadow: var(--shadow-small);
-		border-radius: var(--border-radius);
+		box-shadow: var(--shadow-1);
+		border-radius: var(--border-size-3);
 		/* margin: 2rem 0; */
 		text-align: center;
 		opacity: var(--brightness);
@@ -28,7 +28,7 @@
 			bottom: 100%;
 			right: 0;
 			font-size: 9px;
-			color: var(--secondary-content);
+			color: var(--text-2);
 			line-height: 1;
 			text-transform: uppercase;
 			/* margin-block: 0 var(--padding-extra-small); */
@@ -41,7 +41,7 @@
 			line-height: 0;
 		}
 		:global(img) {
-			border-radius: var(--border-radius);
+			border-radius: var(--border-size-3);
 		}
 	}
 </style>

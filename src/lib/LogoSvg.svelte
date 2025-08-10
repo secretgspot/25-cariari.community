@@ -91,8 +91,8 @@
 	}
 	.fixed {
 		position: fixed;
-		top: var(--padding-small);
-		left: var(--padding-small);
+		top: var(--size-1);
+		left: var(--size-1);
 	}
 
 	.cls-2 {
@@ -100,13 +100,13 @@
 		stroke-width: 6px;
 	}
 	.cls-2.bw {
-		stroke: var(--color-black, #231f20);
+		stroke: var(--text-1, #231f20);
 	}
 	.cls-1 {
 		fill-rule: evenodd;
 	}
 	.cls-1.bw {
-		fill: var(--color-black, #231f20);
+		fill: var(--text-1, #231f20);
 	}
 	.invert {
 		mix-blend-mode: difference;
