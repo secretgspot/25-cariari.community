@@ -140,6 +140,9 @@
 			text-decoration: none;
 			gap: var(--size-2);
 			color: var(--text-1);
+			&:hover {
+				color: var(--text-2);
+			}
 		}
 		:global(.profile-link) {
 			position: relative;

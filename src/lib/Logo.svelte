@@ -31,5 +31,8 @@
 	svg {
 		display: inline-block;
 		vertical-align: middle;
+		&:hover {
+			color: var(--brand);
+		}
 	}
 </style>
