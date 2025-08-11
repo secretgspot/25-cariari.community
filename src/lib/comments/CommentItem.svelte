@@ -180,7 +180,7 @@
 		border: var(--border-size-1) solid var(--surface-3);
 		border-radius: var(--radius-2);
 		padding: var(--size-2);
-		transition: opacity 0.2s ease;
+		transition: opacity var(--transition) ease;
 
 		&.optimistic {
 			border-color: var(--surface-4);

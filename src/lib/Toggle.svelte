@@ -76,7 +76,7 @@
 			background-color: var(--surface-4); /* Knob color */
 			/* outline: 2px solid var(--stone-12); */
 			border-radius: inherit;
-			transition: transform 0.1s ease-in-out;
+			transition: transform var(--transition) ease-in-out;
 		}
 	}
 

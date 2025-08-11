@@ -66,7 +66,7 @@
 
 		color: var(--blue-6);
 		padding-bottom: 2px;
-		transition: box-shadow calc(var(--transition, 0.3ms) / 2) ease-in-out;
+		transition: box-shadow var(--transition) ease-in-out;
 		display: inline-flex;
 		justify-content: center;
 		align-items: center;

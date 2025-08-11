@@ -35,7 +35,7 @@
 		border-top-left-radius: 0;
 		border-top-right-radius: 0;
 		align-items: center;
-		padding: var(--size-1);
+		padding: var(--size-1) var(--size-2);
 		gap: var(--size-2);
 		pointer-events: auto;
 	}

@@ -160,7 +160,7 @@
 			height: 50%;
 			background-image: var(--gradient-23);
 			animation: animate 6s linear infinite;
-			transition: all 0.3ms linear;
+			transition: all var(--transition) linear;
 		}
 
 		&::after {

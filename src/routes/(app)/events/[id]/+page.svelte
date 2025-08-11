@@ -121,6 +121,7 @@
 			justify-content: center;
 			color: var(--text-2);
 			aspect-ratio: 1;
+			border-radius: var(--radius-2);
 		}
 
 		.posted {

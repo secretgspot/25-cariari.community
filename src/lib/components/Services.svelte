@@ -95,6 +95,7 @@
 		max-width: 60px;
 		aspect-ratio: 1;
 		border-radius: var(--radius-2);
+		object-fit: cover;
 	}
 
 	.message {

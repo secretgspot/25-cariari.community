@@ -129,7 +129,7 @@
 		padding: 0;
 		cursor: pointer;
 		user-select: none;
-		transition: background var(--transition, 0.3s) cubic-bezier(0.33, 1, 0.69, 1);
+		transition: background var(--transition) cubic-bezier(0.33, 1, 0.69, 1);
 		touch-action: manipulation;
 		/* z-index: 2; */
 		&:hover,

@@ -10,8 +10,6 @@
 	--surface-2: var(--surface-2-light);
 	--surface-3: var(--surface-3-light);
 	--surface-4: var(--surface-4-light);
-	--surface-shadow: var(--surface-shadow-light);
-	--shadow-strength: var(--shadow-strength-light);
 	--color-green: var(--green-3);
 	--color-red: var(--red-3);
 }
@@ -27,8 +25,6 @@
 		--surface-2: var(--surface-2-dark);
 		--surface-3: var(--surface-3-dark);
 		--surface-4: var(--surface-4-dark);
-		--surface-shadow: var(--surface-shadow-dark);
-		--shadow-strength: var(--shadow-strength-dark);
 		--color-green: var(--green-12);
 		--color-red: var(--red-12);
 	}
@@ -44,8 +40,6 @@
 	--surface-2: var(--surface-2-light);
 	--surface-3: var(--surface-3-light);
 	--surface-4: var(--surface-4-light);
-	--surface-shadow: var(--surface-shadow-light);
-	--shadow-strength: var(--shadow-strength-light);
 	--color-green: var(--green-3);
 	--color-red: var(--red-3);
 }
@@ -60,8 +54,6 @@
 	--surface-2: var(--surface-2-dark);
 	--surface-3: var(--surface-3-dark);
 	--surface-4: var(--surface-4-dark);
-	--surface-shadow: var(--surface-shadow-dark);
-	--shadow-strength: var(--shadow-strength-dark);
 	--color-green: var(--green-12);
 	--color-red: var(--red-12);
 }
@@ -74,6 +66,9 @@
 }
 
 html {
+	/* common */
+	--transition: 3ms;
+
 	/* light */
 	--brand-light: var(--stone-12);
 	--text-1-light: var(--gray-8);
@@ -82,8 +77,6 @@ html {
 	--surface-2-light: var(--gray-1);
 	--surface-3-light: var(--gray-2);
 	--surface-4-light: var(--gray-3);
-	--surface-shadow-light: var(--gray-8-hsl);
-	--shadow-strength-light: 2%;
 
 	/* dark */
 	--brand-dark: var(--stone-1);
@@ -93,8 +86,6 @@ html {
 	--surface-2-dark: var(--gray-11);
 	--surface-3-dark: var(--gray-10);
 	--surface-4-dark: var(--gray-9);
-	--surface-shadow-dark: var(--gray-12-hsl);
-	--shadow-strength-dark: 80%;
 }
 
 body {
@@ -296,8 +287,8 @@ code {
 	border-radius: var(--radius-2);
 	background: var(--surface-2);
 	transition:
-		border-color 0.2s,
-		box-shadow 0.2s;
+		border-color var(--transition),
+		box-shadow var(--transition);
 
 	&:disabled {
 		opacity: 0.6;
@@ -312,8 +303,8 @@ input[type="file"]::file-selector-button {
 	border-radius: var(--radius-2);
 	font-size: 0.9em;
 	transition:
-		border-color 0.2s,
-		box-shadow 0.2s;
+		border-color var(--transition),
+		box-shadow var(--transition);
 	background: var(--surface-1);
 }
 

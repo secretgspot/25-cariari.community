@@ -116,7 +116,6 @@
 <style>
 	/* Your styles here */
 	dialog {
-		--transition: 0.1s;
 		display: grid;
 		grid-template-rows: min-content 1fr min-content;
 		align-items: center;

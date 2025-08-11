@@ -98,7 +98,7 @@
 		height: 100%;
 		border-radius: var(--radius-2);
 		background-color: var(--surface-4);
-		transition: width 0.3s ease-out;
+		transition: width var(--transition) ease-out;
 		&.expired {
 			background-color: var(--color-red);
 		}

@@ -272,7 +272,7 @@
 		/* border: var(--border-size-1) solid var(--surface-3); */
 		outline: var(--border-size-2) solid var(--surface-3);
 		position: relative;
-		transition: transform 0.2s ease;
+		transition: transform var(--transition) ease;
 
 		&:hover {
 			box-shadow: var(--shadow-1);
