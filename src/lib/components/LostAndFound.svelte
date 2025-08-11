@@ -86,7 +86,7 @@
 		position: relative;
 		border-radius: var(--radius-2);
 		overflow: hidden;
-		outline: var(--border-size-3) solid var(--surface-3);
+		outline: var(--border-size-2) dotted var(--surface-3);
 		&:hover {
 			outline-color: var(--surface-4);
 		}

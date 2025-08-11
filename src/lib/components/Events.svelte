@@ -95,6 +95,10 @@
 			flex: 0 0 calc(25% - var(--size-3));
 		}
 
+		&:hover {
+			filter: brightness(1.2);
+		}
+
 		.event-date {
 			background: var(--surface-1);
 			padding: var(--size-3);

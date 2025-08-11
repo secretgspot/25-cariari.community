@@ -68,7 +68,7 @@
 			color: var(--text-1);
 			&:hover {
 				color: var(--blue-9);
-				box-shadow: var(--shadow-1);
+				border-color: var(--surface-4);
 			}
 			&.expired {
 				opacity: 0.6;
