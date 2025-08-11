@@ -222,8 +222,7 @@
 		transition: transform var(--transition) ease;
 
 		&:hover {
-			box-shadow: var(--shadow-1);
-			transform: translateY(-3px);
+			outline-color: var(--surface-4);
 		}
 	}
 </style>
