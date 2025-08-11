@@ -100,22 +100,6 @@
 		padding: var(--size-3);
 		background-color: var(--surface-1);
 		z-index: 3;
-		/* Small tablets and larger mobile devices (481px - 768px) */
-		@media (min-width: 481px) {
-		}
-
-		/* Tablets and small laptops (769px - 1024px) */
-		@media (min-width: 769px) {
-		}
-
-		/* Large desktops and high-resolution screens (1025px and up) */
-		@media (min-width: 1025px) {
-			border-radius: var(--radius-2);
-		}
-
-		/* Extra-large screens (1440px and up) */
-		@media (min-width: 1440px) {
-		}
 
 		:global(.logo-link) {
 			color: var(--text-1);

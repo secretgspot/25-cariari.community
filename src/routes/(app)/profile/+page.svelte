@@ -1,4 +1,3 @@
-<!-- /profile/+page.svelte -->
 <script>
 	import { invalidateAll } from '$app/navigation';
 	import ProfileForm from './ProfileForm.svelte';
@@ -12,6 +11,13 @@
 
 	let { data } = $props();
 	const isAdmin = data.is_admin;
+
+	// Only need to track active tab
+	let activeTabId = $state('profile');
+
+	const changeTab = (id) => {
+		activeTabId = id;
+	};
 
 	const handleDelete = async (id, type) => {
 		const endpoint = buildDeleteEndpoint(type, id);
@@ -47,7 +53,36 @@
 	};
 </script>
 
-<div class="profile-container">
+<div class="profile-container" data-active-tab={activeTabId}>
+	<aside class="index">
+		<div class="options">
+			<button
+				class:active={activeTabId === 'profile'}
+				onclick={() => changeTab('profile')}>Profile</button>
+			<button
+				class:active={activeTabId === 'settings'}
+				onclick={() => changeTab('settings')}>Settings</button>
+			{#if isAdmin}
+				<button class:active={activeTabId === 'users'} onclick={() => changeTab('users')}
+					>Users</button>
+			{/if}
+			<button
+				class:active={activeTabId === 'notices'}
+				onclick={() => changeTab('notices')}>Notices</button>
+			<button class:active={activeTabId === 'events'} onclick={() => changeTab('events')}
+				>Events</button>
+			<button
+				class:active={activeTabId === 'lostandfound'}
+				onclick={() => changeTab('lostandfound')}>Lost & Found</button>
+			<button
+				class:active={activeTabId === 'services'}
+				onclick={() => changeTab('services')}>Services</button>
+			<button
+				class:active={activeTabId === 'comments'}
+				onclick={() => changeTab('comments')}>Comments</button>
+		</div>
+	</aside>
+
 	{#if data.user}
 		<div class="user-info">
 			<div class="identity">
@@ -61,41 +96,26 @@
 			</div>
 		</div>
 
-		<ProfileForm userProfile={data.userProfile} onMessage={handleFormMessage} />
+		<div id="profile" class="content-section" data-tab="profile">
+			<ProfileForm userProfile={data.userProfile} onMessage={handleFormMessage} />
+		</div>
 
-		<Settings />
+		<div id="settings" class="content-section" data-tab="settings">
+			<Settings />
+		</div>
 
 		{#if isAdmin}
-			<UsersManagement />
+			<div id="users" class="content-section" data-tab="users">
+				<UsersManagement />
+			</div>
 		{/if}
 
-		<UserContentList title="My Lost & Found Posts" items={data.lostandfound}>
-			{#snippet children(items)}
-				{#each items as item}
-					<ContentItem
-						{item}
-						itemKey="title"
-						linkPrefix="/lost-and-found"
-						type="lost-and-found"
-						onDelete={handleDelete} />
-				{/each}
-			{/snippet}
-		</UserContentList>
-
-		<UserContentList title="My Events" items={data.events}>
-			{#snippet children(items)}
-				{#each items as item}
-					<ContentItem
-						{item}
-						itemKey="title"
-						linkPrefix="/events"
-						type="event"
-						onDelete={handleDelete} />
-				{/each}
-			{/snippet}
-		</UserContentList>
-
-		<UserContentList title="My Notices" items={data.notices}>
+		<UserContentList
+			id="notices"
+			title="My Notices"
+			items={data.notices}
+			class="content-section"
+			data-tab="notices">
 			{#snippet children(items)}
 				{#each items as item}
 					<ContentItem
@@ -108,7 +128,48 @@
 			{/snippet}
 		</UserContentList>
 
-		<UserContentList title="My Services" items={data.services}>
+		<UserContentList
+			id="events"
+			title="My Events"
+			items={data.events}
+			class="content-section"
+			data-tab="events">
+			{#snippet children(items)}
+				{#each items as item}
+					<ContentItem
+						{item}
+						itemKey="title"
+						linkPrefix="/events"
+						type="event"
+						onDelete={handleDelete} />
+				{/each}
+			{/snippet}
+		</UserContentList>
+
+		<UserContentList
+			id="lostandfound"
+			title="My Lost & Found Posts"
+			items={data.lostandfound}
+			class="content-section"
+			data-tab="lostandfound">
+			{#snippet children(items)}
+				{#each items as item}
+					<ContentItem
+						{item}
+						itemKey="title"
+						linkPrefix="/lost-and-found"
+						type="lost-and-found"
+						onDelete={handleDelete} />
+				{/each}
+			{/snippet}
+		</UserContentList>
+
+		<UserContentList
+			id="services"
+			title="My Services"
+			items={data.services}
+			class="content-section"
+			data-tab="services">
 			{#snippet children(items)}
 				{#each items as item}
 					<ContentItem
@@ -121,7 +182,12 @@
 			{/snippet}
 		</UserContentList>
 
-		<UserContentList title="My Comments" items={data.comments}>
+		<UserContentList
+			id="comments"
+			title="My Comments"
+			items={data.comments}
+			class="content-section"
+			data-tab="comments">
 			{#snippet children(items)}
 				{#each items as item}
 					<ContentItem {item} itemKey="content" type="comment" onDelete={handleDelete} />
@@ -139,6 +205,17 @@
 		flex-direction: column;
 		gap: var(--size-9);
 
+		/* Desktop layout */
+		@container (min-width: 769px) {
+			display: grid;
+			grid-template-columns: 300px 1fr;
+			grid-template-rows: min-content 1fr;
+			grid-template-areas:
+				'head head'
+				'nav main';
+			gap: 0;
+		}
+
 		h1 {
 			margin-bottom: var(--size-3);
 		}
@@ -151,12 +228,18 @@
 		}
 
 		.user-info {
-			/* font-size: small; */
-
 			display: flex;
 			gap: var(--size-3);
 			justify-content: space-between;
 			align-items: flex-end;
+
+			@container (min-width: 769px) {
+				grid-area: head;
+				background: var(--surface-1);
+				position: sticky;
+				top: 64px;
+				z-index: 1;
+			}
 
 			.email,
 			.joined {
@@ -164,10 +247,78 @@
 			}
 		}
 
+		.index {
+			/* Hide navigation on mobile */
+			display: none;
+
+			@container (min-width: 769px) {
+				display: block;
+				grid-area: nav;
+			}
+
+			.options {
+				display: flex;
+				flex-direction: column;
+				position: sticky;
+				top: 230px;
+				margin-inline-end: var(--size-9);
+
+				button {
+					background-color: transparent;
+					border: 0;
+					text-align: left;
+					color: var(--text-1);
+					padding: var(--size-2);
+					border-radius: var(--radius-2);
+					transition: background-color var(--transition) ease;
+
+					&:hover {
+						background-color: var(--surface-4);
+					}
+
+					&.active {
+						font-weight: bold;
+						background-color: var(--surface-3);
+						color: var(--text-1);
+					}
+				}
+			}
+		}
+
+		/* Content sections - visible on mobile, tabs on desktop */
+		:global(.content-section) {
+			/* Show all sections on mobile */
+			display: block;
+
+			@container (min-width: 769px) {
+				grid-area: main;
+				/* Hide all sections by default on desktop */
+				display: none;
+			}
+		}
+
+		/* Show active section on desktop */
+		@container (min-width: 769px) {
+			&[data-active-tab='profile'] :global(.content-section[data-tab='profile']),
+			&[data-active-tab='settings'] :global(.content-section[data-tab='settings']),
+			&[data-active-tab='users'] :global(.content-section[data-tab='users']),
+			&[data-active-tab='notices'] :global(.content-section[data-tab='notices']),
+			&[data-active-tab='events'] :global(.content-section[data-tab='events']),
+			&[data-active-tab='lostandfound']
+				:global(.content-section[data-tab='lostandfound']),
+			&[data-active-tab='services'] :global(.content-section[data-tab='services']),
+			&[data-active-tab='comments'] :global(.content-section[data-tab='comments']) {
+				display: block;
+			}
+		}
+
 		:global(.text-divider) {
 			position: sticky;
 			top: var(--size-9);
 			background: var(--surface-1);
+			@container (min-width: 769px) {
+				top: 157px;
+			}
 		}
 	}
 </style>

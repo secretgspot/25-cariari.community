@@ -53,10 +53,12 @@
 
 <style>
 	main {
+		container-type: inline-size;
 		display: grid;
 		margin-block-start: var(--size-8);
 		gap: var(--size-8);
 		margin-inline: var(--size-3);
+		flex-grow: 1;
 
 		/* Small tablets and larger mobile devices (481px - 768px) */
 		@media (min-width: 481px) {
@@ -69,7 +71,6 @@
 		/* Large desktops and high-resolution screens (1025px and up) */
 		@media (min-width: 1025px) {
 			padding: var(--size-3);
-			border-radius: var(--radius-2);
 			margin-inline: 0;
 			margin-block-start: 0;
 		}

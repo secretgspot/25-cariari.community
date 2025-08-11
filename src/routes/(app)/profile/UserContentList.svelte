@@ -2,10 +2,10 @@
 <script>
 	import Divider from '$lib/Divider.svelte';
 
-	let { title, items, children } = $props();
+	let { title, items, children, ...rest } = $props();
 </script>
 
-<section class="content-section">
+<section class="content-section" {...rest}>
 	<Divider>{title} - ({items.length})</Divider>
 	{#if items && items.length > 0}
 		<ul class="content-list">
