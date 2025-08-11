@@ -81,6 +81,24 @@ $$;
 ALTER FUNCTION "public"."delete_claim"("uid" "uuid", "claim" "text") OWNER TO "postgres";
 
 
+CREATE OR REPLACE FUNCTION "public"."delete_event_image"() RETURNS "trigger"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    AS $_$
+BEGIN
+    -- Check if image_url exists and is not null before attempting deletion
+    IF OLD.image_url IS NOT NULL AND OLD.image_url != '' THEN
+        -- Extract the file path from the image_url for events folder
+        DELETE FROM storage.objects 
+        WHERE name = 'events/' || substring(OLD.image_url FROM 'uploads/events/(.*)$');
+    END IF;
+    RETURN OLD;
+END;
+$_$;
+
+
+ALTER FUNCTION "public"."delete_event_image"() OWNER TO "postgres";
+
+
 CREATE OR REPLACE FUNCTION "public"."delete_expired_events"() RETURNS "void"
     LANGUAGE "plpgsql" SECURITY DEFINER
     AS $$
@@ -134,6 +152,40 @@ END;$$;
 
 
 ALTER FUNCTION "public"."delete_expired_services"() OWNER TO "postgres";
+
+
+CREATE OR REPLACE FUNCTION "public"."delete_lost_and_found_image"() RETURNS "trigger"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    AS $_$
+BEGIN
+    IF OLD.image_url IS NOT NULL AND OLD.image_url != '' THEN
+        -- Extract the file path from the image_url for lost-and-found folder
+        DELETE FROM storage.objects 
+        WHERE name = 'lost-and-found/' || substring(OLD.image_url FROM 'uploads/lost-and-found/(.*)$');
+    END IF;
+    RETURN OLD;
+END;
+$_$;
+
+
+ALTER FUNCTION "public"."delete_lost_and_found_image"() OWNER TO "postgres";
+
+
+CREATE OR REPLACE FUNCTION "public"."delete_service_image"() RETURNS "trigger"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    AS $_$
+BEGIN
+    IF OLD.image_url IS NOT NULL AND OLD.image_url != '' THEN
+        -- Extract the file path from the image_url for services folder
+        DELETE FROM storage.objects 
+        WHERE name = 'services/' || substring(OLD.image_url FROM 'uploads/services/(.*)$');
+    END IF;
+    RETURN OLD;
+END;
+$_$;
+
+
+ALTER FUNCTION "public"."delete_service_image"() OWNER TO "postgres";
 
 
 CREATE OR REPLACE FUNCTION "public"."get_claim"("uid" "uuid", "claim" "text") RETURNS "jsonb"
@@ -356,7 +408,6 @@ CREATE TABLE IF NOT EXISTS "public"."events" (
     "location" "text",
     "image_url" "text",
     "category" "text",
-    "is_published" boolean DEFAULT false,
     "created_at" timestamp with time zone DEFAULT "now"(),
     "updated_at" timestamp with time zone DEFAULT "now"()
 );
@@ -375,7 +426,6 @@ CREATE TABLE IF NOT EXISTS "public"."lost_and_found" (
     "location" "text",
     "contact" "text" NOT NULL,
     "image_url" "text",
-    "is_published" boolean DEFAULT false,
     "created_at" timestamp with time zone DEFAULT "now"(),
     "updated_at" timestamp with time zone DEFAULT "now"()
 );
@@ -390,7 +440,6 @@ CREATE TABLE IF NOT EXISTS "public"."notices" (
     "title" "text" NOT NULL,
     "description" "text" NOT NULL,
     "urgency" "text",
-    "is_published" boolean DEFAULT true NOT NULL,
     "start_date" timestamp with time zone,
     "end_date" timestamp with time zone,
     "created_at" timestamp with time zone DEFAULT "now"(),
@@ -423,7 +472,6 @@ CREATE TABLE IF NOT EXISTS "public"."services" (
     "description" "text" NOT NULL,
     "category" "text",
     "image_url" "text",
-    "is_published" boolean DEFAULT true NOT NULL,
     "start_date" timestamp with time zone,
     "end_date" timestamp with time zone,
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
@@ -498,6 +546,10 @@ CREATE INDEX "idx_comments_user_id" ON "public"."comments" USING "btree" ("user_
 
 
 
+CREATE INDEX "idx_comments_user_id_created_at" ON "public"."comments" USING "btree" ("user_id", "created_at" DESC);
+
+
+
 CREATE INDEX "idx_events_end_date" ON "public"."events" USING "btree" ("event_end_date");
 
 
@@ -506,11 +558,23 @@ CREATE INDEX "idx_events_user_id" ON "public"."events" USING "btree" ("user_id")
 
 
 
+CREATE INDEX "idx_events_user_id_created_at" ON "public"."events" USING "btree" ("user_id", "created_at" DESC);
+
+
+
 CREATE INDEX "idx_lost_and_found_user_id" ON "public"."lost_and_found" USING "btree" ("user_id");
 
 
 
+CREATE INDEX "idx_lost_and_found_user_id_created_at" ON "public"."lost_and_found" USING "btree" ("user_id", "created_at" DESC);
+
+
+
 CREATE INDEX "idx_notices_user_id" ON "public"."notices" USING "btree" ("user_id");
+
+
+
+CREATE INDEX "idx_notices_user_id_created_at" ON "public"."notices" USING "btree" ("user_id", "created_at" DESC);
 
 
 
@@ -523,6 +587,22 @@ CREATE INDEX "idx_services_end_date" ON "public"."services" USING "btree" ("end_
 
 
 CREATE INDEX "idx_services_user_id" ON "public"."services" USING "btree" ("user_id");
+
+
+
+CREATE INDEX "idx_services_user_id_created_at" ON "public"."services" USING "btree" ("user_id", "created_at" DESC);
+
+
+
+CREATE OR REPLACE TRIGGER "delete_event_image_on_delete" AFTER DELETE ON "public"."events" FOR EACH ROW EXECUTE FUNCTION "public"."delete_event_image"();
+
+
+
+CREATE OR REPLACE TRIGGER "delete_lost_and_found_image_on_delete" AFTER DELETE ON "public"."lost_and_found" FOR EACH ROW EXECUTE FUNCTION "public"."delete_lost_and_found_image"();
+
+
+
+CREATE OR REPLACE TRIGGER "delete_service_image_on_delete" AFTER DELETE ON "public"."services" FOR EACH ROW EXECUTE FUNCTION "public"."delete_service_image"();
 
 
 
@@ -617,19 +697,19 @@ CREATE POLICY "Enable read access for all users" ON "public"."profiles" FOR SELE
 
 
 
-CREATE POLICY "Public can view published events" ON "public"."events" FOR SELECT USING (("is_published" = true));
+CREATE POLICY "Public can view published events" ON "public"."events" FOR SELECT USING (true);
 
 
 
-CREATE POLICY "Public can view published lost and found" ON "public"."lost_and_found" FOR SELECT USING (("is_published" = true));
+CREATE POLICY "Public can view published lost and found" ON "public"."lost_and_found" FOR SELECT USING (true);
 
 
 
-CREATE POLICY "Public can view published notices" ON "public"."notices" FOR SELECT USING (("is_published" = true));
+CREATE POLICY "Public can view published notices" ON "public"."notices" FOR SELECT USING (true);
 
 
 
-CREATE POLICY "Public can view published services" ON "public"."services" FOR SELECT USING (("is_published" = true));
+CREATE POLICY "Public can view published services" ON "public"."services" FOR SELECT USING (true);
 
 
 
@@ -915,6 +995,12 @@ GRANT ALL ON FUNCTION "public"."delete_claim"("uid" "uuid", "claim" "text") TO "
 
 
 
+GRANT ALL ON FUNCTION "public"."delete_event_image"() TO "anon";
+GRANT ALL ON FUNCTION "public"."delete_event_image"() TO "authenticated";
+GRANT ALL ON FUNCTION "public"."delete_event_image"() TO "service_role";
+
+
+
 GRANT ALL ON FUNCTION "public"."delete_expired_events"() TO "anon";
 GRANT ALL ON FUNCTION "public"."delete_expired_events"() TO "authenticated";
 GRANT ALL ON FUNCTION "public"."delete_expired_events"() TO "service_role";
@@ -936,6 +1022,18 @@ GRANT ALL ON FUNCTION "public"."delete_expired_notices"() TO "service_role";
 GRANT ALL ON FUNCTION "public"."delete_expired_services"() TO "anon";
 GRANT ALL ON FUNCTION "public"."delete_expired_services"() TO "authenticated";
 GRANT ALL ON FUNCTION "public"."delete_expired_services"() TO "service_role";
+
+
+
+GRANT ALL ON FUNCTION "public"."delete_lost_and_found_image"() TO "anon";
+GRANT ALL ON FUNCTION "public"."delete_lost_and_found_image"() TO "authenticated";
+GRANT ALL ON FUNCTION "public"."delete_lost_and_found_image"() TO "service_role";
+
+
+
+GRANT ALL ON FUNCTION "public"."delete_service_image"() TO "anon";
+GRANT ALL ON FUNCTION "public"."delete_service_image"() TO "authenticated";
+GRANT ALL ON FUNCTION "public"."delete_service_image"() TO "service_role";
 
 
 

@@ -39,7 +39,7 @@ export async function GET({ url, locals: { supabase, getSession } }) {
 export async function POST({ request, locals: { supabase, getSession } }) {
 	let { user } = await getSession();
 
-	
+
 
 	if (!user) {
 		return json({ message: 'Unauthorized' }, { status: 401 });
@@ -63,7 +63,6 @@ export async function POST({ request, locals: { supabase, getSession } }) {
 			description,
 			category,
 			image_url,
-			is_published: true,
 			user_id: user.id,
 			start_date,
 			end_date
