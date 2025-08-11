@@ -117,7 +117,7 @@
 		gap: 2ch;
 		background: var(--surface-1);
 		padding: var(--size-3);
-		border-radius: var(--border-size-3);
+		border-radius: var(--radius-2);
 		/* Small tablets and larger mobile devices (481px - 768px) */
 		@media (min-width: 481px) {
 			min-width: 450px;
@@ -126,7 +126,7 @@
 
 	.success {
 		border: var(--border-size-2) solid var(--green-3);
-		border-radius: var(--border-size-3);
+		border-radius: var(--radius-2);
 		padding: var(--size-3);
 		place-content: center;
 		/* Small tablets and larger mobile devices (481px - 768px) */
@@ -168,7 +168,7 @@
 			position: absolute;
 			background: var(--surface-1);
 			inset: 1px;
-			border-radius: var(--border-size-3);
+			border-radius: var(--radius-2);
 		}
 
 		> div {

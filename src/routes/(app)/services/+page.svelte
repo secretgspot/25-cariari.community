@@ -181,7 +181,7 @@
 			top: 0;
 			right: 0;
 			font-size: small;
-			border-radius: var(--border-size-3);
+			border-radius: var(--radius-2);
 			color: var(--text-1);
 			background: var(--surface-3);
 			padding: var(--size-1) var(--size-2);
@@ -215,7 +215,7 @@
 		flex-direction: column;
 		width: 100%;
 		break-inside: avoid;
-		border-radius: var(--border-size-3);
+		border-radius: var(--radius-2);
 		/* border: var(--border-size-1) solid var(--gray-1); */
 		outline: var(--border-size-2) solid var(--surface-3);
 		position: relative;

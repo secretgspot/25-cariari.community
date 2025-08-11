@@ -74,7 +74,7 @@
 
 <style>
 	.notices-container {
-		border-radius: var(--border-size-3);
+		border-radius: var(--radius-2);
 		border: none;
 		padding-inline: 0;
 	}
@@ -102,7 +102,7 @@
 			padding: var(--size-3);
 			gap: var(--size-3);
 			border: var(--border-size-1) solid var(--surface-3);
-			border-radius: var(--border-size-3);
+			border-radius: var(--radius-2);
 			color: var(--text-1);
 			&:hover {
 				color: var(--blue-9);

@@ -126,7 +126,7 @@ pre {
 	max-width: 100%;
 	background-color: var(--surface-2);
 	border: var(--border-size-1) solid var(--surface-3);
-	border-radius: var(--border-size-3);
+	border-radius: var(--radius-2);
 	padding: var(--size-3);
 	margin-block: var(--size-3);
 	font-family: monospace;
@@ -148,7 +148,7 @@ code {
 	background-color: var(--surface-2);
 	color: var(--text-2);
 	padding: var(--size-1) var(--size-2);
-	border-radius: var(--border-size-3);
+	border-radius: var(--radius-2);
 	font-family: monospace;
 	font-size: smaller;
 	border: none;
@@ -157,7 +157,7 @@ code {
 /* Common ADD FORM styling */
 .add-form {
 	border: var(--border-size-1) solid var(--surface-2);
-	border-radius: var(--border-size-3);
+	border-radius: var(--radius-2);
 	padding: var(--size-6);
 	margin-block: var(--size-3);
 	background: var(--surface-3);
@@ -182,7 +182,7 @@ code {
 .manage-actions {
 	margin-block: var(--size-8);
 	border: var(--border-size-1) solid var(--surface-2);
-	border-radius: var(--border-size-3);
+	border-radius: var(--radius-2);
 	padding: 0;
 	background: var(--surface-3);
 
@@ -190,7 +190,7 @@ code {
 		padding: var(--size-3);
 		cursor: pointer;
 		background-color: var(--surface-2);
-		border-radius: var(--border-size-3) var(--border-size-3) 0 0;
+		border-radius: var(--radius-2) var(--radius-2) 0 0;
 		font-weight: bold;
 		color: var(--text-1);
 		list-style-type: none;
@@ -217,7 +217,7 @@ code {
 
 	&[open] summary {
 		border-bottom: var(--border-size-1) solid var(--surface-2);
-		border-radius: var(--border-size-3) var(--border-size-3) 0 0;
+		border-radius: var(--radius-2) var(--radius-2) 0 0;
 
 		>svg {
 			rotate: .25turn;
@@ -229,7 +229,7 @@ code {
 		color: var(--green-12);
 		padding: var(--size-3);
 		border: var(--border-size-1) solid var(--green-6);
-		border-radius: var(--border-size-3);
+		border-radius: var(--radius-2);
 		border-top-left-radius: 0;
 		border-top-right-radius: 0;
 		margin-bottom: 0;
@@ -249,7 +249,7 @@ code {
 
 /* common ADD and MANAGE forms */
 .image-preview {
-	border-radius: var(--border-size-3);
+	border-radius: var(--radius-2);
 	object-fit: cover;
 	margin-bottom: var(--size-3);
 	box-shadow: var(--shadow-1);
@@ -293,7 +293,7 @@ code {
 	width: 100%;
 	padding: var(--size-3) var(--size-2);
 	border: var(--border-size-1) solid var(--surface-3);
-	border-radius: var(--border-size-3);
+	border-radius: var(--radius-2);
 	background: var(--surface-2);
 	transition:
 		border-color 0.2s,
@@ -309,7 +309,7 @@ input[type="file"]::file-selector-button {
 	padding: var(--size-2) var(--size-2);
 	margin-inline-end: var(--size-2);
 	border: var(--border-size-1) solid var(--surface-3);
-	border-radius: var(--border-size-3);
+	border-radius: var(--radius-2);
 	font-size: 0.9em;
 	transition:
 		border-color 0.2s,

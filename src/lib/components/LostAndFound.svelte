@@ -48,7 +48,7 @@
 
 <style>
 	.lost-found-container {
-		border-radius: var(--border-size-3);
+		border-radius: var(--radius-2);
 		border: none;
 
 		legend {
@@ -84,7 +84,7 @@
 
 	.item-card {
 		position: relative;
-		border-radius: var(--border-size-3);
+		border-radius: var(--radius-2);
 		overflow: hidden;
 		outline: var(--border-size-3) solid var(--surface-3);
 		&:hover {
@@ -102,7 +102,7 @@
 
 			.category {
 				padding: var(--size-1) var(--size-2);
-				border-radius: var(--border-size-3);
+				border-radius: var(--radius-2);
 				border-bottom-left-radius: 0;
 				border-top-right-radius: 0;
 				display: inline-block;

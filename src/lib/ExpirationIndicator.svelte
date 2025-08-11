@@ -87,7 +87,7 @@
 		width: 100%;
 		overflow: hidden;
 		height: 1px;
-		border-radius: var(--border-size-3);
+		border-radius: var(--radius-2);
 		position: absolute;
 		bottom: 0;
 		left: 0;
@@ -96,7 +96,7 @@
 
 	.expiration-indicator-fill {
 		height: 100%;
-		border-radius: var(--border-size-3);
+		border-radius: var(--radius-2);
 		background-color: var(--surface-4);
 		transition: width 0.3s ease-out;
 		&.expired {

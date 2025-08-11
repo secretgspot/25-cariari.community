@@ -110,7 +110,7 @@
 
 		/* Large desktops and high-resolution screens (1025px and up) */
 		@media (min-width: 1025px) {
-			border-radius: var(--border-size-3);
+			border-radius: var(--radius-2);
 		}
 
 		/* Extra-large screens (1440px and up) */

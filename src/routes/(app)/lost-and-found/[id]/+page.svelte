@@ -100,7 +100,7 @@
 
 		.details {
 			margin-block-start: var(--size-6);
-			border-radius: var(--border-size-3);
+			border-radius: var(--radius-2);
 			border: 1px solid var(--surface-2);
 			display: flex;
 			flex-direction: column;

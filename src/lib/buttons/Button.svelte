@@ -123,7 +123,7 @@
 		width: auto;
 		height: min-content;
 		border: var(--border-size-1) solid var(--surface-3);
-		border-radius: var(--border-size-3);
+		border-radius: var(--radius-2);
 		background: transparent;
 		text-decoration: none;
 		padding: 0;
@@ -170,7 +170,7 @@
 	.icon {
 		display: inline-flex;
 		align-items: center;
-		border-radius: var(--border-size-3);
+		border-radius: var(--radius-2);
 		justify-content: center;
 		width: inherit;
 		height: inherit;

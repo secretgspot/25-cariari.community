@@ -178,7 +178,7 @@
 	.comment-card {
 		position: relative;
 		border: var(--border-size-1) solid var(--surface-3);
-		border-radius: var(--border-size-3);
+		border-radius: var(--radius-2);
 		padding: var(--size-2);
 		transition: opacity 0.2s ease;
 

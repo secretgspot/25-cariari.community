@@ -42,7 +42,7 @@
 
 <style>
 	.events-container {
-		border-radius: var(--border-size-3);
+		border-radius: var(--radius-2);
 		border: none;
 		min-width: 0;
 
@@ -77,7 +77,7 @@
 		flex: 0 0 calc(100% - var(--size-6));
 		overflow: hidden;
 		position: relative;
-		border-radius: var(--border-size-5);
+		border-radius: var(--radius-2);
 		/* Responsive slide widths */
 		@media (min-width: 480px) {
 			flex: 0 0 calc(70% - var(--size-3));
@@ -98,7 +98,7 @@
 		.event-date {
 			background: var(--surface-1);
 			padding: var(--size-3);
-			border-radius: var(--border-size-4);
+			border-radius: var(--radius-2);
 			color: var(--text-2);
 			font-size: smaller;
 			white-space: nowrap;

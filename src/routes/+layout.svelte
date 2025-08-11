@@ -69,7 +69,7 @@
 		/* Large desktops and high-resolution screens (1025px and up) */
 		@media (min-width: 1025px) {
 			padding: var(--size-3);
-			border-radius: var(--border-size-3);
+			border-radius: var(--radius-2);
 			margin-inline: 0;
 			margin-block-start: 0;
 		}

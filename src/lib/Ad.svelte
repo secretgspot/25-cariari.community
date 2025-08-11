@@ -18,7 +18,7 @@
 		justify-content: center;
 		align-items: center;
 		box-shadow: var(--shadow-1);
-		border-radius: var(--border-size-3);
+		border-radius: var(--radius-2);
 		/* margin: 2rem 0; */
 		text-align: center;
 		opacity: var(--brightness);
@@ -41,7 +41,7 @@
 			line-height: 0;
 		}
 		:global(img) {
-			border-radius: var(--border-size-3);
+			border-radius: var(--radius-2);
 		}
 	}
 </style>

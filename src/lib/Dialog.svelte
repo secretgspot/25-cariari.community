@@ -124,7 +124,7 @@
 		width: min-content;
 		height: min-content;
 		border: var(--border-size-1) solid var(--surface-3);
-		border-radius: var(--border-size-3);
+		border-radius: var(--radius-2);
 		pointer-events: none;
 		z-index: 6;
 		position: fixed;

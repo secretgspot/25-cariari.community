@@ -57,9 +57,7 @@
 				{/if}
 			</div>
 		</header>
-		{#if data.notice.image_url}
-			<img src={data.notice.image_url} alt={data.notice.title} class="image" />
-		{/if}
+
 		<div class="description">{@html formatText(data.notice.description)}</div>
 
 		<!-- Use the extracted ManageNotice component -->
@@ -134,13 +132,6 @@
 				height: 12px;
 			}
 		}
-	}
-
-	.image {
-		max-width: 100%;
-		height: auto;
-		border-radius: 4px;
-		margin-bottom: 1em;
 	}
 
 	.posted {

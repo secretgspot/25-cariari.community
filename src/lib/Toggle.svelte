@@ -65,7 +65,7 @@
 		width: 40px; /* Width of the switch track */
 		height: 20px; /* Height of the switch track */
 		outline: 1px solid var(--surface-2);
-		border-radius: var(--border-size-3); /* Half of height for pill shape */
+		border-radius: var(--radius-2);
 		&::before {
 			content: '';
 			position: absolute;

@@ -268,7 +268,7 @@
 		display: block;
 		width: 100%;
 		margin-bottom: var(--size-4);
-		border-radius: var(--border-size-3);
+		border-radius: var(--radius-2);
 		/* border: var(--border-size-1) solid var(--surface-3); */
 		outline: var(--border-size-2) solid var(--surface-3);
 		position: relative;

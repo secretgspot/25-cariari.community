@@ -30,7 +30,7 @@
 <style>
 	.toast {
 		display: flex;
-		border-radius: var(--border-size-3);
+		border-radius: var(--radius-2);
 		border: var(--border-size-1) solid var(--surface-3);
 		border-top-left-radius: 0;
 		border-top-right-radius: 0;

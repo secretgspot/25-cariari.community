@@ -64,6 +64,6 @@
 	.error {
 		border: var(--border-size-1) solid var(--red-6);
 		padding: var(--size-3);
-		border-radius: var(--radius-3);
+		border-radius: var(--radius-2);
 	}
 </style>

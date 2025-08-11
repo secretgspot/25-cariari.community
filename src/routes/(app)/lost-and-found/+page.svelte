@@ -198,7 +198,7 @@
 			position: absolute;
 			padding: var(--size-1) var(--size-2);
 			background: var(--surface-3);
-			border-radius: var(--border-size-3);
+			border-radius: var(--radius-2);
 			border-bottom-left-radius: 0;
 			border-top-right-radius: 0;
 		}
@@ -256,7 +256,7 @@
 		flex-direction: column;
 		width: 100%;
 		break-inside: avoid;
-		border-radius: var(--border-size-3);
+		border-radius: var(--radius-2);
 		/* border: var(--border-size-1) solid var(--gray-1); */
 		outline: var(--border-size-2) solid var(--surface-3);
 		position: relative;
