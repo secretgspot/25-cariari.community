@@ -8,6 +8,7 @@
 	import Settings from '$lib/settings/Settings.svelte';
 	import UsersManagement from './UsersManagement.svelte';
 	import { timeFrom, timeFromLong } from '$lib/utils/time.js';
+	import { LinkButton } from '$lib/buttons';
 
 	let { data } = $props();
 	const isAdmin = data.is_admin;
@@ -85,9 +86,31 @@
 
 	{#if data.user}
 		<div class="user-info">
-			<div class="identity">
-				<h1>{data.user.email.split('@')[0]}</h1>
-				<div class="email"><strong>Email:</strong> {data.user.email}</div>
+			<div class="identity-wrap">
+				<div class="identity">
+					<h1>{data.user.email.split('@')[0]}</h1>
+					<div class="email">{data.user.email}</div>
+				</div>
+
+				<form action="/logout" method="post" class="logout-form">
+					<LinkButton
+						sound={true}
+						sound_pattern="logout"
+						underline={false}
+						title="Logout"
+						class="logout-btn">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+							<path
+								fill="none"
+								stroke="currentColor"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="32"
+								d="M304 336v40a40 40 0 0 1-40 40H104a40 40 0 0 1-40-40V136a40 40 0 0 1 40-40h152c22.09 0 48 17.91 48 40v40M368 336l80-80-80-80M176 256h256">
+							</path>
+						</svg>
+					</LinkButton>
+				</form>
 			</div>
 
 			<div class="joined">
@@ -209,22 +232,15 @@
 		@container (min-width: 769px) {
 			display: grid;
 			grid-template-columns: 300px 1fr;
-			grid-template-rows: min-content 1fr;
+			grid-template-rows: 90px 1fr;
 			grid-template-areas:
 				'head head'
 				'nav main';
 			gap: 0;
 		}
 
-		h1 {
-			margin-bottom: var(--size-3);
-		}
 		p {
 			margin-bottom: var(--size-2);
-		}
-
-		strong {
-			color: var(--text-2);
 		}
 
 		.user-info {
@@ -239,6 +255,29 @@
 				position: sticky;
 				top: 64px;
 				z-index: 1;
+			}
+
+			.identity-wrap {
+				display: flex;
+				align-items: center;
+				gap: var(--size-2);
+
+				h1 {
+					margin: 0;
+				}
+
+				:global(.logout-btn) {
+					padding: 0;
+					svg {
+						color: var(--text-1);
+						height: 27px;
+						vertical-align: middle;
+					}
+				}
+			}
+
+			strong {
+				color: var(--text-2);
 			}
 
 			.email,
@@ -260,7 +299,7 @@
 				display: flex;
 				flex-direction: column;
 				position: sticky;
-				top: 230px;
+				top: 180px;
 				margin-inline-end: var(--size-9);
 
 				button {
@@ -317,7 +356,7 @@
 			top: var(--size-9);
 			background: var(--surface-1);
 			@container (min-width: 769px) {
-				top: 157px;
+				top: 154px;
 			}
 		}
 	}

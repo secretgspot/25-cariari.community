@@ -66,13 +66,13 @@
 
 		/* Tablets and small laptops (769px - 1024px) */
 		@media (min-width: 769px) {
+			padding: 0 var(--size-3);
+			margin-inline: 0;
+			margin-block-start: 0;
 		}
 
 		/* Large desktops and high-resolution screens (1025px and up) */
 		@media (min-width: 1025px) {
-			padding: var(--size-3);
-			margin-inline: 0;
-			margin-block-start: 0;
 		}
 
 		/* Extra-large screens (1440px and up) */

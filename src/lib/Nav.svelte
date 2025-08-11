@@ -61,24 +61,6 @@
 					{/if}
 				</span>
 			</LinkButton>
-			<form action="/logout" method="post" class="logout-form">
-				<LinkButton
-					sound={true}
-					sound_pattern="logout"
-					underline={false}
-					class="logout-btn">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-						<path
-							fill="none"
-							stroke="currentColor"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="32"
-							d="M304 336v40a40 40 0 0 1-40 40H104a40 40 0 0 1-40-40V136a40 40 0 0 1 40-40h152c22.09 0 48 17.91 48 40v40M368 336l80-80-80-80M176 256h256">
-						</path>
-					</svg>
-				</LinkButton>
-			</form>
 		{:else}
 			<!-- Guest Navigation -->
 			<div class="guest-section">
@@ -144,14 +126,6 @@
 				aspect-ratio: 1;
 				max-height: 27px;
 				object-fit: cover;
-			}
-		}
-		:global(.logout-btn) {
-			padding: 0;
-			svg {
-				color: var(--text-1);
-				height: 27px;
-				vertical-align: middle;
 			}
 		}
 	}
