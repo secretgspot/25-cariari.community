@@ -1,24 +1,23 @@
 <script>
-	import { onMount } from 'svelte';
 	import { invalidateAll } from '$app/navigation';
+	import { enhance } from '$app/forms';
 	import Button from '$lib/buttons/Button.svelte';
 	import LinkButton from '$lib/buttons/LinkButton.svelte';
 	import { compressFile } from '$lib/utils/file.js';
 	import Divider from '$lib/Divider.svelte';
 	import Toggle from '$lib/Toggle.svelte';
+	import { addToast } from '$lib/toasts';
 
-	let { onMessage } = $props();
+	let { data } = $props();
 
-	let loading = $state(false);
-	let ads = $state([]);
 	let selectedAd = $state(null);
 	let compressedFile = $state(null);
 	let previewUrl = $state(null);
 	let fileInput = $state();
+	let loading = $state(false);
 
 	let formData = $state({
 		id: null,
-		file: '',
 		title: '',
 		href: '',
 		width: 320,
@@ -27,16 +26,8 @@
 		active: true,
 	});
 
-	onMount(async () => {
-		await fetchAds();
-	});
-
-	async function fetchAds() {
-		const response = await fetch('/api/ads');
-		if (response.ok) {
-			ads = await response.json();
-		}
-	}
+	// Get ads from data prop
+	const ads = $derived(data.ads || []);
 
 	function selectAd(ad) {
 		selectedAd = ad;
@@ -48,7 +39,6 @@
 		selectedAd = null;
 		formData = {
 			id: null,
-			file: '',
 			title: '',
 			href: '',
 			width: 320,
@@ -71,7 +61,12 @@
 			compressedFile = compressed;
 			previewUrl = url;
 		} catch (err) {
-			onMessage({ message: 'Image compression failed.', success: false });
+			addToast({
+				message: 'Image compression failed.',
+				type: 'error',
+				dismissible: true,
+				timeout: 0,
+			});
 			resetFileState();
 		}
 	}
@@ -81,90 +76,50 @@
 		previewUrl = null;
 		if (fileInput) fileInput.value = '';
 	}
-
-	async function handleSubmit(event) {
-		event.preventDefault();
-		loading = true;
-
-		const submitFormData = new FormData();
-		Object.entries(formData).forEach(([key, value]) => {
-			if (value !== null && value !== undefined) {
-				submitFormData.append(key, value);
-			}
-		});
-
-		if (compressedFile) {
-			submitFormData.append('image_file', compressedFile);
-		}
-
-		const action = selectedAd ? '?/updateAd' : '?/createAd';
-
-		const response = await fetch(action, {
-			method: 'POST',
-			body: submitFormData,
-		});
-
-		const result = await response.json();
-
-		if (result.type === 'success') {
-			onMessage({ message: 'Ad saved successfully!', success: true });
-			await fetchAds();
-			clearSelection();
-			await invalidateAll();
-		} else {
-			onMessage({
-				message: result.data?.message || 'Failed to save ad.',
-				success: false,
-			});
-		}
-
-		loading = false;
-	}
-
-	async function handleDelete() {
-		if (!selectedAd) return;
-		loading = true;
-
-		const submitFormData = new FormData();
-		submitFormData.append('id', selectedAd.id);
-
-		const response = await fetch('?/deleteAd', {
-			method: 'POST',
-			body: submitFormData,
-		});
-
-		const result = await response.json();
-
-		if (result.type === 'success') {
-			onMessage({ message: 'Ad deleted successfully!', success: true });
-			await fetchAds();
-			clearSelection();
-			await invalidateAll();
-		} else {
-			onMessage({ message: result.message || 'Failed to delete ad.', success: false });
-		}
-
-		loading = false;
-	}
 </script>
 
 <div class="ad-management">
 	<Divider>Ad Management</Divider>
 
-	<form class="ad-form" onsubmit={handleSubmit}>
-		<input type="hidden" name="id" value={formData.id} />
-		<input type="hidden" name="image_url" value={formData.file} />
+	<!-- Delete form - separate from main form to avoid nesting -->
+	{#if selectedAd}
+		<div class="form-actions">
+			<form
+				method="POST"
+				action="?/deleteAd"
+				use:enhance={({ formData: enhanceFormData, cancel }) => {
+					loading = true;
 
-		{#if selectedAd}
-			<div class="form-actions">
-				<Button
-					type="button"
-					size="small"
-					red
-					white
-					{loading}
-					disabled={loading}
-					onclick={handleDelete}>
+					return async ({ result, update }) => {
+						loading = false;
+
+						if (result.type === 'success') {
+							addToast({
+								message: result.data?.message || 'Ad deleted successfully!',
+								type: 'success',
+								timeout: 1200,
+							});
+							clearSelection();
+							await invalidateAll();
+						} else if (result.type === 'failure') {
+							addToast({
+								message: result.data?.message || 'Failed to delete ad.',
+								type: 'error',
+								dismissible: true,
+								timeout: 0,
+							});
+						} else if (result.type === 'error') {
+							addToast({
+								message: 'An unexpected error occurred.',
+								type: 'error',
+								dismissible: true,
+								timeout: 0,
+							});
+						}
+					};
+				}}>
+				<input type="hidden" name="id" value={selectedAd.id} />
+				<Button type="submit" size="small" red white disabled={loading}>
 					{#snippet icon()}
 						<svg
 							width="21"
@@ -186,10 +141,55 @@
 								transform="scale(.94832 1.04914) rotate(-45 361.132 94.18)" />
 						</svg>
 					{/snippet}
-					Delete
+					{loading ? 'Deleting...' : 'Delete'}
 				</Button>
-			</div>
-		{/if}
+			</form>
+		</div>
+	{/if}
+
+	<!-- Main create/update form -->
+	<form
+		class="ad-form"
+		method="POST"
+		action={selectedAd ? '?/updateAd' : '?/createAd'}
+		enctype="multipart/form-data"
+		use:enhance={({ formData: enhanceFormData, cancel }) => {
+			loading = true;
+
+			// Append compressed file if available
+			if (compressedFile) {
+				enhanceFormData.append('image_file', compressedFile);
+			}
+
+			return async ({ result, update }) => {
+				loading = false;
+
+				if (result.type === 'success') {
+					addToast({
+						message: result.data?.message || 'Ad saved successfully!',
+						type: 'success',
+						timeout: 1200,
+					});
+					clearSelection();
+					await invalidateAll();
+				} else if (result.type === 'failure') {
+					addToast({
+						message: result.data?.message || 'Failed to save ad.',
+						type: 'error',
+						dismissible: true,
+						timeout: 0,
+					});
+				} else if (result.type === 'error') {
+					addToast({
+						message: 'An unexpected error occurred.',
+						type: 'error',
+						dismissible: true,
+						timeout: 0,
+					});
+				}
+			};
+		}}>
+		<input type="hidden" name="id" value={formData.id} />
 
 		<div class="form-group">
 			<label for="title" class="form-label">Title</label>
@@ -197,6 +197,7 @@
 				class="form-input"
 				type="text"
 				id="title"
+				name="title"
 				bind:value={formData.title}
 				required
 				disabled={loading} />
@@ -208,6 +209,7 @@
 				class="form-input"
 				type="url"
 				id="href"
+				name="href"
 				bind:value={formData.href}
 				required
 				disabled={loading} />
@@ -222,6 +224,7 @@
 				class="form-input"
 				type="file"
 				id="file"
+				name="image_file"
 				accept="image/*"
 				onchange={handleFileChange}
 				bind:this={fileInput}
@@ -235,6 +238,7 @@
 					class="form-input"
 					type="number"
 					id="width"
+					name="width"
 					bind:value={formData.width}
 					required
 					disabled={loading} />
@@ -245,6 +249,7 @@
 					class="form-input"
 					type="number"
 					id="height"
+					name="height"
 					bind:value={formData.height}
 					required
 					disabled={loading} />
@@ -255,6 +260,7 @@
 					class="form-input"
 					type="number"
 					id="weight"
+					name="weight"
 					bind:value={formData.weight}
 					required
 					disabled={loading} />
@@ -263,10 +269,11 @@
 
 		<div class="form-group">
 			<Toggle bind:checked={formData.active} label="Active" />
+			<input type="hidden" name="active" value={formData.active} />
 		</div>
 
 		<div class="form-actions">
-			<Button type="submit" right outline {loading} disabled={loading}>
+			<Button type="submit" right outline disabled={loading}>
 				{#snippet icon()}
 					{#if selectedAd}
 						<svg
@@ -279,9 +286,11 @@
 								stroke="currentColor"
 								stroke-linecap="round"
 								stroke-width="50"
-								d="M331.645 553 117 338.355" /><path
+								d="M331.645 553 117 338.355" />
+							<path
 								fill="var(--red-6)"
-								d="M546.396 72.066c11.785-20.413 17.678-30.619 27.68-33.3 10.003-2.68 20.209 3.213 40.621 14.998L633.7 64.736c20.412 11.785 30.619 17.677 33.299 27.68 2.68 10.002-3.213 20.208-14.998 40.621l-214.64 371.767c-2.415 4.183-3.623 6.275-5.197 8.088-1.573 1.812-3.475 3.301-7.279 6.279l-23.12 18.104c-41.442 32.45-62.162 48.674-76.783 40.233-14.62-8.441-10.93-34.498-3.548-86.612l4.118-29.075c.677-4.783 1.016-7.175 1.798-9.444.783-2.269 1.991-4.361 4.406-8.544l214.64-371.767Z" /></svg>
+								d="M546.396 72.066c11.785-20.413 17.678-30.619 27.68-33.3 10.003-2.68 20.209 3.213 40.621 14.998L633.7 64.736c20.412 11.785 30.619 17.677 33.299 27.680 2.68 10.002-3.213 20.208-14.998 40.621l-214.64 371.767c-2.415 4.183-3.623 6.275-5.197 8.088-1.573 1.812-3.475 3.301-7.279 6.279l-23.12 18.104c-41.442 32.45-62.162 48.674-76.783 40.233-14.62-8.441-10.93-34.498-3.548-86.612l4.118-29.075c.677-4.783 1.016-7.175 1.798-9.444.783-2.269 1.991-4.361 4.406-8.544l214.64-371.767Z" />
+						</svg>
 					{:else}
 						📌
 					{/if}
@@ -290,7 +299,7 @@
 			</Button>
 
 			{#if selectedAd}
-				<Button type="button" onclick={() => clearSelection()}>
+				<Button type="button" onclick={() => clearSelection()} disabled={loading}>
 					{#snippet icon()}
 						<svg
 							width="21px"
@@ -441,7 +450,7 @@
 
 	/* Form Tab Styles */
 	.ad-form {
-		margin-block: var(--size-9);
+		margin-block: var(--size-3) var(--size-9);
 
 		.ad-preview {
 			max-width: 100%;

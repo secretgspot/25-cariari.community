@@ -1,5 +1,4 @@
 <script>
-	import { addToast } from '$lib/toasts';
 	import UsersManagement from './UsersManagement.svelte';
 	import AdManagement from './AdManagement.svelte';
 
@@ -10,15 +9,6 @@
 
 	const changeTab = (id) => {
 		activeTabId = id;
-	};
-
-	const handleFormMessage = (message) => {
-		addToast({
-			message: message.message,
-			type: message.success ? 'success' : 'error',
-			dismissible: !message.success,
-			timeout: message.success ? 1200 : 0,
-		});
 	};
 </script>
 
@@ -41,7 +31,7 @@
 	</div>
 
 	<div id="ads" class="content-section" data-tab="ads">
-		<AdManagement ads={data.ads} onMessage={handleFormMessage} />
+		<AdManagement {data} />
 	</div>
 </div>
 
