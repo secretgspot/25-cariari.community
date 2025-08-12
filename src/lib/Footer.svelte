@@ -1,33 +1,10 @@
 <script>
 	import { LinkButton } from './buttons';
 	import Logo from './Logo.svelte';
-	import Ad from '$lib/Ad.svelte';
-
-	const ads = [
-		{
-			file: 'cariari.agency-300x100.webp',
-			title: 'Cariari Agency - Real Estate Listings',
-			href: 'https://cariari.agency',
-			width: 320,
-			height: 100,
-		},
-		{
-			file: 'pintar.cariari-300x100.webp',
-			title: 'Pintar Cariari - Professional Painting Services',
-			href: 'https://25-cariaripintor.vercel.app',
-			width: 320,
-			height: 100,
-		},
-	];
-
-	const randomAd = ads[Math.floor(Math.random() * ads.length)];
+	import Ads from '$lib/components/Ads.svelte';
 </script>
 
-<Ad width={randomAd.width} height={randomAd.height}>
-	<a href={randomAd.href} target="_blank" rel="noreferrer" title={randomAd.title}>
-		<img src={`/ads/${randomAd.file}`} alt={randomAd.title} loading="lazy" />
-	</a>
-</Ad>
+<Ads />
 
 <footer class="site-footer">
 	<!-- Footer info -->

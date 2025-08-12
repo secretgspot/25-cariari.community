@@ -1,0 +1,458 @@
+<script>
+	import { onMount } from 'svelte';
+	import { invalidateAll } from '$app/navigation';
+	import Button from '$lib/buttons/Button.svelte';
+	import LinkButton from '$lib/buttons/LinkButton.svelte';
+	import { compressFile } from '$lib/utils/file.js';
+	import Divider from '$lib/Divider.svelte';
+	import Toggle from '$lib/Toggle.svelte';
+
+	let { onMessage } = $props();
+
+	let loading = $state(false);
+	let ads = $state([]);
+	let selectedAd = $state(null);
+	let compressedFile = $state(null);
+	let previewUrl = $state(null);
+	let fileInput = $state();
+
+	let formData = $state({
+		id: null,
+		file: '',
+		title: '',
+		href: '',
+		width: 320,
+		height: 100,
+		weight: 1,
+		active: true,
+	});
+
+	onMount(async () => {
+		await fetchAds();
+	});
+
+	async function fetchAds() {
+		const response = await fetch('/api/ads');
+		if (response.ok) {
+			ads = await response.json();
+		}
+	}
+
+	function selectAd(ad) {
+		selectedAd = ad;
+		Object.assign(formData, ad);
+		previewUrl = ad.file;
+	}
+
+	function clearSelection() {
+		selectedAd = null;
+		formData = {
+			id: null,
+			file: '',
+			title: '',
+			href: '',
+			width: 320,
+			height: 100,
+			weight: 1,
+			active: true,
+		};
+		resetFileState();
+	}
+
+	async function handleFileChange(event) {
+		const file = event.target.files[0];
+		if (!file) {
+			resetFileState();
+			return;
+		}
+
+		try {
+			const { file: compressed, previewUrl: url } = await compressFile(file);
+			compressedFile = compressed;
+			previewUrl = url;
+		} catch (err) {
+			onMessage({ message: 'Image compression failed.', success: false });
+			resetFileState();
+		}
+	}
+
+	function resetFileState() {
+		compressedFile = null;
+		previewUrl = null;
+		if (fileInput) fileInput.value = '';
+	}
+
+	async function handleSubmit(event) {
+		event.preventDefault();
+		loading = true;
+
+		const submitFormData = new FormData();
+		Object.entries(formData).forEach(([key, value]) => {
+			if (value !== null && value !== undefined) {
+				submitFormData.append(key, value);
+			}
+		});
+
+		if (compressedFile) {
+			submitFormData.append('image_file', compressedFile);
+		}
+
+		const action = selectedAd ? '?/updateAd' : '?/createAd';
+
+		const response = await fetch(action, {
+			method: 'POST',
+			body: submitFormData,
+		});
+
+		const result = await response.json();
+
+		if (result.type === 'success') {
+			onMessage({ message: 'Ad saved successfully!', success: true });
+			await fetchAds();
+			clearSelection();
+			await invalidateAll();
+		} else {
+			onMessage({
+				message: result.data?.message || 'Failed to save ad.',
+				success: false,
+			});
+		}
+
+		loading = false;
+	}
+
+	async function handleDelete() {
+		if (!selectedAd) return;
+		loading = true;
+
+		const submitFormData = new FormData();
+		submitFormData.append('id', selectedAd.id);
+
+		const response = await fetch('?/deleteAd', {
+			method: 'POST',
+			body: submitFormData,
+		});
+
+		const result = await response.json();
+
+		if (result.type === 'success') {
+			onMessage({ message: 'Ad deleted successfully!', success: true });
+			await fetchAds();
+			clearSelection();
+			await invalidateAll();
+		} else {
+			onMessage({ message: result.message || 'Failed to delete ad.', success: false });
+		}
+
+		loading = false;
+	}
+</script>
+
+<div class="ad-management">
+	<Divider>Ad Management</Divider>
+
+	<form class="ad-form" onsubmit={handleSubmit}>
+		<input type="hidden" name="id" value={formData.id} />
+		<input type="hidden" name="image_url" value={formData.file} />
+
+		{#if selectedAd}
+			<div class="form-actions">
+				<Button
+					type="button"
+					size="small"
+					red
+					white
+					{loading}
+					disabled={loading}
+					onclick={handleDelete}>
+					{#snippet icon()}
+						<svg
+							width="21"
+							height="21"
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 271 297">
+							<path
+								stroke="var(--red-6)"
+								stroke-linecap="round"
+								stroke-width="50"
+								d="M25-25h298.265"
+								transform="scale(.94832 1.04914) rotate(45 -30.53 13.668)" />
+							<path
+								stroke="var(--red-6)"
+								stroke-linecap="round"
+								stroke-width="50"
+								d="M25-25h298.265"
+								transform="scale(.94832 1.04914) rotate(-45 361.132 94.18)" />
+						</svg>
+					{/snippet}
+					Delete
+				</Button>
+			</div>
+		{/if}
+
+		<div class="form-group">
+			<label for="title" class="form-label">Title</label>
+			<input
+				class="form-input"
+				type="text"
+				id="title"
+				bind:value={formData.title}
+				required
+				disabled={loading} />
+		</div>
+
+		<div class="form-group">
+			<label for="href" class="form-label">Link URL</label>
+			<input
+				class="form-input"
+				type="url"
+				id="href"
+				bind:value={formData.href}
+				required
+				disabled={loading} />
+		</div>
+
+		<div class="form-group">
+			<label for="file" class="form-label">Image</label>
+			{#if previewUrl}
+				<img src={previewUrl} alt="Ad preview" class="ad-preview" />
+			{/if}
+			<input
+				class="form-input"
+				type="file"
+				id="file"
+				accept="image/*"
+				onchange={handleFileChange}
+				bind:this={fileInput}
+				disabled={loading} />
+		</div>
+
+		<div class="form-group-row">
+			<div class="form-group">
+				<label for="width" class="form-label">Width</label>
+				<input
+					class="form-input"
+					type="number"
+					id="width"
+					bind:value={formData.width}
+					required
+					disabled={loading} />
+			</div>
+			<div class="form-group">
+				<label for="height" class="form-label">Height</label>
+				<input
+					class="form-input"
+					type="number"
+					id="height"
+					bind:value={formData.height}
+					required
+					disabled={loading} />
+			</div>
+			<div class="form-group">
+				<label for="weight" class="form-label">Weight</label>
+				<input
+					class="form-input"
+					type="number"
+					id="weight"
+					bind:value={formData.weight}
+					required
+					disabled={loading} />
+			</div>
+		</div>
+
+		<div class="form-group">
+			<Toggle bind:checked={formData.active} label="Active" />
+		</div>
+
+		<div class="form-actions">
+			<Button type="submit" right outline {loading} disabled={loading}>
+				{#snippet icon()}
+					{#if selectedAd}
+						<svg
+							width="21"
+							height="21"
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 719 724">
+							<path
+								stroke="currentColor"
+								stroke-linecap="round"
+								stroke-width="50"
+								d="M331.645 553 117 338.355" /><path
+								fill="var(--red-6)"
+								d="M546.396 72.066c11.785-20.413 17.678-30.619 27.68-33.3 10.003-2.68 20.209 3.213 40.621 14.998L633.7 64.736c20.412 11.785 30.619 17.677 33.299 27.68 2.68 10.002-3.213 20.208-14.998 40.621l-214.64 371.767c-2.415 4.183-3.623 6.275-5.197 8.088-1.573 1.812-3.475 3.301-7.279 6.279l-23.12 18.104c-41.442 32.45-62.162 48.674-76.783 40.233-14.62-8.441-10.93-34.498-3.548-86.612l4.118-29.075c.677-4.783 1.016-7.175 1.798-9.444.783-2.269 1.991-4.361 4.406-8.544l214.64-371.767Z" /></svg>
+					{:else}
+						📌
+					{/if}
+				{/snippet}
+				{loading ? 'Saving...' : selectedAd ? 'Update Ad' : 'Create Ad'}
+			</Button>
+
+			{#if selectedAd}
+				<Button type="button" onclick={() => clearSelection()}>
+					{#snippet icon()}
+						<svg
+							width="21px"
+							height="21px"
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 800 800">
+							<path
+								stroke="currentColor"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="48"
+								d="M352.64 132.48c23.36 7.04 38.4 58.24 44.16 120.64 169.92 0 323.2 178.25 323.2 389.45-70.4-192-224-244.17-324.48-244.17-6.72 56.32-21.12 101.45-42.88 107.85C285.44 525.77 80 398.08 80 319.36c0-78.72 205.12-206.4 272.64-186.88Z" />
+						</svg>
+					{/snippet}
+					Cancel
+				</Button>
+			{/if}
+		</div>
+	</form>
+
+	<Divider>Ads - ({ads.length})</Divider>
+
+	<div class="ad-list">
+		{#if ads.length === 0}
+			<p class="no-ads">No ads found. Create your first ad!</p>
+		{:else}
+			<div class="ads-grid">
+				{#each ads as ad}
+					<LinkButton underline={false} class="ad-card" onclick={() => selectAd(ad)}>
+						{#if ad.file}
+							<img src={ad.file} alt={ad.title} class="ad-thumbnail" />
+						{/if}
+						<div class="ad-info">
+							<h4>{ad.title}</h4>
+							<p class="ad-url">{ad.href}</p>
+							<div class="ad-meta">
+								<span class="ad-dimensions">{ad.width}×{ad.height}</span>
+								<span class="ad-impressions">Impressions: {ad.impressions || 0}</span>
+								<span class="ad-clicks">Clicks: {ad.clicks || 0}</span>
+								<span
+									class="ad-status"
+									class:active={ad.active}
+									class:inactive={!ad.active}>
+									{ad.active ? 'Active' : 'Inactive'}
+								</span>
+							</div>
+						</div>
+					</LinkButton>
+				{/each}
+			</div>
+		{/if}
+	</div>
+</div>
+
+<style>
+	.ad-management {
+	}
+
+	/* Existing Ads Tab Styles */
+	.ad-list {
+		margin-block: var(--size-9);
+	}
+
+	.no-ads {
+		text-align: center;
+		color: var(--text-2);
+		padding: var(--size-3);
+	}
+
+	.ads-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+		gap: var(--size-3);
+		margin-bottom: var(--size-3);
+	}
+
+	:global(button.ad-card) {
+		border: var(--border-size-1) solid var(--surface-3);
+		border-radius: var(--radius-2);
+		padding: var(--size-2);
+		flex-direction: column;
+		align-items: initial;
+		color: var(--text-1);
+		&:hover {
+			border-color: var(--surface-4);
+			color: var(--text-1);
+		}
+
+		.ad-thumbnail {
+			width: 100%;
+			object-fit: cover;
+			border-radius: var(--radius-2);
+			margin-bottom: var(--size-3);
+		}
+
+		.ad-info {
+			h4 {
+				margin-block: 0 var(--size-2);
+			}
+
+			.ad-url {
+				color: var(--text-2);
+				font-size: small;
+				margin-block: 0 var(--size-3);
+				word-break: break-all;
+			}
+
+			.ad-meta {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: space-between;
+				align-items: center;
+				font-size: small;
+
+				.ad-impressions,
+				.ad-clicks {
+					background: var(--surface-2);
+					padding: var(--size-1) var(--size-2);
+					border-radius: var(--radius-2);
+					color: var(--text-2);
+					margin-inline-end: var(--size-1);
+					margin-block-end: var(--size-1);
+				}
+
+				.ad-dimensions {
+					background: var(--surface-2);
+					padding: var(--size-1) var(--size-2);
+					border-radius: var(--radius-2);
+					color: var(--text-2);
+				}
+
+				.ad-status {
+					padding: var(--size-1) var(--size-2);
+					border: var(--border-size-1) solid;
+					border-radius: var(--radius-2);
+					&.active {
+						border-color: var(--color-green);
+					}
+
+					&.inactive {
+						border-color: var(--color-red);
+					}
+				}
+			}
+		}
+	}
+
+	/* Form Tab Styles */
+	.ad-form {
+		margin-block: var(--size-9);
+
+		.ad-preview {
+			max-width: 100%;
+			height: auto;
+			margin-bottom: var(--size-3);
+			border-radius: var(--radius-2);
+		}
+
+		.form-group-row {
+			display: flex;
+			gap: var(--size-3);
+		}
+	}
+</style>

@@ -70,6 +70,13 @@
 				</LinkButton>
 			</div>
 		{/if}
+
+		{#if data.is_admin}
+			<LinkButton href="/admin" underline={false} class="nav-link">
+				<span class="nav-icon"><Icon kind="admin" size="27" /></span>
+				<span class="nav-text">Admin</span>
+			</LinkButton>
+		{/if}
 	</nav>
 </header>
 

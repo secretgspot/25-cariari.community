@@ -6,12 +6,11 @@
 	import { deleteItem, buildDeleteEndpoint, ApiError } from '$lib/utils/api_helpers.js';
 	import { addToast } from '$lib/toasts';
 	import Settings from '$lib/settings/Settings.svelte';
-	import UsersManagement from './UsersManagement.svelte';
 	import { timeFrom, timeFromLong } from '$lib/utils/time.js';
 	import { LinkButton } from '$lib/buttons';
 
 	let { data } = $props();
-	const isAdmin = data.is_admin;
+	// const isAdmin = data.is_admin;
 
 	// Only need to track active tab
 	let activeTabId = $state('profile');
@@ -63,10 +62,6 @@
 			<button
 				class:active={activeTabId === 'settings'}
 				onclick={() => changeTab('settings')}>Settings</button>
-			{#if isAdmin}
-				<button class:active={activeTabId === 'users'} onclick={() => changeTab('users')}
-					>Users</button>
-			{/if}
 			<button
 				class:active={activeTabId === 'notices'}
 				onclick={() => changeTab('notices')}>Notices</button>
@@ -126,12 +121,6 @@
 		<div id="settings" class="content-section" data-tab="settings">
 			<Settings />
 		</div>
-
-		{#if isAdmin}
-			<div id="users" class="content-section" data-tab="users">
-				<UsersManagement />
-			</div>
-		{/if}
 
 		<UserContentList
 			id="notices"
@@ -340,7 +329,6 @@
 		@container (min-width: 769px) {
 			&[data-active-tab='profile'] :global(.content-section[data-tab='profile']),
 			&[data-active-tab='settings'] :global(.content-section[data-tab='settings']),
-			&[data-active-tab='users'] :global(.content-section[data-tab='users']),
 			&[data-active-tab='notices'] :global(.content-section[data-tab='notices']),
 			&[data-active-tab='events'] :global(.content-section[data-tab='events']),
 			&[data-active-tab='lostandfound']
