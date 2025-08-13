@@ -2,6 +2,7 @@
 <script>
 	import Button from '$lib/buttons/Button.svelte';
 	import Dialog from '$lib/Dialog.svelte';
+	import Icon from '$lib/Icon.svelte';
 
 	let { item, itemKey, linkPrefix, type, onDelete } = $props();
 
@@ -41,26 +42,7 @@
 		{loading}
 		disabled={loading}>
 		{#snippet icon()}
-			<svg
-				width="16"
-				height="16"
-				xmlns="http://www.w3.org/2000/svg"
-				fill="none"
-				viewBox="0 0 271 297"
-				aria-hidden="true">
-				<path
-					stroke="var(--red-6)"
-					stroke-linecap="round"
-					stroke-width="50"
-					d="M25-25h298.265"
-					transform="scale(.94832 1.04914) rotate(45 -30.53 13.668)" />
-				<path
-					stroke="var(--red-6)"
-					stroke-linecap="round"
-					stroke-width="50"
-					d="M25-25h298.265"
-					transform="scale(.94832 1.04914) rotate(-45 361.132 94.18)" />
-			</svg>
+			<Icon kind="delete" size="12" />
 		{/snippet}
 	</Button>
 </li>

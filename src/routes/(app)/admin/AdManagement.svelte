@@ -7,6 +7,7 @@
 	import Divider from '$lib/Divider.svelte';
 	import Toggle from '$lib/Toggle.svelte';
 	import { addToast } from '$lib/toasts';
+	import Icon from '$lib/Icon.svelte';
 
 	let { data } = $props();
 
@@ -120,25 +121,7 @@
 			<input type="hidden" name="id" value={selectedAd.id} />
 			<Button type="submit" size="small" red white {loading} disabled={loading}>
 				{#snippet icon()}
-					<svg
-						width="21"
-						height="21"
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 271 297">
-						<path
-							stroke="var(--red-6)"
-							stroke-linecap="round"
-							stroke-width="50"
-							d="M25-25h298.265"
-							transform="scale(.94832 1.04914) rotate(45 -30.53 13.668)" />
-						<path
-							stroke="var(--red-6)"
-							stroke-linecap="round"
-							stroke-width="50"
-							d="M25-25h298.265"
-							transform="scale(.94832 1.04914) rotate(-45 361.132 94.18)" />
-					</svg>
+					<Icon kind="delete" size="21" />
 				{/snippet}
 				Delete
 			</Button>
@@ -275,21 +258,7 @@
 		<Button type="submit" right outline {loading} disabled={loading}>
 			{#snippet icon()}
 				{#if selectedAd}
-					<svg
-						width="21"
-						height="21"
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 719 724">
-						<path
-							stroke="currentColor"
-							stroke-linecap="round"
-							stroke-width="50"
-							d="M331.645 553 117 338.355" />
-						<path
-							fill="var(--red-6)"
-							d="M546.396 72.066c11.785-20.413 17.678-30.619 27.68-33.3 10.003-2.68 20.209 3.213 40.621 14.998L633.7 64.736c20.412 11.785 30.619 17.677 33.299 27.680 2.68 10.002-3.213 20.208-14.998 40.621l-214.64 371.767c-2.415 4.183-3.623 6.275-5.197 8.088-1.573 1.812-3.475 3.301-7.279 6.279l-23.12 18.104c-41.442 32.45-62.162 48.674-76.783 40.233-14.62-8.441-10.93-34.498-3.548-86.612l4.118-29.075c.677-4.783 1.016-7.175 1.798-9.444.783-2.269 1.991-4.361 4.406-8.544l214.64-371.767Z" />
-					</svg>
+					<Icon kind="update" size="21" />
 				{:else}
 					📌
 				{/if}
@@ -300,19 +269,7 @@
 		{#if selectedAd}
 			<Button type="button" onclick={() => clearSelection()} {loading} disabled={loading}>
 				{#snippet icon()}
-					<svg
-						width="21px"
-						height="21px"
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 800 800">
-						<path
-							stroke="currentColor"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="48"
-							d="M352.64 132.48c23.36 7.04 38.4 58.24 44.16 120.64 169.92 0 323.2 178.25 323.2 389.45-70.4-192-224-244.17-324.48-244.17-6.72 56.32-21.12 101.45-42.88 107.85C285.44 525.77 80 398.08 80 319.36c0-78.72 205.12-206.4 272.64-186.88Z" />
-					</svg>
+					<Icon kind="cancel" size="21" />
 				{/snippet}
 				Cancel
 			</Button>

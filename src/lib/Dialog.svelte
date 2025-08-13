@@ -1,5 +1,6 @@
 <script>
 	import { Button } from '$lib/buttons';
+	import Icon from '$lib/Icon.svelte';
 
 	const {
 		title = 'Dialog Title',
@@ -43,25 +44,7 @@
 		<h2 id="dialog-title">{title}</h2>
 		<Button size="icon" aria-label="Close dialog" onclick={onCancel}>
 			{#snippet icon()}
-				<svg
-					width="15"
-					height="15"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 271 297">
-					<path
-						stroke="var(--red-6)"
-						stroke-linecap="round"
-						stroke-width="50"
-						d="M25-25h298.265"
-						transform="scale(.94832 1.04914) rotate(45 -30.53 13.668)" />
-					<path
-						stroke="var(--red-6)"
-						stroke-linecap="round"
-						stroke-width="50"
-						d="M25-25h298.265"
-						transform="scale(.94832 1.04914) rotate(-45 361.132 94.18)" />
-				</svg>
+				<Icon kind="cancel" size="15" />
 			{/snippet}
 		</Button>
 	</header>
@@ -80,25 +63,7 @@
 		{:else if type === 'confirm'}
 			<Button onclick={onCancel}>
 				{#snippet icon()}
-					<svg
-						width="15"
-						height="15"
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 271 297">
-						<path
-							stroke="var(--red-6)"
-							stroke-linecap="round"
-							stroke-width="50"
-							d="M25-25h298.265"
-							transform="scale(.94832 1.04914) rotate(45 -30.53 13.668)" />
-						<path
-							stroke="var(--red-6)"
-							stroke-linecap="round"
-							stroke-width="50"
-							d="M25-25h298.265"
-							transform="scale(.94832 1.04914) rotate(-45 361.132 94.18)" />
-					</svg>
+					<Icon kind="cancel" size="18" />
 				{/snippet}
 				Cancel
 			</Button>

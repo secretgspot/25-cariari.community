@@ -3,6 +3,7 @@
 	import ManageNotice from './ManageNotice.svelte';
 	import { formatText } from '$lib/utils/markdown.js';
 	import { timeFrom, timeFromLong } from '$lib/utils/time.js';
+	import Icon from '$lib/Icon.svelte';
 
 	let { data } = $props();
 </script>
@@ -27,31 +28,13 @@
 			<div class="details-wrap">
 				{#if data.notice.start_date}
 					<span class="time-starts">
-						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 320 320">
-							<path
-								fill="currentColor"
-								d="M103.06 144A14.96 14.96 0 0 0 88 158.9a15.04 15.04 0 0 0 14.94 15.1l.13-30Zm175.79 26.74a15 15 0 0 0 .09-21.2L183.9 53.45a15 15 0 0 0-21.22-.14 15 15 0 0 0-.09 21.21l84.48 85.4-85.21 84.3a15 15 0 0 0-.1 21.22 15 15 0 0 0 21.22.13l95.87-94.84ZM103 159l-.06 15 165.28 1.07.07-15 .06-15L103.06 144l-.06 15Z" />
-							<path
-								stroke="currentColor"
-								stroke-linecap="round"
-								stroke-width="30"
-								d="M54 65v192" />
-						</svg>
+						<Icon kind="start" size="9" />
 						{timeFrom(data.notice.start_date)}
 					</span>
 				{/if}
 				{#if data.notice.end_date}
 					<span class="time-expires">
-						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 320 320">
-							<path
-								fill="currentColor"
-								d="M50.06 144A14.96 14.96 0 0 0 35 158.9 15.04 15.04 0 0 0 49.94 174l.12-30Zm175.79 26.74a15 15 0 0 0 .09-21.2L130.9 53.45a15 15 0 0 0-21.22-.14 15 15 0 0 0-.09 21.21l84.48 85.4-85.21 84.3a15 15 0 0 0-.1 21.22 15 15 0 0 0 21.22.13l95.87-94.84ZM50 159l-.06 15 165.28 1.07.07-15 .06-15L50.06 144 50 159Z" />
-							<path
-								stroke="currentColor"
-								stroke-linecap="round"
-								stroke-width="30"
-								d="M265 64v192" />
-						</svg>
+						<Icon kind="end" size="9" />
 						{timeFrom(data.notice.end_date)}
 					</span>
 				{/if}
@@ -127,10 +110,6 @@
 			font-size: smaller;
 			white-space: nowrap;
 			color: var(--text-2);
-			svg {
-				width: 12px;
-				height: 12px;
-			}
 		}
 	}
 
