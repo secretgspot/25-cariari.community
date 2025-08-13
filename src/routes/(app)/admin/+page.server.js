@@ -40,7 +40,7 @@ export const actions = {
 			let imageUrl = null;
 
 			if (imageFile && imageFile.size > 0) {
-				const fileExtension = imageFile.name.split('.').pop() || 'jpg';
+				const fileExtension = imageFile.name.split('.').pop();
 				const fileName = `${user.id}_${Date.now()}.${fileExtension}`;
 				const filePath = `ads/${fileName}`;
 
@@ -108,7 +108,7 @@ export const actions = {
 					await supabase.storage.from('uploads').remove([`ads/${oldPath}`]);
 				}
 
-				const fileExtension = imageFile.name.split('.').pop() || 'jpg';
+				const fileExtension = imageFile.name.split('.').pop();
 				const fileName = `${user.id}_${Date.now()}.${fileExtension}`;
 				const filePath = `ads/${fileName}`;
 				const { error: uploadError } = await supabase.storage.from('uploads').upload(filePath, imageFile);

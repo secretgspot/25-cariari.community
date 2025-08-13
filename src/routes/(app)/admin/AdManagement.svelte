@@ -119,7 +119,7 @@
 					};
 				}}>
 				<input type="hidden" name="id" value={selectedAd.id} />
-				<Button type="submit" size="small" red white disabled={loading}>
+				<Button type="submit" size="small" red white {loading} disabled={loading}>
 					{#snippet icon()}
 						<svg
 							width="21"
@@ -141,7 +141,7 @@
 								transform="scale(.94832 1.04914) rotate(-45 361.132 94.18)" />
 						</svg>
 					{/snippet}
-					{loading ? 'Deleting...' : 'Delete'}
+					Delete
 				</Button>
 			</form>
 		</div>
@@ -273,7 +273,7 @@
 		</div>
 
 		<div class="form-actions">
-			<Button type="submit" right outline disabled={loading}>
+			<Button type="submit" right outline {loading} disabled={loading}>
 				{#snippet icon()}
 					{#if selectedAd}
 						<svg
@@ -299,7 +299,11 @@
 			</Button>
 
 			{#if selectedAd}
-				<Button type="button" onclick={() => clearSelection()} disabled={loading}>
+				<Button
+					type="button"
+					onclick={() => clearSelection()}
+					{loading}
+					disabled={loading}>
 					{#snippet icon()}
 						<svg
 							width="21px"
