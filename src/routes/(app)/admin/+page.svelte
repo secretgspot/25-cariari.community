@@ -133,6 +133,8 @@
 			position: sticky;
 			top: var(--size-9);
 			background: var(--surface-1);
+			margin-block: 0 var(--size-6);
+			z-index: 1;
 			@container (min-width: 769px) {
 				top: 154px;
 			}

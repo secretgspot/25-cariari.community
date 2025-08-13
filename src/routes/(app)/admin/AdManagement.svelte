@@ -78,296 +78,277 @@
 	}
 </script>
 
-<div class="ad-management">
-	<Divider>Ad Management</Divider>
+<Divider>Ad Management</Divider>
 
-	<!-- Delete form - separate from main form to avoid nesting -->
-	{#if selectedAd}
-		<div class="form-actions">
-			<form
-				method="POST"
-				action="?/deleteAd"
-				use:enhance={({ formData: enhanceFormData, cancel }) => {
-					loading = true;
+<!-- Delete form - separate from main form to avoid nesting -->
+{#if selectedAd}
+	<div class="form-actions">
+		<form
+			method="POST"
+			action="?/deleteAd"
+			use:enhance={({ formData: enhanceFormData, cancel }) => {
+				loading = true;
 
-					return async ({ result, update }) => {
-						loading = false;
+				return async ({ result, update }) => {
+					loading = false;
 
-						if (result.type === 'success') {
-							addToast({
-								message: result.data?.message || 'Ad deleted successfully!',
-								type: 'success',
-								timeout: 1200,
-							});
-							clearSelection();
-							await invalidateAll();
-						} else if (result.type === 'failure') {
-							addToast({
-								message: result.data?.message || 'Failed to delete ad.',
-								type: 'error',
-								dismissible: true,
-								timeout: 0,
-							});
-						} else if (result.type === 'error') {
-							addToast({
-								message: 'An unexpected error occurred.',
-								type: 'error',
-								dismissible: true,
-								timeout: 0,
-							});
-						}
-					};
-				}}>
-				<input type="hidden" name="id" value={selectedAd.id} />
-				<Button type="submit" size="small" red white {loading} disabled={loading}>
-					{#snippet icon()}
-						<svg
-							width="21"
-							height="21"
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 271 297">
-							<path
-								stroke="var(--red-6)"
-								stroke-linecap="round"
-								stroke-width="50"
-								d="M25-25h298.265"
-								transform="scale(.94832 1.04914) rotate(45 -30.53 13.668)" />
-							<path
-								stroke="var(--red-6)"
-								stroke-linecap="round"
-								stroke-width="50"
-								d="M25-25h298.265"
-								transform="scale(.94832 1.04914) rotate(-45 361.132 94.18)" />
-						</svg>
-					{/snippet}
-					Delete
-				</Button>
-			</form>
-		</div>
-	{/if}
-
-	<!-- Main create/update form -->
-	<form
-		class="ad-form"
-		method="POST"
-		action={selectedAd ? '?/updateAd' : '?/createAd'}
-		enctype="multipart/form-data"
-		use:enhance={({ formData: enhanceFormData, cancel }) => {
-			loading = true;
-
-			// Append compressed file if available
-			if (compressedFile) {
-				enhanceFormData.append('image_file', compressedFile);
-			}
-
-			return async ({ result, update }) => {
-				loading = false;
-
-				if (result.type === 'success') {
-					addToast({
-						message: result.data?.message || 'Ad saved successfully!',
-						type: 'success',
-						timeout: 1200,
-					});
-					clearSelection();
-					await invalidateAll();
-				} else if (result.type === 'failure') {
-					addToast({
-						message: result.data?.message || 'Failed to save ad.',
-						type: 'error',
-						dismissible: true,
-						timeout: 0,
-					});
-				} else if (result.type === 'error') {
-					addToast({
-						message: 'An unexpected error occurred.',
-						type: 'error',
-						dismissible: true,
-						timeout: 0,
-					});
-				}
-			};
-		}}>
-		<input type="hidden" name="id" value={formData.id} />
-
-		<div class="form-group">
-			<label for="title" class="form-label">Title</label>
-			<input
-				class="form-input"
-				type="text"
-				id="title"
-				name="title"
-				bind:value={formData.title}
-				required
-				disabled={loading} />
-		</div>
-
-		<div class="form-group">
-			<label for="href" class="form-label">Link URL</label>
-			<input
-				class="form-input"
-				type="url"
-				id="href"
-				name="href"
-				bind:value={formData.href}
-				required
-				disabled={loading} />
-		</div>
-
-		<div class="form-group">
-			<label for="file" class="form-label">Image</label>
-			{#if previewUrl}
-				<img src={previewUrl} alt="Ad preview" class="ad-preview" />
-			{/if}
-			<input
-				class="form-input"
-				type="file"
-				id="file"
-				name="image_file"
-				accept="image/*"
-				onchange={handleFileChange}
-				bind:this={fileInput}
-				disabled={loading} />
-		</div>
-
-		<div class="form-group-row">
-			<div class="form-group">
-				<label for="width" class="form-label">Width</label>
-				<input
-					class="form-input"
-					type="number"
-					id="width"
-					name="width"
-					bind:value={formData.width}
-					required
-					disabled={loading} />
-			</div>
-			<div class="form-group">
-				<label for="height" class="form-label">Height</label>
-				<input
-					class="form-input"
-					type="number"
-					id="height"
-					name="height"
-					bind:value={formData.height}
-					required
-					disabled={loading} />
-			</div>
-			<div class="form-group">
-				<label for="weight" class="form-label">Weight</label>
-				<input
-					class="form-input"
-					type="number"
-					id="weight"
-					name="weight"
-					bind:value={formData.weight}
-					required
-					disabled={loading} />
-			</div>
-		</div>
-
-		<div class="form-group">
-			<Toggle bind:checked={formData.active} label="Active" />
-			<input type="hidden" name="active" value={formData.active} />
-		</div>
-
-		<div class="form-actions">
-			<Button type="submit" right outline {loading} disabled={loading}>
+					if (result.type === 'success') {
+						addToast({
+							message: result.data?.message || 'Ad deleted successfully!',
+							type: 'success',
+							timeout: 1200,
+						});
+						clearSelection();
+						await invalidateAll();
+					} else if (result.type === 'failure') {
+						addToast({
+							message: result.data?.message || 'Failed to delete ad.',
+							type: 'error',
+							dismissible: true,
+							timeout: 0,
+						});
+					} else if (result.type === 'error') {
+						addToast({
+							message: 'An unexpected error occurred.',
+							type: 'error',
+							dismissible: true,
+							timeout: 0,
+						});
+					}
+				};
+			}}>
+			<input type="hidden" name="id" value={selectedAd.id} />
+			<Button type="submit" size="small" red white {loading} disabled={loading}>
 				{#snippet icon()}
-					{#if selectedAd}
-						<svg
-							width="21"
-							height="21"
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 719 724">
-							<path
-								stroke="currentColor"
-								stroke-linecap="round"
-								stroke-width="50"
-								d="M331.645 553 117 338.355" />
-							<path
-								fill="var(--red-6)"
-								d="M546.396 72.066c11.785-20.413 17.678-30.619 27.68-33.3 10.003-2.68 20.209 3.213 40.621 14.998L633.7 64.736c20.412 11.785 30.619 17.677 33.299 27.680 2.68 10.002-3.213 20.208-14.998 40.621l-214.64 371.767c-2.415 4.183-3.623 6.275-5.197 8.088-1.573 1.812-3.475 3.301-7.279 6.279l-23.12 18.104c-41.442 32.45-62.162 48.674-76.783 40.233-14.62-8.441-10.93-34.498-3.548-86.612l4.118-29.075c.677-4.783 1.016-7.175 1.798-9.444.783-2.269 1.991-4.361 4.406-8.544l214.64-371.767Z" />
-						</svg>
-					{:else}
-						📌
-					{/if}
+					<svg
+						width="21"
+						height="21"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 271 297">
+						<path
+							stroke="var(--red-6)"
+							stroke-linecap="round"
+							stroke-width="50"
+							d="M25-25h298.265"
+							transform="scale(.94832 1.04914) rotate(45 -30.53 13.668)" />
+						<path
+							stroke="var(--red-6)"
+							stroke-linecap="round"
+							stroke-width="50"
+							d="M25-25h298.265"
+							transform="scale(.94832 1.04914) rotate(-45 361.132 94.18)" />
+					</svg>
 				{/snippet}
-				{loading ? 'Saving...' : selectedAd ? 'Update Ad' : 'Create Ad'}
+				Delete
 			</Button>
+		</form>
+	</div>
+{/if}
 
-			{#if selectedAd}
-				<Button
-					type="button"
-					onclick={() => clearSelection()}
-					{loading}
-					disabled={loading}>
-					{#snippet icon()}
-						<svg
-							width="21px"
-							height="21px"
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 800 800">
-							<path
-								stroke="currentColor"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="48"
-								d="M352.64 132.48c23.36 7.04 38.4 58.24 44.16 120.64 169.92 0 323.2 178.25 323.2 389.45-70.4-192-224-244.17-324.48-244.17-6.72 56.32-21.12 101.45-42.88 107.85C285.44 525.77 80 398.08 80 319.36c0-78.72 205.12-206.4 272.64-186.88Z" />
-						</svg>
-					{/snippet}
-					Cancel
-				</Button>
-			{/if}
+<!-- Main create/update form -->
+<form
+	class="ad-form"
+	method="POST"
+	action={selectedAd ? '?/updateAd' : '?/createAd'}
+	enctype="multipart/form-data"
+	use:enhance={({ formData: enhanceFormData, cancel }) => {
+		loading = true;
+
+		// Append compressed file if available
+		if (compressedFile) {
+			enhanceFormData.append('image_file', compressedFile);
+		}
+
+		return async ({ result, update }) => {
+			loading = false;
+
+			if (result.type === 'success') {
+				addToast({
+					message: result.data?.message || 'Ad saved successfully!',
+					type: 'success',
+					timeout: 1200,
+				});
+				clearSelection();
+				await invalidateAll();
+			} else if (result.type === 'failure') {
+				addToast({
+					message: result.data?.message || 'Failed to save ad.',
+					type: 'error',
+					dismissible: true,
+					timeout: 0,
+				});
+			} else if (result.type === 'error') {
+				addToast({
+					message: 'An unexpected error occurred.',
+					type: 'error',
+					dismissible: true,
+					timeout: 0,
+				});
+			}
+		};
+	}}>
+	<input type="hidden" name="id" value={formData.id} />
+
+	<div class="form-group">
+		<label for="title" class="form-label">Title</label>
+		<input
+			class="form-input"
+			type="text"
+			id="title"
+			name="title"
+			bind:value={formData.title}
+			required
+			disabled={loading} />
+	</div>
+
+	<div class="form-group">
+		<label for="href" class="form-label">Link URL</label>
+		<input
+			class="form-input"
+			type="url"
+			id="href"
+			name="href"
+			bind:value={formData.href}
+			required
+			disabled={loading} />
+	</div>
+
+	<div class="form-group">
+		<label for="file" class="form-label">Image</label>
+		{#if previewUrl}
+			<img src={previewUrl} alt="Ad preview" class="ad-preview" />
+		{/if}
+		<input
+			class="form-input"
+			type="file"
+			id="file"
+			name="image_file"
+			accept="image/*"
+			onchange={handleFileChange}
+			bind:this={fileInput}
+			disabled={loading} />
+	</div>
+
+	<div class="form-group-row">
+		<div class="form-group">
+			<label for="width" class="form-label">Width</label>
+			<input
+				class="form-input"
+				type="number"
+				id="width"
+				name="width"
+				bind:value={formData.width}
+				required
+				disabled={loading} />
 		</div>
-	</form>
+		<div class="form-group">
+			<label for="height" class="form-label">Height</label>
+			<input
+				class="form-input"
+				type="number"
+				id="height"
+				name="height"
+				bind:value={formData.height}
+				required
+				disabled={loading} />
+		</div>
+		<div class="form-group">
+			<label for="weight" class="form-label">Weight</label>
+			<input
+				class="form-input"
+				type="number"
+				id="weight"
+				name="weight"
+				bind:value={formData.weight}
+				required
+				disabled={loading} />
+		</div>
+	</div>
 
-	<Divider>Ads - ({ads.length})</Divider>
+	<div class="form-group">
+		<Toggle bind:checked={formData.active} label="Active" />
+		<input type="hidden" name="active" value={formData.active} />
+	</div>
 
-	<div class="ad-list">
-		{#if ads.length === 0}
-			<p class="no-ads">No ads found. Create your first ad!</p>
-		{:else}
-			<div class="ads-grid">
-				{#each ads as ad}
-					<LinkButton underline={false} class="ad-card" onclick={() => selectAd(ad)}>
-						{#if ad.file}
-							<img src={ad.file} alt={ad.title} class="ad-thumbnail" />
-						{/if}
-						<div class="ad-info">
-							<h4>{ad.title}</h4>
-							<p class="ad-url">{ad.href}</p>
-							<div class="ad-meta">
-								<span class="ad-dimensions">{ad.width}×{ad.height}</span>
-								<span class="ad-impressions">Impressions: {ad.impressions || 0}</span>
-								<span class="ad-clicks">Clicks: {ad.clicks || 0}</span>
-								<span
-									class="ad-status"
-									class:active={ad.active}
-									class:inactive={!ad.active}>
-									{ad.active ? 'Active' : 'Inactive'}
-								</span>
-							</div>
-						</div>
-					</LinkButton>
-				{/each}
-			</div>
+	<div class="form-actions">
+		<Button type="submit" right outline {loading} disabled={loading}>
+			{#snippet icon()}
+				{#if selectedAd}
+					<svg
+						width="21"
+						height="21"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 719 724">
+						<path
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-width="50"
+							d="M331.645 553 117 338.355" />
+						<path
+							fill="var(--red-6)"
+							d="M546.396 72.066c11.785-20.413 17.678-30.619 27.68-33.3 10.003-2.68 20.209 3.213 40.621 14.998L633.7 64.736c20.412 11.785 30.619 17.677 33.299 27.680 2.68 10.002-3.213 20.208-14.998 40.621l-214.64 371.767c-2.415 4.183-3.623 6.275-5.197 8.088-1.573 1.812-3.475 3.301-7.279 6.279l-23.12 18.104c-41.442 32.45-62.162 48.674-76.783 40.233-14.62-8.441-10.93-34.498-3.548-86.612l4.118-29.075c.677-4.783 1.016-7.175 1.798-9.444.783-2.269 1.991-4.361 4.406-8.544l214.64-371.767Z" />
+					</svg>
+				{:else}
+					📌
+				{/if}
+			{/snippet}
+			{loading ? 'Saving...' : selectedAd ? 'Update Ad' : 'Create Ad'}
+		</Button>
+
+		{#if selectedAd}
+			<Button type="button" onclick={() => clearSelection()} {loading} disabled={loading}>
+				{#snippet icon()}
+					<svg
+						width="21px"
+						height="21px"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 800 800">
+						<path
+							stroke="currentColor"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="48"
+							d="M352.64 132.48c23.36 7.04 38.4 58.24 44.16 120.64 169.92 0 323.2 178.25 323.2 389.45-70.4-192-224-244.17-324.48-244.17-6.72 56.32-21.12 101.45-42.88 107.85C285.44 525.77 80 398.08 80 319.36c0-78.72 205.12-206.4 272.64-186.88Z" />
+					</svg>
+				{/snippet}
+				Cancel
+			</Button>
 		{/if}
 	</div>
-</div>
+</form>
+
+<Divider>Ads - ({ads.length})</Divider>
+
+{#if ads.length === 0}
+	<p class="no-ads">No ads found. Create your first ad!</p>
+{:else}
+	<div class="ads-grid">
+		{#each ads as ad}
+			<LinkButton underline={false} class="ad-card" onclick={() => selectAd(ad)}>
+				{#if ad.file}
+					<img src={ad.file} alt={ad.title} class="ad-thumbnail" />
+				{/if}
+				<div class="ad-info">
+					<h4>{ad.title}</h4>
+					<p class="ad-url">{ad.href}</p>
+					<div class="ad-meta">
+						<span class="ad-dimensions">{ad.width}×{ad.height}</span>
+						<span class="ad-impressions">Impressions: {ad.impressions || 0}</span>
+						<span class="ad-clicks">Clicks: {ad.clicks || 0}</span>
+						<span class="ad-status" class:active={ad.active} class:inactive={!ad.active}>
+							{ad.active ? 'Active' : 'Inactive'}
+						</span>
+					</div>
+				</div>
+			</LinkButton>
+		{/each}
+	</div>
+{/if}
 
 <style>
-	.ad-management {
-	}
-
-	/* Existing Ads Tab Styles */
-	.ad-list {
-		margin-block: var(--size-9);
-	}
-
 	.no-ads {
 		text-align: center;
 		color: var(--text-2);
@@ -378,74 +359,75 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 		gap: var(--size-3);
-		margin-bottom: var(--size-3);
-	}
+		margin-bottom: var(--size-9);
+		margin-inline: var(--size-1);
 
-	:global(button.ad-card) {
-		border: var(--border-size-1) solid var(--surface-3);
-		border-radius: var(--radius-2);
-		padding: var(--size-2);
-		flex-direction: column;
-		align-items: initial;
-		color: var(--text-1);
-		&:hover {
-			border-color: var(--surface-4);
-			color: var(--text-1);
-		}
-
-		.ad-thumbnail {
-			width: 100%;
-			object-fit: cover;
+		:global(button.ad-card) {
+			border: var(--border-size-1) solid var(--surface-3);
 			border-radius: var(--radius-2);
-			margin-bottom: var(--size-3);
-		}
-
-		.ad-info {
-			h4 {
-				margin-block: 0 var(--size-2);
+			padding: var(--size-2);
+			flex-direction: column;
+			align-items: initial;
+			color: var(--text-1);
+			&:hover {
+				border-color: var(--surface-4);
+				color: var(--text-1);
 			}
 
-			.ad-url {
-				color: var(--text-2);
-				font-size: small;
-				margin-block: 0 var(--size-3);
-				word-break: break-all;
+			.ad-thumbnail {
+				width: 100%;
+				object-fit: cover;
+				border-radius: var(--radius-2);
+				margin-bottom: var(--size-3);
 			}
 
-			.ad-meta {
-				display: flex;
-				flex-wrap: wrap;
-				justify-content: space-between;
-				align-items: center;
-				font-size: small;
-
-				.ad-impressions,
-				.ad-clicks {
-					background: var(--surface-2);
-					padding: var(--size-1) var(--size-2);
-					border-radius: var(--radius-2);
-					color: var(--text-2);
-					margin-inline-end: var(--size-1);
-					margin-block-end: var(--size-1);
+			.ad-info {
+				h4 {
+					margin-block: 0 var(--size-2);
 				}
 
-				.ad-dimensions {
-					background: var(--surface-2);
-					padding: var(--size-1) var(--size-2);
-					border-radius: var(--radius-2);
+				.ad-url {
 					color: var(--text-2);
+					font-size: small;
+					margin-block: 0 var(--size-3);
+					word-break: break-all;
 				}
 
-				.ad-status {
-					padding: var(--size-1) var(--size-2);
-					border: var(--border-size-1) solid;
-					border-radius: var(--radius-2);
-					&.active {
-						border-color: var(--color-green);
+				.ad-meta {
+					display: flex;
+					flex-wrap: wrap;
+					justify-content: space-between;
+					align-items: center;
+					font-size: small;
+
+					.ad-impressions,
+					.ad-clicks {
+						background: var(--surface-2);
+						padding: var(--size-1) var(--size-2);
+						border-radius: var(--radius-2);
+						color: var(--text-2);
+						margin-inline-end: var(--size-1);
+						margin-block-end: var(--size-1);
 					}
 
-					&.inactive {
-						border-color: var(--color-red);
+					.ad-dimensions {
+						background: var(--surface-2);
+						padding: var(--size-1) var(--size-2);
+						border-radius: var(--radius-2);
+						color: var(--text-2);
+					}
+
+					.ad-status {
+						padding: var(--size-1) var(--size-2);
+						border: var(--border-size-1) solid;
+						border-radius: var(--radius-2);
+						&.active {
+							border-color: var(--color-green);
+						}
+
+						&.inactive {
+							border-color: var(--color-red);
+						}
 					}
 				}
 			}
@@ -455,6 +437,7 @@
 	/* Form Tab Styles */
 	.ad-form {
 		margin-block: var(--size-3) var(--size-9);
+		margin-inline: var(--size-1);
 
 		.ad-preview {
 			max-width: 100%;
