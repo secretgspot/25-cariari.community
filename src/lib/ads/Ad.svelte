@@ -14,7 +14,6 @@
 	 *   height: number,
 	 *   children?: import('svelte').Snippet,
 	 *   loading?: 'lazy' | 'eager',
-	 *   onclick?: (event: MouseEvent) => void,
 	 *   'aria-label'?: string
 	 * }}
 	 */
@@ -23,24 +22,18 @@
 		height,
 		children,
 		loading = 'lazy',
-		onclick,
 		'aria-label': ariaLabel = `Advertisement ${width}x${height}`,
 	} = $props();
 
 	// Calculate aspect ratio for responsive behavior
 	const aspectRatio = $derived((height / width) * 100);
-
-	function handleClick(event) {
-		onclick?.(event);
-	}
 </script>
 
 <div
 	class="advertising"
 	style="width:{width}px; height:{height}px; aspect-ratio:{width}/{height};"
 	role="banner"
-	aria-label={ariaLabel}
-	onclick={handleClick}>
+	aria-label={ariaLabel}>
 	{#if children}
 		{@render children()}
 	{:else}
@@ -61,7 +54,6 @@
 		align-items: center;
 		border-radius: var(--radius-2);
 		text-align: center;
-		cursor: pointer;
 
 		&:hover {
 			filter: brightness(1.05);

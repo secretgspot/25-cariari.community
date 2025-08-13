@@ -123,14 +123,14 @@
 	<Ad
 		width={selectedAd.width}
 		height={selectedAd.height}
-		aria-label={selectedAd.title}
-		onclick={(event) => logClick(selectedAd, event)}>
+		aria-label={selectedAd.title}>
 		<a
 			href={selectedAd.href}
 			target="_blank"
 			rel="noopener noreferrer"
 			title={selectedAd.title}
-			aria-label={selectedAd.title}>
+			aria-label={selectedAd.title}
+			onclick={(event) => logClick(selectedAd, event)}>
 			<img
 				src={selectedAd.file}
 				alt={selectedAd.title}
