@@ -1,6 +1,6 @@
+<!-- Ads.svelte (Merged and Refactored) -->
 <script>
 	import { onMount } from 'svelte';
-	import Ad from './Ad.svelte';
 
 	/**
 	 * @typedef {Object} AdConfig
@@ -120,31 +120,92 @@
 </script>
 
 {#if selectedAd}
-	<Ad
-		width={selectedAd.width}
-		height={selectedAd.height}
-		aria-label={selectedAd.title}>
-		<a
-			href={selectedAd.href}
-			target="_blank"
-			rel="noopener noreferrer"
-			title={selectedAd.title}
-			aria-label={selectedAd.title}
-			onclick={(event) => logClick(selectedAd, event)}>
-			<img
-				src={selectedAd.file}
-				alt={selectedAd.title}
-				width={selectedAd.width}
-				height={selectedAd.height}
-				loading="lazy"
-				decoding="async" />
-		</a>
-	</Ad>
+	<a
+		class="advertising"
+		style="width:{selectedAd.width}px; height:{selectedAd.height}px; aspect-ratio:{selectedAd.width}/{selectedAd.height};"
+		href={selectedAd.href}
+		target="_blank"
+		rel="noopener noreferrer"
+		title={selectedAd.title}
+		aria-label={selectedAd.title}
+		onclick={(event) => logClick(selectedAd, event)}>
+		<img
+			src={selectedAd.file}
+			alt={selectedAd.title}
+			width={selectedAd.width}
+			height={selectedAd.height}
+			loading="lazy"
+			decoding="async" />
+	</a>
 {:else}
 	<!-- Fallback placeholder -->
-	<Ad width={320} height={100} aria-label="Advertisement placeholder" />
+	<div class="advertising-placeholder" aria-label="Advertisement placeholder">
+		<small class="placeholder-text">
+			320×100<br />
+			<span class="ad-text">AD</span>
+		</small>
+	</div>
 {/if}
 
 <style>
-	/* Add any additional styling if needed */
+	.advertising {
+		position: relative;
+		display: block;
+		line-height: 0;
+		text-decoration: none;
+		border-radius: var(--radius-2);
+		background: var(--surface-2);
+		color: var(--text-1);
+
+		&:hover {
+			filter: brightness(1.05);
+		}
+
+		&::after {
+			content: 'ad';
+			position: absolute;
+			top: var(--size-1);
+			right: var(--size-1);
+			color: var(--text-2);
+			line-height: 1;
+			text-transform: uppercase;
+			background: var(--surface-1);
+			padding: calc(var(--size-1) / 2) var(--size-1);
+			border-radius: var(--border-size-3);
+			pointer-events: none;
+			font-size: xx-small;
+		}
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			border-radius: inherit;
+		}
+	}
+
+	.advertising-placeholder {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+		background: var(--surface-2);
+		color: var(--text-1);
+		border-radius: var(--radius-2);
+		place-self: center;
+		width: 320px;
+		height: 100px;
+		aspect-ratio: 320/100;
+
+		.placeholder-text {
+			font-size: 12px;
+			font-weight: 500;
+			user-select: none;
+
+			.ad-text {
+				font-weight: 700;
+				opacity: 0.7;
+			}
+		}
+	}
 </style>

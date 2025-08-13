@@ -1,7 +1,7 @@
 <script>
 	import { LinkButton } from './buttons';
 	import Logo from './Logo.svelte';
-	import Ads from '$lib/ads/Ads.svelte';
+	import Ads from '$lib/Ads.svelte';
 </script>
 
 <Ads />
