@@ -75,6 +75,11 @@ export const actions = {
 				// console.log('🔗 New image URL:', publicUrlData.publicUrl);
 			}
 
+			// Convert empty date strings to null
+			if (formData.get('lost_date') === '') {
+				formData.set('lost_date', null);
+			}
+
 			// Send the FormData directly to your API endpoint
 			// since it expects multipart/form-data or application/x-www-form-urlencoded
 			const response = await fetch('/api/lost-and-found', {

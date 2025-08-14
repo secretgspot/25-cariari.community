@@ -114,7 +114,7 @@
 						<h3 class="title">{post.title}</h3>
 
 						<div class="description">
-							{@html formatText(truncateText(stripMarkdown(post.description), 200))}
+							{@html formatText(truncateText(stripMarkdown(post.description), 90))}
 						</div>
 					</div>
 				</a>

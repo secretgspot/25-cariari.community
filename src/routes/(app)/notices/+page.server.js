@@ -40,12 +40,20 @@ export const actions = {
 			const formData = await request.formData();
 			const data = Object.fromEntries(formData.entries());
 
+			// Convert empty date strings to null
+			if (data.start_date === '') {
+				data.start_date = null;
+			}
+			if (data.end_date === '') {
+				data.end_date = null;
+			}
+
 			const response = await fetch('/api/notices', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify(data),
+				body: JSON.stringify(data)
 			});
 
 			const result = await response.json();

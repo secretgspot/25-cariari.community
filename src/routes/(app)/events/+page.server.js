@@ -75,6 +75,14 @@ export const actions = {
 				// console.log('🔗 New image URL:', publicUrlData.publicUrl);
 			}
 
+			// Convert empty date strings to null
+			if (formData.get('start_date') === '') {
+				formData.set('start_date', null);
+			}
+			if (formData.get('end_date') === '') {
+				formData.set('end_date', null);
+			}
+
 			// Send the FormData directly to your API endpoint
 			// since it expects multipart/form-data or application/x-www-form-urlencoded
 			const response = await fetch('/api/events', {
