@@ -105,25 +105,17 @@
 							</div>
 						{/if}
 
-						<div class="meta">
+						<!-- <div class="meta">
 							<span>Posted: {timeFromLong(post.created_at)}</span>
 							<span
 								>Expires in: {timeFromLong(getExpirationDate(post.created_at, 14))}</span>
-						</div>
+						</div> -->
 
 						<h3 class="title">{post.title}</h3>
 
 						<div class="description">
 							{@html formatText(truncateText(stripMarkdown(post.description), 200))}
 						</div>
-						<!-- <p>
-							<strong>Date:</strong>
-							{new Date(post.date).toLocaleDateString()}
-						</p> -->
-						<!-- {#if post.location}
-							<p><strong>Location:</strong> {post.location}</p>
-						{/if} -->
-						<!-- <p><strong>Contact:</strong> {post.contact}</p> -->
 					</div>
 				</a>
 			{/each}
@@ -211,14 +203,14 @@
 			border-bottom-right-radius: 0;
 		}
 
-		.meta {
+		/* .meta {
 			display: flex;
 			justify-content: space-between;
 			font-size: small;
 			color: var(--text-2);
 			margin-inline: var(--size-3);
 			margin-block: var(--size-1);
-		}
+		} */
 
 		.title {
 			margin-block: var(--size-3);
