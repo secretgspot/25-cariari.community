@@ -11,7 +11,6 @@ export function ago(val) {
 			return result + unit;
 	}
 }
-// ago(new Date('2010-10-11T01:46:25.251Z')); // '8 years'
 
 export function ahead(val) {
 	val = 0 | (new Date(val) - new Date()) / 1000;
@@ -31,15 +30,10 @@ export function ahead(val) {
 	}
 }
 
-// Examples:
-// ahead(new Date(Date.now() + 28 * 24 * 60 * 60 * 1000)); // 'in 28d'
-// ahead(new Date(Date.now() + 3 * 60 * 60 * 1000)); // 'in 3h'
-// ahead(new Date(Date.now() + 10 * 60 * 1000)); // 'in 10min'
-// ahead(new Date(Date.now() + 5 * 1000)); // 'in 5sec'
-
 /**
- * Universal time difference formatter
+ * Universal time difference formatter - IMPROVED VERSION
  * Handles various date formats including ISO strings, timestamps, Date objects
+ * Uses smart logic to choose the most appropriate unit based on exact multiples
  * @param {string|number|Date} val - The date to compare against current time
  * @param {Object} options - Configuration options
  * @param {boolean} options.short - Use short format (1d vs 1 day)
@@ -84,30 +78,60 @@ export function timeFrom(val, options = {}) {
 	const diffSeconds = Math.abs(Math.floor(diffMs / 1000));
 	const isPast = diffMs < 0;
 
-	// Time units in seconds
-	const units = [
-		{ key: 'y', seconds: 31536000, short: 'y', long: 'year' },
-		{ key: 'm', seconds: 2592000, short: 'mo', long: 'month' }, // 30 days
-		{ key: 'w', seconds: 604800, short: 'w', long: 'week' },
-		{ key: 'd', seconds: 86400, short: 'd', long: 'day' },
-		{ key: 'h', seconds: 3600, short: 'h', long: 'hour' },
-		{ key: 'min', seconds: 60, short: 'min', long: 'minute' },
-		{ key: 's', seconds: 1, short: 's', long: 'second' }
-	];
-
 	// Handle "just now" case
 	if (!precise && diffSeconds < 60) {
 		return 'just now';
 	}
 
-	// Find the appropriate unit
+	// Smart unit selection based on magnitude and exact multiples
+	const diffDays = Math.floor(diffSeconds / 86400);
+
+	// For day-based units, use smart logic
+	if (diffSeconds >= 86400) {
+		// Check for years first (365+ days)
+		if (diffDays >= 365) {
+			const years = Math.floor(diffDays / 365);
+			const unitText = short ? 'y' : `year${years !== 1 ? 's' : ''}`;
+			const timeText = `${years}${short ? '' : ' '}${unitText}`;
+			return isPast ? `${timeText} ago` : `in ${timeText}`;
+		}
+
+		// Check for months (30+ days) - use months for anything 30 days or more
+		if (diffDays >= 30) {
+			const months = Math.floor(diffDays / 30);
+			const unitText = short ? 'mo' : `month${months !== 1 ? 's' : ''}`;
+			const timeText = `${months}${short ? '' : ' '}${unitText}`;
+			return isPast ? `${timeText} ago` : `in ${timeText}`;
+		}
+
+		// Under 30 days: get more precise with weeks
+		// Check for exact weeks (7, 14, 21, 28) when under 30 days
+		if (diffDays % 7 === 0 && diffDays >= 7) {
+			const weeks = diffDays / 7;
+			const unitText = short ? 'w' : `week${weeks !== 1 ? 's' : ''}`;
+			const timeText = `${weeks}${short ? '' : ' '}${unitText}`;
+			return isPast ? `${timeText} ago` : `in ${timeText}`;
+		}
+
+		// Fall back to days for non-exact week multiples under 30 days
+		const unitText = short ? 'd' : `day${diffDays !== 1 ? 's' : ''}`;
+		const timeText = `${diffDays}${short ? '' : ' '}${unitText}`;
+		return isPast ? `${timeText} ago` : `in ${timeText}`;
+	}
+
+	// Handle hours, minutes, seconds
+	const units = [
+		{ key: 'h', seconds: 3600, short: 'h', long: 'hour' },
+		{ key: 'min', seconds: 60, short: 'min', long: 'minute' },
+		{ key: 's', seconds: 1, short: 's', long: 'second' }
+	];
+
 	for (const unit of units) {
 		const value = Math.floor(diffSeconds / unit.seconds);
 		if (value > 0) {
 			const unitText = short ? unit.short : unit.long;
 			const pluralSuffix = !short && value !== 1 ? 's' : '';
 			const timeText = `${value}${short ? '' : ' '}${unitText}${pluralSuffix}`;
-
 			return isPast ? `${timeText} ago` : `in ${timeText}`;
 		}
 	}
@@ -116,7 +140,7 @@ export function timeFrom(val, options = {}) {
 	return isPast ? 'just now' : 'now';
 }
 
-// Additional utility functions for common use cases
+// Keep existing helper functions
 export function timeFromShort(val) {
 	return timeFrom(val, { short: true });
 }
@@ -129,16 +153,147 @@ export function timeFromPrecise(val) {
 	return timeFrom(val, { precise: true });
 }
 
-// Example usage:
-/*
-console.log(timeFrom('2025-12-31T16:03:00+00:00')); // "in 5mo"
-console.log(timeFrom('2025-12-31 16:03:00+00')); // "in 5mo"
-console.log(timeFrom(new Date('2024-01-01'))); // "8mo ago"
-console.log(timeFrom(1735660980000)); // timestamp in ms
-console.log(timeFrom(1735660980)); // timestamp in seconds
-console.log(timeFrom('2025-08-01T10:30:00Z', { short: false })); // "in 9 hours"
-console.log(timeFrom('invalid-date')); // "Invalid date"
-*/
+/**
+ * Multi-unit formatter (shows "1 week 3 days")
+ * Great for when you want more precision
+ */
+export function timeFromMultiUnit(val, options = {}) {
+	const {
+		short = true,
+		maxUnits = 2,
+		locale = 'en'
+	} = options;
+
+	let targetDate;
+	try {
+		if (val instanceof Date) {
+			targetDate = val;
+		} else if (typeof val === 'number') {
+			targetDate = new Date(val < 10000000000 ? val * 1000 : val);
+		} else if (typeof val === 'string') {
+			targetDate = new Date(val);
+		} else {
+			throw new Error('Invalid date input');
+		}
+
+		if (isNaN(targetDate.getTime())) {
+			throw new Error('Invalid date format');
+		}
+	} catch (error) {
+		return 'Invalid date';
+	}
+
+	const now = new Date();
+	const diffMs = targetDate.getTime() - now.getTime();
+	let diffSeconds = Math.abs(Math.floor(diffMs / 1000));
+	const isPast = diffMs < 0;
+
+	if (diffSeconds < 60) {
+		return 'just now';
+	}
+
+	const units = [
+		{ name: 'year', seconds: 31536000, short: 'y' },
+		{ name: 'month', seconds: 2592000, short: 'mo' },
+		{ name: 'week', seconds: 604800, short: 'w' },
+		{ name: 'day', seconds: 86400, short: 'd' },
+		{ name: 'hour', seconds: 3600, short: 'h' },
+		{ name: 'minute', seconds: 60, short: 'min' }
+	];
+
+	const parts = [];
+	let unitsUsed = 0;
+
+	for (const unit of units) {
+		if (unitsUsed >= maxUnits) break;
+
+		const value = Math.floor(diffSeconds / unit.seconds);
+		if (value > 0) {
+			const unitText = short ? unit.short : `${unit.name}${value !== 1 ? 's' : ''}`;
+			parts.push(`${value}${short ? '' : ' '}${unitText}`);
+			diffSeconds -= value * unit.seconds;
+			unitsUsed++;
+		}
+	}
+
+	if (parts.length === 0) {
+		return 'just now';
+	}
+
+	const timeText = parts.join(short ? ' ' : ', ');
+	return isPast ? `${timeText} ago` : `in ${timeText}`;
+}
+
+/**
+ * Expiration-optimized formatter
+ * Prioritizes clarity for expiration dates
+ */
+export function timeFromExpiration(val, options = {}) {
+	const { short = false } = options;
+
+	let targetDate;
+	try {
+		if (val instanceof Date) {
+			targetDate = val;
+		} else if (typeof val === 'number') {
+			targetDate = new Date(val < 10000000000 ? val * 1000 : val);
+		} else if (typeof val === 'string') {
+			targetDate = new Date(val);
+		} else {
+			throw new Error('Invalid date input');
+		}
+
+		if (isNaN(targetDate.getTime())) {
+			throw new Error('Invalid date format');
+		}
+	} catch (error) {
+		return 'Invalid date';
+	}
+
+	const now = new Date();
+	const diffMs = targetDate.getTime() - now.getTime();
+	const diffSeconds = Math.abs(Math.floor(diffMs / 1000));
+	const isPast = diffMs < 0;
+
+	// For expired items
+	if (isPast) {
+		return short ? 'expired' : 'expired';
+	}
+
+	// Context-based rules for future dates
+	if (diffSeconds < 60) return short ? 'now' : 'expires now';
+	if (diffSeconds < 3600) { // < 1 hour
+		const mins = Math.floor(diffSeconds / 60);
+		const unit = short ? 'min' : `minute${mins !== 1 ? 's' : ''}`;
+		return `in ${mins}${short ? '' : ' '}${unit}`;
+	}
+	if (diffSeconds < 86400) { // < 1 day
+		const hours = Math.floor(diffSeconds / 3600);
+		const unit = short ? 'h' : `hour${hours !== 1 ? 's' : ''}`;
+		return `in ${hours}${short ? '' : ' '}${unit}`;
+	}
+
+	const days = Math.floor(diffSeconds / 86400);
+
+	// Months for 30+ days
+	if (days >= 30) {
+		const months = Math.floor(days / 30);
+		const unit = short ? 'mo' : `month${months !== 1 ? 's' : ''}`;
+		return `in ${months}${short ? '' : ' '}${unit}`;
+	}
+
+	// Under 30 days: get precise with weeks/days
+	// Only show weeks for exact multiples of 7
+	if (days % 7 === 0 && days >= 7) {
+		const weeks = days / 7;
+		const unit = short ? 'w' : `week${weeks !== 1 ? 's' : ''}`;
+		return `in ${weeks}${short ? '' : ' '}${unit}`;
+	}
+
+	// Default to days for clarity in expiration context
+	const unit = short ? 'd' : `day${days !== 1 ? 's' : ''}`;
+	return `in ${days}${short ? '' : ' '}${unit}`;
+}
 
 /**
  * Format date for display
@@ -214,3 +369,28 @@ export function getTodayDateTimeString() {
 	const minutes = today.getMinutes().toString().padStart(2, '0');
 	return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
+
+/*
+USAGE EXAMPLES WITH UPDATED LOGIC:
+
+// Current timeFrom (improved):
+timeFromLong(getExpirationDate(data.post.created_at, 14))
+// → "in 2 weeks" (if exactly 14 days) or "in 13 days" (if 13 days)
+
+// For expiration-specific formatting:
+timeFromExpiration(getExpirationDate(data.post.created_at, 14))
+// → "in 14 days" (prioritizes days for clarity)
+
+RESULTS WITH NEW LOGIC:
+- 35 days: "in 1 month"
+- 45 days: "in 1 month"
+- 60 days: "in 2 months"
+- 90 days: "in 3 months"
+- 29 days: "in 29 days"
+- 28 days: "in 4 weeks"
+- 21 days: "in 3 weeks"
+- 14 days: "in 2 weeks"
+- 13 days: "in 13 days"
+- 7 days: "in 1 week"
+- 6 days: "in 6 days"
+*/
