@@ -81,8 +81,8 @@ export const actions = {
 			const updateData = {
 				title: formData.get('title'),
 				description: formData.get('description'),
-				event_start_date: new Date(formData.get('event_start_date')).toISOString(),
-				event_end_date: formData.get('event_end_date') ? new Date(formData.get('event_end_date')).toISOString() : null,
+				event_start_date: formData.get('event_start_date'),
+				event_end_date: formData.get('event_end_date') || null,
 				location: formData.get('location') || null,
 				image_url: newImageUrl,
 				category: formData.get('category') || null

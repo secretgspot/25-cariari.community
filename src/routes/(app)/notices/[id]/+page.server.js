@@ -36,8 +36,8 @@ export const actions = {
 			title: formData.get('title'),
 			description: formData.get('description'),
 			urgency: formData.get('urgency') || 'Default',
-			start_date: formData.get('start_date') ? new Date(formData.get('start_date')).toISOString() : null,
-			end_date: formData.get('end_date') ? new Date(formData.get('end_date')).toISOString() : null
+			start_date: formData.get('start_date') || null,
+			end_date: formData.get('end_date') || null
 		};
 
 		const response = await fetch(`/api/notices/${id}`, {
