@@ -361,12 +361,22 @@ export function getTodayDateOnlyString() {
  * @returns {string} The current date and time as a string in YYYY-MM-DDTHH:mm format.
  */
 export function getTodayDateTimeString() {
-	const today = new Date();
-	const year = today.getFullYear();
-	const month = (today.getMonth() + 1).toString().padStart(2, '0');
-	const day = today.getDate().toString().padStart(2, '0');
-	const hours = today.getHours().toString().padStart(2, '0');
-	const minutes = today.getMinutes().toString().padStart(2, '0');
+	return new Date().toISOString().slice(0, 16);
+}
+
+/**
+ * Formats a UTC date string to a local datetime-local input format.
+ * @param {string} utcDateString - The UTC date string to format.
+ * @returns {string} The formatted local date time string.
+ */
+export function formatToLocalDateTime(utcDateString) {
+	if (!utcDateString) return '';
+	const date = new Date(utcDateString);
+	const year = date.getFullYear();
+	const month = (date.getMonth() + 1).toString().padStart(2, '0');
+	const day = date.getDate().toString().padStart(2, '0');
+	const hours = date.getHours().toString().padStart(2, '0');
+	const minutes = date.getMinutes().toString().padStart(2, '0');
 	return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 

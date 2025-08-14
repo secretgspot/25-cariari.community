@@ -80,7 +80,7 @@ export const actions = {
 				title: formData.get('title'),
 				description: formData.get('description'),
 				category: formData.get('category'),
-				date: formData.get('date'),
+				date: formData.get('date') ? new Date(formData.get('date')).toISOString() : null,
 				location: formData.get('location') || null,
 				contact: formData.get('contact'),
 				image_url: newImageUrl

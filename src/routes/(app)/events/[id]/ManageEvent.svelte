@@ -4,7 +4,7 @@
 	import { Button } from '$lib/buttons';
 	import { addToast } from '$lib/toasts';
 	import { compressFile } from '$lib/utils/file.js';
-	import { getTodayDateTimeString } from '$lib/utils/time.js';
+	import { formatToLocalDateTime } from '$lib/utils/time.js';
 	import Dialog from '$lib/Dialog.svelte';
 	import Icon from '$lib/Icon.svelte';
 
@@ -17,7 +17,7 @@
 	let previewUrl = $state(null);
 	let fileInput = $state();
 
-	const todayDateTimeString = getTodayDateTimeString();
+	
 
 	// Category options matching the add form structure
 	const categoryOptions = [
@@ -34,8 +34,8 @@
 	let formData = $state({
 		title: event?.title || '',
 		description: event?.description || '',
-		event_start_date: event?.event_start_date || '',
-		event_end_date: event?.event_end_date || '',
+		event_start_date: formatToLocalDateTime(event?.event_start_date),
+		event_end_date: formatToLocalDateTime(event?.event_end_date),
 		location: event?.location || '',
 		category: event?.category || '',
 	});
@@ -46,8 +46,8 @@
 			formData = {
 				title: event.title || '',
 				description: event.description || '',
-				event_start_date: event.event_start_date || '',
-				event_end_date: event.event_end_date || '',
+				event_start_date: formatToLocalDateTime(event.event_start_date),
+				event_end_date: formatToLocalDateTime(event.event_end_date),
 				location: event.location || '',
 				category: event.category || '',
 			};
@@ -178,9 +178,6 @@
 					name="event_start_date"
 					bind:value={formData.event_start_date}
 					required
-					min={event.event_start_date
-						? new Date(event.event_start_date).toISOString().slice(0, 16)
-						: todayDateTimeString}
 					disabled={isSubmitting}
 					class="form-input" />
 			</div>

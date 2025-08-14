@@ -5,6 +5,7 @@
 	import { addToast } from '$lib/toasts';
 	import Dialog from '$lib/Dialog.svelte';
 	import Icon from '$lib/Icon.svelte';
+	import { formatToLocalDateTime } from '$lib/utils/time.js';
 
 	let { notice, isOwner, is_admin } = $props();
 	let isSubmitting = $state(false);
@@ -18,8 +19,8 @@
 		title: notice?.title || '',
 		description: notice?.description || '',
 		urgency: notice?.urgency || 'Default',
-		start_date: notice?.start_date || '',
-		end_date: notice?.end_date || '',
+		start_date: formatToLocalDateTime(notice?.start_date),
+		end_date: formatToLocalDateTime(notice?.end_date),
 	});
 
 	// Update form data when notice data changes
@@ -29,8 +30,8 @@
 				title: notice.title || '',
 				description: notice.description || '',
 				urgency: notice.urgency || 'Default',
-				start_date: notice.start_date || '',
-				end_date: notice.end_date || '',
+				start_date: formatToLocalDateTime(notice.start_date),
+				end_date: formatToLocalDateTime(notice.end_date),
 			};
 		}
 	});
