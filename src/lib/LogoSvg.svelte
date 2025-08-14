@@ -17,69 +17,78 @@
 	class:fixed
 	class:invert
 	xmlns="http://www.w3.org/2000/svg"
-	xmlns:xlink="http://www.w3.org/1999/xlink"
-	viewBox="0 0 166 166"
+	viewBox="0 0 512 512"
 	width={size}
 	height={size}
 	{...rest}>
+	<title>Cariari.Community</title>
+
 	<defs>
-		<!-- Da gradient -->
-		<linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0">
-			<stop offset="0%" style="stop-color:#f8e9a1;" />
-			<stop offset="25%" style="stop-color:#e0c063;" />
-			<stop offset="50%" style="stop-color:#f1d166;" />
-			<stop offset="75%" style="stop-color:#d4af37;" />
-			<stop offset="100%" style="stop-color:#f8e9a1;" />
+		<!-- Gold gradient definition -->
+		<linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0">
+			<stop offset="0%" stop-color="#f8e9a1" />
+			<stop offset="25%" stop-color="#e0c063" />
+			<stop offset="50%" stop-color="#f1d166" />
+			<stop offset="75%" stop-color="#d4af37" />
+			<stop offset="100%" stop-color="#f8e9a1" />
 		</linearGradient>
 
+		<!-- Animated pattern with rotating circle and sliding rectangles -->
 		<pattern
-			id="pattern"
+			id="animatedPattern"
 			x="0"
 			y="0"
 			width="220%"
 			height="220%"
 			patternUnits="userSpaceOnUse">
-			<circle cx="83" cy="82.5202" r="57.2736" stroke-width="3" fill="url(#gradient)">
+			<!-- Rotating circle -->
+			<circle cx="256" cy="300" r="180" stroke-width="3" fill="url(#goldGradient)">
 				<animateTransform
-					attributeType="XML"
 					attributeName="transform"
 					type="rotate"
-					from="360"
-					to="0"
-					begin="0"
+					values="360;0"
 					dur="{time}s"
 					repeatCount={animate ? 'indefinite' : 0} />
 			</circle>
-			<rect x="0" y="0" width="220%" height="220%" fill="url(#gradient)">
+
+			<!-- Sliding rectangle (right to left) -->
+			<rect x="0" y="0" width="220%" height="220%" fill="url(#goldGradient)">
 				<animate
-					attributeType="XML"
 					attributeName="x"
-					from="0"
-					to="220%"
+					values="0;220%"
 					dur="{time}s"
 					repeatCount={animate ? 'indefinite' : 0} />
 			</rect>
-			<rect x="-220%" y="0" width="220%" height="220%" fill="url(#gradient)">
+
+			<!-- Sliding rectangle (left to center) -->
+			<rect x="-220%" y="0" width="220%" height="220%" fill="url(#goldGradient)">
 				<animate
-					attributeType="XML"
 					attributeName="x"
-					from="-220%"
-					to="0"
+					values="-220%;0"
 					dur="{time}s"
 					repeatCount={animate ? 'indefinite' : 0} />
 			</rect>
 		</pattern>
 	</defs>
-	<title>Cariari.Community</title>
-	<g id="bat" fill="url(#pattern)">
+
+	<!-- Main bat shape -->
+	<g id="batShape" fill="url(#animatedPattern)">
 		<path
-			class="cls-1 {kind}"
-			d="M166 0C125.5 47.9769 119.5 67.6474 119.5 91.1561C93.9 105.741 84.5 147.129 83 166C81.5 147.129 72.1 105.741 46.5 91.1561C46.5 67.6474 40.5 47.9769 0 0C37.2 29.9376 70.8333 63.6493 83 76.763C95.1667 63.6493 128.8 29.9376 166 0Z"
-			transform="translate(-1 -1)" />
+			class="shape {kind}"
+			transform="translate(-1 -1)"
+			d="M488 0c-16.92 73.66-24.52 84.53-51.96 126.8-102.7 158.18-87 148.52-87 199.24C295.87 341.49 264.86 456.45 256 512c-8.86-55.55-39.88-170.5-93.04-185.96 0-50.72 15.7-41.06-87-199.25C48.52 84.53 40.92 73.66 24 0c20.94 51.92 39.88 82.11 118.42 169.06L256 287.4l113.58-118.34C448.13 82.1 467.06 51.92 488 0Z" />
 	</g>
+
+	<!-- Optional ring around the logo -->
 	{#if ring}
-		<g id="ring" stroke="url(#pattern)">
-			<circle class="cls-2 {kind}" cx="83" cy="82.5202" r="57.2736" stroke-width="3" />
+		<g id="ringShape" stroke="url(#animatedPattern)">
+			<circle
+				class="ring {kind}"
+				cx="256"
+				cy="300"
+				r="180"
+				stroke-width="3"
+				fill="none" />
 		</g>
 	{/if}
 </svg>
@@ -88,27 +97,27 @@
 	.logo {
 		z-index: 10;
 		cursor: default;
-	}
-	.fixed {
-		position: fixed;
-		top: var(--size-1);
-		left: var(--size-1);
+		&.fixed {
+			position: fixed;
+			top: var(--size-1);
+			left: var(--size-1);
+		}
+		&.invert {
+			mix-blend-mode: difference;
+		}
 	}
 
-	.cls-2 {
+	.ring {
 		fill: none;
 		stroke-width: 6px;
+		&.bw {
+			stroke: var(--text-1);
+		}
 	}
-	.cls-2.bw {
-		stroke: var(--text-1, #231f20);
-	}
-	.cls-1 {
+	.shape {
 		fill-rule: evenodd;
-	}
-	.cls-1.bw {
-		fill: var(--text-1, #231f20);
-	}
-	.invert {
-		mix-blend-mode: difference;
+		&.bw {
+			fill: var(--text-1);
+		}
 	}
 </style>

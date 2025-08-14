@@ -6,7 +6,7 @@
 <div transition:fade class="splash">
 	<div class="backdrop"></div>
 
-	<LogoSvg animate={true} invert={true} ring={false} kind="gold" size="69" time={3} />
+	<LogoSvg animate={false} invert={true} ring={true} kind="bw" size="69" time={1} />
 </div>
 
 <style>
@@ -20,6 +20,8 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		height: 100dvh;
+		width: 100dvw;
 	}
 	.backdrop {
 		z-index: 8;

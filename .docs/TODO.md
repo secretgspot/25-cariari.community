@@ -3,28 +3,6 @@
 - [-] Larger than mobile styling
 - [ ] what is the point of /api/comments and /api/comments/[id] when comments are available under each drill down /api/events/[id]/comments? should comment api only be used for posting/editing/deleting comments from Comments component? is it used for listin right now?
 - [ ] think of a way to expand linked button to be compatable with profile aside
-- [x] notice Start and End don't appear in proper format.
-
----
-
-## Improvement Suggestions
-
-| File Path | Suggestion | Priority |
-| :--- | :--- | :--- |
-| **General** |
-| `src/routes/` | The API endpoints in `src/routes/(api)/api/` have a lot of repeated code for authorization and error handling. This could be handled by a middleware or a helper function. | High |
-| **Svelte Components** |
-| `src/lib/Icon.svelte` | The `Icon.svelte` component contains a large number of SVG paths. These could be loaded dynamically to reduce the initial bundle size. | Medium |
-| `src/lib/Dialog.svelte` | The `Dialog.svelte` component could be made more generic to handle different types of content, not just forms. | Low |
-| `src/lib/Nav.svelte` | The navigation logic could be simplified by using a more data-driven approach, rather than a series of `{#if}` blocks. | Medium |
-| `src/routes/(app)/profile/+page.svelte` | The `handleDelete` function is duplicated across multiple components. This could be moved to a central location. | High |
-| `src/routes/(app)/**/Add*.svelte` | The `Add*Form.svelte` components share a lot of similar logic for handling form submissions and file uploads. This could be extracted into a reusable component or a set of utility functions. | High |
-| **Performance** |
-| `src/routes/(app)/+page.server.js` | The `load` function for the homepage fetches data from four different endpoints. These could be combined into a single endpoint to reduce the number of network requests. | High |
-| `src/routes/(app)/profile/+page.server.js` | The `load` function for the profile page fetches data from five different endpoints in parallel. While this is good, the data could be combined into a single endpoint to reduce complexity. | Medium |
-| **Code Style** |
-| General | There are some inconsistencies in code formatting and style. Running a linter and a formatter across the project would improve code quality. | Low |
-| `src/lib/utils/vibrate.js` & `src/lib/utils/audio.js` | The `vibrate.js` and `audio.js` utils have a similar structure for handling user settings. This could be abstracted into a more generic "effects" utility. | Low |
 
 ---
 
