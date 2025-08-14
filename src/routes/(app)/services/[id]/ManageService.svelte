@@ -21,12 +21,8 @@
 		title: service?.title || '',
 		description: service?.description || '',
 		category: service?.category || '',
-		start_date: service?.start_date
-			? new Date(service.start_date).toISOString().slice(0, 10)
-			: '',
-		end_date: service?.end_date
-			? new Date(service.end_date).toISOString().slice(0, 10)
-			: '',
+		start_date: service?.start_date || '',
+		end_date: service?.end_date || '',
 	});
 
 	// Update form data when service data changes
@@ -36,12 +32,8 @@
 				title: service.title || '',
 				description: service.description || '',
 				category: service.category || '',
-				start_date: service.start_date
-					? new Date(service.start_date).toISOString().slice(0, 10)
-					: '',
-				end_date: service.end_date
-					? new Date(service.end_date).toISOString().slice(0, 10)
-					: '',
+				start_date: service.start_date || '',
+				end_date: service.end_date || '',
 			};
 		}
 	});

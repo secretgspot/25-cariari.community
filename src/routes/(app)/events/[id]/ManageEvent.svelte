@@ -34,12 +34,8 @@
 	let formData = $state({
 		title: event?.title || '',
 		description: event?.description || '',
-		event_start_date: event?.event_start_date
-			? new Date(event.event_start_date).toISOString().slice(0, 16)
-			: '',
-		event_end_date: event?.event_end_date
-			? new Date(event.event_end_date).toISOString().slice(0, 16)
-			: '',
+		event_start_date: event?.event_start_date || '',
+		event_end_date: event?.event_end_date || '',
 		location: event?.location || '',
 		category: event?.category || '',
 	});
@@ -50,12 +46,8 @@
 			formData = {
 				title: event.title || '',
 				description: event.description || '',
-				event_start_date: event.event_start_date
-					? new Date(event.event_start_date).toISOString().slice(0, 16)
-					: '',
-				event_end_date: event.event_end_date
-					? new Date(event.event_end_date).toISOString().slice(0, 16)
-					: '',
+				event_start_date: event.event_start_date || '',
+				event_end_date: event.event_end_date || '',
 				location: event.location || '',
 				category: event.category || '',
 			};
@@ -99,20 +91,6 @@
 		submitter,
 	}) => {
 		isSubmitting = true;
-
-		// Convert datetime-local values to ISO strings for consistent handling
-		if (formData.event_start_date) {
-			enhanceFormData.set(
-				'event_start_date',
-				new Date(formData.event_start_date).toISOString(),
-			);
-		}
-		if (formData.event_end_date) {
-			enhanceFormData.set(
-				'event_end_date',
-				new Date(formData.event_end_date).toISOString(),
-			);
-		}
 
 		// Add compressed file to form data if available
 		if (compressedFile) {

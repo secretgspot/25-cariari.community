@@ -21,7 +21,7 @@
 		title: post?.title || '',
 		description: post?.description || '',
 		category: post?.category || 'Lost',
-		date: post?.date ? new Date(post.date).toISOString().split('T')[0] : '',
+		date: post?.date || '',
 		location: post?.location || '',
 		contact: post?.contact || '',
 	});
@@ -33,7 +33,7 @@
 				title: post.title || '',
 				description: post.description || '',
 				category: post.category || 'Lost',
-				date: post.date ? new Date(post.date).toISOString().split('T')[0] : '',
+				date: post.date || '',
 				location: post.location || '',
 				contact: post.contact || '',
 			};

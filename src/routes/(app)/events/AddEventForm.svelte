@@ -89,14 +89,6 @@
 		error = null;
 		success = false;
 
-		// Convert datetime-local values to ISO strings for consistent handling
-		if (formData.startDate) {
-			enhanceFormData.set('event_start_date', new Date(formData.startDate).toISOString());
-		}
-		if (formData.endDate) {
-			enhanceFormData.set('event_end_date', new Date(formData.endDate).toISOString());
-		}
-
 		// Add compressed file to form data if available
 		if (compressedFile) {
 			enhanceFormData.append('image_file', compressedFile);

@@ -18,12 +18,8 @@
 		title: notice?.title || '',
 		description: notice?.description || '',
 		urgency: notice?.urgency || 'Default',
-		start_date: notice?.start_date
-			? new Date(notice.start_date).toISOString().slice(0, 10)
-			: '',
-		end_date: notice?.end_date
-			? new Date(notice.end_date).toISOString().slice(0, 10)
-			: '',
+		start_date: notice?.start_date || '',
+		end_date: notice?.end_date || '',
 	});
 
 	// Update form data when notice data changes
@@ -33,12 +29,8 @@
 				title: notice.title || '',
 				description: notice.description || '',
 				urgency: notice.urgency || 'Default',
-				start_date: notice.start_date
-					? new Date(notice.start_date).toISOString().slice(0, 10)
-					: '',
-				end_date: notice.end_date
-					? new Date(notice.end_date).toISOString().slice(0, 10)
-					: '',
+				start_date: notice.start_date || '',
+				end_date: notice.end_date || '',
 			};
 		}
 	});
@@ -134,7 +126,7 @@
 			<div class="form-group">
 				<label for="start_date" class="form-label">Start Date</label>
 				<input
-					type="date"
+					type="datetime-local"
 					id="start_date"
 					name="start_date"
 					bind:value={formData.start_date}
@@ -145,7 +137,7 @@
 			<div class="form-group">
 				<label for="end_date" class="form-label">End Date</label>
 				<input
-					type="date"
+					type="datetime-local"
 					id="end_date"
 					name="end_date"
 					bind:value={formData.end_date}

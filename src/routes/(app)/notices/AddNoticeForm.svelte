@@ -93,11 +93,7 @@
 	<div class="form-group">
 		<label for="urgency" class="form-label"
 			>Urgency <span class="required">*</span></label>
-		<select
-			id="urgency"
-			name="urgency"
-			bind:value={formData.urgency}
-			class="form-select">
+		<select id="urgency" name="urgency" bind:value={formData.urgency} class="form-select">
 			{#each urgencyOptions as option}
 				<option value={option}>{option}</option>
 			{/each}
@@ -107,7 +103,7 @@
 	<div class="form-group">
 		<label for="start_date" class="form-label">Start Date</label>
 		<input
-			type="date"
+			type="datetime-local"
 			id="start_date"
 			name="start_date"
 			bind:value={formData.start_date}
@@ -117,7 +113,7 @@
 	<div class="form-group">
 		<label for="end_date" class="form-label">End Date</label>
 		<input
-			type="date"
+			type="datetime-local"
 			id="end_date"
 			name="end_date"
 			bind:value={formData.end_date}
