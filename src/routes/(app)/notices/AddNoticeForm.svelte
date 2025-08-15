@@ -2,6 +2,7 @@
 <script>
 	import { enhance } from '$app/forms';
 	import Button from '$lib/buttons/Button.svelte';
+	import Textarea from '$lib/Textarea.svelte';
 
 	let { onNoticeAdded } = $props();
 
@@ -81,13 +82,14 @@
 	<div class="form-group">
 		<label for="description" class="form-label"
 			>Description <span class="required">*</span></label>
-		<textarea
+		<Textarea name="description" bind:value={formData.description} required />
+		<!-- <textarea
 			id="description"
 			name="description"
 			bind:value={formData.description}
 			required
 			placeholder="Use **bold**, *italic*, and [links](url) for formatting"
-			class="form-textarea"></textarea>
+			class="form-textarea"></textarea> -->
 	</div>
 
 	<div class="form-group">
@@ -120,6 +122,13 @@
 			class="form-input" />
 	</div>
 
+	<Button type="submit" white outline right {loading} disabled={loading}>
+		{#snippet icon()}
+			📌
+		{/snippet}
+		{loading ? 'Adding...' : 'Add Notice'}
+	</Button>
+
 	{#if error}
 		<p class="error-message">{error}</p>
 	{/if}
@@ -127,13 +136,6 @@
 	{#if success}
 		<p class="success-message">Notice added successfully!</p>
 	{/if}
-
-	<Button type="submit" white outline right {loading} disabled={loading}>
-		{#snippet icon()}
-			📌
-		{/snippet}
-		{loading ? 'Adding...' : 'Add Notice'}
-	</Button>
 </form>
 
 <style>

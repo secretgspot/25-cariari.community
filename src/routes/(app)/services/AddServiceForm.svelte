@@ -3,6 +3,7 @@
 	import { enhance } from '$app/forms';
 	import Button from '$lib/buttons/Button.svelte';
 	import { compressFile } from '$lib/utils/file.js';
+	import Textarea from '$lib/Textarea.svelte';
 
 	let { onServiceAdded } = $props();
 
@@ -133,13 +134,14 @@
 	<div class="form-group">
 		<label for="description" class="form-label"
 			>Description <span class="required">*</span></label>
-		<textarea
+		<Textarea name="description" bind:value={formData.description} required />
+		<!-- <textarea
 			id="description"
 			name="description"
 			bind:value={formData.description}
 			required
 			placeholder="Use **bold**, *italic*, and [links](url) for formatting"
-			class="form-textarea"></textarea>
+			class="form-textarea"></textarea> -->
 	</div>
 
 	<div class="form-group">
@@ -172,14 +174,6 @@
 			onchange={handleFileChange} />
 	</div>
 
-	{#if error}
-		<p class="error-message">{error}</p>
-	{/if}
-
-	{#if success}
-		<p class="success-message">Service added successfully!</p>
-	{/if}
-
 	<input type="hidden" name="start_date" value={formData.start_date} />
 	<input type="hidden" name="end_date" value={formData.end_date} />
 
@@ -189,6 +183,14 @@
 		{/snippet}
 		{loading ? 'Adding...' : 'Add Service'}
 	</Button>
+
+	{#if error}
+		<p class="error-message">{error}</p>
+	{/if}
+
+	{#if success}
+		<p class="success-message">Service added successfully!</p>
+	{/if}
 </form>
 
 <style>

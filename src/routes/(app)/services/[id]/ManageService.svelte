@@ -6,6 +6,7 @@
 	import { compressFile } from '$lib/utils/file.js';
 	import Dialog from '$lib/Dialog.svelte';
 	import Icon from '$lib/Icon.svelte';
+	import Textarea from '$lib/Textarea.svelte';
 
 	let { service, isOwner, is_admin } = $props();
 	let isSubmitting = $state(false);
@@ -143,7 +144,12 @@
 			<div class="form-group">
 				<label for="description" class="form-label"
 					>Description <span class="required">*</span></label>
-				<textarea
+				<Textarea
+					name="description"
+					bind:value={formData.description}
+					required
+					disabled={isSubmitting} />
+				<!-- <textarea
 					id="description"
 					name="description"
 					bind:value={formData.description}
@@ -151,7 +157,7 @@
 					disabled={isSubmitting}
 					rows="5"
 					placeholder="Use **bold**, *italic*, and [links](url) for formatting"
-					class="form-textarea"></textarea>
+					class="form-textarea"></textarea> -->
 			</div>
 
 			<div class="form-group">

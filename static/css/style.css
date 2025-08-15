@@ -150,6 +150,13 @@ code {
 	border: none;
 }
 
+hr {
+	border: 0;
+	height: 1px;
+	background: var(--surface-3);
+	background-image: var(--gradient-16);
+}
+
 /* Common ADD FORM styling */
 .add-form {
 	border: var(--border-size-1) solid var(--surface-2);
@@ -165,6 +172,13 @@ code {
 		h2 {
 			margin-top: 0;
 		}
+	}
+
+	.error-message {
+		padding: var(--size-3);
+		border: var(--border-size-1) solid var(--red-6);
+		border-radius: var(--radius-2);
+		margin-bottom: 0;
 	}
 }
 
@@ -217,23 +231,6 @@ code {
 
 		>svg {
 			rotate: .25turn;
-		}
-	}
-
-	.form-message {
-		background-color: var(--green-1);
-		color: var(--green-12);
-		padding: var(--size-3);
-		border: var(--border-size-1) solid var(--green-6);
-		border-radius: var(--radius-2);
-		border-top-left-radius: 0;
-		border-top-right-radius: 0;
-		margin-bottom: 0;
-
-		&.error {
-			background-color: var(--red-1);
-			color: var(--red-12);
-			border-color: var(--red-6);
 		}
 	}
 

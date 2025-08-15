@@ -450,8 +450,8 @@ CREATE TABLE IF NOT EXISTS "public"."events" (
     "user_id" "uuid",
     "title" "text" NOT NULL,
     "description" "text" NOT NULL,
-    "event_start_date" timestamp with time zone NOT NULL,
-    "event_end_date" timestamp with time zone,
+    "event_start_date" timestamp without time zone NOT NULL,
+    "event_end_date" timestamp without time zone,
     "location" "text",
     "image_url" "text",
     "category" "text",
@@ -487,8 +487,8 @@ CREATE TABLE IF NOT EXISTS "public"."notices" (
     "title" "text" NOT NULL,
     "description" "text" NOT NULL,
     "urgency" "text",
-    "start_date" timestamp with time zone,
-    "end_date" timestamp with time zone,
+    "start_date" timestamp without time zone,
+    "end_date" timestamp without time zone,
     "created_at" timestamp with time zone DEFAULT "now"(),
     "updated_at" timestamp with time zone DEFAULT "now"()
 );
@@ -603,6 +603,10 @@ CREATE INDEX "idx_comments_user_id_created_at" ON "public"."comments" USING "btr
 
 
 CREATE INDEX "idx_events_end_date" ON "public"."events" USING "btree" ("event_end_date");
+
+
+
+CREATE INDEX "idx_events_start_date" ON "public"."events" USING "btree" ("event_start_date");
 
 
 

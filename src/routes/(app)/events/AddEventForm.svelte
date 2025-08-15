@@ -3,6 +3,7 @@
 	import Button from '$lib/buttons/Button.svelte';
 	import { compressFile } from '$lib/utils/file.js';
 	import { getTodayDateTimeString } from '$lib/utils/time.js';
+	import Textarea from '$lib/Textarea.svelte';
 
 	let { onEventAdded } = $props();
 
@@ -138,13 +139,14 @@
 	<div class="form-group">
 		<label for="description" class="form-label"
 			>Description <span class="required">*</span></label>
-		<textarea
+		<Textarea name="description" bind:value={formData.description} required />
+		<!-- <textarea
 			id="description"
 			name="description"
 			bind:value={formData.description}
 			required
 			placeholder="Use **bold**, *italic*, and [links](url) for formatting"
-			class="form-textarea"></textarea>
+			class="form-textarea"></textarea> -->
 	</div>
 
 	<div class="form-group">
@@ -213,6 +215,13 @@
 			onchange={handleFileChange} />
 	</div>
 
+	<Button type="submit" white outline right {loading} disabled={loading}>
+		{#snippet icon()}
+			📌
+		{/snippet}
+		{loading ? 'Adding...' : 'Add Event'}
+	</Button>
+
 	{#if error}
 		<p class="error-message">{error}</p>
 	{/if}
@@ -220,13 +229,6 @@
 	{#if success}
 		<p class="success-message">Notice added successfully!</p>
 	{/if}
-
-	<Button type="submit" white outline right {loading} disabled={loading}>
-		{#snippet icon()}
-			📌
-		{/snippet}
-		{loading ? 'Adding...' : 'Add Event'}
-	</Button>
 </form>
 
 <style>

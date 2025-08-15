@@ -7,6 +7,7 @@
 	import { formatToLocalDateTime } from '$lib/utils/time.js';
 	import Dialog from '$lib/Dialog.svelte';
 	import Icon from '$lib/Icon.svelte';
+	import Textarea from '$lib/Textarea.svelte';
 
 	let { event, isOwner, is_admin } = $props();
 	let isSubmitting = $state(false);
@@ -16,8 +17,6 @@
 	let compressedFile = $state(null);
 	let previewUrl = $state(null);
 	let fileInput = $state();
-
-	
 
 	// Category options matching the add form structure
 	const categoryOptions = [
@@ -159,14 +158,19 @@
 			<div class="form-group">
 				<label for="description" class="form-label"
 					>Description <span class="required">*</span></label>
-				<textarea
+				<Textarea
+					name="description"
+					bind:value={formData.description}
+					required
+					disabled={isSubmitting} />
+				<!-- <textarea
 					id="description"
 					name="description"
 					bind:value={formData.description}
 					required
 					disabled={isSubmitting}
 					placeholder="Use **bold**, *italic*, and [links](url) for formatting"
-					class="form-textarea"></textarea>
+					class="form-textarea"></textarea> -->
 			</div>
 
 			<div class="form-group">

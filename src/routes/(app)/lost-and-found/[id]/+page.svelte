@@ -19,7 +19,7 @@
 
 <div class="lost-found-detail-container">
 	{#if data.post}
-		<h1>{data.post.title} ({data.post.category})</h1>
+		<h1>{data.post.title}</h1>
 
 		<div class="meta">
 			<span>Posted: {timeFromLong(data.post.created_at)}</span>
@@ -29,6 +29,8 @@
 		{#if data.post.image_url}
 			<img src={data.post.image_url} alt={data.post.title} class="image" />
 		{/if}
+
+		<div class="category">{data.post.category}</div>
 
 		<div class="description">{@html formatText(data.post.description)}</div>
 
@@ -91,6 +93,12 @@
 			height: auto;
 			border-radius: var(--radius-2);
 			margin-bottom: 0;
+		}
+
+		.category {
+			text-transform: uppercase;
+			text-align: center;
+			font-size: x-large;
 		}
 
 		.description {

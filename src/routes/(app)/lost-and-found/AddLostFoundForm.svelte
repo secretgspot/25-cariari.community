@@ -2,6 +2,7 @@
 	import { enhance } from '$app/forms';
 	import Button from '$lib/buttons/Button.svelte';
 	import { compressFile } from '$lib/utils/file.js';
+	import Textarea from '$lib/Textarea.svelte';
 
 	let { onLostAndFoundAdded } = $props();
 
@@ -136,13 +137,14 @@
 	<div class="form-group">
 		<label for="description" class="form-label"
 			>Description <span class="required">*</span></label>
-		<textarea
+		<Textarea name="description" bind:value={formData.description} required />
+		<!-- <textarea
 			id="description"
 			name="description"
 			bind:value={formData.description}
 			required
 			placeholder="Use **bold**, *italic*, and [links](url) for formatting"
-			class="form-textarea"></textarea>
+			class="form-textarea"></textarea> -->
 	</div>
 
 	<div class="form-group">
@@ -211,6 +213,13 @@
 			class="form-input" />
 	</div>
 
+	<Button type="submit" white outline right {loading} disabled={loading}>
+		{#snippet icon()}
+			📌
+		{/snippet}
+		{loading ? 'Adding...' : 'Add Lost/Found'}
+	</Button>
+
 	{#if error}
 		<p class="error-message">{error}</p>
 	{/if}
@@ -218,13 +227,6 @@
 	{#if success}
 		<p class="success-message">Lost/Found added successfully!</p>
 	{/if}
-
-	<Button type="submit" white outline right {loading} disabled={loading}>
-		{#snippet icon()}
-			📌
-		{/snippet}
-		{loading ? 'Adding...' : 'Add Lost/Found'}
-	</Button>
 </form>
 
 <style>

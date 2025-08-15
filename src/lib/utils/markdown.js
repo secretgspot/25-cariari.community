@@ -11,8 +11,9 @@ export function formatText(text) {
 
 	text = text.replace(/\r\n/g, '\n');
 
-	// Inline-level rules
+	// Inline-level rules (order matters - images must come before links)
 	const inlineRules = [
+		{ regex: /!\[([^\]]*)\]\(([^)]+)\)/g, replacement: '<img src="$2" alt="$1" style="max-width: 100%; height: auto;" loading="lazy" />' },
 		{ regex: /\*\*(.*?)\*\*/g, replacement: '<strong>$1</strong>' },
 		{ regex: /__(.*?)__/g, replacement: '<strong>$1</strong>' },
 		{ regex: /\*(.*?)\*/g, replacement: '<em>$1</em>' },
@@ -87,7 +88,7 @@ export function formatText(text) {
 		let paragraph = '';
 		const result = [];
 		processedLines.forEach(line => {
-			if (line.match(/^<(h[1-3]|ul|ol|li|hr|blockquote|pre)/)) {
+			if (line.match(/^<(h[1-3]|ul|ol|li|hr|blockquote|pre|img)/)) {
 				if (paragraph) {
 					result.push(`<p>${paragraph}</p>`);
 					paragraph = '';
@@ -107,9 +108,6 @@ export function formatText(text) {
 	return htmlBlocks.join('\n\n');
 }
 
-
-
-
 /**
  * Strip markdown and return plain text
  * @param {string} markdown - The markdown string
@@ -121,6 +119,7 @@ export function stripMarkdown(markdown) {
 	}
 
 	return markdown
+		.replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1') // Images (extract alt text)
 		.replace(/#{1,6}\s+/g, '') // Headers
 		.replace(/\*\*(.*?)\*\*/g, '$1') // Bold **
 		.replace(/__(.*?)__/g, '$1') // Bold __
