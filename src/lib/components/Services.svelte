@@ -25,7 +25,7 @@
 					</div>
 				{/if}
 				<strong class="message">{service.title}</strong>
-				<Icon size="21" kind={service.category} />
+				<Icon size="21" kind={service.category.toLowerCase()} />
 				<ExpirationIndicator
 					start_date={service.start_date}
 					end_date={service.end_date} />
