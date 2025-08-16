@@ -203,15 +203,6 @@
 			border-bottom-right-radius: 0;
 		}
 
-		/* .meta {
-			display: flex;
-			justify-content: space-between;
-			font-size: small;
-			color: var(--text-2);
-			margin-inline: var(--size-3);
-			margin-block: var(--size-1);
-		} */
-
 		.title {
 			margin-block: var(--size-3);
 			margin-inline: var(--size-3);

@@ -179,10 +179,8 @@
 		width: inherit;
 		height: inherit;
 		background: transparent;
-		/* color: var(--primary); */
 		&:hover {
 			background: transparent;
-			/* color: var(--primary-content); */
 			outline: solid 3px var(--surface-3);
 		}
 

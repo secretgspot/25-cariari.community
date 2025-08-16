@@ -109,14 +109,6 @@
 				position: absolute;
 				font-size: small;
 				background: var(--surface-3);
-				/* &.lost {
-					background-color: var(--red-1);
-					color: var(--red-6);
-				} */
-				/* &.found {
-					background-color: var(--green-1);
-					color: var(--green-6);
-				} */
 			}
 
 			.image {

@@ -79,7 +79,6 @@
 </dialog>
 
 <style>
-	/* Your styles here */
 	dialog {
 		display: grid;
 		grid-template-rows: min-content 1fr min-content;

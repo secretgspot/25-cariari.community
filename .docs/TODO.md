@@ -1,10 +1,9 @@
 # TODO
 
-- [-] Larger than mobile styling
 - [ ] what is the point of /api/comments and /api/comments/[id] when comments are available under each drill down /api/events/[id]/comments? should comment api only be used for posting/editing/deleting comments from Comments component? is it used for listin right now?
-- [x] think of a way to expand button to be compatable with profile aside (block was already there for it)
 - [ ] when new item added, should it go to the new item page instead of main page?
 - [ ] confirmation dialog for deleting ad in admin?
+- [x] unused css cleanup
 
 ---
 
@@ -12,11 +11,6 @@
 
 - [ ] Create a helper function `withAuth` in `src/lib/utils/api_auth.js` to handle authorization and error handling.
 - [ ] Refactor all API endpoints in `src/routes/(api)/api/` to use the `withAuth` helper function.
-
-## Dynamic Icon Loading
-
-- [x] Move each SVG from `Icon.svelte` into its own file in `static/icons/` (Note: Placeholder paths used, manual replacement with original paths required).
-- [x] Refactor `Icon.svelte` to dynamically import and render the appropriate SVG based on the `kind` prop (using Svelte 5 runes).
 
 ## Centralized Dialog Management
 

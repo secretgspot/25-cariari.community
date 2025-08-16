@@ -45,7 +45,7 @@
 		align-items: center;
 		cursor: pointer;
 		user-select: none;
-		gap: var(--size-3); /* Adjust as needed */
+		gap: var(--size-3);
 		input {
 			display: none;
 			&:checked + .toggle-switch {
@@ -54,7 +54,6 @@
 				&::before {
 					transform: translateX(20px); /* Move knob to the right */
 					background-color: var(--green-4); /* Knob color */
-					/* outline: 2px solid var(--green-6); */
 				}
 			}
 		}
@@ -62,8 +61,8 @@
 
 	.toggle-switch {
 		position: relative;
-		width: 40px; /* Width of the switch track */
-		height: 20px; /* Height of the switch track */
+		width: 40px;
+		height: 20px;
 		outline: 1px solid var(--surface-2);
 		border-radius: var(--radius-2);
 		&::before {
@@ -74,13 +73,12 @@
 			width: 16px; /* Size of the toggle knob */
 			height: 16px; /* Size of the toggle knob */
 			background-color: var(--surface-4); /* Knob color */
-			/* outline: 2px solid var(--stone-12); */
 			border-radius: inherit;
 			transition: transform var(--transition) ease-in-out;
 		}
 	}
 
 	.toggle-label {
-		color: inherit; /* Adjust text color as needed */
+		color: inherit;
 	}
 </style>

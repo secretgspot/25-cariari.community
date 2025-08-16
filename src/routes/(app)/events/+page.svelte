@@ -165,22 +165,9 @@
 			left: 0;
 			font-size: small;
 			padding: var(--size-1);
-			border-radius: var(--radius-2);
 			color: var(--text-1);
-			text-shadow: 1px 1px var(--stone-12);
+			text-shadow: 1px 1px var(--surface-1);
 		}
-
-		/* .start-date {
-			position: absolute;
-			top: var(--size-1);
-			left: var(--size-1);
-			background: #f8fafb0f;
-			padding: var(--size-2);
-			border-radius: var(--radius-2);
-			color: var(--blue-0);
-			font-weight: bold;
-			text-shadow: 1px 1px var(--stone-12);
-		} */
 
 		.start-date {
 			position: absolute;
