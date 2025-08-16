@@ -118,7 +118,7 @@
 				</a>
 			{/each}
 		{:else}
-			<p class="no-records">No notices match your search.</p>
+			<p class="no-records">No notices were found.</p>
 		{/if}
 	</div>
 </div>

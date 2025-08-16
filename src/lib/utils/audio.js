@@ -101,15 +101,15 @@ export async function playChimeSequence(sequence) {
  * @param {object|Array<object>} pattern - The audio pattern to play.
  */
 export function playSound(pattern) {
-    if (!pattern) {
-        console.warn(`Audio pattern not found.`);
-        return;
-    }
-    if (Array.isArray(pattern)) {
-        playChimeSequence(pattern);
-    } else {
-        playChime(pattern.frequency, pattern.duration, pattern.volume, pattern.waveType);
-    }
+	if (!pattern) {
+		console.warn(`Audio pattern not found.`);
+		return;
+	}
+	if (Array.isArray(pattern)) {
+		playChimeSequence(pattern);
+	} else {
+		playChime(pattern.frequency, pattern.duration, pattern.volume, pattern.waveType);
+	}
 }
 
 /**
@@ -117,10 +117,10 @@ export function playSound(pattern) {
  * @param {string} [patternName] - Optional: The name of the pattern to play. Defaults to settings.button_sound_pattern.
  */
 export function playButtonSound(patternName) {
-    const currentSettings = get(settings);
-    if (!currentSettings.button_sounds) return;
-    const pattern = patternName ? chimePatterns[patternName] : chimePatterns[currentSettings.button_sound_pattern];
-    playSound(pattern);
+	const currentSettings = get(settings);
+	if (!currentSettings.button_sounds) return;
+	const pattern = patternName ? chimePatterns[patternName] : chimePatterns[currentSettings.button_sound_pattern];
+	playSound(pattern);
 }
 
 /**
@@ -128,10 +128,10 @@ export function playButtonSound(patternName) {
  * @param {string} [patternName] - Optional: The name of the pattern to play. Defaults to settings.navigation_sound_pattern.
  */
 export function playNavigationSound(patternName) {
-    const currentSettings = get(settings);
-    if (!currentSettings.navigation_sound) return;
-    const pattern = patternName ? chimePatterns[patternName] : chimePatterns[currentSettings.navigation_sound_pattern];
-    playSound(pattern);
+	const currentSettings = get(settings);
+	if (!currentSettings.navigation_sound) return;
+	const pattern = patternName ? chimePatterns[patternName] : chimePatterns[currentSettings.navigation_sound_pattern];
+	playSound(pattern);
 }
 
 /**
@@ -139,18 +139,18 @@ export function playNavigationSound(patternName) {
  * @param {'success'|'fail'|'notification'} type - The type of notification.
  */
 export function playNotificationSound(type = 'notification') {
-    const currentSettings = get(settings);
-    if (!currentSettings.notification_sound) return;
-    let patternName;
-    if (type === 'success') {
-        patternName = currentSettings.notification_success_sound_pattern;
-    } else if (type === 'fail') {
-        patternName = currentSettings.notification_error_sound_pattern;
-    } else {
-        patternName = currentSettings.notification_sound_pattern;
-    }
-    const pattern = chimePatterns[patternName];
-    playSound(pattern);
+	const currentSettings = get(settings);
+	if (!currentSettings.notification_sound) return;
+	let patternName;
+	if (type === 'success') {
+		patternName = currentSettings.notification_success_sound_pattern;
+	} else if (type === 'fail') {
+		patternName = currentSettings.notification_error_sound_pattern;
+	} else {
+		patternName = currentSettings.notification_sound_pattern;
+	}
+	const pattern = chimePatterns[patternName];
+	playSound(pattern);
 }
 
 /**
@@ -167,41 +167,41 @@ export function isAudioSupported() {
  */
 export const chimePatterns = {
 	// Basic interaction - single pleasant tone
-	basic: { frequency: 900, duration: 100, volume: 0.1 },
-	tick: { frequency: 30, duration: 90, volume: 0.11 },
-	click: { frequency: 60, duration: 60, volume: 0.1, waveType: 'triangle' },
+	basic: { frequency: 261.626, duration: 100, volume: 0.1 },
+	tick: { frequency: 87.208, duration: 90, volume: 0.11 },
+	click: { frequency: 32.703, duration: 60, volume: 0.1, waveType: 'triangle' },
 	longPress: { frequency: 400, duration: 150, volume: 0.2 },
 	swipe: [
-		{ frequency: 30, duration: 300, delay: 0, volume: 0.03 },
+		{ frequency: 32.703, duration: 300, delay: 0, volume: 0.03 },
 		{ frequency: 9, duration: 600, delay: 30, volume: 0.03 }
 	],
 	navigate: [
-		{ frequency: 60, duration: 200, delay: 0, volume: 0.1 },
-		{ frequency: 30, duration: 300, delay: 0, volume: 0.1 }
+		{ frequency: 61.735, duration: 200, delay: 0, volume: 0.1 },
+		{ frequency: 32.703, duration: 300, delay: 0, volume: 0.1 }
 	],
-	bell: { frequency: 30, duration: 800, volume: 0.2, waveType: 'triangle' },
+	bell: { frequency: 32.703, duration: 800, volume: 0.2, waveType: 'triangle' },
 
 	// Success pattern
 	success: [
-		{ frequency: 120, duration: 100, delay: 0, volume: 0.1, waveType: 'sine' },
-		{ frequency: 180, duration: 100, delay: 90, volume: 0.2, waveType: 'sine' },
-		{ frequency: 360, duration: 100, delay: 30, volume: 0.1, waveType: 'sine' }
+		{ frequency: 261.626, duration: 100, delay: 0, volume: 0.2, waveType: 'square' },
+		{ frequency: 329.628, duration: 100, delay: 0, volume: 0.2, waveType: 'square' },
+		{ frequency: 523.251, duration: 100, delay: 90, volume: 0.1, waveType: 'square' }
 	],
 
 	// Fail pattern
 	fail: [
-		{ frequency: 90, duration: 100, delay: 0, volume: 0.1, waveType: 'square' },
-		{ frequency: 60, duration: 200, delay: 90, volume: 0.1, waveType: 'square' }
+		{ frequency: 97.998, duration: 200, delay: 0, volume: 0.1, waveType: 'square' },
+		{ frequency: 73.416, duration: 200, delay: 90, volume: 0.2, waveType: 'square' }
 	],
 
 	// Additional useful patterns
 	notification: [
-		{ frequency: 120, duration: 60, delay: 0, volume: 0.1 },
+		{ frequency: 123.47, duration: 60, delay: 0, volume: 0.1 },
 		{ frequency: 180, duration: 90, delay: 90, volume: 0.1 }
 	],
 	logout: [
-		{ frequency: 120, duration: 150, delay: 0, volume: 0.3 },
-		{ frequency: 60, duration: 150, delay: 90, volume: 0.3 },
-		{ frequency: 30, duration: 200, delay: 120, volume: 0.3 }
+		{ frequency: 123.47, duration: 150, delay: 0, volume: 0.3 },
+		{ frequency: 61.735, duration: 150, delay: 90, volume: 0.3 },
+		{ frequency: 32.703, duration: 200, delay: 120, volume: 0.3 }
 	],
 };

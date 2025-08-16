@@ -105,7 +105,7 @@
 				</a>
 			{/each}
 		{:else}
-			<p class="no-records">No services match your search.</p>
+			<p class="no-records">No services were found.</p>
 		{/if}
 	</div>
 </div>

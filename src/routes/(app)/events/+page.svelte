@@ -110,7 +110,7 @@
 				</a>
 			{/each}
 		{:else}
-			<p class="no-records">No events match your search.</p>
+			<p class="no-records">No events were found.</p>
 		{/if}
 	</div>
 </div>

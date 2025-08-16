@@ -120,7 +120,7 @@
 				</a>
 			{/each}
 		{:else}
-			<p class="no-records">No lost and found posts match your search.</p>
+			<p class="no-records">No lost & found were found.</p>
 		{/if}
 	</div>
 </div>
