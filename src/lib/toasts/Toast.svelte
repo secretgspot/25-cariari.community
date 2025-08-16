@@ -32,8 +32,6 @@
 		display: flex;
 		border-radius: var(--radius-2);
 		border: var(--border-size-1) solid var(--surface-3);
-		border-top-left-radius: 0;
-		border-top-right-radius: 0;
 		align-items: center;
 		padding: var(--size-1) var(--size-2);
 		gap: var(--size-2);

@@ -1,6 +1,7 @@
 <script>
 	import UsersManagement from './UsersManagement.svelte';
 	import AdManagement from './AdManagement.svelte';
+	import { Button } from '$lib/buttons';
 
 	let { data } = $props();
 
@@ -15,10 +16,19 @@
 <div class="admin-container" data-active-tab={activeTabId}>
 	<aside class="index">
 		<div class="options">
-			<button class:active={activeTabId === 'users'} onclick={() => changeTab('users')}
-				>Users</button>
-			<button class:active={activeTabId === 'ads'} onclick={() => changeTab('ads')}
-				>Ads</button>
+			<Button
+				active={activeTabId === 'users'}
+				onclick={() => changeTab('users')}
+				size="block">
+				Users
+			</Button>
+
+			<Button
+				active={activeTabId === 'ads'}
+				onclick={() => changeTab('ads')}
+				size="block">
+				Ads
+			</Button>
 		</div>
 	</aside>
 
@@ -86,26 +96,6 @@
 				position: sticky;
 				top: 180px;
 				margin-inline-end: var(--size-9);
-
-				button {
-					background-color: transparent;
-					border: 0;
-					text-align: left;
-					color: var(--text-1);
-					padding: var(--size-2);
-					border-radius: var(--radius-2);
-					transition: background-color var(--transition) ease;
-
-					&:hover {
-						background-color: var(--surface-4);
-					}
-
-					&.active {
-						font-weight: bold;
-						background-color: var(--surface-3);
-						color: var(--text-1);
-					}
-				}
 			}
 		}
 

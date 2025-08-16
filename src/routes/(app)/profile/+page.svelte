@@ -7,7 +7,7 @@
 	import { addToast } from '$lib/toasts';
 	import Settings from '$lib/settings/Settings.svelte';
 	import { timeFrom, timeFromLong } from '$lib/utils/time.js';
-	import { LinkButton } from '$lib/buttons';
+	import { Button, LinkButton } from '$lib/buttons';
 	import Icon from '$lib/Icon.svelte';
 
 	let { data } = $props();
@@ -57,26 +57,54 @@
 <div class="profile-container" data-active-tab={activeTabId}>
 	<aside class="index">
 		<div class="options">
-			<button
-				class:active={activeTabId === 'profile'}
-				onclick={() => changeTab('profile')}>Profile</button>
-			<button
-				class:active={activeTabId === 'settings'}
-				onclick={() => changeTab('settings')}>Settings</button>
-			<button
-				class:active={activeTabId === 'notices'}
-				onclick={() => changeTab('notices')}>Notices</button>
-			<button class:active={activeTabId === 'events'} onclick={() => changeTab('events')}
-				>Events</button>
-			<button
-				class:active={activeTabId === 'lostandfound'}
-				onclick={() => changeTab('lostandfound')}>Lost & Found</button>
-			<button
-				class:active={activeTabId === 'services'}
-				onclick={() => changeTab('services')}>Services</button>
-			<button
-				class:active={activeTabId === 'comments'}
-				onclick={() => changeTab('comments')}>Comments</button>
+			<Button
+				active={activeTabId === 'profile'}
+				onclick={() => changeTab('profile')}
+				size="block">
+				Profile
+			</Button>
+
+			<Button
+				active={activeTabId === 'settings'}
+				onclick={() => changeTab('settings')}
+				size="block">
+				Settings
+			</Button>
+
+			<Button
+				active={activeTabId === 'notices'}
+				onclick={() => changeTab('notices')}
+				size="block">
+				Notices
+			</Button>
+
+			<Button
+				active={activeTabId === 'events'}
+				onclick={() => changeTab('events')}
+				size="block">
+				Events
+			</Button>
+
+			<Button
+				active={activeTabId === 'lostandfound'}
+				onclick={() => changeTab('lostandfound')}
+				size="block">
+				Lost & Found
+			</Button>
+
+			<Button
+				active={activeTabId === 'services'}
+				onclick={() => changeTab('services')}
+				size="block">
+				Services
+			</Button>
+
+			<Button
+				active={activeTabId === 'comments'}
+				onclick={() => changeTab('comments')}
+				size="block">
+				Comments
+			</Button>
 		</div>
 	</aside>
 
@@ -278,26 +306,6 @@
 				position: sticky;
 				top: 180px;
 				margin-inline-end: var(--size-9);
-
-				button {
-					background-color: transparent;
-					border: 0;
-					text-align: left;
-					color: var(--text-1);
-					padding: var(--size-2);
-					border-radius: var(--radius-2);
-					transition: background-color var(--transition) ease;
-
-					&:hover {
-						background-color: var(--surface-4);
-					}
-
-					&.active {
-						font-weight: bold;
-						background-color: var(--surface-3);
-						color: var(--text-1);
-					}
-				}
 			}
 		}
 

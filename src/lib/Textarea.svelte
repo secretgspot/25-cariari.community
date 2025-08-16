@@ -140,6 +140,7 @@
 		<button type="button" title="Divider" onclick={insertHorizontalRule}>HR</button>
 	</div>
 	<textarea
+		id="description"
 		bind:this={textareaRef}
 		bind:value
 		class="editor form-textarea"

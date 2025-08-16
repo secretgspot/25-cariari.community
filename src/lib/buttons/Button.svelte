@@ -9,6 +9,7 @@
 		disabled = false,
 		outline = false,
 		right = false,
+		active = false,
 		loading = false,
 		shadow = false,
 		isLink = false,
@@ -95,6 +96,7 @@
 		class:shadow
 		class:outline
 		class:right
+		class:active
 		href={linkHref}
 		target={linkTarget}
 		role="button"
@@ -110,6 +112,7 @@
 		class:shadow
 		class:outline
 		class:right
+		class:active
 		disabled={isDisabled}
 		{...rest}
 		onclick={handleClick}>
@@ -131,6 +134,7 @@
 		user-select: none;
 		transition: background var(--transition) cubic-bezier(0.33, 1, 0.69, 1);
 		touch-action: manipulation;
+		-webkit-tap-highlight-color: transparent;
 		/* z-index: 2; */
 		&:hover,
 		&:active,
@@ -238,14 +242,12 @@
 
 	.block {
 		width: 100%;
-		padding: var(--padding-small);
-		font-weight: 600;
-		user-select: none;
-		-webkit-tap-highlight-color: transparent;
-		&:active,
-		&:focus,
-		&:hover {
-			border-style: solid;
+		border: 0;
+		color: var(--text-1);
+		padding: var(--size-2);
+		border-radius: var(--radius-2);
+		&.active {
+			font-weight: bold;
 		}
 
 		.content_wrap {
@@ -254,7 +256,7 @@
 			.title {
 				display: flex;
 				align-items: center;
-				justify-content: center;
+				/* justify-content: center; */
 			}
 		}
 	}

@@ -67,7 +67,7 @@
 
 html {
 	/* common */
-	--transition: 3ms;
+	--transition: 120ms;
 
 	/* light */
 	--brand-light: var(--stone-12);

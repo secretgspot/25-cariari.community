@@ -50,7 +50,7 @@
 			tips are always welcome and greatly appreciated!
 		</p>
 
-		<Button href="https://buymeacoffee.com/artbyxyu" external={true} size="small" green>
+		<Button href="https://buymeacoffee.com/artbyxyu" external size="small" green>
 			{#snippet icon()}
 				☕
 			{/snippet}
