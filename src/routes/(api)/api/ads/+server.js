@@ -1,8 +1,9 @@
 import { json } from '@sveltejs/kit';
 
-export async function GET({ url, locals: { supabase } }) {
+export async function GET({ request, url, locals: { supabase } }) {
 	try {
-		const { data, error } = await supabase.from('ads').select('*');
+		const origin = request.headers.get('Referer') || url.origin;
+		const { data, error } = await supabase.from('ads').select('*').not('href', 'like', `%${new URL(origin).hostname}%`);
 
 		if (error) {
 			console.error('Error fetching ads:', error);
