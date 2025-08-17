@@ -171,7 +171,7 @@
 			text-transform: uppercase;
 			background: var(--surface-1);
 			padding: calc(var(--size-1) / 2) var(--size-1);
-			border-radius: var(--border-size-3);
+			border-radius: var(--radius-2);
 			pointer-events: none;
 			font-size: xx-small;
 		}
@@ -198,7 +198,7 @@
 		aspect-ratio: 320/100;
 
 		.placeholder-text {
-			font-size: 12px;
+			font-size: small;
 			font-weight: 500;
 			user-select: none;
 
