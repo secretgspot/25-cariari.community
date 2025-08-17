@@ -2,20 +2,7 @@ import { json } from '@sveltejs/kit';
 
 export async function GET({ request, locals: { supabase } }) {
 	try {
-		const origin = request.headers.get('Origin') || request.headers.get('Referer');
-
-		let query = supabase.from('ads').select('*');
-
-		if (origin) {
-			try {
-				const hostname = new URL(origin).hostname;
-				query = query.not('href', 'ilike', `%${hostname}%`);
-			} catch (e) {
-				console.error('Invalid Origin/Referer header:', origin, e);
-			}
-		}
-
-		const { data, error } = await query;
+		const { data, error } = await supabase.from('ads').select('*');
 
 		if (error) {
 			console.error('Error fetching ads:', error);
