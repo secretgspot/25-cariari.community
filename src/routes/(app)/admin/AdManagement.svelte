@@ -8,6 +8,7 @@
 	import Toggle from '$lib/Toggle.svelte';
 	import { addToast } from '$lib/toasts';
 	import Icon from '$lib/Icon.svelte';
+	import Dialog from '$lib/Dialog.svelte';
 
 	let { data } = $props();
 
@@ -16,6 +17,8 @@
 	let previewUrl = $state(null);
 	let fileInput = $state();
 	let loading = $state(false);
+	let showDeleteDialog = $state(false);
+	let adToDelete = $state(null);
 
 	let formData = $state({
 		id: null,
@@ -77,57 +80,48 @@
 		previewUrl = null;
 		if (fileInput) fileInput.value = '';
 	}
+
+	function confirmDelete(ad) {
+		adToDelete = ad;
+		showDeleteDialog = true;
+	}
+
+	async function deleteAd() {
+		if (!adToDelete) return;
+
+		loading = true;
+		const formData = new FormData();
+		formData.append('id', adToDelete.id);
+
+		const response = await fetch('?/deleteAd', {
+			method: 'POST',
+			body: formData,
+		});
+
+		loading = false;
+		showDeleteDialog = false;
+
+		if (response.ok) {
+			addToast({
+				message: 'Ad deleted successfully!',
+				type: 'success',
+				timeout: 1200,
+			});
+			clearSelection();
+			await invalidateAll();
+		} else {
+			addToast({
+				message: 'Failed to delete ad.',
+				type: 'error',
+				dismissible: true,
+				timeout: 0,
+			});
+		}
+		adToDelete = null;
+	}
 </script>
 
 <Divider>Ad Management</Divider>
-
-<!-- Delete form - separate from main form to avoid nesting -->
-{#if selectedAd}
-	<div class="form-actions">
-		<form
-			method="POST"
-			action="?/deleteAd"
-			use:enhance={({ formData: enhanceFormData, cancel }) => {
-				loading = true;
-
-				return async ({ result, update }) => {
-					loading = false;
-
-					if (result.type === 'success') {
-						addToast({
-							message: result.data?.message || 'Ad deleted successfully!',
-							type: 'success',
-							timeout: 1200,
-						});
-						clearSelection();
-						await invalidateAll();
-					} else if (result.type === 'failure') {
-						addToast({
-							message: result.data?.message || 'Failed to delete ad.',
-							type: 'error',
-							dismissible: true,
-							timeout: 0,
-						});
-					} else if (result.type === 'error') {
-						addToast({
-							message: 'An unexpected error occurred.',
-							type: 'error',
-							dismissible: true,
-							timeout: 0,
-						});
-					}
-				};
-			}}>
-			<input type="hidden" name="id" value={selectedAd.id} />
-			<Button type="submit" size="small" red white {loading} disabled={loading}>
-				{#snippet icon()}
-					<Icon kind="delete" size="21" />
-				{/snippet}
-				Delete
-			</Button>
-		</form>
-	</div>
-{/if}
 
 <!-- Main create/update form -->
 <form
@@ -172,6 +166,24 @@
 		};
 	}}>
 	<input type="hidden" name="id" value={formData.id} />
+
+	{#if selectedAd}
+		<div class="form-actions">
+			<Button
+				type="button"
+				size="small"
+				onclick={() => confirmDelete(selectedAd)}
+				{loading}
+				disabled={loading}
+				red
+				white>
+				{#snippet icon()}
+					<Icon kind="delete" size="21" />
+				{/snippet}
+				Delete
+			</Button>
+		</div>
+	{/if}
 
 	<div class="form-group">
 		<label for="title" class="form-label">Title</label>
@@ -304,6 +316,14 @@
 		{/each}
 	</div>
 {/if}
+
+<Dialog
+	open={showDeleteDialog}
+	title="Delete Ad"
+	message="Are you sure you want to delete the ad '{adToDelete?.title}'? This action cannot be undone."
+	type="confirm"
+	onConfirm={deleteAd}
+	onCancel={() => (showDeleteDialog = false)} />
 
 <style>
 	.no-ads {

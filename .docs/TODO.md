@@ -2,7 +2,7 @@
 
 - [ ] what is the point of /api/comments and /api/comments/[id] when comments are available under each drill down /api/events/[id]/comments? should comment api only be used for posting/editing/deleting comments from Comments component? is it used for listin right now?
 - [ ] when new item added, should it go to the new item page instead of main page?
-- [ ] confirmation dialog for deleting ad in admin?
+- [x] confirmation dialog for deleting ad in admin?
 
 ---
 
@@ -17,11 +17,6 @@
 - [ ] Create a `DialogManager.svelte` component in `src/lib/dialog/` that listens to the store.
 - [ ] Add `<DialogManager />` to the root `+layout.svelte` file.
 - [ ] Refactor components that use `<Dialog>` to use the new `showDialog` function.
-
-## Data-Driven Navigation
-
-- [ ] Create a `navLinks` data structure in `Nav.svelte` to define all navigation links and their visibility rules.
-- [ ] Refactor the `Nav.svelte` template to use an `{#each}` loop to render links from the `navLinks` data structure.
 
 ## Centralized Deletion Logic
 
