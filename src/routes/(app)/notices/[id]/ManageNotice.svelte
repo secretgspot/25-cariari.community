@@ -7,6 +7,7 @@
 	import Icon from '$lib/Icon.svelte';
 	import { formatToLocalDateTime } from '$lib/utils/time.js';
 	import Textarea from '$lib/Textarea.svelte';
+	import { sound } from '$lib/utils/audio.js';
 
 	let { notice, isOwner, is_admin } = $props();
 	let isSubmitting = $state(false);
@@ -71,7 +72,7 @@
 
 {#if isOwner || is_admin}
 	<details class="manage-actions">
-		<summary>
+		<summary use:sound={'click'}>
 			<Icon kind="chevron" size="16" />
 			Manage Notice
 		</summary>
@@ -105,14 +106,6 @@
 					bind:value={formData.description}
 					required
 					disabled={isSubmitting} />
-				<!-- <textarea
-					id="description"
-					name="description"
-					bind:value={formData.description}
-					required
-					disabled={isSubmitting}
-					placeholder="Use **bold**, *italic*, and [links](url) for formatting"
-					class="form-textarea"></textarea> -->
 			</div>
 
 			<div class="form-group">
@@ -158,6 +151,7 @@
 					right
 					green
 					white
+					sound_pattern="success"
 					loading={isSubmitting}
 					disabled={isSubmitting}>
 					{#snippet icon()}
@@ -171,6 +165,7 @@
 					size="small"
 					red
 					white
+					sound_pattern="fail"
 					loading={isSubmitting}
 					disabled={isSubmitting}
 					onclick={() => (showDeleteDialog = true)}>

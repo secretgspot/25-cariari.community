@@ -3,6 +3,7 @@
 	import { enhance } from '$app/forms';
 	import { Button } from '$lib/buttons';
 	import { addToast } from '$lib/toasts';
+	import { sound } from '$lib/utils/audio.js';
 	import { compressFile } from '$lib/utils/file.js';
 	import Dialog from '$lib/Dialog.svelte';
 	import Icon from '$lib/Icon.svelte';
@@ -114,7 +115,7 @@
 
 {#if isOwner || is_admin}
 	<details class="manage-actions">
-		<summary>
+		<summary use:sound={'click'}>
 			<Icon kind="chevron" size="16" />
 			Manage Service
 		</summary>

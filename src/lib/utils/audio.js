@@ -154,6 +154,29 @@ export function playNotificationSound(type = 'notification') {
 }
 
 /**
+ * Attaches a click sound to an element.
+ * @param {HTMLElement} node - The element to attach the sound to.
+ * @param {string} [pattern='click'] - The name of the sound pattern to play from chimePatterns.
+ */
+export function sound(node, pattern = 'click') {
+	const handleClick = () => {
+		playButtonSound(pattern);
+	};
+
+	node.addEventListener('click', handleClick, true);
+
+	return {
+		update(newPattern) {
+			pattern = newPattern;
+		},
+		destroy() {
+			node.removeEventListener('click', handleClick, true);
+		}
+	};
+}
+
+
+/**
  * Check if Web Audio API is supported
  * @returns {boolean} - True if audio API is available
  */
