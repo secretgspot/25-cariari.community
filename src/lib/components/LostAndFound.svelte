@@ -84,6 +84,7 @@
 			position: relative;
 			border-radius: var(--radius-2);
 			outline: var(--border-size-2) dotted var(--surface-3);
+			justify-content: normal;
 			&:hover {
 				outline-color: var(--surface-4);
 			}
@@ -98,7 +99,7 @@
 				top: 0;
 				left: 0;
 				font-size: small;
-				background: var(--surface-3);
+				background: var(--surface-1);
 			}
 
 			.image {

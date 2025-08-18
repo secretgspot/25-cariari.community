@@ -3,7 +3,7 @@
 	import { timeFrom } from '$lib/utils/time.js';
 	import { addToast } from '$lib/toasts';
 	import Dialog from '$lib/Dialog.svelte';
-	import { Button } from '$lib/buttons';
+	import { LinkButton } from '$lib/buttons';
 
 	let {
 		comment,
@@ -145,8 +145,21 @@
 			{#if loading}
 				<span class="comment-loading">Processing...</span>
 			{:else}
-				<button onclick={() => (showEditDialog = true)}>Edit</button>
-				<button onclick={() => (showDeleteDialog = true)}>Delete</button>
+				<LinkButton
+					onclick={() => (showEditDialog = true)}
+					underline={false}
+					sound_pattern="tick"
+					class="comment-button">
+					Edit
+				</LinkButton>
+
+				<LinkButton
+					onclick={() => (showDeleteDialog = true)}
+					underline={false}
+					sound_pattern="tick"
+					class="comment-button">
+					Delete
+				</LinkButton>
 			{/if}
 		</div>
 	{/if}
@@ -228,7 +241,7 @@
 				font-style: italic;
 			}
 
-			button {
+			:global(button.comment-button) {
 				background: none;
 				border: none;
 				color: var(--blue-6);

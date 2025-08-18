@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import CommentForm from './CommentForm.svelte';
 	import CommentsList from './CommentsList.svelte';
+	import { LinkButton } from '$lib/buttons';
 	import { addToast } from '$lib/toasts';
 
 	let { parentId, type, userData } = $props();
@@ -74,7 +75,9 @@
 	{#if userData?.is_logged_in}
 		<CommentForm {parentId} {type} {userData} onCommentAdded={handleCommentAdded} />
 	{:else}
-		<p>Please <a href="/login">log in</a> to add comments.</p>
+		<p>
+			Please <LinkButton href="/login" sound_pattern="tick">log in</LinkButton> to add comments.
+		</p>
 	{/if}
 
 	<CommentsList

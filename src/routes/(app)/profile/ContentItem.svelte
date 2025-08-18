@@ -1,6 +1,6 @@
 <!-- ContentItem.svelte -->
 <script>
-	import Button from '$lib/buttons/Button.svelte';
+	import { Button, LinkButton } from '$lib/buttons';
 	import Dialog from '$lib/Dialog.svelte';
 	import Icon from '$lib/Icon.svelte';
 
@@ -27,9 +27,9 @@
 <li class="content-item">
 	<div class="item-info">
 		{#if linkPrefix}
-			<a href="{linkPrefix}/{item.id}" class="item-link">
+			<LinkButton href="{linkPrefix}/{item.id}" sound_pattern="swipe" class="item-link">
 				{item[itemKey]}
-			</a>
+			</LinkButton>
 		{:else}
 			<span class="item-title">{item[itemKey]}</span>
 		{/if}
@@ -62,28 +62,25 @@
 		align-items: center;
 		padding: var(--size-2);
 		border-bottom: var(--border-size-1) solid var(--surface-3);
-	}
+		&:last-child {
+			border-bottom: none;
+		}
 
-	.content-item:last-child {
-		border-bottom: none;
-	}
+		.item-info {
+			flex: 1;
 
-	.item-info {
-		flex: 1;
-	}
-
-	.item-link {
-		color: var(--text-1);
-		text-decoration: none;
-		font-weight: 500;
-	}
-
-	.item-link:hover {
-		color: var(--blue-9);
-		text-decoration: underline;
-	}
-
-	.item-title {
-		font-weight: 500;
+			:global(a.item-link) {
+				color: var(--text-1);
+				text-decoration: none;
+				font-weight: 500;
+				&:hover {
+					color: var(--blue-9);
+					text-decoration: underline;
+				}
+			}
+			.item-title {
+				font-weight: 500;
+			}
+		}
 	}
 </style>

@@ -17,6 +17,7 @@
 	<aside class="index">
 		<div class="options">
 			<Button
+				sound_pattern="tick"
 				active={activeTabId === 'users'}
 				onclick={() => changeTab('users')}
 				size="block">
@@ -24,6 +25,7 @@
 			</Button>
 
 			<Button
+				sound_pattern="tick"
 				active={activeTabId === 'ads'}
 				onclick={() => changeTab('ads')}
 				size="block">
