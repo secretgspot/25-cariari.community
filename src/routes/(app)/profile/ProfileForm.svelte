@@ -1,35 +1,47 @@
 <!-- ProfileForm.svelte -->
 <script>
 	import { invalidateAll } from '$app/navigation';
-	import Button from '$lib/buttons/Button.svelte';
 	import { compressFile } from '$lib/utils/file.js';
 	import Divider from '$lib/Divider.svelte';
-	import Icon from '$lib/Icon.svelte';
+	import { Spinner } from '$lib/loaders';
 
 	let { userProfile, onMessage } = $props();
 
 	let loading = $state(false);
 	let compressedFile = $state(null);
-	let previewUrl = $state(null); // Only for new file preview
+	let previewUrl = $state(null);
 	let fileInput = $state();
+	let pendingFields = $state(new Set());
 
-	// Form state
-	let formData = $state({
-		username: '',
-		full_name: '',
-		bio: '',
-	});
+	let formData = $state({ username: '', full_name: '', bio: '' });
+	let cleanFormData = { username: '', full_name: '', bio: '' };
 
-	// Update form data when userProfile changes
 	$effect(() => {
 		if (userProfile) {
-			Object.assign(formData, {
+			const initialData = {
 				username: userProfile.username || '',
 				full_name: userProfile.full_name || '',
 				bio: userProfile.bio || '',
-			});
+			};
+			Object.assign(formData, initialData);
+			cleanFormData = { ...initialData };
 		}
 	});
+
+	async function handleBlur(fieldName) {
+		// Prevent duplicate requests for the same field
+		if (loading || pendingFields.has(fieldName)) return;
+
+		// Only save if the value actually changed
+		if (formData[fieldName] !== cleanFormData[fieldName]) {
+			pendingFields.add(fieldName);
+			try {
+				await handleSubmit();
+			} finally {
+				pendingFields.delete(fieldName);
+			}
+		}
+	}
 
 	async function handleFileChange(event) {
 		const file = event.target.files[0];
@@ -38,10 +50,14 @@
 			return;
 		}
 
+		// Prevent file upload if already processing
+		if (loading) return;
+
 		try {
 			const { file: compressed, previewUrl: url } = await compressFile(file);
 			compressedFile = compressed;
 			previewUrl = url;
+			await handleSubmit();
 		} catch (err) {
 			console.error('Compression error:', err);
 			onMessage({ message: 'Image compression failed.', success: false });
@@ -55,8 +71,10 @@
 		if (fileInput) fileInput.value = '';
 	}
 
-	async function handleSubmit(event) {
-		event.preventDefault();
+	async function handleSubmit() {
+		// Prevent concurrent requests
+		if (loading) return;
+
 		loading = true;
 
 		const submitFormData = new FormData();
@@ -68,47 +86,72 @@
 			submitFormData.append('avatar_url', compressedFile);
 		}
 
-		const response = await fetch('/profile?/updateProfile', {
-			method: 'POST',
-			body: submitFormData,
-		}).catch((error) => {
-			console.error('Submit error:', error);
-			onMessage({ message: 'Failed to update profile', success: false });
-			loading = false;
-			return null;
-		});
-
-		if (!response) return;
-
-		const result = await response.json().catch((error) => {
-			console.error('JSON parse error:', error);
-			onMessage({ message: 'Invalid server response', success: false });
-			loading = false;
-			return null;
-		});
-
-		if (!result) return;
-
-		if (result.type === 'success') {
-			resetFileState();
-			await invalidateAll();
-			onMessage({
-				message: result.data?.message || 'Profile updated successfully!',
-				success: true,
+		try {
+			const response = await fetch('/profile?/updateProfile', {
+				method: 'POST',
+				body: submitFormData,
 			});
-		} else {
-			onMessage({ message: result.data?.message || 'Update failed', success: false });
-		}
 
-		loading = false;
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+
+			const result = await response.json();
+
+			if (result.type === 'success') {
+				// Update clean data to reflect saved state
+				cleanFormData = { ...formData };
+				// Force reactivity by reassigning formData
+				formData = { ...formData };
+				resetFileState();
+				await invalidateAll();
+				onMessage({
+					message: result.data?.message || 'Profile updated successfully!',
+					success: true,
+				});
+			} else {
+				onMessage({
+					message: result.data?.message || 'Update failed',
+					success: false,
+				});
+			}
+		} catch (error) {
+			console.error('Submit error:', error);
+			onMessage({
+				message: 'Failed to update profile. Please try again.',
+				success: false,
+			});
+		} finally {
+			loading = false;
+		}
+	}
+
+	// Helper function to check if field has unsaved changes
+	function hasUnsavedChanges(fieldName) {
+		return formData[fieldName] !== cleanFormData[fieldName];
+	}
+
+	// Helper function to check if field is currently being saved
+	function isFieldPending(fieldName) {
+		return pendingFields.has(fieldName);
 	}
 </script>
 
-<form class="user-form" onsubmit={handleSubmit}>
-	<Divider>Profile</Divider>
+<form class="user-form" onsubmit={(e) => e.preventDefault()}>
+	<Divider>
+		Profile
+		{#if loading}
+			<Spinner size={16} />
+		{/if}
+	</Divider>
 
 	<div class="form-group">
-		<label for="username" class="form-label">Username</label>
+		<label for="username" class="form-label">
+			Username
+			{#if hasUnsavedChanges('username')}
+				<span class="unsaved-indicator">👀</span>
+			{/if}
+		</label>
 		<input
 			type="text"
 			id="username"
@@ -117,18 +160,27 @@
 			bind:value={formData.username}
 			required
 			disabled={loading}
-			class="form-input" />
+			onblur={() => handleBlur('username')}
+			class="form-input"
+			class:pending={isFieldPending('username')} />
 	</div>
 
 	<div class="form-group">
-		<label for="full_name" class="form-label">Full Name</label>
+		<label for="full_name" class="form-label">
+			Full Name
+			{#if hasUnsavedChanges('full_name')}
+				<span class="unsaved-indicator">👀</span>
+			{/if}
+		</label>
 		<input
 			type="text"
 			id="full_name"
 			name="full_name"
 			bind:value={formData.full_name}
 			disabled={loading}
-			class="form-input" />
+			onblur={() => handleBlur('full_name')}
+			class="form-input"
+			class:pending={isFieldPending('full_name')} />
 	</div>
 
 	<div class="form-group">
@@ -148,21 +200,21 @@
 	</div>
 
 	<div class="form-group">
-		<label for="bio" class="form-label">Bio</label>
+		<label for="bio" class="form-label">
+			Bio
+			{#if hasUnsavedChanges('bio')}
+				<span class="unsaved-indicator">👀</span>
+			{/if}
+		</label>
 		<textarea
 			id="bio"
 			name="bio"
 			bind:value={formData.bio}
 			disabled={loading}
-			class="form-textarea"></textarea>
+			onblur={() => handleBlur('bio')}
+			class="form-textarea"
+			class:pending={isFieldPending('bio')}></textarea>
 	</div>
-
-	<Button type="submit" right outline {loading} disabled={loading}>
-		{#snippet icon()}
-			<Icon kind="update" size="21" />
-		{/snippet}
-		{loading ? 'Saving...' : 'Save Changes'}
-	</Button>
 </form>
 
 <style>
@@ -171,6 +223,7 @@
 			margin-block: 0 var(--size-6);
 		}
 	}
+
 	.avatar-preview {
 		width: 100px;
 		height: 100px;
@@ -179,9 +232,8 @@
 		margin-bottom: 1rem;
 	}
 
-	.form-input:disabled,
-	.form-textarea:disabled {
-		opacity: 0.6;
-		cursor: not-allowed;
+	.unsaved-indicator {
+		font-size: small;
+		line-height: 1;
 	}
 </style>

@@ -151,7 +151,6 @@
 					right
 					green
 					white
-					sound_pattern="success"
 					loading={isSubmitting}
 					disabled={isSubmitting}>
 					{#snippet icon()}

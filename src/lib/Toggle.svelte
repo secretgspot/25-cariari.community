@@ -7,7 +7,7 @@
 		checked = $bindable(false),
 		label,
 		sound = true,
-		sound_pattern = 'click',
+		sound_pattern = 'basic',
 		buzz = true,
 		buzz_pattern = 'click',
 	} = $props();

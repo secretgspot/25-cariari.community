@@ -155,7 +155,9 @@
 		text-decoration: none;
 		color: inherit;
 		display: flex;
-		grid-template-columns: 1fr;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: start;
 		width: 100%;
 		border-radius: var(--radius-2);
 		/* border: var(--border-size-1) solid var(--surface-3); */
@@ -163,16 +165,13 @@
 		position: relative;
 		transition: transform var(--transition) ease;
 		white-space: normal;
-		align-items: start;
-		flex-direction: column;
-		justify-content: flex-start;
 
 		&:hover {
 			outline-color: var(--surface-4);
 		}
 
 		.title {
-			margin-block: var(--size-3);
+			margin-block: var(--size-6) var(--size-3);
 			margin-inline: var(--size-3);
 		}
 

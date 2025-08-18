@@ -384,31 +384,31 @@ export const chimePatterns = {
 	// Cathedral bell with massive low-end resonance
 	bell: [{
 		frequency: 110,
-		duration: 1500,
+		duration: 900,
 		delay: 0,
 		volume: 0.25,
 		waveType: 'sine',
 	}, {
 		frequency: 220,
-		duration: 1400,
+		duration: 800,
 		delay: 30,
 		volume: 0.22,
 		waveType: 'sine',
 	}, {
 		frequency: 330,
-		duration: 1200,
+		duration: 700,
 		delay: 60,
 		volume: 0.18,
 		waveType: 'sine',
 	}, {
 		frequency: 440,
-		duration: 1000,
+		duration: 600,
 		delay: 90,
 		volume: 0.15,
 		waveType: 'sine',
 	}, {
 		frequency: 660,
-		duration: 800,
+		duration: 300,
 		delay: 120,
 		volume: 0.1,
 		waveType: 'sine',
@@ -503,14 +503,14 @@ export const chimePatterns = {
 			duration: 200,
 			delay: 0,
 			volume: 0.25,
-			waveType: 'square'
+			waveType: 'triangle'
 		},
 		{
 			frequency: 110,
 			duration: 250,
 			delay: 0,
 			volume: 0.28,
-			waveType: 'square'
+			waveType: 'triangle'
 		},
 		{
 			frequency: 55,
@@ -526,14 +526,14 @@ export const chimePatterns = {
 			duration: 300,
 			delay: 250,
 			volume: 0.22,
-			waveType: 'square'
+			waveType: 'triangle'
 		},
 		{
 			frequency: 73,
 			duration: 350,
 			delay: 250,
 			volume: 0.26,
-			waveType: 'square'
+			waveType: 'triangle'
 		},
 		{
 			frequency: 37,

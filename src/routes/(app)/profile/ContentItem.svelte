@@ -73,10 +73,6 @@
 				color: var(--text-1);
 				text-decoration: none;
 				font-weight: 500;
-				&:hover {
-					color: var(--blue-9);
-					text-decoration: underline;
-				}
 			}
 			.item-title {
 				font-weight: 500;
