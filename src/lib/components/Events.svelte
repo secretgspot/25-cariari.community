@@ -15,26 +15,28 @@
 	<div class="slider-container">
 		<div class="slides">
 			{#each data as event}
-				<div class="slide">
-					<a href={`/events/${event.id}`} class="event-link">
-						<time class="event-date">
-							{timeFromLong(event.event_start_date)}
-						</time>
-						{#if event.image_url}
-							<img src={event.image_url} alt={event.title} />
-						{:else}
-							<div class="placeholder-image">
-								<span>No Image</span>
-							</div>
-						{/if}
-						<div class="event-info">
-							<h4 class="title">{event.title}</h4>
+				<LinkButton
+					href={`/events/${event.id}`}
+					underline={false}
+					sound_pattern="swipe"
+					class="slide">
+					<time class="event-date">
+						{timeFromLong(event.event_start_date)}
+					</time>
+					{#if event.image_url}
+						<img src={event.image_url} alt={event.title} />
+					{:else}
+						<div class="placeholder-image">
+							<span>No Image</span>
 						</div>
-					</a>
+					{/if}
+					<div class="event-info">
+						<h4 class="title">{event.title}</h4>
+					</div>
 					<ExpirationIndicator
 						start_date={event.created_at}
 						end_date={event.event_end_date} />
-				</div>
+				</LinkButton>
 			{/each}
 		</div>
 	</div>
@@ -73,11 +75,32 @@
 		min-width: 0;
 	}
 
-	.slide {
+	:global(a.slide) {
 		flex: 0 0 calc(100% - var(--size-6));
 		overflow: hidden;
 		position: relative;
 		border-radius: var(--radius-2);
+
+		display: block;
+		text-decoration: none;
+		color: inherit;
+		line-height: 0;
+		position: relative;
+		&::after {
+			content: '';
+			display: block;
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			left: 0;
+			top: 0;
+			background-image: linear-gradient(
+				180deg,
+				rgba(0, 0, 0, 0) 50%,
+				rgba(0, 0, 0, 1) 100%
+			);
+		}
+
 		/* Responsive slide widths */
 		@media (min-width: 480px) {
 			flex: 0 0 calc(70% - var(--size-3));
@@ -149,28 +172,6 @@
 				margin: 0;
 				flex: 1;
 			}
-		}
-	}
-
-	.event-link {
-		display: block;
-		text-decoration: none;
-		color: inherit;
-		line-height: 0;
-		position: relative;
-		&::after {
-			content: '';
-			display: block;
-			position: absolute;
-			height: 100%;
-			width: 100%;
-			left: 0;
-			top: 0;
-			background-image: linear-gradient(
-				180deg,
-				rgba(0, 0, 0, 0) 50%,
-				rgba(0, 0, 0, 1) 100%
-			);
 		}
 	}
 </style>

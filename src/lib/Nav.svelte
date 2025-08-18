@@ -11,7 +11,7 @@
 
 <header class="site-header">
 	<!-- Brand/Logo Section -->
-	<LinkButton href="/" underline={false} class="logo-link">
+	<LinkButton href="/" underline={false} sound_pattern="tick" class="logo-link">
 		<Logo size="30px" title="Cariari Community" />
 	</LinkButton>
 
@@ -19,28 +19,44 @@
 	<nav class="site-nav" aria-label="Main navigation">
 		{#if data?.is_logged_in}
 			<!-- Main Navigation Links -->
-			<LinkButton href="/notices" underline={false} class="nav-link">
+			<LinkButton
+				href="/notices"
+				underline={false}
+				sound_pattern="basic"
+				class="nav-link">
 				<span class="nav-icon"><Icon kind="notices" size="27" /></span>
 				<span class="nav-text">Notices</span>
 			</LinkButton>
 
-			<LinkButton href="/events" underline={false} class="nav-link">
+			<LinkButton href="/events" underline={false} sound_pattern="basic" class="nav-link">
 				<span class="nav-icon"><Icon kind="events" size="27" /></span>
 				<span class="nav-text">Events</span>
 			</LinkButton>
 
-			<LinkButton href="/lost-and-found" underline={false} class="nav-link">
+			<LinkButton
+				href="/lost-and-found"
+				underline={false}
+				sound_pattern="basic"
+				class="nav-link">
 				<span class="nav-icon"><Icon kind="lost-and-found" size="27" /></span>
 				<span class="nav-text">Lost & Found</span>
 			</LinkButton>
 
-			<LinkButton href="/services" underline={false} class="nav-link">
+			<LinkButton
+				href="/services"
+				underline={false}
+				sound_pattern="basic"
+				class="nav-link">
 				<span class="nav-icon"><Icon kind="services" size="27" /></span>
 				<span class="nav-text">Services</span>
 			</LinkButton>
 
 			<!-- User Section -->
-			<LinkButton href="/profile" underline={false} class="profile-link">
+			<LinkButton
+				href="/profile"
+				underline={false}
+				sound_pattern="bell"
+				class="profile-link">
 				{#if data.is_admin}<span title="admin" class="admin-indicator">🔥</span>{/if}
 				{#if data.userProfile?.avatar_url}
 					<img

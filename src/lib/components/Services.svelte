@@ -14,9 +14,11 @@
 	</legend>
 	<div class="services-wrap">
 		{#each data as service}
-			<a
+			<LinkButton
 				href={`/services/${service.id}`}
-				class:expired={isExpired(service.start_date, 7)}>
+				underline={false}
+				sound_pattern="swipe"
+				class="service">
 				{#if service.image_url}
 					<img class="image" src={service.image_url} alt={service.title} />
 				{:else}
@@ -29,7 +31,7 @@
 				<ExpirationIndicator
 					start_date={service.start_date}
 					end_date={service.end_date} />
-			</a>
+			</LinkButton>
 		{/each}
 	</div>
 </fieldset>
@@ -54,14 +56,14 @@
 		gap: var(--size-1);
 		margin-block: var(--size-3);
 
-		a {
+		:global(a.service) {
 			position: relative;
 			text-decoration: none;
 			display: flex;
 			flex: 1;
 			justify-content: space-between;
 			align-items: center;
-			padding: var(--size-3);
+			padding: var(--size-2);
 			gap: var(--size-3);
 			border: var(--border-size-1) solid var(--surface-3);
 			border-radius: var(--radius-2);
@@ -69,9 +71,6 @@
 			&:hover {
 				color: var(--blue-9);
 				border-color: var(--surface-4);
-			}
-			&.expired {
-				opacity: 0.6;
 			}
 			& > :global(svg) {
 				color: var(--text-1);

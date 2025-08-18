@@ -14,34 +14,31 @@
 
 	<div class="items-grid">
 		{#each data as post}
-			<div class="item-card" class:expired={isExpired(post.created_at, 14)}>
-				<a href={`/lost-and-found/${post.id}`} class="item-link">
-					<span
-						class="category"
-						class:lost={post.category === 'Lost'}
-						class:found={post.category === 'Found'}>
-						{post.category}
-					</span>
+			<LinkButton
+				href={`/lost-and-found/${post.id}`}
+				underline={false}
+				sound_pattern="swipe"
+				class="post">
+				<span
+					class="category"
+					class:lost={post.category === 'Lost'}
+					class:found={post.category === 'Found'}>
+					{post.category}
+				</span>
 
-					{#if post.image_url}
-						<img class="image" src={post.image_url} alt={post.title} />
-					{:else}
-						<div class="placeholder-image">
-							<span>{post.category === 'Lost' ? '🔍' : '✋'}</span>
-						</div>
-					{/if}
-					<h3 class="title">{post.title}</h3>
+				{#if post.image_url}
+					<img class="image" src={post.image_url} alt={post.title} />
+				{:else}
+					<div class="placeholder-image">
+						<span>{post.category === 'Lost' ? '🔍' : '✋'}</span>
+					</div>
+				{/if}
+				<h3 class="title">{post.title}</h3>
 
-					<!-- <div class="info">
-						<div class="date">
-							{new Date(post.date).toLocaleDateString()}
-						</div>
-					</div> -->
-				</a>
 				<ExpirationIndicator
 					start_date={post.created_at}
 					end_date={getExpirationDate(post.created_at, 14)} />
-			</div>
+			</LinkButton>
 		{/each}
 	</div>
 </fieldset>
@@ -80,25 +77,16 @@
 		/* Extra-large screens (1440px and up) */
 		@media (min-width: 1440px) {
 		}
-	}
 
-	.item-card {
-		position: relative;
-		border-radius: var(--radius-2);
-		overflow: hidden;
-		outline: var(--border-size-2) dotted var(--surface-3);
-		&:hover {
-			outline-color: var(--surface-4);
-		}
-		&.expired {
-			opacity: 0.6;
-		}
-
-		.item-link {
-			display: block;
-			text-decoration: none;
+		:global(a.post) {
+			display: grid;
 			color: inherit;
 			position: relative;
+			border-radius: var(--radius-2);
+			outline: var(--border-size-2) dotted var(--surface-3);
+			&:hover {
+				outline-color: var(--surface-4);
+			}
 
 			.category {
 				padding: var(--size-1) var(--size-2);
@@ -107,6 +95,8 @@
 				border-top-right-radius: 0;
 				display: inline-block;
 				position: absolute;
+				top: 0;
+				left: 0;
 				font-size: small;
 				background: var(--surface-3);
 			}

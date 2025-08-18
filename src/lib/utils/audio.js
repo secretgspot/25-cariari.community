@@ -166,42 +166,472 @@ export function isAudioSupported() {
  * Frequencies chosen to be pleasant and distinguishable
  */
 export const chimePatterns = {
-	// Basic interaction - single pleasant tone
-	basic: { frequency: 261.626, duration: 100, volume: 0.1 },
-	tick: { frequency: 87.208, duration: 90, volume: 0.11 },
-	click: { frequency: 32.703, duration: 60, volume: 0.1, waveType: 'triangle' },
-	longPress: { frequency: 400, duration: 150, volume: 0.2 },
-	swipe: [
-		{ frequency: 32.703, duration: 300, delay: 0, volume: 0.03 },
-		{ frequency: 9, duration: 600, delay: 30, volume: 0.03 }
-	],
-	navigate: [
-		{ frequency: 61.735, duration: 200, delay: 0, volume: 0.1 },
-		{ frequency: 32.703, duration: 300, delay: 0, volume: 0.1 }
-	],
-	bell: { frequency: 32.703, duration: 800, volume: 0.2, waveType: 'triangle' },
+	// Basic interaction - rich harmonic click with deep foundation
+	basic: [{
+		frequency: 130,
+		duration: 300,
+		delay: 0,
+		volume: 0.18,
+		waveType: 'sine',
+	}, {
+		frequency: 260,
+		duration: 250,
+		delay: 10,
+		volume: 0.15,
+		waveType: 'sine',
+	}, {
+		frequency: 520,
+		duration: 200,
+		delay: 20,
+		volume: 0.12,
+		waveType: 'sine',
+	}, {
+		frequency: 780,
+		duration: 180,
+		delay: 25,
+		volume: 0.08,
+		waveType: 'sine',
+	}],
 
-	// Success pattern
+	// Subtle tick with deep harmonic overtones
+	tick: [{
+		frequency: 220,
+		duration: 180,
+		delay: 0,
+		volume: 0.15,
+		waveType: 'sine',
+	}, {
+		frequency: 440,
+		duration: 150,
+		delay: 5,
+		volume: 0.12,
+		waveType: 'sine',
+	}, {
+		frequency: 660,
+		duration: 120,
+		delay: 10,
+		volume: 0.08,
+		waveType: 'sine',
+	}, {
+		frequency: 110,
+		duration: 220,
+		delay: 3,
+		volume: 0.1,
+		waveType: 'sine',
+	}],
+
+	// Deep cinematic button click with sub-bass foundation
+	click: [{
+		frequency: 87,
+		duration: 280,
+		delay: 0,
+		volume: 0.2,
+		waveType: 'sine',
+	}, {
+		frequency: 174,
+		duration: 220,
+		delay: 15,
+		volume: 0.18,
+		waveType: 'sine',
+	}, {
+		frequency: 261,
+		duration: 200,
+		delay: 25,
+		volume: 0.15,
+		waveType: 'sine',
+	}, {
+		frequency: 392,
+		duration: 180,
+		delay: 35,
+		volume: 0.12,
+		waveType: 'sine',
+	}, {
+		frequency: 523,
+		duration: 160,
+		delay: 40,
+		volume: 0.08,
+		waveType: 'sine',
+	}],
+
+	// Rich long press with powerful low-end
+	longPress: [{
+		frequency: 65,
+		duration: 500,
+		delay: 0,
+		volume: 0.25,
+		waveType: 'sine',
+	}, {
+		frequency: 130,
+		duration: 480,
+		delay: 20,
+		volume: 0.22,
+		waveType: 'sine',
+	}, {
+		frequency: 195,
+		duration: 450,
+		delay: 40,
+		volume: 0.18,
+		waveType: 'sine',
+	}, {
+		frequency: 260,
+		duration: 420,
+		delay: 60,
+		volume: 0.15,
+		waveType: 'sine',
+	}, {
+		frequency: 390,
+		duration: 380,
+		delay: 80,
+		volume: 0.1,
+		waveType: 'sine',
+	}],
+
+	// Deep swipe with rumbling bass
+	swipe: [{
+		frequency: 73,
+		duration: 350,
+		delay: 0,
+		volume: 0.18,
+		waveType: 'sine',
+	}, {
+		frequency: 146,
+		duration: 320,
+		delay: 25,
+		volume: 0.15,
+		waveType: 'sine',
+	}, {
+		frequency: 220,
+		duration: 290,
+		delay: 50,
+		volume: 0.13,
+		waveType: 'sine',
+	}, {
+		frequency: 293,
+		duration: 260,
+		delay: 75,
+		volume: 0.1,
+		waveType: 'sine',
+	}, {
+		frequency: 440,
+		duration: 220,
+		delay: 100,
+		volume: 0.08,
+		waveType: 'sine',
+	}],
+
+	// Deep atmospheric woosh
+	navigate: [{
+		frequency: 80,
+		duration: 600,
+		delay: 0,
+		volume: 0.15,
+		waveType: 'sine',
+	}, {
+		frequency: 120,
+		duration: 550,
+		delay: 30,
+		volume: 0.12,
+		waveType: 'sine',
+	}, {
+		frequency: 180,
+		duration: 500,
+		delay: 60,
+		volume: 0.10,
+		waveType: 'sine',
+	}, {
+		frequency: 240,
+		duration: 450,
+		delay: 90,
+		volume: 0.08,
+		waveType: 'sine',
+	}, {
+		frequency: 300,
+		duration: 400,
+		delay: 120,
+		volume: 0.06,
+		waveType: 'sine',
+	}, {
+		frequency: 360,
+		duration: 350,
+		delay: 150,
+		volume: 0.04,
+		waveType: 'sine',
+	}],
+
+	// Cathedral bell with massive low-end resonance
+	bell: [{
+		frequency: 110,
+		duration: 1500,
+		delay: 0,
+		volume: 0.25,
+		waveType: 'sine',
+	}, {
+		frequency: 220,
+		duration: 1400,
+		delay: 30,
+		volume: 0.22,
+		waveType: 'sine',
+	}, {
+		frequency: 330,
+		duration: 1200,
+		delay: 60,
+		volume: 0.18,
+		waveType: 'sine',
+	}, {
+		frequency: 440,
+		duration: 1000,
+		delay: 90,
+		volume: 0.15,
+		waveType: 'sine',
+	}, {
+		frequency: 660,
+		duration: 800,
+		delay: 120,
+		volume: 0.1,
+		waveType: 'sine',
+	}],
+
+	// "WIN!" success sound - sharp, punchy single syllable
 	success: [
-		{ frequency: 261.626, duration: 100, delay: 0, volume: 0.2, waveType: 'square' },
-		{ frequency: 329.628, duration: 100, delay: 0, volume: 0.2, waveType: 'square' },
-		{ frequency: 523.251, duration: 100, delay: 90, volume: 0.1, waveType: 'square' }
+		// Sharp attack for "W"
+		{
+			frequency: 330,
+			duration: 80,
+			delay: 0,
+			volume: 0.25,
+			waveType: 'sine'
+		},
+		{
+			frequency: 165,
+			duration: 100,
+			delay: 0,
+			volume: 0.28,
+			waveType: 'sine'
+		},
+		{
+			frequency: 82,
+			duration: 120,
+			delay: 0,
+			volume: 0.24,
+			waveType: 'triangle'
+		},
+
+		// Rising "I" part - quick upward sweep
+		{
+			frequency: 440,
+			duration: 120,
+			delay: 60,
+			volume: 0.22,
+			waveType: 'sine'
+		},
+		{
+			frequency: 220,
+			duration: 140,
+			delay: 60,
+			volume: 0.26,
+			waveType: 'sine'
+		},
+		{
+			frequency: 110,
+			duration: 160,
+			delay: 60,
+			volume: 0.22,
+			waveType: 'triangle'
+		},
+
+		// Hard "N!" ending - sharp cutoff
+		{
+			frequency: 523,
+			duration: 200,
+			delay: 140,
+			volume: 0.24,
+			waveType: 'sine'
+		},
+		{
+			frequency: 261,
+			duration: 220,
+			delay: 140,
+			volume: 0.28,
+			waveType: 'sine'
+		},
+		{
+			frequency: 130,
+			duration: 240,
+			delay: 140,
+			volume: 0.25,
+			waveType: 'triangle'
+		},
+
+		// Sub-bass punch
+		{
+			frequency: 65,
+			duration: 300,
+			delay: 0,
+			volume: 0.22,
+			waveType: 'triangle'
+		}
 	],
 
-	// Fail pattern
+	// "NAH-UH" error sound - two distinct syllables
 	fail: [
-		{ frequency: 97.998, duration: 200, delay: 0, volume: 0.1, waveType: 'square' },
-		{ frequency: 73.416, duration: 200, delay: 90, volume: 0.2, waveType: 'square' }
+		// First syllable - "NAH" (higher, sharper)
+		{
+			frequency: 220,
+			duration: 200,
+			delay: 0,
+			volume: 0.25,
+			waveType: 'square'
+		},
+		{
+			frequency: 110,
+			duration: 250,
+			delay: 0,
+			volume: 0.28,
+			waveType: 'square'
+		},
+		{
+			frequency: 55,
+			duration: 300,
+			delay: 0,
+			volume: 0.22,
+			waveType: 'sine'
+		},
+
+		// Brief pause, then second syllable - "UH" (lower, more final)
+		{
+			frequency: 146,
+			duration: 300,
+			delay: 250,
+			volume: 0.22,
+			waveType: 'square'
+		},
+		{
+			frequency: 73,
+			duration: 350,
+			delay: 250,
+			volume: 0.26,
+			waveType: 'square'
+		},
+		{
+			frequency: 37,
+			duration: 400,
+			delay: 250,
+			volume: 0.24,
+			waveType: 'sine'
+		},
+
+		// Ultra-deep rumble throughout for impact
+		{
+			frequency: 28,
+			duration: 600,
+			delay: 0,
+			volume: 0.2,
+			waveType: 'sine'
+		}
 	],
 
-	// Additional useful patterns
-	notification: [
-		{ frequency: 123.47, duration: 60, delay: 0, volume: 0.1 },
-		{ frequency: 180, duration: 90, delay: 90, volume: 0.1 }
-	],
+	// Deep ethereal notification with sub-bass presence
+	notification: [{
+		frequency: 110,
+		duration: 350,
+		delay: 0,
+		volume: 0.18,
+		waveType: 'sine',
+	}, {
+		frequency: 220,
+		duration: 320,
+		delay: 80,
+		volume: 0.16,
+		waveType: 'sine',
+	}, {
+		frequency: 330,
+		duration: 280,
+		delay: 160,
+		volume: 0.14,
+		waveType: 'sine',
+	}, {
+		frequency: 440,
+		duration: 250,
+		delay: 240,
+		volume: 0.12,
+		waveType: 'sine',
+	}, {
+		frequency: 165,
+		duration: 400,
+		delay: 40,
+		volume: 0.1,
+		waveType: 'sine',
+	}],
+
+	// Deep, cinematic logout sequence - three descending steps
 	logout: [
-		{ frequency: 123.47, duration: 150, delay: 0, volume: 0.3 },
-		{ frequency: 61.735, duration: 150, delay: 90, volume: 0.3 },
-		{ frequency: 32.703, duration: 200, delay: 120, volume: 0.3 }
+		// First note - "Da"
+		{
+			frequency: 220,
+			duration: 300,
+			delay: 0,
+			volume: 0.2,
+			waveType: 'sine'
+		},
+		{
+			frequency: 110,
+			duration: 350,
+			delay: 0,
+			volume: 0.22,
+			waveType: 'sine'
+		},
+		{
+			frequency: 55,
+			duration: 400,
+			delay: 0,
+			volume: 0.18,
+			waveType: 'sine'
+		},
+
+		// Second note - "Da"
+		{
+			frequency: 165,
+			duration: 300,
+			delay: 180,
+			volume: 0.18,
+			waveType: 'sine'
+		},
+		{
+			frequency: 82,
+			duration: 350,
+			delay: 180,
+			volume: 0.2,
+			waveType: 'sine'
+		},
+		{
+			frequency: 41,
+			duration: 400,
+			delay: 180,
+			volume: 0.16,
+			waveType: 'sine'
+		},
+
+		// Third note - "Daaa" (longer, final)
+		{
+			frequency: 110,
+			duration: 600,
+			delay: 360,
+			volume: 0.22,
+			waveType: 'sine'
+		},
+		{
+			frequency: 55,
+			duration: 650,
+			delay: 360,
+			volume: 0.24,
+			waveType: 'sine'
+		},
+		{
+			frequency: 27,
+			duration: 700,
+			delay: 360,
+			volume: 0.2,
+			waveType: 'sine'
+		}
 	],
 };

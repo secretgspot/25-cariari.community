@@ -1,7 +1,7 @@
 <script>
 	import { invalidateAll } from '$app/navigation';
 	import AddNoticeForm from './AddNoticeForm.svelte';
-	import { Button } from '$lib/buttons';
+	import { Button, LinkButton } from '$lib/buttons';
 	import { timeFrom, timeFromLong } from '$lib/utils/time.js';
 	import { formatText, stripMarkdown, truncateText } from '$lib/utils/markdown.js';
 	import { addToast } from '$lib/toasts';
@@ -54,7 +54,7 @@
 	<h1>Community Notices</h1>
 
 	<nav class="options">
-		<Button onclick={toggleForm}>
+		<Button onclick={toggleForm} sound_pattern="click">
 			{#snippet icon()}
 				{#if showForm}
 					<Icon kind="folder_open" size="21" />
@@ -84,7 +84,11 @@
 	<div class="notices-list">
 		{#if filteredNotices && filteredNotices.length > 0}
 			{#each filteredNotices as notice}
-				<a href="/notices/{notice.id}" class="notice-card-link">
+				<LinkButton
+					href={`/notices/${notice.id}`}
+					underline={false}
+					sound_pattern="swipe"
+					class="notice-card-link">
 					<div class="notice-card">
 						<header class="header-wrap">
 							<div class="title-wrap">
@@ -115,7 +119,7 @@
 							{@html truncateText(stripMarkdown(notice.description), 300)}
 						</div>
 					</div>
-				</a>
+				</LinkButton>
 			{/each}
 		{:else}
 			<p class="no-records">No notices were found.</p>
@@ -145,91 +149,89 @@
 		margin-block: var(--size-6);
 		display: grid;
 		gap: var(--size-3);
-	}
 
-	.notice-card {
-		padding: var(--size-3);
+		:global(a.notice-card-link) {
+			padding: var(--size-3);
+			text-decoration: none;
+			color: inherit;
+			display: block;
+			width: 100%;
+			margin-bottom: var(--size-4);
+			border-radius: var(--radius-2);
+			outline: var(--border-size-2) solid var(--surface-3);
+			position: relative;
+			transition: transform var(--transition) ease;
+			white-space: normal;
 
-		.header-wrap {
-			display: flex;
-			flex-direction: column;
-			gap: var(--size-3);
+			&:hover {
+				outline-color: var(--surface-4);
+			}
 
-			.title-wrap {
+			.header-wrap {
 				display: flex;
 				flex-direction: column;
-				gap: var(--size-1);
+				gap: var(--size-3);
 
-				.posted {
-					color: var(--text-2);
-					border-bottom: var(--border-size-1) solid var(--surface-3);
-					padding-bottom: var(--size-1);
-					font-size: small;
-					align-self: end;
-				}
-
-				.title {
-					margin: 0;
+				.title-wrap {
 					display: flex;
-					align-items: center;
-					gap: var(--size-3);
-					color: var(--text-1);
-				}
-			}
-
-			.details-wrap {
-				display: flex;
-				justify-content: space-between;
-				color: var(--text-2);
-
-				.time-starts,
-				.time-expires {
-					display: flex;
-					align-items: center;
+					flex-direction: column;
 					gap: var(--size-1);
-					font-size: smaller;
+
+					.posted {
+						color: var(--text-2);
+						border-bottom: var(--border-size-1) solid var(--surface-3);
+						padding-bottom: var(--size-1);
+						font-size: small;
+						align-self: end;
+					}
+
+					.title {
+						margin: 0;
+						display: flex;
+						align-items: center;
+						gap: var(--size-3);
+						color: var(--text-1);
+					}
+				}
+
+				.details-wrap {
+					display: flex;
+					justify-content: space-between;
+					color: var(--text-2);
+
+					.time-starts,
+					.time-expires {
+						display: flex;
+						align-items: center;
+						gap: var(--size-1);
+						font-size: smaller;
+					}
 				}
 			}
-		}
 
-		.description {
-			color: var(--text-2);
-		}
+			.description {
+				color: var(--text-2);
+			}
 
-		.urgency {
-			display: inline-block;
-			width: 21px;
-			height: 21px;
-			aspect-ratio: 1;
-			border-radius: var(--radius-round);
-			&.default {
-				background: var(--stone-6);
+			.urgency {
+				display: inline-block;
+				width: 21px;
+				height: 21px;
+				aspect-ratio: 1;
+				border-radius: var(--radius-round);
+				&.default {
+					background: var(--stone-6);
+				}
+				&.low {
+					background: var(--yellow-6);
+				}
+				&.medium {
+					background: var(--orange-6);
+				}
+				&.high {
+					background: var(--red-6);
+				}
 			}
-			&.low {
-				background: var(--yellow-6);
-			}
-			&.medium {
-				background: var(--orange-6);
-			}
-			&.high {
-				background: var(--red-6);
-			}
-		}
-	}
-
-	.notice-card-link {
-		text-decoration: none;
-		color: inherit;
-		display: block;
-		width: 100%;
-		margin-bottom: var(--size-4);
-		border-radius: var(--radius-2);
-		outline: var(--border-size-2) solid var(--surface-3);
-		position: relative;
-		transition: transform var(--transition) ease;
-
-		&:hover {
-			outline-color: var(--surface-4);
 		}
 	}
 </style>

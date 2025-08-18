@@ -58,6 +58,7 @@
 	<aside class="index">
 		<div class="options">
 			<Button
+				sound_pattern="basic"
 				active={activeTabId === 'profile'}
 				onclick={() => changeTab('profile')}
 				size="block">
@@ -65,6 +66,7 @@
 			</Button>
 
 			<Button
+				sound_pattern="longPress"
 				active={activeTabId === 'settings'}
 				onclick={() => changeTab('settings')}
 				size="block">
@@ -72,6 +74,7 @@
 			</Button>
 
 			<Button
+				sound_pattern="bell"
 				active={activeTabId === 'notices'}
 				onclick={() => changeTab('notices')}
 				size="block">
@@ -79,6 +82,7 @@
 			</Button>
 
 			<Button
+				sound_pattern="navigate"
 				active={activeTabId === 'events'}
 				onclick={() => changeTab('events')}
 				size="block">
@@ -86,6 +90,7 @@
 			</Button>
 
 			<Button
+				sound_pattern="logout"
 				active={activeTabId === 'lostandfound'}
 				onclick={() => changeTab('lostandfound')}
 				size="block">
@@ -93,6 +98,7 @@
 			</Button>
 
 			<Button
+				sound_pattern="fail"
 				active={activeTabId === 'services'}
 				onclick={() => changeTab('services')}
 				size="block">
@@ -100,6 +106,7 @@
 			</Button>
 
 			<Button
+				sound_pattern="success"
 				active={activeTabId === 'comments'}
 				onclick={() => changeTab('comments')}
 				size="block">

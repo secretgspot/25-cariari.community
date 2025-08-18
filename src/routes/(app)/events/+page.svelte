@@ -1,7 +1,7 @@
 <script>
 	import { invalidateAll } from '$app/navigation';
 	import AddEventForm from './AddEventForm.svelte';
-	import { Button } from '$lib/buttons';
+	import { Button, LinkButton } from '$lib/buttons';
 	import { timeFrom } from '$lib/utils/time.js';
 	import { formatText, stripMarkdown, truncateText } from '$lib/utils/markdown.js';
 	import { addToast } from '$lib/toasts';
@@ -55,7 +55,7 @@
 	<h1>Community Events</h1>
 
 	<nav class="options">
-		<Button onclick={toggleForm}>
+		<Button onclick={toggleForm} sound_pattern="click">
 			{#snippet icon()}
 				{#if showForm}
 					<Icon kind="folder_open" size="21" />
@@ -85,29 +85,31 @@
 	<div class="events-list">
 		{#if filteredEvents && filteredEvents.length > 0}
 			{#each filteredEvents as event}
-				<a href="/events/{event.id}" class="event-card-link">
-					<div class="event-card">
-						<div class="category">{event.category}</div>
+				<LinkButton
+					href={`/events/${event.id}`}
+					underline={false}
+					sound_pattern="swipe"
+					class="event-card">
+					<div class="category">{event.category}</div>
 
-						<div class="start-date">
-							{timeFrom(event.event_start_date, { short: false })}
-						</div>
-
-						{#if event.image_url}
-							<img src={event.image_url} alt={event.title} class="image" />
-						{:else}
-							<div class="placeholder-image">
-								<span>No Image</span>
-							</div>
-						{/if}
-
-						<h3 class="title">{event.title}</h3>
-
-						<div class="description">
-							{@html formatText(truncateText(stripMarkdown(event.description), 90))}
-						</div>
+					<div class="start-date">
+						{timeFrom(event.event_start_date, { short: false })}
 					</div>
-				</a>
+
+					{#if event.image_url}
+						<img src={event.image_url} alt={event.title} class="image" />
+					{:else}
+						<div class="placeholder-image">
+							<span>No Image</span>
+						</div>
+					{/if}
+
+					<h3 class="title">{event.title}</h3>
+
+					<div class="description">
+						{@html formatText(truncateText(stripMarkdown(event.description), 90))}
+					</div>
+				</LinkButton>
 			{/each}
 		{:else}
 			<p class="no-records">No events were found.</p>
@@ -156,87 +158,86 @@
 		/* Extra-large screens (1440px and up) */
 		@media (min-width: 1440px) {
 		}
-	}
 
-	.event-card {
-		.category {
-			position: absolute;
-			top: 0;
-			left: 0;
-			font-size: small;
-			padding: var(--size-1);
-			color: var(--text-1);
-			text-shadow: 1px 1px var(--surface-1);
-		}
-
-		.start-date {
-			position: absolute;
-			top: 0;
-			right: 0;
-			padding: var(--size-2);
-			border-radius: var(--radius-2);
-			border-bottom-right-radius: 0;
-			border-top-left-radius: 0;
-			background: var(--surface-3);
-		}
-
-		.image {
-			display: block;
-			max-width: 100%;
+		:global(a.event-card) {
+			text-decoration: none;
+			color: inherit;
+			display: grid;
+			grid-template-columns: 1fr;
+			align-items: start;
 			width: 100%;
-			height: auto;
-			margin-bottom: 0;
-			aspect-ratio: 1;
-			object-fit: cover;
 			border-radius: var(--radius-2);
-			border-bottom-left-radius: 0;
-			border-bottom-right-radius: 0;
-		}
+			/* border: var(--border-size-1) solid var(--surface-3); */
+			outline: var(--border-size-2) solid var(--surface-3);
+			position: relative;
+			transition: transform var(--transition) ease;
+			white-space: normal;
 
-		.placeholder-image {
-			width: 100%;
-			background: var(--gradient-23);
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			color: var(--text-2);
-			aspect-ratio: 1;
-			border-radius: var(--radius-2);
-			border-bottom-left-radius: 0;
-			border-bottom-right-radius: 0;
-		}
+			&:hover {
+				outline-color: var(--surface-4);
+			}
 
-		.title {
-			display: flex;
-			align-items: center;
-			gap: var(--size-3);
-			color: var(--text-1);
-			margin-inline: var(--size-3);
-			margin-block-start: var(--size-3);
-			margin-block-end: var(--size-1);
-		}
+			.category {
+				position: absolute;
+				top: 0;
+				left: 0;
+				font-size: small;
+				padding: var(--size-1);
+				color: var(--text-1);
+				text-shadow: 1px 1px var(--surface-1);
+			}
 
-		.description {
-			margin: var(--size-3);
-			color: var(--text-2);
-		}
-	}
+			.start-date {
+				position: absolute;
+				top: 0;
+				right: 0;
+				padding: var(--size-2);
+				border-radius: var(--radius-2);
+				border-bottom-right-radius: 0;
+				border-top-left-radius: 0;
+				background: var(--surface-3);
+			}
 
-	.event-card-link {
-		text-decoration: none;
-		color: inherit;
-		display: inline-flex;
-		flex-direction: column;
-		width: 100%;
-		break-inside: avoid;
-		border-radius: var(--radius-2);
-		/* border: var(--border-size-1) solid var(--surface-3); */
-		outline: var(--border-size-2) solid var(--surface-3);
-		position: relative;
-		transition: transform var(--transition) ease;
+			.image {
+				display: block;
+				max-width: 100%;
+				width: 100%;
+				height: auto;
+				margin-bottom: 0;
+				aspect-ratio: 1;
+				object-fit: cover;
+				border-radius: var(--radius-2);
+				border-bottom-left-radius: 0;
+				border-bottom-right-radius: 0;
+			}
 
-		&:hover {
-			outline-color: var(--surface-4);
+			.placeholder-image {
+				width: 100%;
+				background: var(--gradient-23);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				color: var(--text-2);
+				aspect-ratio: 1;
+				border-radius: var(--radius-2);
+				border-bottom-left-radius: 0;
+				border-bottom-right-radius: 0;
+			}
+
+			.title {
+				display: flex;
+				align-items: center;
+				gap: var(--size-3);
+				color: var(--text-1);
+				margin-inline: var(--size-3);
+				margin-block-start: var(--size-3);
+				margin-block-end: var(--size-1);
+			}
+
+			.description {
+				margin: var(--size-3);
+				color: var(--text-2);
+			}
 		}
 	}
 </style>

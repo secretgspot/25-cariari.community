@@ -29,7 +29,11 @@
 		{#each data as notice}
 			{@const endDate = getNoticeEndDate(notice)}
 			{@const expired = isNoticeExpiredSimple(notice)}
-			<a href={`/notices/${notice.id}`} class:expired>
+			<LinkButton
+				href={`/notices/${notice.id}`}
+				underline={false}
+				sound_pattern="swipe"
+				class="notice-card">
 				<span class="urgency {notice.urgency.toLowerCase()}"></span>
 				<strong class="message">{notice.title}</strong>
 				<div class="time-wrap">
@@ -50,7 +54,7 @@
 					start_date={notice.created_at}
 					end_date={endDate}
 					updateInterval={30000} />
-			</a>
+			</LinkButton>
 		{/each}
 	</div>
 </fieldset>
@@ -75,7 +79,7 @@
 		gap: var(--size-1);
 		margin-block: var(--size-3);
 
-		a {
+		:global(a) {
 			position: relative;
 			text-decoration: none;
 			display: flex;
@@ -90,9 +94,6 @@
 			&:hover {
 				color: var(--blue-9);
 				border-color: var(--surface-4);
-			}
-			&.expired {
-				opacity: 0.6;
 			}
 		}
 	}

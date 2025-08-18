@@ -1,7 +1,7 @@
 <script>
 	import { invalidateAll } from '$app/navigation';
 	import AddLostFoundForm from './AddLostFoundForm.svelte';
-	import { Button } from '$lib/buttons';
+	import { Button, LinkButton } from '$lib/buttons';
 	import {
 		timeFrom,
 		timeFromLong,
@@ -61,7 +61,7 @@
 	<h1>Lost & Found</h1>
 
 	<nav class="options">
-		<Button onclick={toggleForm}>
+		<Button onclick={toggleForm} sound_pattern="click">
 			{#snippet icon()}
 				{#if showForm}
 					<Icon kind="folder_open" size="21" />
@@ -91,33 +91,35 @@
 	<div class="lost-and-found-list">
 		{#if filteredLostAndFound && filteredLostAndFound.length > 0}
 			{#each filteredLostAndFound as post}
-				<a href="/lost-and-found/{post.id}" class="post-card-link">
-					<div class="post-card">
-						<span class="category">{post.category}</span>
-						<!-- {#if post.image_url}
+				<LinkButton
+					href={`/lost-and-found/${post.id}`}
+					underline={false}
+					sound_pattern="swipe"
+					class="post-card">
+					<span class="category">{post.category}</span>
+					<!-- {#if post.image_url}
 							<img src={post.image_url} alt={post.title} class="image" />
 						{/if} -->
-						{#if post.image_url}
-							<img src={post.image_url} alt={post.title} class="image" />
-						{:else}
-							<div class="placeholder-image">
-								<span>No Image</span>
-							</div>
-						{/if}
+					{#if post.image_url}
+						<img src={post.image_url} alt={post.title} class="image" />
+					{:else}
+						<div class="placeholder-image">
+							<span>No Image</span>
+						</div>
+					{/if}
 
-						<!-- <div class="meta">
+					<!-- <div class="meta">
 							<span>Posted: {timeFromLong(post.created_at)}</span>
 							<span
 								>Expires in: {timeFromLong(getExpirationDate(post.created_at, 14))}</span>
 						</div> -->
 
-						<h3 class="title">{post.title}</h3>
+					<h3 class="title">{post.title}</h3>
 
-						<div class="description">
-							{@html formatText(truncateText(stripMarkdown(post.description), 90))}
-						</div>
+					<div class="description">
+						{@html formatText(truncateText(stripMarkdown(post.description), 45))}
 					</div>
-				</a>
+				</LinkButton>
 			{/each}
 		{:else}
 			<p class="no-records">No lost & found were found.</p>
@@ -168,7 +170,26 @@
 		}
 	}
 
-	.post-card {
+	:global(a.post-card) {
+		text-decoration: none;
+		color: inherit;
+		display: flex;
+		grid-template-columns: 1fr;
+		width: 100%;
+		border-radius: var(--radius-2);
+		/* border: var(--border-size-1) solid var(--surface-3); */
+		outline: var(--border-size-2) solid var(--surface-3);
+		position: relative;
+		transition: transform var(--transition) ease;
+		white-space: normal;
+		align-items: start;
+		flex-direction: column;
+		justify-content: flex-start;
+
+		&:hover {
+			outline-color: var(--surface-4);
+		}
+
 		.category {
 			position: absolute;
 			padding: var(--size-1) var(--size-2);
@@ -176,6 +197,8 @@
 			border-radius: var(--radius-2);
 			border-bottom-left-radius: 0;
 			border-top-right-radius: 0;
+			top: 0;
+			left: 0;
 		}
 
 		.image {
@@ -212,24 +235,6 @@
 			margin-inline: var(--size-3);
 			margin-block-end: var(--size-3);
 			color: var(--text-2);
-		}
-	}
-
-	.post-card-link {
-		text-decoration: none;
-		color: inherit;
-		display: inline-flex;
-		flex-direction: column;
-		width: 100%;
-		break-inside: avoid;
-		border-radius: var(--radius-2);
-		/* border: var(--border-size-1) solid var(--gray-1); */
-		outline: var(--border-size-2) solid var(--surface-3);
-		position: relative;
-		transition: transform var(--transition) ease;
-
-		&:hover {
-			outline-color: var(--surface-4);
 		}
 	}
 </style>

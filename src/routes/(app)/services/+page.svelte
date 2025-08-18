@@ -1,7 +1,7 @@
 <script>
 	import { invalidateAll } from '$app/navigation';
 	import AddServiceForm from './AddServiceForm.svelte';
-	import { Button } from '$lib/buttons';
+	import { Button, LinkButton } from '$lib/buttons';
 	import { timeFrom } from '$lib/utils/time.js';
 	import { formatText, stripMarkdown, truncateText } from '$lib/utils/markdown.js';
 	import { addToast } from '$lib/toasts';
@@ -52,7 +52,7 @@
 	<h1>Community Services</h1>
 
 	<nav class="options">
-		<Button onclick={toggleForm}>
+		<Button onclick={toggleForm} sound_pattern="click">
 			{#snippet icon()}
 				{#if showForm}
 					<Icon kind="folder_open" size="21" />
@@ -82,27 +82,25 @@
 	<div class="services-list">
 		{#if filteredServices && filteredServices.length > 0}
 			{#each filteredServices as service}
-				<a href="/services/{service.id}" class="service-card-link">
-					<div class="service-card">
-						{#if service.category}
-							<span class="category">{service.category}</span>
-						{/if}
+				<LinkButton
+					href={`/services/${service.id}`}
+					underline={false}
+					sound_pattern="swipe"
+					class="service-card">
+					{#if service.category}
+						<span class="category">{service.category}</span>
+					{/if}
 
-						{#if service.image_url}
-							<img src={service.image_url} alt={service.title} class="image" />
-						{/if}
+					{#if service.image_url}
+						<img src={service.image_url} alt={service.title} class="image" />
+					{/if}
 
-						<h3 class="title">{service.title}</h3>
+					<h3 class="title">{service.title}</h3>
 
-						<div class="description">
-							{@html formatText(truncateText(stripMarkdown(service.description), 90))}
-						</div>
-
-						<!-- <p class="posted">
-							Posted: {timeFrom(service.created_at)}
-						</p> -->
+					<div class="description">
+						{@html formatText(truncateText(stripMarkdown(service.description), 90))}
 					</div>
-				</a>
+				</LinkButton>
 			{/each}
 		{:else}
 			<p class="no-records">No services were found.</p>
@@ -153,7 +151,26 @@
 		}
 	}
 
-	.service-card {
+	:global(a.service-card) {
+		text-decoration: none;
+		color: inherit;
+		display: flex;
+		grid-template-columns: 1fr;
+		width: 100%;
+		border-radius: var(--radius-2);
+		/* border: var(--border-size-1) solid var(--surface-3); */
+		outline: var(--border-size-2) solid var(--surface-3);
+		position: relative;
+		transition: transform var(--transition) ease;
+		white-space: normal;
+		align-items: start;
+		flex-direction: column;
+		justify-content: flex-start;
+
+		&:hover {
+			outline-color: var(--surface-4);
+		}
+
 		.title {
 			margin-block: var(--size-3);
 			margin-inline: var(--size-3);
@@ -188,24 +205,6 @@
 			margin-inline: var(--size-3);
 			margin-block-end: var(--size-3);
 			color: var(--text-2);
-		}
-	}
-
-	.service-card-link {
-		text-decoration: none;
-		color: inherit;
-		display: inline-flex;
-		flex-direction: column;
-		width: 100%;
-		break-inside: avoid;
-		border-radius: var(--radius-2);
-		/* border: var(--border-size-1) solid var(--gray-1); */
-		outline: var(--border-size-2) solid var(--surface-3);
-		position: relative;
-		transition: transform var(--transition) ease;
-
-		&:hover {
-			outline-color: var(--surface-4);
 		}
 	}
 </style>
