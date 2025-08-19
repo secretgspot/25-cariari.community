@@ -164,6 +164,7 @@
 					size="small"
 					red
 					white
+					sound_pattern="longPress"
 					loading={isSubmitting}
 					disabled={isSubmitting}
 					onclick={() => (showDeleteDialog = true)}>

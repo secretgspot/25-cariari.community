@@ -414,8 +414,99 @@ export const chimePatterns = {
 		waveType: 'sine',
 	}],
 
+	// Deep ethereal notification with sub-bass presence
+	success: [{
+		frequency: 110,
+		duration: 350,
+		delay: 0,
+		volume: 0.18,
+		waveType: 'sine',
+	}, {
+		frequency: 220,
+		duration: 320,
+		delay: 80,
+		volume: 0.16,
+		waveType: 'sine',
+	}, {
+		frequency: 330,
+		duration: 280,
+		delay: 160,
+		volume: 0.14,
+		waveType: 'sine',
+	}, {
+		frequency: 440,
+		duration: 250,
+		delay: 240,
+		volume: 0.12,
+		waveType: 'sine',
+	}, {
+		frequency: 165,
+		duration: 400,
+		delay: 40,
+		volume: 0.1,
+		waveType: 'sine',
+	}],
+
+	// "NAH-UH" error sound - two distinct syllables
+	fail: [
+		// First syllable - "NAH" (higher, sharper)
+		{
+			frequency: 220,
+			duration: 200,
+			delay: 0,
+			volume: 0.25,
+			waveType: 'sine'
+		},
+		{
+			frequency: 110,
+			duration: 250,
+			delay: 0,
+			volume: 0.28,
+			waveType: 'sine'
+		},
+		{
+			frequency: 55,
+			duration: 300,
+			delay: 0,
+			volume: 0.22,
+			waveType: 'triangle'
+		},
+
+		// Brief pause, then second syllable - "UH" (lower, more final)
+		{
+			frequency: 146,
+			duration: 300,
+			delay: 250,
+			volume: 0.22,
+			waveType: 'sine'
+		},
+		{
+			frequency: 73,
+			duration: 350,
+			delay: 250,
+			volume: 0.26,
+			waveType: 'sine'
+		},
+		{
+			frequency: 37,
+			duration: 400,
+			delay: 250,
+			volume: 0.24,
+			waveType: 'triangle'
+		},
+
+		// Ultra-deep rumble throughout for impact
+		{
+			frequency: 28,
+			duration: 600,
+			delay: 0,
+			volume: 0.2,
+			waveType: 'triangle'
+		}
+	],
+
 	// "WIN!" success sound - sharp, punchy single syllable
-	success: [
+	notification: [
 		// Sharp attack for "W"
 		{
 			frequency: 330,
@@ -494,97 +585,6 @@ export const chimePatterns = {
 			waveType: 'triangle'
 		}
 	],
-
-	// "NAH-UH" error sound - two distinct syllables
-	fail: [
-		// First syllable - "NAH" (higher, sharper)
-		{
-			frequency: 220,
-			duration: 200,
-			delay: 0,
-			volume: 0.25,
-			waveType: 'triangle'
-		},
-		{
-			frequency: 110,
-			duration: 250,
-			delay: 0,
-			volume: 0.28,
-			waveType: 'triangle'
-		},
-		{
-			frequency: 55,
-			duration: 300,
-			delay: 0,
-			volume: 0.22,
-			waveType: 'sine'
-		},
-
-		// Brief pause, then second syllable - "UH" (lower, more final)
-		{
-			frequency: 146,
-			duration: 300,
-			delay: 250,
-			volume: 0.22,
-			waveType: 'triangle'
-		},
-		{
-			frequency: 73,
-			duration: 350,
-			delay: 250,
-			volume: 0.26,
-			waveType: 'triangle'
-		},
-		{
-			frequency: 37,
-			duration: 400,
-			delay: 250,
-			volume: 0.24,
-			waveType: 'sine'
-		},
-
-		// Ultra-deep rumble throughout for impact
-		{
-			frequency: 28,
-			duration: 600,
-			delay: 0,
-			volume: 0.2,
-			waveType: 'sine'
-		}
-	],
-
-	// Deep ethereal notification with sub-bass presence
-	notification: [{
-		frequency: 110,
-		duration: 350,
-		delay: 0,
-		volume: 0.18,
-		waveType: 'sine',
-	}, {
-		frequency: 220,
-		duration: 320,
-		delay: 80,
-		volume: 0.16,
-		waveType: 'sine',
-	}, {
-		frequency: 330,
-		duration: 280,
-		delay: 160,
-		volume: 0.14,
-		waveType: 'sine',
-	}, {
-		frequency: 440,
-		duration: 250,
-		delay: 240,
-		volume: 0.12,
-		waveType: 'sine',
-	}, {
-		frequency: 165,
-		duration: 400,
-		delay: 40,
-		volume: 0.1,
-		waveType: 'sine',
-	}],
 
 	// Deep, cinematic logout sequence - three descending steps
 	logout: [

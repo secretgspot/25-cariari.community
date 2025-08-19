@@ -155,10 +155,11 @@
 	}
 
 	.shadow {
-		box-shadow: var(--shadow-1);
+		box-shadow: 0px 3px 0px 0px var(--surface-4);
 		&:hover,
 		&:active {
-			box-shadow: var(--shadow-2);
+			box-shadow: 0px 0px 0px 0px var(--surface-4);
+			transform: translateY(3px);
 		}
 	}
 
@@ -192,7 +193,6 @@
 	.small {
 		align-items: center;
 		white-space: nowrap;
-		box-shadow: var(--shadow-1);
 		&:active,
 		&:focus,
 		&:hover {
@@ -211,7 +211,6 @@
 
 	.medium {
 		align-items: center;
-		box-shadow: var(--shadow-1);
 
 		&:active,
 		&:focus,

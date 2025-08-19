@@ -52,7 +52,7 @@
 	<h1>Community Services</h1>
 
 	<nav class="options">
-		<Button onclick={toggleForm} sound_pattern="click">
+		<Button onclick={toggleForm} shadow sound_pattern="click">
 			{#snippet icon()}
 				{#if showForm}
 					<Icon kind="folder_open" size="21" />
