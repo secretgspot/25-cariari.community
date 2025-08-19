@@ -90,7 +90,7 @@
 					{loading}
 					disabled={loading}>
 					{#snippet icon()}
-						<Icon kind="delete" size="16" />
+						<Icon kind="delete" size="12" />
 					{/snippet}
 				</Button>
 			</li>
@@ -144,11 +144,15 @@
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			padding: var(--size-2) 0;
+			padding: var(--size-2);
 			border-bottom: var(--border-size-1) solid var(--surface-2);
 
 			&:last-child {
 				border-bottom: none;
+			}
+
+			&:hover {
+				background-color: var(--surface-2);
 			}
 		}
 	}

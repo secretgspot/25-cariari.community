@@ -27,7 +27,11 @@
 <li class="content-item">
 	<div class="item-info">
 		{#if linkPrefix}
-			<LinkButton href="{linkPrefix}/{item.id}" sound_pattern="swipe" class="item-link">
+			<LinkButton
+				href="{linkPrefix}/{item.id}"
+				underline={false}
+				sound_pattern="swipe"
+				class="item-link">
 				{item[itemKey]}
 			</LinkButton>
 		{:else}
@@ -65,6 +69,9 @@
 		&:last-child {
 			border-bottom: none;
 		}
+		&:hover {
+			background-color: var(--surface-2);
+		}
 
 		.item-info {
 			flex: 1;
@@ -73,6 +80,7 @@
 				color: var(--text-1);
 				text-decoration: none;
 				font-weight: 500;
+				white-space: normal;
 			}
 			.item-title {
 				font-weight: 500;
