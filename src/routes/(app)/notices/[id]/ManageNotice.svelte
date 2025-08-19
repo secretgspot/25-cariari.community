@@ -164,7 +164,6 @@
 					size="small"
 					red
 					white
-					sound_pattern="fail"
 					loading={isSubmitting}
 					disabled={isSubmitting}
 					onclick={() => (showDeleteDialog = true)}>
