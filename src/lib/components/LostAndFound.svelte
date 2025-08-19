@@ -92,14 +92,21 @@
 			.category {
 				padding: var(--size-1) var(--size-2);
 				border-radius: var(--radius-2);
-				border-bottom-left-radius: 0;
-				border-top-left-radius: 0;
 				display: inline-block;
 				position: absolute;
 				top: var(--size-3);
-				left: 0;
 				font-size: small;
 				background: var(--surface-1);
+				&.lost {
+					left: 0;
+					border-bottom-left-radius: 0;
+					border-top-left-radius: 0;
+				}
+				&.found {
+					right: 0;
+					border-bottom-right-radius: 0;
+					border-top-right-radius: 0;
+				}
 			}
 
 			.image {

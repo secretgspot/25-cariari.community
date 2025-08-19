@@ -168,6 +168,7 @@
 
 		&:hover {
 			outline-color: var(--surface-4);
+			color: inherit;
 		}
 
 		.title {

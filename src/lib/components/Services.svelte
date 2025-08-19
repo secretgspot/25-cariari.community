@@ -101,5 +101,6 @@
 		flex: 1;
 		overflow: hidden;
 		text-overflow: ellipsis;
+		white-space: normal;
 	}
 </style>
