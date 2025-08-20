@@ -1,6 +1,5 @@
 <script>
 	import UsersManagement from './UsersManagement.svelte';
-	import AdManagement from './AdManagement.svelte';
 	import { Button } from '$lib/buttons';
 
 	let { data } = $props();
@@ -24,13 +23,13 @@
 				Users
 			</Button>
 
-			<Button
+			<!-- <Button
 				sound_pattern="tick"
 				active={activeTabId === 'ads'}
 				onclick={() => changeTab('ads')}
 				size="block">
 				Ads
-			</Button>
+			</Button> -->
 		</div>
 	</aside>
 
@@ -40,10 +39,6 @@
 
 	<div id="users" class="content-section" data-tab="users">
 		<UsersManagement users={data.users} />
-	</div>
-
-	<div id="ads" class="content-section" data-tab="ads">
-		<AdManagement ads={data.ads} />
 	</div>
 </div>
 

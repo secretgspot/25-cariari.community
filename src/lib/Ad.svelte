@@ -163,8 +163,10 @@
 		color: var(--text-1);
 		border-radius: var(--radius-2);
 		place-self: center;
-		width: 100%;
-		height: 100px;
+		width: min-content;
+		min-width: 300px;
+		height: auto;
+		min-height: 100px;
 		aspect-ratio: 320/100;
 
 		.placeholder-text {

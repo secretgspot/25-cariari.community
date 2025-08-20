@@ -271,34 +271,6 @@ $$;
 ALTER FUNCTION "public"."get_my_claims"() OWNER TO "postgres";
 
 
-CREATE OR REPLACE FUNCTION "public"."increment_ad_clicks"("ad_id" "uuid") RETURNS "void"
-    LANGUAGE "plpgsql" SECURITY DEFINER
-    AS $$
-BEGIN
-    UPDATE ads
-    SET clicks = clicks + 1
-    WHERE id = ad_id;
-END;
-$$;
-
-
-ALTER FUNCTION "public"."increment_ad_clicks"("ad_id" "uuid") OWNER TO "postgres";
-
-
-CREATE OR REPLACE FUNCTION "public"."increment_ad_impressions"("ad_id" "uuid") RETURNS "void"
-    LANGUAGE "plpgsql" SECURITY DEFINER
-    AS $$
-BEGIN
-    UPDATE ads
-    SET impressions = impressions + 1
-    WHERE id = ad_id;
-END;
-$$;
-
-
-ALTER FUNCTION "public"."increment_ad_impressions"("ad_id" "uuid") OWNER TO "postgres";
-
-
 CREATE OR REPLACE FUNCTION "public"."is_admin"("uid" "uuid") RETURNS boolean
     LANGUAGE "plpgsql"
     AS $$
@@ -409,25 +381,6 @@ SET default_tablespace = '';
 SET default_table_access_method = "heap";
 
 
-CREATE TABLE IF NOT EXISTS "public"."ads" (
-    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
-    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "user_id" "uuid" NOT NULL,
-    "file" "text" NOT NULL,
-    "title" "text" NOT NULL,
-    "href" "text" NOT NULL,
-    "width" integer NOT NULL,
-    "height" integer NOT NULL,
-    "weight" integer DEFAULT 1 NOT NULL,
-    "impressions" integer DEFAULT 0 NOT NULL,
-    "clicks" integer DEFAULT 0 NOT NULL,
-    "active" boolean DEFAULT true NOT NULL
-);
-
-
-ALTER TABLE "public"."ads" OWNER TO "postgres";
-
-
 CREATE TABLE IF NOT EXISTS "public"."comments" (
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
     "user_id" "uuid" NOT NULL,
@@ -527,11 +480,6 @@ CREATE TABLE IF NOT EXISTS "public"."services" (
 
 
 ALTER TABLE "public"."services" OWNER TO "postgres";
-
-
-ALTER TABLE ONLY "public"."ads"
-    ADD CONSTRAINT "ads_pkey" PRIMARY KEY ("id");
-
 
 
 ALTER TABLE ONLY "public"."comments"
@@ -666,11 +614,6 @@ CREATE OR REPLACE TRIGGER "update_comments_updated_at" BEFORE UPDATE ON "public"
 
 
 
-ALTER TABLE ONLY "public"."ads"
-    ADD CONSTRAINT "ads_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "auth"."users"("id") ON DELETE CASCADE;
-
-
-
 ALTER TABLE ONLY "public"."comments"
     ADD CONSTRAINT "comments_event_id_fkey" FOREIGN KEY ("event_id") REFERENCES "public"."events"("id") ON DELETE CASCADE;
 
@@ -726,10 +669,6 @@ ALTER TABLE ONLY "public"."services"
 
 
 
-CREATE POLICY "Admin can manage all ads" ON "public"."ads" TO "authenticated" USING ((((("auth"."jwt"() -> 'app_metadata'::"text") ->> 'admin'::"text"))::boolean = true));
-
-
-
 CREATE POLICY "Admin can manage all comments" ON "public"."comments" USING ((((("auth"."jwt"() -> 'app_metadata'::"text") ->> 'admin'::"text"))::boolean = true));
 
 
@@ -755,10 +694,6 @@ CREATE POLICY "Admin can manage all services" ON "public"."services" USING (((((
 
 
 CREATE POLICY "Comments are viewable by everyone" ON "public"."comments" FOR SELECT USING (true);
-
-
-
-CREATE POLICY "Enable read access for all users" ON "public"."ads" FOR SELECT USING (true);
 
 
 
@@ -852,9 +787,6 @@ CREATE POLICY "Users can update their own profile" ON "public"."profiles" FOR UP
 
 CREATE POLICY "Users can view their own profile" ON "public"."profiles" FOR SELECT USING (("auth"."uid"() = "user_id"));
 
-
-
-ALTER TABLE "public"."ads" ENABLE ROW LEVEL SECURITY;
 
 
 ALTER TABLE "public"."comments" ENABLE ROW LEVEL SECURITY;
@@ -1133,18 +1065,6 @@ GRANT ALL ON FUNCTION "public"."get_my_claims"() TO "service_role";
 
 
 
-GRANT ALL ON FUNCTION "public"."increment_ad_clicks"("ad_id" "uuid") TO "anon";
-GRANT ALL ON FUNCTION "public"."increment_ad_clicks"("ad_id" "uuid") TO "authenticated";
-GRANT ALL ON FUNCTION "public"."increment_ad_clicks"("ad_id" "uuid") TO "service_role";
-
-
-
-GRANT ALL ON FUNCTION "public"."increment_ad_impressions"("ad_id" "uuid") TO "anon";
-GRANT ALL ON FUNCTION "public"."increment_ad_impressions"("ad_id" "uuid") TO "authenticated";
-GRANT ALL ON FUNCTION "public"."increment_ad_impressions"("ad_id" "uuid") TO "service_role";
-
-
-
 GRANT ALL ON FUNCTION "public"."is_admin"("uid" "uuid") TO "anon";
 GRANT ALL ON FUNCTION "public"."is_admin"("uid" "uuid") TO "authenticated";
 GRANT ALL ON FUNCTION "public"."is_admin"("uid" "uuid") TO "service_role";
@@ -1193,12 +1113,6 @@ GRANT ALL ON FUNCTION "public"."update_updated_at_column"() TO "service_role";
 
 
 
-
-
-
-GRANT ALL ON TABLE "public"."ads" TO "anon";
-GRANT ALL ON TABLE "public"."ads" TO "authenticated";
-GRANT ALL ON TABLE "public"."ads" TO "service_role";
 
 
 
