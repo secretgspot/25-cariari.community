@@ -5,26 +5,11 @@
 	import Button from '$lib/buttons/Button.svelte';
 	import Icon from '$lib/Icon.svelte';
 
-	let users = $state([]);
+	let { users = [] } = $props();
+
 	let userToDelete = $state(null);
 	let loading = $state(false);
 	let showDeleteDialog = $state(false);
-
-	$effect(() => {
-		fetchUsers();
-	});
-
-	async function fetchUsers() {
-		try {
-			const response = await fetch('/api/users');
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
-			}
-			users = await response.json();
-		} catch (error) {
-			console.error('Error fetching users:', error);
-		}
-	}
 
 	function confirmDelete(user) {
 		userToDelete = user;

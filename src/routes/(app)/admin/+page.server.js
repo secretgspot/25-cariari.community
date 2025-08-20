@@ -9,21 +9,28 @@ export async function load({ locals: { getSession }, fetch }) {
 	}
 
 	try {
-		const response = await fetch('/api/ads');
+		const [adsResponse, usersResponse] = await Promise.all([
+			fetch('/api/ads'),
+			fetch('/api/users')
+		]);
 
-		if (!response.ok) {
-			console.error('Error fetching ads from API, status:', response.status);
-			return { ads: [] };
+		if (!adsResponse.ok) {
+			console.error('Error fetching ads from API, status:', adsResponse.status);
+		}
+		if (!usersResponse.ok) {
+			console.error('Error fetching users from API, status:', usersResponse.status);
 		}
 
-		const result = await response.json();
+		const adsResult = adsResponse.ok ? await adsResponse.json() : [];
+		const usersResult = usersResponse.ok ? await usersResponse.json() : [];
 
-		const ads = Array.isArray(result) ? result : (result.ads || []);
+		const ads = Array.isArray(adsResult) ? adsResult : adsResult.ads || [];
+		const users = Array.isArray(usersResult) ? usersResult : usersResult.users || [];
 
-		return { ads };
+		return { ads, users };
 	} catch (error) {
-		console.error('Error fetching ads in load function:', error);
-		return { ads: [] };
+		console.error('Error fetching data in load function:', error);
+		return { ads: [], users: [] };
 	}
 }
 

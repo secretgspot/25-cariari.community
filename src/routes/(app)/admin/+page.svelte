@@ -39,11 +39,11 @@
 	</header>
 
 	<div id="users" class="content-section" data-tab="users">
-		<UsersManagement />
+		<UsersManagement users={data.users} />
 	</div>
 
 	<div id="ads" class="content-section" data-tab="ads">
-		<AdManagement {data} />
+		<AdManagement ads={data.ads} />
 	</div>
 </div>
 

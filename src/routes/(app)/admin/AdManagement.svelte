@@ -8,7 +8,7 @@
 	import Icon from '$lib/Icon.svelte';
 	import Dialog from '$lib/Dialog.svelte';
 
-	let { data } = $props();
+	let { ads = [] } = $props();
 
 	let selectedAd = $state(null);
 	let compressedFile = $state(null);
@@ -27,9 +27,6 @@
 		weight: 1,
 		active: true,
 	});
-
-	// Get ads from data prop
-	const ads = $derived(data.ads || []);
 
 	function selectAd(ad) {
 		selectedAd = ad;
