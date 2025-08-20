@@ -1,11 +1,9 @@
 <script>
 	import { invalidateAll } from '$app/navigation';
 	import { enhance } from '$app/forms';
-	import Button from '$lib/buttons/Button.svelte';
-	import LinkButton from '$lib/buttons/LinkButton.svelte';
+	import { Button, LinkButton, Toggle } from '$lib/buttons';
 	import { compressFile } from '$lib/utils/file.js';
 	import Divider from '$lib/Divider.svelte';
-	import Toggle from '$lib/Toggle.svelte';
 	import { addToast } from '$lib/toasts';
 	import Icon from '$lib/Icon.svelte';
 	import Dialog from '$lib/Dialog.svelte';

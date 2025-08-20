@@ -2,15 +2,13 @@
 <script>
 	import { settings } from './settings.js';
 	import Divider from '$lib/Divider.svelte';
-	import Toggle from '$lib/Toggle.svelte';
+	import Toggle from '$lib/buttons/Toggle.svelte';
 
 	let currentSettings = $state($settings);
 
 	$effect(() => {
 		$settings = currentSettings;
-	});
 
-	$effect(() => {
 		if (currentSettings.dark_theme) {
 			document.documentElement.setAttribute('color-scheme', 'dark');
 		} else {

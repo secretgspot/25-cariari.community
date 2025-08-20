@@ -10,10 +10,6 @@
 	let loading = $state(false);
 	let showDeleteDialog = $state(false);
 
-	const handleDelete = () => {
-		showDeleteDialog = true;
-	};
-
 	$effect(() => {
 		fetchUsers();
 	});

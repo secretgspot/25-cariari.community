@@ -79,12 +79,7 @@
 		placeholder="Add a comment..."
 		disabled={submitting}></textarea>
 
-	<Button
-		right
-		outline
-		onclick={submitComment}
-		loading={submitting}
-		disabled={submitting}>
+	<Button right onclick={submitComment} loading={submitting} disabled={submitting}>
 		{#snippet icon()}
 			<Icon kind="add_comment" size="21" />
 		{/snippet}
