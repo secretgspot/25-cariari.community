@@ -1,10 +1,10 @@
 <script>
 	import { LinkButton } from './buttons';
 	import Logo from './Logo.svelte';
-	import Ads from '$lib/Ads.svelte';
+	import Ad from '$lib/Ad.svelte';
 </script>
 
-<Ads />
+<Ad />
 
 <footer class="site-footer">
 	<!-- Footer info -->
