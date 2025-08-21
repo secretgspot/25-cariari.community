@@ -91,6 +91,7 @@
 <!-- Main Template -->
 {#if isLinkType}
 	<a
+		role="button"
 		class="button {size} {rest.class ?? ''}"
 		class:disabled={isDisabled}
 		class:shadow
@@ -99,9 +100,6 @@
 		class:active
 		href={linkHref}
 		target={linkTarget}
-		role="button"
-		data-sveltekit-prefetch
-		{...rest}
 		onclick={handleClick}>
 		{@render buttonContent()}
 	</a>
@@ -282,18 +280,21 @@
 		}
 	}
 
-	[white] {
+	[white],
+	.white {
 		background: var(--surface-1);
 	}
 
-	[green] {
+	[green],
+	.green {
 		border-color: var(--green-3);
 		&:hover {
 			border-color: var(--green-4);
 		}
 	}
 
-	[red] {
+	[red],
+	.red {
 		border-color: var(--red-3);
 		&:hover {
 			border-color: var(--red-4);

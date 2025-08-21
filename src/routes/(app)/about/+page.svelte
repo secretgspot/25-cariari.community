@@ -2,11 +2,14 @@
 	import Contact from '$lib/Contact.svelte';
 	import Divider from '$lib/Divider.svelte';
 	import { Button } from '$lib/buttons';
+	import Community from './Community.svelte';
 
 	// let { data } = $props();
 </script>
 
 <article class="about-container">
+	<Community />
+
 	<h1>About Cariari Community!</h1>
 	<p>
 		Welcome to our digital home for the Cariari community! We're here to help neighbors
@@ -50,7 +53,11 @@
 			tips are always welcome and greatly appreciated!
 		</p>
 
-		<Button href="https://buymeacoffee.com/artbyxyu" external size="small" green>
+		<Button
+			class="tip green"
+			href="https://buymeacoffee.com/artbyxyu"
+			external
+			size="small">
 			{#snippet icon()}
 				☕
 			{/snippet}
@@ -101,9 +108,10 @@
 			margin-block-end: var(--size-6);
 		}
 
-		:global(.small) {
+		:global(.tip) {
 			margin-block-start: var(--size-6);
 			width: min-content;
+			justify-self: center;
 		}
 	}
 </style>
