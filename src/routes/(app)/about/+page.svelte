@@ -54,9 +54,11 @@
 		</p>
 
 		<Button
-			class="tip green"
+			class="tip"
 			href="https://buymeacoffee.com/artbyxyu"
 			external
+			shadow
+			green
 			size="small">
 			{#snippet icon()}
 				☕

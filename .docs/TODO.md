@@ -2,7 +2,7 @@
 
 - [ ] what is the point of /api/comments and /api/comments/[id] when comments are available under each drill down /api/events/[id]/comments? should comment api only be used for posting/editing/deleting comments from Comments component? is it used for listin right now?
 - [ ] when new item added, should it go to the new item page instead of main page?
-- [ ] migrate ads system into own project ad.agency
+- [x] migrate ads system into own project ad.agency
 
 ---
 
