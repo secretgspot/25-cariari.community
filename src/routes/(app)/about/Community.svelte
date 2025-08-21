@@ -130,9 +130,9 @@
 		}
 
 		&.center {
-			z-index: 5;
 			left: 50%;
 			top: 50%;
+			border-radius: 0;
 		}
 	}
 </style>
