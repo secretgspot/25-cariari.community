@@ -92,6 +92,7 @@
 {#if isLinkType}
 	<a
 		role="button"
+		{...rest}
 		class="button {size} {rest.class ?? ''}"
 		class:disabled={isDisabled}
 		class:shadow
