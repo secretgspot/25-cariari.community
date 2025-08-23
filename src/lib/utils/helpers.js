@@ -44,4 +44,22 @@ export function enter(node, callback) {
 	};
 }
 
+export function horizontalScroll(node) {
+	function handleWheel(e) {
+		if (node.scrollWidth > node.clientWidth) {
+			e.preventDefault();
+			const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+			node.scrollLeft += delta;
+		}
+	}
+
+	node.addEventListener('wheel', handleWheel, { passive: false });
+
+	return {
+		destroy() {
+			node.removeEventListener('wheel', handleWheel);
+		}
+	};
+}
+
 

@@ -2,6 +2,7 @@
 	import { LinkButton } from '$lib/buttons';
 	import ExpirationIndicator from '$lib/ExpirationIndicator.svelte';
 	import { timeFromLong } from '$lib/utils/time.js';
+	import { horizontalScroll } from '$lib/utils/helpers.js';
 
 	let { data } = $props();
 </script>
@@ -12,7 +13,7 @@
 		<LinkButton href="/events" class="view-all">View all</LinkButton>
 	</legend>
 
-	<div class="slider-container">
+	<div class="slider-container" use:horizontalScroll>
 		<div class="slides">
 			{#each data as event}
 				<LinkButton
@@ -60,12 +61,28 @@
 		-webkit-overflow-scrolling: touch;
 		scrollbar-width: thin;
 		scrollbar-color: var(--surface-4) var(--surface-1);
+		scroll-behavior: smooth;
 		margin-block: var(--size-3);
 		padding-bottom: var(--size-2);
 		width: 100%;
-		cursor: grab;
-		&:active {
-			cursor: grabbing;
+
+		/* Hide scrollbar on webkit browsers for cleaner look */
+		&::-webkit-scrollbar {
+			height: 6px;
+		}
+
+		&::-webkit-scrollbar-track {
+			background: var(--surface-1);
+			border-radius: var(--radius-1);
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background: var(--surface-4);
+			border-radius: var(--radius-1);
+		}
+
+		&::-webkit-scrollbar-thumb:hover {
+			background: var(--surface-5);
 		}
 	}
 
