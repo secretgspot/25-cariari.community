@@ -176,6 +176,7 @@
 		display: flex;
 		grid-template-columns: 1fr;
 		width: 100%;
+		border: var(--border-size-1) solid var(--surface-3);
 		border-radius: var(--radius-2);
 		position: relative;
 		transition: transform var(--transition) ease;
@@ -183,11 +184,13 @@
 		align-items: start;
 		flex-direction: column;
 		justify-content: flex-start;
-		box-shadow: 0px 2px 0px 1px var(--surface-4);
-		&:hover,
+		box-shadow: 0px 2px 0px 0px var(--surface-4);
+		&:hover {
+			background: var(--surface-2);
+		}
 		&:active {
 			color: inherit;
-			box-shadow: 0px 0px 0px 1px var(--surface-4);
+			box-shadow: 0px 0px 0px 0px var(--surface-4);
 			transform: translateY(2px);
 		}
 

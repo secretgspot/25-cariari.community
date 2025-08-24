@@ -132,7 +132,7 @@
 		}
 
 		&:hover img {
-			filter: brightness(1.1);
+			transform: scale(1.1);
 		}
 
 		.event-date {
@@ -155,6 +155,7 @@
 			object-fit: cover;
 			aspect-ratio: 1;
 			display: block;
+			transition: all var(--transition) cubic-bezier(0.18, 0.89, 0.32, 1.28);
 		}
 
 		.placeholder-image {

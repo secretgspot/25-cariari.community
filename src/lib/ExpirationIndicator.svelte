@@ -89,22 +89,23 @@
 		height: 1px;
 		border-radius: var(--radius-2);
 		position: absolute;
-		bottom: 0;
-		left: 0;
-		right: 0;
+		bottom: -1px;
+		left: var(--border-size-2);
+		right: var(--border-size-2);
+		opacity: 0.3;
 	}
 
 	.expiration-indicator-fill {
 		height: 100%;
 		border-radius: var(--radius-2);
-		background-color: var(--surface-4);
+		background-color: var(--blue-6);
 		transition: width var(--transition) ease-out;
 		&.expired {
-			background-color: var(--color-red);
+			background-color: var(--red-6);
 		}
 
 		&.full {
-			background-color: var(--color-green);
+			background-color: var(--green-6);
 		}
 	}
 </style>

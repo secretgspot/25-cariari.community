@@ -92,9 +92,10 @@
 			border-radius: var(--radius-2);
 			color: var(--text-1);
 			box-shadow: 0px 2px 0px 0px var(--surface-4);
-			&:hover,
+			&:hover {
+				background: var(--surface-2);
+			}
 			&:active {
-				color: var(--blue-9);
 				box-shadow: 0px 0px 0px 0px var(--surface-4);
 				transform: translateY(2px);
 			}

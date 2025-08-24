@@ -80,13 +80,16 @@
 
 		:global(a.post) {
 			display: grid;
+			align-content: space-between;
 			color: inherit;
 			position: relative;
 			border: var(--border-size-1) solid var(--surface-3);
 			border-radius: var(--radius-2);
 			justify-content: normal;
 			box-shadow: 0px 2px 0px 0px var(--surface-4);
-			&:hover,
+			&:hover {
+				background: var(--surface-2);
+			}
 			&:active {
 				box-shadow: 0px 0px 0px 0px var(--surface-4);
 				transform: translateY(2px);
@@ -117,6 +120,8 @@
 				object-fit: cover;
 				aspect-ratio: 1;
 				border-radius: inherit;
+				border-bottom-left-radius: 0;
+				border-bottom-right-radius: 0;
 			}
 
 			.title {
@@ -125,6 +130,7 @@
 				font-size: smaller;
 				color: var(--text-1);
 				font-weight: 500;
+				white-space: break-spaces;
 			}
 		}
 
@@ -137,6 +143,9 @@
 			justify-content: center;
 			font-size: 2em;
 			aspect-ratio: 1;
+			border-radius: inherit;
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
 		}
 	}
 </style>

@@ -156,15 +156,17 @@
 			color: inherit;
 			display: block;
 			width: 100%;
-			margin-bottom: var(--size-4);
+			border: var(--border-size-1) solid var(--surface-3);
 			border-radius: var(--radius-2);
 			position: relative;
 			transition: transform var(--transition) ease;
 			white-space: normal;
-			box-shadow: 0px 2px 0px 1px var(--surface-4);
-			&:hover,
+			box-shadow: 0px 2px 0px 0px var(--surface-4);
+			&:hover {
+				background: var(--surface-2);
+			}
 			&:active {
-				box-shadow: 0px 0px 0px 1px var(--surface-4);
+				box-shadow: 0px 0px 0px 0px var(--surface-4);
 				transform: translateY(2px);
 			}
 
