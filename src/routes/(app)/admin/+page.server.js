@@ -7,10 +7,10 @@ import { SUPABASE_SERVICE_ROLE_KEY } from '$env/static/private';
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ locals: { getSession }, fetch }) {
 	const session = await getSession();
-	const { is_logged_in, is_admin, user_id } = session;
+	const { is_admin, user_id } = session;
 
-	if (!is_logged_in || !is_admin) {
-		throw redirect(303, '/login');
+	if (!is_admin) {
+		throw redirect(303, '/');
 	}
 
 	if (!SUPABASE_SERVICE_ROLE_KEY) {
@@ -68,7 +68,7 @@ export const actions = {
 		const session = await getSession();
 		const { is_logged_in, is_admin, user_id: currentUserId } = session;
 
-		if (!is_logged_in || !is_admin) {
+		if (!is_admin) {
 			return fail(403, { message: 'Unauthorized: Admin access required' });
 		}
 
@@ -83,23 +83,6 @@ export const actions = {
 		if (!SUPABASE_SERVICE_ROLE_KEY) {
 			console.error('SUPABASE_SERVICE_ROLE_KEY is not set in environment variables.');
 			return fail(500, { message: 'Server configuration error: Supabase service role key is missing.' });
-		}
-
-		// Prevent users from removing their own admin privileges
-		if (userId === currentUserId) {
-			try {
-				const supabaseAdmin = createClient(PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-				const { data: userData } = await supabaseAdmin.auth.admin.getUserById(userId);
-
-				// If current user is an admin and they're trying to change their status, block it
-				if (userData.user?.app_metadata?.admin) {
-					return fail(403, { message: 'You cannot remove your own admin privileges' });
-				}
-			} catch (error) {
-				console.error('Error checking current user admin status:', error);
-				// If we can't check, err on the side of caution and block the action for self
-				return fail(500, { message: 'Unable to verify current admin status' });
-			}
 		}
 
 		try {

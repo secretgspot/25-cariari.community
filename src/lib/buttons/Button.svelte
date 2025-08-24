@@ -154,11 +154,11 @@
 	}
 
 	.shadow {
-		box-shadow: 0px 3px 0px 0px var(--surface-4);
+		box-shadow: 0px 2px 0px 0px var(--surface-4);
 		&:hover,
 		&:active {
 			box-shadow: 0px 0px 0px 0px var(--surface-4);
-			transform: translateY(3px);
+			transform: translateY(2px);
 		}
 	}
 
