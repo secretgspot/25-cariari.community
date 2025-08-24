@@ -173,7 +173,8 @@
 			.header-wrap {
 				display: flex;
 				flex-direction: column;
-				gap: var(--size-3);
+				gap: var(--size-1);
+				margin-block-end: var(--size-3);
 
 				.title-wrap {
 					display: flex;
@@ -199,8 +200,10 @@
 
 				.details-wrap {
 					display: flex;
-					justify-content: space-between;
+					justify-content: flex-start;
 					color: var(--text-2);
+					gap: var(--size-3);
+					margin-inline-start: var(--size-8);
 
 					.time-starts,
 					.time-expires {
