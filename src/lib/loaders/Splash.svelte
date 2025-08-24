@@ -6,7 +6,7 @@
 <div transition:fade class="splash">
 	<div class="backdrop"></div>
 
-	<LogoSvg animate={false} invert={true} ring={true} kind="bw" size="69" time={1} />
+	<LogoSvg animate={false} invert={false} ring={true} kind="bw" size="69" time={1} />
 </div>
 
 <style>
