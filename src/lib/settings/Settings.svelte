@@ -3,41 +3,28 @@
 	import { settings } from './settings.js';
 	import Divider from '$lib/Divider.svelte';
 	import Toggle from '$lib/buttons/Toggle.svelte';
-
-	let currentSettings = $state($settings);
-
-	$effect(() => {
-		$settings = currentSettings;
-
-		if (currentSettings.dark_theme) {
-			document.documentElement.setAttribute('color-scheme', 'dark');
-		} else {
-			document.documentElement.setAttribute('color-scheme', 'light');
-			// document.documentElement.removeAttribute('color-scheme');
-		}
-	});
 </script>
 
 <div class="site-settings">
 	<Divider>Site Settings</Divider>
 	<div class="site-buttons-group">
-		<Toggle bind:checked={currentSettings.dark_theme} label="Dark Theme" />
+		<Toggle bind:checked={$settings.dark_theme} label="Dark Theme" />
 		<div class="group">
-			<Toggle bind:checked={currentSettings.button_sounds} label="Button sounds" />
-			<Toggle bind:checked={currentSettings.button_buzz} label="Button buzz" />
+			<Toggle bind:checked={$settings.button_sounds} label="Button sounds" />
+			<Toggle bind:checked={$settings.button_buzz} label="Button buzz" />
 		</div>
 
 		<div class="group">
-			<Toggle bind:checked={currentSettings.navigation_sound} label="Navigation sounds" />
-			<Toggle bind:checked={currentSettings.navigation_buzz} label="Navigation buzz" />
+			<Toggle bind:checked={$settings.navigation_sound} label="Navigation sounds" />
+			<Toggle bind:checked={$settings.navigation_buzz} label="Navigation buzz" />
 		</div>
 
 		<div class="group">
 			<Toggle
-				bind:checked={currentSettings.notification_sound}
+				bind:checked={$settings.notification_sound}
 				label="Notification sounds" />
 			<Toggle
-				bind:checked={currentSettings.notification_buzz}
+				bind:checked={$settings.notification_buzz}
 				label="Notification buzz" />
 		</div>
 	</div>
