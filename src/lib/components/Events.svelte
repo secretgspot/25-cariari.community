@@ -111,11 +111,7 @@
 			width: 100%;
 			left: 0;
 			top: 0;
-			background-image: linear-gradient(
-				180deg,
-				rgba(0, 0, 0, 0) 50%,
-				rgba(0, 0, 0, 1) 100%
-			);
+			background-image: linear-gradient(180deg, transparent 50%, var(--surface-1) 90%);
 		}
 
 		/* Responsive slide widths */
@@ -135,8 +131,8 @@
 			flex: 0 0 calc(25% - var(--size-3));
 		}
 
-		&:hover {
-			filter: brightness(1.2);
+		&:hover img {
+			filter: brightness(1.1);
 		}
 
 		.event-date {
@@ -184,6 +180,7 @@
 			right: 0;
 			z-index: 1;
 			color: var(--text-1);
+			white-space: break-spaces;
 
 			.title {
 				margin: 0;
