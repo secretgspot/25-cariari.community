@@ -177,24 +177,24 @@
 		grid-template-columns: 1fr;
 		width: 100%;
 		border-radius: var(--radius-2);
-		/* border: var(--border-size-1) solid var(--surface-3); */
-		outline: var(--border-size-2) solid var(--surface-3);
 		position: relative;
 		transition: transform var(--transition) ease;
 		white-space: normal;
 		align-items: start;
 		flex-direction: column;
 		justify-content: flex-start;
-
-		&:hover {
-			outline-color: var(--surface-4);
+		box-shadow: 0px 2px 0px 1px var(--surface-4);
+		&:hover,
+		&:active {
 			color: inherit;
+			box-shadow: 0px 0px 0px 1px var(--surface-4);
+			transform: translateY(2px);
 		}
 
 		.category {
 			position: absolute;
 			padding: var(--size-1) var(--size-2);
-			background: var(--surface-3);
+			background: var(--surface-1);
 			border-radius: var(--radius-2);
 			border-bottom-left-radius: 0;
 			border-top-right-radius: 0;

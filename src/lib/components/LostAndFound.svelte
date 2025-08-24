@@ -82,11 +82,14 @@
 			display: grid;
 			color: inherit;
 			position: relative;
+			border: var(--border-size-1) solid var(--surface-3);
 			border-radius: var(--radius-2);
-			outline: var(--border-size-2) dotted var(--surface-3);
 			justify-content: normal;
-			&:hover {
-				outline-color: var(--surface-4);
+			box-shadow: 0px 2px 0px 0px var(--surface-4);
+			&:hover,
+			&:active {
+				box-shadow: 0px 0px 0px 0px var(--surface-4);
+				transform: translateY(2px);
 			}
 
 			.category {
@@ -113,6 +116,7 @@
 				width: 100%;
 				object-fit: cover;
 				aspect-ratio: 1;
+				border-radius: inherit;
 			}
 
 			.title {

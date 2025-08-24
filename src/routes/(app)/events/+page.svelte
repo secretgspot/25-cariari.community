@@ -167,14 +167,14 @@
 			align-items: start;
 			width: 100%;
 			border-radius: var(--radius-2);
-			/* border: var(--border-size-1) solid var(--surface-3); */
-			outline: var(--border-size-2) solid var(--surface-3);
 			position: relative;
 			transition: transform var(--transition) ease;
 			white-space: normal;
-
-			&:hover {
-				outline-color: var(--surface-4);
+			box-shadow: 0px 2px 0px 1px var(--surface-4);
+			&:hover,
+			&:active {
+				box-shadow: 0px 0px 0px 1px var(--surface-4);
+				transform: translateY(2px);
 			}
 
 			.category {
@@ -195,7 +195,7 @@
 				border-radius: var(--radius-2);
 				border-bottom-right-radius: 0;
 				border-top-left-radius: 0;
-				background: var(--surface-3);
+				background: var(--surface-1);
 			}
 
 			.image {

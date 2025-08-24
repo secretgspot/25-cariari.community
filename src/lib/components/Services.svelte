@@ -68,9 +68,12 @@
 			border: var(--border-size-1) solid var(--surface-3);
 			border-radius: var(--radius-2);
 			color: var(--text-1);
-			&:hover {
+			box-shadow: 0px 2px 0px 0px var(--surface-4);
+			&:hover,
+			&:active {
 				color: var(--blue-9);
-				border-color: var(--surface-4);
+				box-shadow: 0px 0px 0px 0px var(--surface-4);
+				transform: translateY(2px);
 			}
 			& > :global(svg) {
 				color: var(--text-1);
