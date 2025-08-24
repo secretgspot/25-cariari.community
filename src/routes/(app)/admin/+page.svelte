@@ -2,7 +2,7 @@
 	import UsersManagement from './UsersManagement.svelte';
 	import { Button } from '$lib/buttons';
 
-	let { data } = $props();
+	let { data } = $props(); // data returns users array
 
 	// Only need to track active tab
 	let activeTabId = $state('users');
@@ -38,7 +38,7 @@
 	</header>
 
 	<div id="users" class="content-section" data-tab="users">
-		<UsersManagement users={data.users} />
+		<UsersManagement users={data.users} currentUserId={data.userProfile.user_id} />
 	</div>
 </div>
 
