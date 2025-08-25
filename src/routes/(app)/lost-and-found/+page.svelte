@@ -186,6 +186,7 @@
 		justify-content: flex-start;
 		box-shadow: 0px 2px 0px 0px var(--surface-4);
 		&:hover {
+			color: inherit;
 			background: var(--surface-2);
 		}
 		&:active {
