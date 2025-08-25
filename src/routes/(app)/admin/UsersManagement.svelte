@@ -124,7 +124,10 @@
 {#if users.length > 0}
 	<section class="users-wrapper">
 		{#each users as user (user.user_id)}
-			<div class="user" class:yourself={user.user_id === currentUserId}>
+			<div
+				class="user"
+				class:yourself={user.user_id === currentUserId}
+				class:admin={user.app_metadata?.admin}>
 				<div class="avatar-wrap">
 					{#if user?.avatar_url}
 						<img
@@ -224,12 +227,26 @@
 		&:hover {
 			background: var(--surface-3);
 		}
-		&.yourself img {
-			outline: 3px solid var(--blue-3);
+		&.yourself .username::after {
+			content: ' (You)';
+			color: var(--blue-5);
+			font-size: smaller;
+			font-weight: bold;
+		}
+
+		&.admin .avatar-wrap::before {
+			content: '🜲';
+			color: var(--brand);
+			position: absolute;
+			top: -14px;
+			left: 50%;
+			font-size: x-large;
+			transform: translateX(-50%);
 		}
 
 		.avatar-wrap {
 			display: flex;
+			position: relative;
 
 			.avatar,
 			.placeholder-image {
@@ -237,8 +254,9 @@
 				object-fit: cover;
 				width: 32px;
 				height: 32px;
-				border-radius: var(--radius-blob-3);
+				border-radius: var(--radius-round);
 				flex-shrink: 0;
+				z-index: 1;
 			}
 
 			.placeholder-image {
@@ -296,6 +314,7 @@
 			background: var(--surface-1);
 			color: var(--text-1);
 			font-size: small;
+			appearance: base-select;
 			&:disabled {
 				cursor: not-allowed;
 				opacity: 0.5;
@@ -303,6 +322,12 @@
 			&:focus {
 				outline: 2px solid var(--blue-7);
 				outline-offset: 1px;
+			}
+			&::picker(select) {
+				appearance: base-select;
+				background: var(--surface-1);
+				border: var(--border-size-1) solid var(--surface-3);
+				border-radius: var(--radius-2);
 			}
 		}
 	}

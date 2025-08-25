@@ -119,7 +119,7 @@ export const actions = {
 			const action = newAdminStatus ? 'granted' : 'revoked';
 			return {
 				success: true,
-				message: `Admin permissions ${action} successfully!`,
+				message: `Admin permissions ${action}!`,
 				newAdminStatus
 			};
 		} catch (err) {
