@@ -71,7 +71,7 @@
 				<textarea class="form-input" id="message" name="message"></textarea>
 			</div>
 			<div class="button-wrap">
-				<Button type="submit" left loading={sending} disabled={sending}>
+				<Button type="submit" shadow loading={sending} disabled={sending}>
 					{#snippet icon()}
 						📧
 					{/snippet}
