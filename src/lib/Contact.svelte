@@ -1,6 +1,7 @@
 <script>
 	import { enhance } from '$app/forms';
 	import { Button } from '$lib/buttons';
+	import Icon from '$lib/Icon.svelte';
 
 	let { data } = $props();
 
@@ -73,7 +74,7 @@
 			<div class="button-wrap">
 				<Button type="submit" shadow loading={sending} disabled={sending}>
 					{#snippet icon()}
-						📧
+						<Icon kind="email" size="21" />
 					{/snippet}
 					{#if sending}
 						Sending...

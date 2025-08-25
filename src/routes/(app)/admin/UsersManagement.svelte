@@ -308,12 +308,10 @@
 
 		select {
 			cursor: pointer;
-			padding: var(--size-1);
 			border: var(--border-size-1) solid var(--surface-3);
 			border-radius: var(--radius-2);
 			background: var(--surface-1);
 			color: var(--text-1);
-			font-size: small;
 			appearance: base-select;
 			&:disabled {
 				cursor: not-allowed;
