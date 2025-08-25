@@ -247,7 +247,7 @@
 			left: 0;
 			width: 100%;
 			height: var(--loader-height);
-			background: linear-gradient(90deg, transparent, var(--blue-6), transparent);
+			background: linear-gradient(90deg, transparent, var(--brand), transparent);
 			animation: spiral 1s linear infinite;
 			transform-origin: center;
 		}

@@ -11,24 +11,24 @@ const DEFAULT_SETTINGS = {
 
 	// Audio Effects
 	button_sounds: true,
-	navigation_sound: false,
+	// navigation_sound: false,
 	notification_sound: true,
 
 	// Vibration Effects
 	button_buzz: true,
-	navigation_buzz: true,
+	// navigation_buzz: true,
 	notification_buzz: true,
 
 	// Audio Patterns
 	button_sound_pattern: 'click',
-	navigation_sound_pattern: 'navigate',
+	// navigation_sound_pattern: 'navigate',
 	notification_sound_pattern: 'notification',
 	notification_error_sound_pattern: 'fail',
 	notification_success_sound_pattern: 'success',
 
 	// Vibration Patterns
 	button_vibration_pattern: 'click',
-	navigation_vibration_pattern: 'navigate',
+	// navigation_vibration_pattern: 'navigate',
 	notification_vibration_pattern: 'notification',
 	notification_error_vibration_pattern: 'fail',
 	notification_success_vibration_pattern: 'success',

@@ -14,18 +14,14 @@
 			<Toggle bind:checked={$settings.button_buzz} label="Button buzz" />
 		</div>
 
-		<div class="group">
+		<!-- <div class="group">
 			<Toggle bind:checked={$settings.navigation_sound} label="Navigation sounds" />
 			<Toggle bind:checked={$settings.navigation_buzz} label="Navigation buzz" />
-		</div>
+		</div> -->
 
 		<div class="group">
-			<Toggle
-				bind:checked={$settings.notification_sound}
-				label="Notification sounds" />
-			<Toggle
-				bind:checked={$settings.notification_buzz}
-				label="Notification buzz" />
+			<Toggle bind:checked={$settings.notification_sound} label="Notification sounds" />
+			<Toggle bind:checked={$settings.notification_buzz} label="Notification buzz" />
 		</div>
 	</div>
 </div>

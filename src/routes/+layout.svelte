@@ -7,8 +7,8 @@
 	import Splash from '$lib/loaders/Splash.svelte';
 	import { Toasts } from '$lib/toasts';
 	import 'open-props/style';
-	import { playNavigationSound } from '$lib/utils/audio.js';
-	import { vibrateNavigation } from '$lib/utils/vibrate.js';
+	// import { playNavigationSound } from '$lib/utils/audio.js';
+	// import { vibrateNavigation } from '$lib/utils/vibrate.js';
 	import { settings } from '$lib/settings/settings.js';
 	import { browser } from '$app/environment';
 
@@ -43,16 +43,16 @@
 		};
 	});
 
-	onNavigate((navigation) => {
-		playNavigationSound();
-		vibrateNavigation();
-	});
+	// onNavigate((navigation) => {
+	// 	playNavigationSound();
+	// 	vibrateNavigation();
+	// });
 </script>
 
 <Toasts />
 
 {#if navigating.complete}
-	<FixedLine kind="spiral" size="1" />
+	<FixedLine kind="spiral" size="3" />
 	<Splash />
 {:else}
 	<Nav {data} />
