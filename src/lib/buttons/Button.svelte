@@ -5,7 +5,7 @@
 	import { vibrateButton } from '$lib/utils/vibrate.js';
 
 	let {
-		size = 'medium', // icon, small, medium, block
+		size = 'regular', // regular, icon, small, block
 		disabled = false,
 		outline = false,
 		right = false,
@@ -57,7 +57,7 @@
 		{:else if icon}
 			{@render icon()}
 		{:else}
-			🧵
+			👀
 		{/if}
 	</div>
 {/snippet}
@@ -71,7 +71,7 @@
 				{@render children?.()}
 			</span>
 		{:else}
-			<b class="title">{@render children?.()}</b>
+			<span class="title">{@render children?.()}</span>
 		{/if}
 	</div>
 {/snippet}
@@ -134,55 +134,29 @@
 		transition: background var(--transition) cubic-bezier(0.33, 1, 0.69, 1);
 		touch-action: manipulation;
 		-webkit-tap-highlight-color: transparent;
-		/* z-index: 2; */
 		&:hover,
 		&:active,
 		&:focus,
 		&.active {
 			background: var(--surface-2);
 		}
-	}
 
-	.outline {
-		outline: 1px solid var(--blue-0);
-		&:hover,
-		&:active,
-		&:focus,
-		&.active {
-			outline: 2px solid var(--blue-3);
+		.icon_wrap {
+			display: flex;
 		}
-	}
 
-	.shadow {
-		box-shadow: 0px 2px 0px 0px var(--surface-4);
-		&:hover,
-		&:active {
-			box-shadow: 0px 0px 0px 0px var(--surface-4);
-			transform: translateY(2px);
+		.content_wrap {
+			display: flex;
+			flex-flow: column;
 		}
-	}
-
-	.icon_wrap {
-		display: flex;
-	}
-
-	.content_wrap {
-		display: flex;
-		flex-flow: column;
 	}
 
 	.icon {
 		display: inline-flex;
 		align-items: center;
-		border-radius: var(--radius-2);
 		justify-content: center;
 		width: inherit;
 		height: inherit;
-		background: transparent;
-		&:hover {
-			background: transparent;
-			outline: solid 3px var(--surface-3);
-		}
 
 		.icon_wrap {
 			padding: var(--size-1);
@@ -192,12 +166,6 @@
 	.small {
 		align-items: center;
 		white-space: nowrap;
-		&:active,
-		&:focus,
-		&:hover {
-			background: var(--primary);
-			border-style: solid;
-		}
 		.icon_wrap {
 			padding: var(--size-2);
 		}
@@ -208,14 +176,8 @@
 		}
 	}
 
-	.medium {
+	.regular {
 		align-items: center;
-
-		&:active,
-		&:focus,
-		&:hover {
-			border-style: solid;
-		}
 
 		.icon_wrap {
 			display: flex;
@@ -238,22 +200,15 @@
 
 	.block {
 		width: 100%;
-		border: 0;
-		color: var(--text-1);
-		padding: var(--size-2);
-		border-radius: var(--radius-2);
-		&.active {
-			font-weight: bold;
-		}
+		align-items: center;
+		justify-content: center;
 
 		.content_wrap {
-			flex: 1;
-
-			.title {
-				display: flex;
-				align-items: center;
-				/* justify-content: center; */
-			}
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: center;
+			align-items: flex-start;
+			padding: var(--size-3);
 		}
 	}
 
@@ -263,6 +218,22 @@
 		.content_wrap {
 			border-left: 0;
 			border-right: var(--border-size-1) solid var(--surface-3);
+		}
+	}
+
+	.outline {
+		outline: 1px solid var(--stone-9);
+		&:active,
+		&.active {
+			outline: 2px solid var(--stone-3);
+		}
+	}
+
+	.shadow {
+		box-shadow: 0px 2px 0px 0px var(--surface-4);
+		&:active {
+			box-shadow: 0px 0px 0px 0px var(--surface-4);
+			transform: translateY(2px);
 		}
 	}
 
@@ -279,11 +250,6 @@
 			box-shadow: none;
 			opacity: 0.6;
 		}
-	}
-
-	[white],
-	.white {
-		background: var(--surface-1);
 	}
 
 	[green],
