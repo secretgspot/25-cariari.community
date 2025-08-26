@@ -313,6 +313,7 @@
 			background: var(--surface-1);
 			color: var(--text-1);
 			appearance: base-select;
+			padding: var(--size-2);
 			&:disabled {
 				cursor: not-allowed;
 				opacity: 0.5;
@@ -326,6 +327,9 @@
 				background: var(--surface-1);
 				border: var(--border-size-1) solid var(--surface-3);
 				border-radius: var(--radius-2);
+			}
+			option {
+				padding: var(--size-2);
 			}
 		}
 	}

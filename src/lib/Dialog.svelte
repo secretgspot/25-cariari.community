@@ -42,7 +42,7 @@
 	aria-describedby="dialog-description">
 	<header>
 		<h2 id="dialog-title">{title}</h2>
-		<Button size="icon" aria-label="Close dialog" onclick={onCancel}>
+		<Button size="icon" outline aria-label="Close dialog" onclick={onCancel}>
 			{#snippet icon()}
 				<Icon kind="cancel" size="15" />
 			{/snippet}
@@ -61,14 +61,14 @@
 		{#if type === 'alert'}
 			<Button type="button" size="block" onclick={handleConfirm}>OKAY</Button>
 		{:else if type === 'confirm'}
-			<Button onclick={onCancel}>
+			<Button outline onclick={onCancel}>
 				{#snippet icon()}
 					<Icon kind="cancel" size="18" />
 				{/snippet}
 				Cancel
 			</Button>
 
-			<Button type="button" red onclick={handleConfirm}>
+			<Button type="button" outline red onclick={handleConfirm}>
 				{#snippet icon()}
 					👍
 				{/snippet}

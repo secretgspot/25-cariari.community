@@ -292,6 +292,12 @@ hr {
 		border-color var(--transition),
 		box-shadow var(--transition);
 
+	&:focus {
+		outline: none;
+		border-color: var(--blue-3);
+		box-shadow: var(--shadow-1);
+	}
+
 	&:disabled {
 		opacity: 0.6;
 		cursor: not-allowed;
@@ -332,13 +338,20 @@ input[type="file"]::file-selector-button {
 	}
 }
 
+.form-select {
+	cursor: pointer;
+	appearance: base-select;
 
-.form-input:focus,
-.form-textarea:focus,
-.form-select:focus {
-	outline: none;
-	border-color: var(--blue-3);
-	box-shadow: var(--shadow-1);
+	&::picker(select) {
+		appearance: base-select;
+		background: var(--surface-1);
+		border: var(--border-size-1) solid var(--surface-3);
+		border-radius: var(--radius-2);
+	}
+
+	option {
+		padding: var(--size-3);
+	}
 }
 
 .form-textarea {
