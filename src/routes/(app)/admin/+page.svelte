@@ -93,6 +93,14 @@
 				position: sticky;
 				top: 180px;
 				margin-inline-end: var(--size-9);
+
+				:global(.button) {
+					border: 0;
+					justify-content: start;
+				}
+				:global(.button .content_wrap) {
+					padding: var(--size-2);
+				}
 			}
 		}
 
