@@ -1,0 +1,46 @@
+{
+	"name": "Cariari Community",
+	"short_name": "Cariari",
+	"description": "A community app for residents of Cariari, Costa Rica.",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#ffffff",
+	"theme_color": "#000000",
+	"icons": [
+		{
+			"src": "logos/logo_basic_gold.svg",
+			"sizes": "any",
+			"type": "image/svg+xml"
+		}
+	],
+	"screenshots": [
+		{
+			"src": "screenshots/mobile_screenshot_1.png",
+			"sizes": "850x1776",
+			"type": "image/png",
+			"form_factor": "narrow",
+			"label": "Main view on Mobile"
+		},
+		{
+			"src": "screenshots/mobile_screenshot_2.png",
+			"sizes": "850x1776",
+			"type": "image/png",
+			"form_factor": "narrow",
+			"label": "Events on Mobile"
+		},
+		{
+			"src": "screenshots/desktop_screenshot_1.png",
+			"sizes": "1223x999",
+			"type": "image/png",
+			"form_factor": "wide",
+			"label": "Main view on Desktop"
+		},
+		{
+			"src": "screenshots/desktop_screenshot_2.png",
+			"sizes": "1223x999",
+			"type": "image/png",
+			"form_factor": "wide",
+			"label": "Events on Desktop"
+		}
+	]
+}
