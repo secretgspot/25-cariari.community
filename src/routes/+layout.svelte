@@ -9,17 +9,14 @@
 	import 'open-props/style';
 	// import { playNavigationSound } from '$lib/utils/audio.js';
 	// import { vibrateNavigation } from '$lib/utils/vibrate.js';
-	import { settings } from '$lib/settings/settings.js';
+	import { effectiveTheme } from '$lib/settings/settings.js';
 	import { browser } from '$app/environment';
 
 	let { children, data } = $props();
 
 	$effect(() => {
 		if (browser) {
-			document.documentElement.setAttribute(
-				'color-scheme',
-				$settings.dark_theme ? 'dark' : 'light',
-			);
+			document.documentElement.setAttribute('color-scheme', $effectiveTheme);
 		}
 	});
 

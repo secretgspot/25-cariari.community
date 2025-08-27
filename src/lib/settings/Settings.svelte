@@ -3,12 +3,16 @@
 	import { settings } from './settings.js';
 	import Divider from '$lib/Divider.svelte';
 	import Toggle from '$lib/buttons/Toggle.svelte';
+	import Toggles from '$lib/buttons/Toggles.svelte';
 </script>
 
 <div class="site-settings">
 	<Divider>Site Settings</Divider>
 	<div class="site-buttons-group">
-		<Toggle bind:checked={$settings.dark_theme} label="Dark Theme" />
+		<Toggles
+			options={['Light', 'Dark', 'System']}
+			bind:value={$settings.theme}
+		/>
 		<div class="group">
 			<Toggle bind:checked={$settings.button_sounds} label="Button sounds" />
 			<Toggle bind:checked={$settings.button_buzz} label="Button buzz" />

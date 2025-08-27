@@ -1,5 +1,5 @@
 // $lib/settings/settings.js
-import { writable } from 'svelte/store';
+import { writable, derived } from 'svelte/store';
 import { browser } from '$app/environment';
 
 /**
@@ -7,7 +7,7 @@ import { browser } from '$app/environment';
  */
 const DEFAULT_SETTINGS = {
 	// Color Theme
-	dark_theme: false,
+	theme: 'System', // System, Light, Dark
 
 	// Audio Effects
 	button_sounds: true,
@@ -31,7 +31,7 @@ const DEFAULT_SETTINGS = {
 	// navigation_vibration_pattern: 'navigate',
 	notification_vibration_pattern: 'notification',
 	notification_error_vibration_pattern: 'fail',
-	notification_success_vibration_pattern: 'success',
+	notification_success_vibration_pattern: 'success'
 };
 
 /**
@@ -45,20 +45,13 @@ function loadSettings() {
 		if (storedSettings) {
 			const parsed = JSON.parse(storedSettings);
 			// Deep merge to ensure new settings keys are added to existing user profiles
-			const merged = {
+			return {
 				...DEFAULT_SETTINGS,
-				...parsed,
+				...parsed
 			};
-			return merged;
 		}
 	} catch (error) {
 		console.warn('Failed to load settings from localStorage:', error);
-	}
-
-	// If no settings are stored, check for system preference
-	const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-	if (prefersDarkMode) {
-		return { ...DEFAULT_SETTINGS, dark_theme: true };
 	}
 
 	return DEFAULT_SETTINGS;
@@ -86,6 +79,36 @@ export const settings = writable(initialSettings);
 if (browser) {
 	settings.subscribe(saveState);
 }
+
+// --- New Derived Store for Theme ---
+function createSystemThemeStore() {
+	if (!browser) {
+		return writable('light'); // Default for SSR
+	}
+	const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+	const store = writable(mediaQuery.matches ? 'dark' : 'light');
+
+	const listener = (e) => store.set(e.matches ? 'dark' : 'light');
+	mediaQuery.addEventListener('change', listener);
+
+	// Svelte runes don't have a built-in unmount, so we rely on browser context
+	// to manage this listener, which is acceptable for a global setting.
+
+	return store;
+}
+
+const systemTheme = createSystemThemeStore();
+
+export const effectiveTheme = derived(
+	[settings, systemTheme],
+	([$settings, $systemTheme]) => {
+		if ($settings.theme === 'System') {
+			return $systemTheme;
+		}
+		return $settings.theme.toLowerCase();
+	}
+);
+
 
 /**
  * Resets all settings to their default values and clears localStorage.
