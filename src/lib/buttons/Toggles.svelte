@@ -57,12 +57,12 @@
 		display: grid;
 		gap: var(--size-2);
 		grid-column: 1 / -1;
-	}
+		margin-block-end: var(--size-3);
 
-	.group-label {
-		font-size: var(--font-size-0);
-		color: var(--text-2);
-		padding-inline-start: var(--size-2);
+		.group-label {
+			color: var(--text-2);
+			padding-inline-start: var(--size-2);
+		}
 	}
 
 	.toggles {
@@ -98,7 +98,7 @@
 			border-radius: var(--radius-2);
 			cursor: pointer;
 			color: var(--text-2);
-			transition: color 0.2s ease-in-out;
+			transition: color var(--transition) ease-in-out;
 			z-index: 1;
 		}
 	}
