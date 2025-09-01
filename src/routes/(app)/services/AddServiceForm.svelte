@@ -4,6 +4,7 @@
 	import Button from '$lib/buttons/Button.svelte';
 	import { compressFile } from '$lib/utils/file.js';
 	import Textarea from '$lib/Textarea.svelte';
+	import Icon from '$lib/Icon.svelte';
 
 	let { onServiceAdded } = $props();
 
@@ -177,9 +178,9 @@
 	<input type="hidden" name="start_date" value={formData.start_date} />
 	<input type="hidden" name="end_date" value={formData.end_date} />
 
-	<Button type="submit" white outline right {loading} disabled={loading}>
+	<Button type="submit" shadow outline right {loading} disabled={loading}>
 		{#snippet icon()}
-			📌
+			<Icon kind="add" size="21" />
 		{/snippet}
 		{loading ? 'Adding...' : 'Add Service'}
 	</Button>

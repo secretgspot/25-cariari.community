@@ -12,6 +12,7 @@
 	--surface-4: var(--surface-4-light);
 	--color-green: var(--green-3);
 	--color-red: var(--red-3);
+	--accent: var(--blue-7);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,6 +28,7 @@
 		--surface-4: var(--surface-4-dark);
 		--color-green: var(--green-12);
 		--color-red: var(--red-12);
+		--accent: var(--yellow-3);
 	}
 }
 
@@ -42,6 +44,7 @@
 	--surface-4: var(--surface-4-light);
 	--color-green: var(--green-3);
 	--color-red: var(--red-3);
+	--accent: var(--blue-7);
 }
 
 [color-scheme="dark"] {
@@ -56,6 +59,7 @@
 	--surface-4: var(--surface-4-dark);
 	--color-green: var(--green-12);
 	--color-red: var(--red-12);
+	--accent: var(--yellow-3);
 }
 
 /* Additional global styles if needed */

@@ -4,6 +4,7 @@
 	import { compressFile } from '$lib/utils/file.js';
 	import { getTodayDateTimeString } from '$lib/utils/time.js';
 	import Textarea from '$lib/Textarea.svelte';
+	import Icon from '$lib/Icon.svelte';
 
 	let { onEventAdded } = $props();
 
@@ -215,9 +216,9 @@
 			onchange={handleFileChange} />
 	</div>
 
-	<Button type="submit" white outline right {loading} disabled={loading}>
+	<Button type="submit" shadow outline right {loading} disabled={loading}>
 		{#snippet icon()}
-			📌
+			<Icon kind="add" size="21" />
 		{/snippet}
 		{loading ? 'Adding...' : 'Add Event'}
 	</Button>

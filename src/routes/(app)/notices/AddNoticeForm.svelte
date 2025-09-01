@@ -3,6 +3,7 @@
 	import { enhance } from '$app/forms';
 	import Button from '$lib/buttons/Button.svelte';
 	import Textarea from '$lib/Textarea.svelte';
+	import Icon from '$lib/Icon.svelte';
 
 	let { onNoticeAdded } = $props();
 
@@ -122,9 +123,9 @@
 			class="form-input" />
 	</div>
 
-	<Button type="submit" white outline right {loading} disabled={loading}>
+	<Button type="submit" shadow outline right {loading} disabled={loading}>
 		{#snippet icon()}
-			📌
+			<Icon kind="add" size="21" />
 		{/snippet}
 		{loading ? 'Adding...' : 'Add Notice'}
 	</Button>
