@@ -3,13 +3,16 @@
 	import { Button, LinkButton } from '$lib/buttons';
 	import Icon from '$lib/Icon.svelte';
 
-	let { form } = $props();
+	let { data, form } = $props();
 
 	let loading = $state(false);
 </script>
 
 <div class="login-form-container">
 	<h1>Login</h1>
+	{#if data.message}
+		<p class="success">{data.message}</p>
+	{/if}
 	<form method="POST" action="?/login" use:enhance>
 		<div class="form-group">
 			<label for="email" class="form-label">Email <span class="required">*</span></label>
@@ -28,9 +31,9 @@
 			<input type="password" class="form-input" id="password" name="password" required />
 		</div>
 
-		<Button type="submit" {loading} disabled={loading}>
+		<Button type="submit" shadow {loading} disabled={loading}>
 			{#snippet icon()}
-				<Icon kind="user" size="21" />
+				<Icon kind="user" size="27" />
 			{/snippet}
 			{loading ? 'Login in...' : 'Login'}
 		</Button>
@@ -68,6 +71,12 @@
 
 	.error {
 		border: var(--border-size-1) solid var(--red-6);
+		padding: var(--size-3);
+		border-radius: var(--radius-2);
+	}
+
+	.success {
+		border: var(--border-size-1) solid var(--green-6);
 		padding: var(--size-3);
 		border-radius: var(--radius-2);
 	}

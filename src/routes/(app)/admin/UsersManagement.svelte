@@ -136,7 +136,7 @@
 							class="avatar"
 							loading="lazy" />
 					{:else}
-						<div class="placeholder-image">👤</div>
+						<div class="placeholder-image"><Icon kind="user" size="27" /></div>
 					{/if}
 				</div>
 				<div class="user-info">

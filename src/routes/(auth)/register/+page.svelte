@@ -39,9 +39,9 @@
 				required />
 		</div>
 
-		<Button type="submit" {loading} disabled={loading}>
+		<Button type="submit" shadow {loading} disabled={loading}>
 			{#snippet icon()}
-				<Icon kind="user" size="21" />
+				<Icon kind="user" size="27" />
 			{/snippet}
 			{loading ? 'Registering...' : 'Register'}
 		</Button>

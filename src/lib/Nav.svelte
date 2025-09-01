@@ -81,7 +81,7 @@
 			<!-- Guest Navigation -->
 			<div class="guest-section">
 				<LinkButton href="/login" underline={false} class="nav-link">
-					<span class="signin-icon" aria-hidden="true">👤</span>
+					<span class="nav-icon"><Icon kind="user" size="27" /></span>
 					<span>Sign In</span>
 				</LinkButton>
 			</div>
