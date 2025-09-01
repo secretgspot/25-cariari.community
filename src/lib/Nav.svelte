@@ -64,7 +64,7 @@
 						alt="{data.userProfile?.username || 'User'} avatar"
 						class="avatar-image" />
 				{:else}
-					👤
+					<Icon kind="user" size="27" />
 				{/if}
 
 				<span class="nav-text profile-name">
@@ -137,6 +137,10 @@
 			position: relative;
 			display: flex;
 			gap: var(--size-2);
+			color: var(--text-1);
+			&:hover {
+				color: var(--text-2);
+			}
 			.admin-indicator {
 				position: absolute;
 				top: -13px;

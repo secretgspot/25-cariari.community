@@ -9,8 +9,8 @@
 </script>
 
 <div class="login-form-container">
-	<h1>Login</h1>
-	<form method="POST" action="?/login" use:enhance>
+	<h1>Register</h1>
+	<form method="POST" action="?/register" use:enhance>
 		<div class="form-group">
 			<label for="email" class="form-label">Email <span class="required">*</span></label>
 			<input
@@ -28,11 +28,22 @@
 			<input type="password" class="form-input" id="password" name="password" required />
 		</div>
 
+		<div class="form-group">
+			<label for="passwordConfirm" class="form-label"
+				>Confirm Password <span class="required">*</span></label>
+			<input
+				type="password"
+				class="form-input"
+				id="passwordConfirm"
+				name="passwordConfirm"
+				required />
+		</div>
+
 		<Button type="submit" {loading} disabled={loading}>
 			{#snippet icon()}
 				<Icon kind="user" size="21" />
 			{/snippet}
-			{loading ? 'Login in...' : 'Login'}
+			{loading ? 'Registering...' : 'Register'}
 		</Button>
 
 		{#if form?.error}
@@ -40,8 +51,8 @@
 		{/if}
 	</form>
 	<p>
-		Don't have an account? <LinkButton href="/register" sound_pattern="basic"
-			>Register</LinkButton>
+		Already have an account? <LinkButton href="/login" sound_pattern="basic"
+			>Login</LinkButton>
 	</p>
 </div>
 
