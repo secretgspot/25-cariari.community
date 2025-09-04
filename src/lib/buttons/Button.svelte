@@ -141,6 +141,10 @@
 			background: var(--surface-2);
 		}
 
+		&:active .icon_wrap {
+			animation: pop 0.3s cubic-bezier(0.01, 0.29, 0.38, 2.37);
+		}
+
 		.icon_wrap {
 			display: flex;
 		}

@@ -132,6 +132,9 @@
 			&:hover {
 				color: var(--text-2);
 			}
+			&:active .nav-icon {
+				animation: push 0.2s cubic-bezier(0.01, 0.29, 0.38, 2.37);
+			}
 		}
 		:global(.profile-link) {
 			position: relative;

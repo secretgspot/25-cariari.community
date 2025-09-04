@@ -371,3 +371,16 @@ input[type="file"]::file-selector-button {
 	gap: var(--size-3);
 	margin-top: var(--size-8);
 }
+
+/* Anims */
+@keyframes push {
+	50% {
+		transform: scale(0.9);
+	}
+}
+
+@keyframes pop {
+	50% {
+		transform: scale(1.1);
+	}
+}
