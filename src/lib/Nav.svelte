@@ -23,12 +23,16 @@
 				href="/notices"
 				underline={false}
 				sound_pattern="basic"
-				class="nav-link">
+				class="nav-link {page.url.pathname.startsWith('/notices') ? 'active' : ''}">
 				<span class="nav-icon"><Icon kind="notices" size="27" /></span>
 				<span class="nav-text">Notices</span>
 			</LinkButton>
 
-			<LinkButton href="/events" underline={false} sound_pattern="basic" class="nav-link">
+			<LinkButton
+				href="/events"
+				underline={false}
+				sound_pattern="basic"
+				class="nav-link {page.url.pathname.startsWith('/events') ? 'active' : ''}">
 				<span class="nav-icon"><Icon kind="events" size="27" /></span>
 				<span class="nav-text">Events</span>
 			</LinkButton>
@@ -37,7 +41,9 @@
 				href="/lost-and-found"
 				underline={false}
 				sound_pattern="basic"
-				class="nav-link">
+				class="nav-link {page.url.pathname.startsWith('/lost-and-found')
+					? 'active'
+					: ''}">
 				<span class="nav-icon"><Icon kind="lost-and-found" size="27" /></span>
 				<span class="nav-text">Lost & Found</span>
 			</LinkButton>
@@ -46,7 +52,7 @@
 				href="/services"
 				underline={false}
 				sound_pattern="basic"
-				class="nav-link">
+				class="nav-link {page.url.pathname.startsWith('/services') ? 'active' : ''}">
 				<span class="nav-icon"><Icon kind="services" size="27" /></span>
 				<span class="nav-text">Services</span>
 			</LinkButton>
@@ -56,7 +62,7 @@
 				href="/profile"
 				underline={false}
 				sound_pattern="bell"
-				class="profile-link">
+				class="profile-link {page.url.pathname === '/profile' ? 'active' : ''}">
 				{#if data.is_admin}<span title="admin" class="admin-indicator">🜲</span>{/if}
 				{#if data.userProfile?.avatar_url}
 					<img
@@ -80,7 +86,10 @@
 		{:else}
 			<!-- Guest Navigation -->
 			<div class="guest-section">
-				<LinkButton href="/login" underline={false} class="nav-link">
+				<LinkButton
+					href="/login"
+					underline={false}
+					class="nav-link {page.url.pathname === '/login' ? 'active' : ''}">
 					<span class="nav-icon"><Icon kind="user" size="27" /></span>
 					<span>Sign In</span>
 				</LinkButton>
@@ -88,7 +97,10 @@
 		{/if}
 
 		{#if data.is_admin}
-			<LinkButton href="/admin" underline={false} class="nav-link">
+			<LinkButton
+				href="/admin"
+				underline={false}
+				class="nav-link {page.url.pathname === '/admin' ? 'active' : ''}">
 				<span class="nav-icon"><Icon kind="admin" size="27" /></span>
 				<span class="nav-text">Admin</span>
 			</LinkButton>
@@ -103,11 +115,27 @@
 		position: sticky;
 		top: 0;
 		padding: var(--size-3);
-		background-color: var(--surface-1);
 		z-index: 3;
+		/* Small tablets and larger mobile devices (481px - 768px) */
+		@media (min-width: 481px) {
+		}
+
+		/* Tablets and small laptops (769px - 1024px) */
+		@media (min-width: 769px) {
+		}
+
+		/* Large desktops and high-resolution screens (1025px and up) */
+		@media (min-width: 1025px) {
+		}
+
+		/* Extra-large screens (1440px and up) */
+		@media (min-width: 1440px) {
+		}
 
 		:global(.logo-link) {
 			color: var(--text-1);
+			display: block;
+			place-self: center;
 		}
 	}
 
@@ -116,6 +144,32 @@
 		flex-direction: row;
 		gap: var(--size-3);
 		align-items: center;
+
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		justify-content: space-evenly;
+		background: var(--surface-1);
+		padding: var(--size-3);
+		/* Small tablets and larger mobile devices (481px - 768px) */
+		@media (min-width: 481px) {
+			padding: var(--size-1);
+			position: unset;
+		}
+
+		/* Tablets and small laptops (769px - 1024px) */
+		@media (min-width: 769px) {
+		}
+
+		/* Large desktops and high-resolution screens (1025px and up) */
+		@media (min-width: 1025px) {
+		}
+
+		/* Extra-large screens (1440px and up) */
+		@media (min-width: 1440px) {
+		}
+
 		.nav-text {
 			display: none;
 			color: var(--text-2);
@@ -132,8 +186,12 @@
 			&:hover {
 				color: var(--text-2);
 			}
+			&.active {
+				color: var(--accent);
+			}
 			&:active .nav-icon {
 				animation: push 0.2s cubic-bezier(0.01, 0.29, 0.38, 2.37);
+				color: var(--brand);
 			}
 		}
 		:global(.profile-link) {
@@ -150,6 +208,9 @@
 				left: 3px;
 				color: var(--brand);
 				font-size: x-large;
+			}
+			&.active .admin-indicator {
+				color: var(--accent);
 			}
 			.avatar-image {
 				border-radius: var(--radius-round);

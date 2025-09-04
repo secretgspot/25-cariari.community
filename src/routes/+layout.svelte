@@ -51,13 +51,13 @@
 {#if navigating.complete}
 	<FixedLine kind="spiral" size="3" />
 	<Splash />
-{:else}
-	<Nav {data} />
-	<main>
-		{@render children?.()}
-		<Footer />
-	</main>
+	<!-- {:else} -->
 {/if}
+<Nav {data} />
+<main>
+	{@render children?.()}
+	<Footer />
+</main>
 
 <style>
 	main {
@@ -67,9 +67,11 @@
 		gap: var(--size-8);
 		margin-inline: var(--size-3);
 		flex-grow: 1;
+		margin-block-end: var(--size-9);
 
 		/* Small tablets and larger mobile devices (481px - 768px) */
 		@media (min-width: 481px) {
+			margin-block-end: unset;
 		}
 
 		/* Tablets and small laptops (769px - 1024px) */
