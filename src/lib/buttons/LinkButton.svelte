@@ -75,7 +75,7 @@
 			color: var(--blue-9);
 		}
 		&.active {
-			box-shadow: var(--blue-9) inset 0 -5px 0 -1px;
+			box-shadow: var(--blue-9) inset 0 -2px 0 -1px;
 			color: var(--blue-9);
 		}
 		&.underline {
