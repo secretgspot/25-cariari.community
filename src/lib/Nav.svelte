@@ -190,7 +190,7 @@
 				color: var(--accent);
 			}
 			&:active .nav-icon {
-				animation: push 0.2s cubic-bezier(0.01, 0.29, 0.38, 2.37);
+				animation: push var(--transition) cubic-bezier(0.01, 0.29, 0.38, 2.37);
 				color: var(--brand);
 			}
 		}

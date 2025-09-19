@@ -71,7 +71,7 @@
 
 html {
 	/* common */
-	--transition: 120ms;
+	--transition: 180ms;
 
 	/* light */
 	--brand-light: var(--stone-12);
@@ -200,6 +200,10 @@ hr {
 	padding: 0;
 	background: var(--surface-3);
 
+	&[open] summary svg {
+		color: var(--accent);
+	}
+
 	summary {
 		padding: var(--size-3);
 		cursor: pointer;
@@ -211,6 +215,7 @@ hr {
 		display: flex;
 		gap: var(--size-3);
 		align-items: center;
+		user-select: none;
 
 		&:hover {
 			background-color: var(--surface-3);
