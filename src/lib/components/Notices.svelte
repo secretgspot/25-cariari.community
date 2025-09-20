@@ -26,7 +26,7 @@
 		<LinkButton href="/notices" class="view-all">View all</LinkButton>
 	</legend>
 	<div class="notices-wrap">
-		{#each data as notice}
+		{#each data as notice (notice.id)}
 			{@const endDate = getNoticeEndDate(notice)}
 			{@const expired = isNoticeExpiredSimple(notice)}
 			<LinkButton

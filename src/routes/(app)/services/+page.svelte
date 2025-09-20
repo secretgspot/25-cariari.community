@@ -81,7 +81,7 @@
 
 	<div class="services-list">
 		{#if filteredServices && filteredServices.length > 0}
-			{#each filteredServices as service}
+			{#each filteredServices as service (service.id)}
 				<LinkButton
 					href={`/services/${service.id}`}
 					underline={false}

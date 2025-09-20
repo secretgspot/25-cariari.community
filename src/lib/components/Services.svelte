@@ -13,7 +13,7 @@
 		<LinkButton href="/services" class="view-all">View all</LinkButton>
 	</legend>
 	<div class="services-wrap">
-		{#each data as service}
+		{#each data as service (service.id)}
 			<LinkButton
 				href={`/services/${service.id}`}
 				underline={false}

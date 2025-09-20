@@ -13,7 +13,7 @@
 	</legend>
 
 	<div class="items-grid">
-		{#each data as post}
+		{#each data as post (post.id)}
 			<LinkButton
 				href={`/lost-and-found/${post.id}`}
 				underline={false}

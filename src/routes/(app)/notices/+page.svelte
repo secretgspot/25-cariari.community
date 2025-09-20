@@ -83,7 +83,7 @@
 
 	<div class="notices-list">
 		{#if filteredNotices && filteredNotices.length > 0}
-			{#each filteredNotices as notice}
+			{#each filteredNotices as notice (notice.id)}
 				<LinkButton
 					href={`/notices/${notice.id}`}
 					underline={false}

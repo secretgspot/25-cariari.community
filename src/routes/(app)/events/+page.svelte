@@ -84,7 +84,7 @@
 
 	<div class="events-list">
 		{#if filteredEvents && filteredEvents.length > 0}
-			{#each filteredEvents as event}
+			{#each filteredEvents as event (event.id)}
 				<LinkButton
 					href={`/events/${event.id}`}
 					underline={false}

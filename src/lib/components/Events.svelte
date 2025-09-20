@@ -15,7 +15,7 @@
 
 	<div class="slider-container" use:horizontalScroll>
 		<div class="slides">
-			{#each data as event}
+			{#each data as event (event.id)}
 				<LinkButton
 					href={`/events/${event.id}`}
 					underline={false}

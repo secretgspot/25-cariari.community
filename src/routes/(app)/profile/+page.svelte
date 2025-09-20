@@ -156,7 +156,7 @@
 			class="content-section"
 			data-tab="notices">
 			{#snippet children(items)}
-				{#each items as item}
+				{#each items as item (item.id)}
 					<ContentItem
 						{item}
 						itemKey="title"
@@ -174,7 +174,7 @@
 			class="content-section"
 			data-tab="events">
 			{#snippet children(items)}
-				{#each items as item}
+				{#each items as item (item.id)}
 					<ContentItem
 						{item}
 						itemKey="title"
@@ -192,7 +192,7 @@
 			class="content-section"
 			data-tab="lostandfound">
 			{#snippet children(items)}
-				{#each items as item}
+				{#each items as item (item.id)}
 					<ContentItem
 						{item}
 						itemKey="title"
@@ -210,7 +210,7 @@
 			class="content-section"
 			data-tab="services">
 			{#snippet children(items)}
-				{#each items as item}
+				{#each items as item (item.id)}
 					<ContentItem
 						{item}
 						itemKey="title"
@@ -228,7 +228,7 @@
 			class="content-section"
 			data-tab="comments">
 			{#snippet children(items)}
-				{#each items as item}
+				{#each items as item (item.id)}
 					<ContentItem {item} itemKey="content" type="comment" onDelete={handleDelete} />
 				{/each}
 			{/snippet}

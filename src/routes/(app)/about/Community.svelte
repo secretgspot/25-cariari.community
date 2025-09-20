@@ -98,7 +98,7 @@
 		class="avatar center"
 		style="width: {imageSize}px; height: {imageSize}px;" />
 
-	{#each imagePositions as image}
+	{#each imagePositions as image (image.username)}
 		<img
 			src={image.src || '/placeholder/avatar.png'}
 			alt="Avatar"

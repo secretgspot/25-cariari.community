@@ -90,7 +90,7 @@
 
 	<div class="lost-and-found-list">
 		{#if filteredLostAndFound && filteredLostAndFound.length > 0}
-			{#each filteredLostAndFound as post}
+			{#each filteredLostAndFound as post (post.id)}
 				<LinkButton
 					href={`/lost-and-found/${post.id}`}
 					underline={false}
