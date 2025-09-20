@@ -6,6 +6,9 @@ import { browser } from '$app/environment';
  * Default settings configuration
  */
 const DEFAULT_SETTINGS = {
+	// Language
+	locale: 'es', // 'en', 'es'
+
 	// Color Theme
 	theme: 'System', // System, Light, Dark
 

@@ -158,6 +158,7 @@
 								{:else}
 									<select
 										name="adminStatus"
+										class="gen-select role"
 										value={user.app_metadata?.admin ? 'admin' : 'regular'}
 										disabled={adminTogglingUser === user.user_id}
 										onchange={(e) => {
@@ -305,33 +306,6 @@
 		font-size: small;
 		color: var(--text-2);
 		cursor: pointer;
-
-		select {
-			cursor: pointer;
-			border: var(--border-size-1) solid var(--surface-3);
-			border-radius: var(--radius-2);
-			background: var(--surface-1);
-			color: var(--text-1);
-			appearance: base-select;
-			padding: var(--size-2);
-			&:disabled {
-				cursor: not-allowed;
-				opacity: 0.5;
-			}
-			&:focus {
-				outline: 2px solid var(--blue-7);
-				outline-offset: 1px;
-			}
-			&::picker(select) {
-				appearance: base-select;
-				background: var(--surface-1);
-				border: var(--border-size-1) solid var(--surface-3);
-				border-radius: var(--radius-2);
-			}
-			option {
-				padding: var(--size-2);
-			}
-		}
 	}
 
 	.no-users {

@@ -1,6 +1,5 @@
 <script>
-	export let size = '90px';
-	export let color = 'currentColor';
+	let { size = '90px', color = 'currentColor' } = $props();
 </script>
 
 <svg width={size} height={size} viewBox="0 0 166 166" fill="none">

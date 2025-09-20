@@ -2,6 +2,7 @@
 	import { LinkButton } from './buttons';
 	import Logo from './Logo.svelte';
 	import Ad from '$lib/Ad.svelte';
+	// import LangSwitcher from '$lib/LangSwitcher.svelte';
 </script>
 
 <Ad />
@@ -17,10 +18,13 @@
 			>Terms</LinkButton>
 	</div>
 
-	<!-- Brand/Logo Section -->
-	<LinkButton href="/" underline={false} sound_pattern="tick" class="logo-link">
-		<Logo size="30px" title="Cariari Community" />
-	</LinkButton>
+	<div class="brand-wrapper">
+		<!-- <LangSwitcher /> -->
+		<!-- Brand/Logo Section -->
+		<LinkButton href="/" underline={false} sound_pattern="tick" class="logo-link">
+			<Logo size="30px" title="Cariari Community" />
+		</LinkButton>
+	</div>
 </footer>
 
 <style>
@@ -33,6 +37,12 @@
 		.info-wrapper {
 			font-size: small;
 			color: var(--text-2);
+		}
+
+		.brand-wrapper {
+			display: flex;
+			align-items: center;
+			gap: 0;
 		}
 
 		:global(.logo-link) {
