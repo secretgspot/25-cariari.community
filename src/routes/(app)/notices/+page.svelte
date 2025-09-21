@@ -92,9 +92,7 @@
 					<div class="notice-card">
 						<header class="header-wrap">
 							<div class="title-wrap">
-								<div class="posted">
-									Posted: {timeFromLong(notice.created_at)}
-								</div>
+								<div class="posted" title="Posted">{timeFromLong(notice.created_at)}</div>
 								<h3 class="title">
 									<span class="urgency {notice.urgency.toLowerCase()}"></span>
 									{notice.title}
@@ -159,7 +157,7 @@
 			border: var(--border-size-1) solid var(--surface-3);
 			border-radius: var(--radius-2);
 			position: relative;
-			transition: transform var(--transition) ease;
+			/* transition: transform var(--transition) ease; */
 			white-space: normal;
 			box-shadow: 0px 2px 0px 0px var(--surface-4);
 			&:hover {

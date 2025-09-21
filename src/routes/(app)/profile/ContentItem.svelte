@@ -79,12 +79,12 @@
 			:global(a.item-link) {
 				color: var(--text-1);
 				text-decoration: none;
-				font-weight: 500;
+				/* font-weight: 500; */
 				white-space: normal;
 			}
-			.item-title {
+			/* .item-title {
 				font-weight: 500;
-			}
+			} */
 		}
 	}
 </style>

@@ -179,7 +179,7 @@
 		border: var(--border-size-1) solid var(--surface-3);
 		border-radius: var(--radius-2);
 		position: relative;
-		transition: transform var(--transition) ease;
+		/* transition: transform var(--transition) ease; */
 		white-space: normal;
 		align-items: start;
 		flex-direction: column;

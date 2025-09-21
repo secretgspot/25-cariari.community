@@ -42,7 +42,7 @@
 	aria-describedby="dialog-description">
 	<header>
 		<h2 id="dialog-title">{title}</h2>
-		<Button size="icon" outline aria-label="Close dialog" onclick={onCancel}>
+		<Button size="icon" aria-label="Close dialog" onclick={onCancel}>
 			{#snippet icon()}
 				<Icon kind="cancel" size="15" />
 			{/snippet}
@@ -61,16 +61,16 @@
 		{#if type === 'alert'}
 			<Button type="button" size="block" onclick={handleConfirm}>OKAY</Button>
 		{:else if type === 'confirm'}
-			<Button outline onclick={onCancel}>
+			<Button onclick={onCancel}>
 				{#snippet icon()}
-					<Icon kind="cancel" size="18" />
+					<Icon kind="dislike" size="21" />
 				{/snippet}
 				Cancel
 			</Button>
 
-			<Button type="button" outline red onclick={handleConfirm}>
+			<Button type="button" onclick={handleConfirm}>
 				{#snippet icon()}
-					👍
+					<Icon kind="like" size="21" />
 				{/snippet}
 				Confirm
 			</Button>
@@ -86,7 +86,7 @@
 		min-width: 369px;
 		width: min-content;
 		height: min-content;
-		border: var(--border-size-1) solid var(--surface-3);
+		border: none;
 		border-radius: var(--radius-2);
 		pointer-events: none;
 		z-index: 6;
@@ -138,13 +138,16 @@
 		}
 
 		#dialog-description {
-			margin: var(--size-3);
+			margin-block: var(--size-3);
+			:global(textarea) {
+				background: transparent;
+			}
 		}
 
 		footer {
 			display: flex;
 			gap: var(--size-3);
-			justify-content: space-around;
+			justify-content: space-between;
 		}
 	}
 </style>

@@ -127,42 +127,45 @@
 </script>
 
 <div class="comment-card" class:optimistic={comment.isOptimistic}>
-	<div class="comment-header">
-		{#if comment.profiles?.avatar_url}
-			<img
-				width="27px"
-				height="27px"
-				src={comment.profiles.avatar_url}
-				alt="Avatar"
-				class="comment-avatar" />
-		{/if}
-		<span class="comment-author">{comment.profiles?.username || 'Community Member'}</span>
-		<span class="comment-date">{timeFrom(comment.created_at)}</span>
-	</div>
-	<p class="comment-content">{comment.content}</p>
-	{#if userData?.user?.id === comment.user_id || userData?.is_admin}
-		<div class="comment-actions">
-			{#if loading}
-				<span class="comment-loading">Processing...</span>
-			{:else}
-				<LinkButton
-					onclick={() => (showEditDialog = true)}
-					underline={false}
-					sound_pattern="tick"
-					class="comment-button">
-					Edit
-				</LinkButton>
-
-				<LinkButton
-					onclick={() => (showDeleteDialog = true)}
-					underline={false}
-					sound_pattern="tick"
-					class="comment-button">
-					Delete
-				</LinkButton>
+	<div class="header">
+		<div class="user">
+			{#if comment.profiles?.avatar_url}
+				<img
+					width="27px"
+					height="27px"
+					src={comment.profiles.avatar_url}
+					alt="Avatar"
+					class="avatar" />
 			{/if}
+			<span class="author">{comment.profiles?.username || 'Anon'}</span>
+			<span class="date">{timeFrom(comment.created_at)}</span>
 		</div>
-	{/if}
+
+		{#if userData?.user?.id === comment.user_id || userData?.is_admin}
+			<div class="actions">
+				{#if loading}
+					<span class="loading">Processing...</span>
+				{:else}
+					<LinkButton
+						onclick={() => (showEditDialog = true)}
+						underline={false}
+						sound_pattern="tick"
+						class="button">
+						Edit
+					</LinkButton>
+
+					<LinkButton
+						onclick={() => (showDeleteDialog = true)}
+						underline={false}
+						sound_pattern="tick"
+						class="button">
+						Delete
+					</LinkButton>
+				{/if}
+			</div>
+		{/if}
+	</div>
+	<p class="content">{comment.content}</p>
 </div>
 
 <Dialog
@@ -190,7 +193,7 @@
 <style>
 	.comment-card {
 		position: relative;
-		border: var(--border-size-1) solid var(--surface-3);
+		/* border: var(--border-size-1) solid var(--surface-3); */
 		border-radius: var(--radius-2);
 		padding: var(--size-2);
 		transition: opacity var(--transition) ease;
@@ -199,14 +202,21 @@
 			border-color: var(--surface-4);
 		}
 
-		.comment-header {
+		.header {
 			display: flex;
 			align-items: center;
 			gap: var(--size-2);
-			margin-bottom: var(--size-3);
+			margin-bottom: var(--size-2);
 			font-size: small;
 
-			.comment-avatar {
+			.user {
+				display: flex;
+				align-items: center;
+				gap: var(--size-2);
+				font-size: small;
+			}
+
+			.avatar {
 				width: 18px;
 				height: 18px;
 				border-radius: var(--radius-round);
@@ -214,34 +224,31 @@
 				aspect-ratio: 1;
 			}
 
-			.comment-author {
+			.author {
 				font-weight: bold;
 				color: var(--text-2);
 			}
 
-			.comment-date {
+			.date {
 				color: var(--text-2);
 			}
 		}
 
-		.comment-content {
+		.content {
 			margin-block: var(--size-1);
 			color: var(--text-1);
 			font-size: smaller;
+			margin-inline-start: var(--size-5);
 		}
 
-		.comment-actions {
-			position: absolute;
-			top: 0;
-			right: 0;
-
-			.comment-loading {
+		.actions {
+			.loading {
 				font-size: x-small;
 				color: var(--text-1);
 				font-style: italic;
 			}
 
-			:global(button.comment-button) {
+			:global(button.button) {
 				background: none;
 				border: none;
 				color: var(--blue-6);

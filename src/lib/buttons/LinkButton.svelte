@@ -66,7 +66,7 @@
 
 		color: var(--blue-6);
 		padding-bottom: 2px;
-		transition: box-shadow var(--transition) ease-in-out;
+		/* transition: box-shadow var(--transition) ease-in-out; */
 		display: inline-flex;
 		justify-content: center;
 		align-items: center;
@@ -75,7 +75,7 @@
 			color: var(--blue-9);
 		}
 		&.active {
-			box-shadow: var(--blue-9) inset 0 -2px 0 -1px;
+			/* box-shadow: var(--blue-9) inset 0 -2px 0 -1px; */
 			color: var(--blue-9);
 		}
 		&.underline {

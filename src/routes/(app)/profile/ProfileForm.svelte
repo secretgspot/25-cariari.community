@@ -229,7 +229,7 @@
 		height: 100px;
 		border-radius: 50%;
 		object-fit: cover;
-		margin-bottom: 1rem;
+		margin-bottom: var(--size-3);
 	}
 
 	.unsaved-indicator {

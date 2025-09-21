@@ -349,12 +349,24 @@ input[type="file"]::file-selector-button {
 
 .gen-select {
 	cursor: pointer;
-	border: var(--border-size-1) solid var(--surface-3);
-	border-radius: var(--radius-2);
-	background: var(--surface-1);
-	color: var(--text-1);
-	appearance: base-select;
-	/* padding: var(--size-2); */
+
+	&,
+	&::picker(select) {
+		appearance: base-select;
+		border: var(--border-size-1) solid var(--surface-3);
+		border-radius: var(--radius-2);
+		background: var(--surface-1);
+		/* padding: var(--size-2); */
+	}
+
+	&::picker-icon {
+		transition: rotate var(--transition) ease;
+
+	}
+
+	&:open::picker-icon {
+		rotate: 90deg;
+	}
 
 	&:disabled {
 		cursor: not-allowed;
@@ -366,13 +378,6 @@ input[type="file"]::file-selector-button {
 		outline-offset: 1px;
 	}
 
-	&::picker(select) {
-		appearance: base-select;
-		background: var(--surface-1);
-		border: var(--border-size-1) solid var(--surface-3);
-		border-radius: var(--radius-2);
-	}
-
 	option {
 		padding: var(--size-2);
 	}
@@ -380,10 +385,13 @@ input[type="file"]::file-selector-button {
 
 .form-select {
 	cursor: pointer;
-	appearance: base-select;
 
+	&,
 	&::picker(select) {
 		appearance: base-select;
+	}
+
+	&::picker(select) {
 		background: var(--surface-1);
 		border: var(--border-size-1) solid var(--surface-3);
 		border-radius: var(--radius-2);

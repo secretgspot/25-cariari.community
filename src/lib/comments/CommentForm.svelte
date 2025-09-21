@@ -93,5 +93,9 @@
 		flex-direction: column;
 		gap: var(--size-3);
 		margin-bottom: var(--size-8);
+
+		.form-textarea {
+			min-height: auto;
+		}
 	}
 </style>
