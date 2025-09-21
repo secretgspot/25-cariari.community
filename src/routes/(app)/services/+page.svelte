@@ -49,7 +49,7 @@
 </svelte:head>
 
 <div class="services-container">
-	<h1>Community Services</h1>
+	<h1>Services</h1>
 
 	<nav class="options">
 		<Button onclick={toggleForm} shadow sound_pattern="click">
@@ -60,7 +60,7 @@
 					<Icon kind="folder_closed" size="21" />
 				{/if}
 			{/snippet}
-			{showForm ? 'Hide Form' : 'Add New Service'}
+			{showForm ? 'Hide Form' : 'Add New'}
 		</Button>
 
 		<div class="search-input">

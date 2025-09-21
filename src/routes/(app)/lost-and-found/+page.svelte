@@ -69,7 +69,7 @@
 					<Icon kind="folder_closed" size="21" />
 				{/if}
 			{/snippet}
-			{showForm ? 'Hide Form' : 'Add New Lost/Found'}
+			{showForm ? 'Hide Form' : 'Add New'}
 		</Button>
 
 		<div class="search-input">

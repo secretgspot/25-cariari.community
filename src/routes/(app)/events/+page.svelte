@@ -52,7 +52,7 @@
 </svelte:head>
 
 <div class="events-container">
-	<h1>Community Events</h1>
+	<h1>Events</h1>
 
 	<nav class="options">
 		<Button onclick={toggleForm} shadow sound_pattern="click">
@@ -63,7 +63,7 @@
 					<Icon kind="folder_closed" size="21" />
 				{/if}
 			{/snippet}
-			{showForm ? 'Hide Form' : 'Add New Event'}
+			{showForm ? 'Hide Form' : 'Add New'}
 		</Button>
 
 		<div class="search-input">

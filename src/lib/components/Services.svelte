@@ -65,8 +65,8 @@
 			align-items: center;
 			padding: var(--size-2);
 			gap: var(--size-3);
-			border: var(--border-size-1) solid var(--surface-3);
-			border-radius: var(--radius-2);
+			/* border: var(--border-size-1) solid var(--surface-3); */
+			/* border-radius: var(--radius-2); */
 			color: var(--text-1);
 			box-shadow: 0px 2px 0px 0px var(--surface-4);
 			&:hover {

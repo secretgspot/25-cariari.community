@@ -51,7 +51,7 @@
 </svelte:head>
 
 <div class="notices-container">
-	<h1>Community Notices</h1>
+	<h1>Notices</h1>
 
 	<nav class="options">
 		<Button onclick={toggleForm} shadow sound_pattern="click">
@@ -62,7 +62,7 @@
 					<Icon kind="folder_closed" size="21" />
 				{/if}
 			{/snippet}
-			{showForm ? 'Hide Form' : 'Add New Notice'}
+			{showForm ? 'Hide Form' : 'Add New'}
 		</Button>
 
 		<div class="search-input">
