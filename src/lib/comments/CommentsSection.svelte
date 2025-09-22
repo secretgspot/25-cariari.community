@@ -74,10 +74,10 @@
 
 	{#if userData?.is_logged_in}
 		<CommentForm {parentId} {type} {userData} onCommentAdded={handleCommentAdded} />
-	{:else}
+		<!-- {:else}
 		<p>
 			Please <LinkButton href="/login" sound_pattern="tick">log in</LinkButton> to add comments.
-		</p>
+		</p> -->
 	{/if}
 
 	<CommentsList

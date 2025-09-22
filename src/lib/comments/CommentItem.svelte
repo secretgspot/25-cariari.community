@@ -217,8 +217,6 @@
 			}
 
 			.avatar {
-				width: 18px;
-				height: 18px;
 				border-radius: var(--radius-round);
 				object-fit: cover;
 				aspect-ratio: 1;

@@ -31,8 +31,13 @@
 	footer.site-footer {
 		display: flex;
 		justify-content: space-between;
-		align-items: flex-end;
+		align-items: center;
 		padding: var(--size-3);
+
+		/* Small tablets and larger mobile devices (481px - 768px) */
+		@media (min-width: 481px) {
+			align-items: flex-end;
+		}
 
 		.info-wrapper {
 			font-size: small;
