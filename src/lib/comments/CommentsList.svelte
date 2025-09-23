@@ -38,7 +38,7 @@
 	.comments-list {
 		display: flex;
 		flex-direction: column;
-		gap: var(--size-2);
+		gap: var(--size-5);
 	}
 
 	.error-message {

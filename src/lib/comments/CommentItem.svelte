@@ -127,16 +127,18 @@
 </script>
 
 <div class="comment-card" class:optimistic={comment.isOptimistic}>
+	<div class="avatar-wrap">
+		{#if comment.profiles?.avatar_url}
+			<img
+				width="27px"
+				height="27px"
+				src={comment.profiles.avatar_url}
+				alt="Avatar"
+				class="avatar" />
+		{/if}
+	</div>
 	<div class="header">
 		<div class="user">
-			{#if comment.profiles?.avatar_url}
-				<img
-					width="27px"
-					height="27px"
-					src={comment.profiles.avatar_url}
-					alt="Avatar"
-					class="avatar" />
-			{/if}
 			<span class="author">{comment.profiles?.username || 'Anon'}</span>
 			<span class="date">{timeFrom(comment.created_at)}</span>
 		</div>
@@ -165,7 +167,9 @@
 			</div>
 		{/if}
 	</div>
-	<p class="content">{comment.content}</p>
+	<div class="comment">
+		<p class="content">{comment.content}</p>
+	</div>
 </div>
 
 <Dialog
@@ -192,34 +196,39 @@
 
 <style>
 	.comment-card {
-		position: relative;
-		/* border: var(--border-size-1) solid var(--surface-3); */
-		border-radius: var(--radius-2);
-		padding: var(--size-2);
 		transition: opacity var(--transition) ease;
+		display: grid;
+		grid-template-columns: min-content 1fr;
+		grid-template-areas:
+			'avatar header'
+			'avatar comment';
+		row-gap: var(--size-1);
 
 		&.optimistic {
 			border-color: var(--surface-4);
 		}
 
+		.avatar-wrap {
+			grid-area: avatar;
+			padding-inline-end: var(--size-3);
+			.avatar {
+				border-radius: var(--radius-round);
+				object-fit: cover;
+				aspect-ratio: 1;
+			}
+		}
+
 		.header {
+			grid-area: header;
 			display: flex;
 			align-items: center;
 			gap: var(--size-2);
-			margin-bottom: var(--size-2);
-			font-size: small;
 
 			.user {
 				display: flex;
 				align-items: center;
 				gap: var(--size-2);
-				font-size: small;
-			}
-
-			.avatar {
-				border-radius: var(--radius-round);
-				object-fit: cover;
-				aspect-ratio: 1;
+				line-height: 1;
 			}
 
 			.author {
@@ -229,17 +238,20 @@
 
 			.date {
 				color: var(--text-2);
+				font-size: smaller;
 			}
 		}
 
-		.content {
-			margin-block: var(--size-1);
-			color: var(--text-1);
-			font-size: smaller;
-			margin-inline-start: var(--size-5);
+		.comment {
+			grid-area: comment;
+			.content {
+				margin-block: var(--size-1);
+				color: var(--text-1);
+			}
 		}
 
 		.actions {
+			display: flex;
 			.loading {
 				font-size: x-small;
 				color: var(--text-1);
@@ -249,7 +261,7 @@
 			:global(button.button) {
 				background: none;
 				border: none;
-				color: var(--blue-6);
+				/* color: var(--blue-6); */
 				cursor: pointer;
 				font-size: x-small;
 				&:hover {
