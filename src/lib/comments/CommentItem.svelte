@@ -3,7 +3,9 @@
 	import { timeFrom } from '$lib/utils/time.js';
 	import { addToast } from '$lib/toasts';
 	import Dialog from '$lib/Dialog.svelte';
-	import { LinkButton } from '$lib/buttons';
+	import { Button } from '$lib/buttons';
+	import Actions from '$lib/comments/Actions.svelte';
+	import Icon from '$lib/Icon.svelte';
 
 	let {
 		comment,
@@ -148,21 +150,27 @@
 				{#if loading}
 					<span class="loading">Processing...</span>
 				{:else}
-					<LinkButton
-						onclick={() => (showEditDialog = true)}
-						underline={false}
-						sound_pattern="tick"
-						class="button">
-						Edit
-					</LinkButton>
+					<Actions>
+						<Button
+							onclick={() => (showEditDialog = true)}
+							size="icon"
+							sound_pattern="tick"
+							class="button">
+							{#snippet icon()}
+								<Icon kind="edit" size="18" />
+							{/snippet}
+						</Button>
 
-					<LinkButton
-						onclick={() => (showDeleteDialog = true)}
-						underline={false}
-						sound_pattern="tick"
-						class="button">
-						Delete
-					</LinkButton>
+						<Button
+							onclick={() => (showDeleteDialog = true)}
+							size="icon"
+							sound_pattern="tick"
+							class="button">
+							{#snippet icon()}
+								<Icon kind="delete" size="18" />
+							{/snippet}
+						</Button>
+					</Actions>
 				{/if}
 			</div>
 		{/if}
@@ -222,6 +230,7 @@
 			grid-area: header;
 			display: flex;
 			align-items: center;
+			justify-content: space-between;
 			gap: var(--size-2);
 
 			.user {
@@ -259,14 +268,7 @@
 			}
 
 			:global(button.button) {
-				background: none;
 				border: none;
-				/* color: var(--blue-6); */
-				cursor: pointer;
-				font-size: x-small;
-				&:hover {
-					text-decoration: underline;
-				}
 			}
 		}
 	}
