@@ -40,8 +40,6 @@
 	height={size}
 	viewBox="0 0 512 512"
 	fill="none"
-	stroke={color}
-	stroke-width="2"
 	stroke-linecap="round"
 	stroke-linejoin="round">
 	{@html svgContent}

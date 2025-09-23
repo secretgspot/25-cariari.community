@@ -88,8 +88,8 @@
 		<AddLostFoundForm onLostAndFoundAdded={handleLostAndFoundAdded} />
 	{/if}
 
-	<div class="lost-and-found-list">
-		{#if filteredLostAndFound && filteredLostAndFound.length > 0}
+	{#if filteredLostAndFound && filteredLostAndFound.length > 0}
+		<div class="lost-and-found-list">
 			{#each filteredLostAndFound as post (post.id)}
 				<LinkButton
 					href={`/lost-and-found/${post.id}`}
@@ -121,10 +121,13 @@
 					</div>
 				</LinkButton>
 			{/each}
-		{:else}
-			<p class="no-records">No lost & found were found.</p>
-		{/if}
-	</div>
+		</div>
+	{:else}
+		<div class="no-records">
+			<Icon kind="not_found" size="222" />
+			<p>No lost & found were found.</p>
+		</div>
+	{/if}
 </div>
 
 <style>

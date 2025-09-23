@@ -82,8 +82,8 @@
 		<AddEventForm onEventAdded={handleEventAdded} />
 	{/if}
 
-	<div class="events-list">
-		{#if filteredEvents && filteredEvents.length > 0}
+	{#if filteredEvents && filteredEvents.length > 0}
+		<div class="events-list">
 			{#each filteredEvents as event (event.id)}
 				<LinkButton
 					href={`/events/${event.id}`}
@@ -111,10 +111,13 @@
 					</div>
 				</LinkButton>
 			{/each}
-		{:else}
-			<p class="no-records">No events were found.</p>
-		{/if}
-	</div>
+		</div>
+	{:else}
+		<div class="no-records">
+			<Icon kind="not_found" size="222" />
+			<p>No events were found.</p>
+		</div>
+	{/if}
 </div>
 
 <style>

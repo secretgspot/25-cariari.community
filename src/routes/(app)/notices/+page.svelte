@@ -81,8 +81,8 @@
 		<AddNoticeForm onNoticeAdded={handleNoticeAdded} />
 	{/if}
 
-	<div class="notices-list">
-		{#if filteredNotices && filteredNotices.length > 0}
+	{#if filteredNotices && filteredNotices.length > 0}
+		<div class="notices-list">
 			{#each filteredNotices as notice (notice.id)}
 				<LinkButton
 					href={`/notices/${notice.id}`}
@@ -119,10 +119,13 @@
 					</div>
 				</LinkButton>
 			{/each}
-		{:else}
-			<p class="no-records">No notices were found.</p>
-		{/if}
-	</div>
+		</div>
+	{:else}
+		<div class="no-records">
+			<Icon kind="not_found" size="222" />
+			<p>No notices were found.</p>
+		</div>
+	{/if}
 </div>
 
 <style>

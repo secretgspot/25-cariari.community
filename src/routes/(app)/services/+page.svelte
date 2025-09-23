@@ -79,8 +79,8 @@
 		<AddServiceForm onServiceAdded={handleServiceAdded} />
 	{/if}
 
-	<div class="services-list">
-		{#if filteredServices && filteredServices.length > 0}
+	{#if filteredServices && filteredServices.length > 0}
+		<div class="services-list">
 			{#each filteredServices as service (service.id)}
 				<LinkButton
 					href={`/services/${service.id}`}
@@ -102,10 +102,13 @@
 					</div>
 				</LinkButton>
 			{/each}
-		{:else}
-			<p class="no-records">No services were found.</p>
-		{/if}
-	</div>
+		</div>
+	{:else}
+		<div class="no-records">
+			<Icon kind="not_found" size="222" />
+			<p>No services were found.</p>
+		</div>
+	{/if}
 </div>
 
 <style>
