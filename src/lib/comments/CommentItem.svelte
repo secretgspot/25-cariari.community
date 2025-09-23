@@ -157,7 +157,7 @@
 							sound_pattern="tick"
 							class="button">
 							{#snippet icon()}
-								<Icon kind="edit" size="18" />
+								<Icon kind="edit" size="21" />
 							{/snippet}
 						</Button>
 
@@ -167,7 +167,7 @@
 							sound_pattern="tick"
 							class="button">
 							{#snippet icon()}
-								<Icon kind="delete" size="18" />
+								<Icon kind="delete" size="21" />
 							{/snippet}
 						</Button>
 					</Actions>
